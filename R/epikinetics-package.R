@@ -12,4 +12,6 @@
 #' @importFrom data.table .SD
 #' @importFrom data.table data.table
 ## usethis namespace: end
+
+cmdstanr::install_cmdstan()
 NULL
