@@ -20,6 +20,7 @@ Additional_repositories:
 SystemRequirements: CmdStan (https://mc-stan.org/users/interfaces/cmdstan)
 Suggests: 
     knitr,
+    mockery,
     rmarkdown,
     testthat
 VignetteBuilder: knitr

@@ -2,7 +2,8 @@
 #' @export
 #' @description Fit the kinetics model and return fitted model.
 #' @return A CmdStanMCMC fitted model object.
-#' @param data Model inputs.
+#' @param data Optional data table of model inputs. One of data or file must be provided.
+#' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
 #' @param priors Object of type 'epikinetic_priors'.
 #' @param covariate_formula
 #' @param preds_sd
@@ -13,12 +14,19 @@
 #' if (instantiate::stan_cmdstan_exists()) {
 #'   res <- run_model(data = dt, priors = epikinetic_priors(), chains = 4, parallel_chains = 4, iter_warmup = 100, iter_sampling = 400, threads_per_chain = 4)
 #' }
-run_model <- function(data,
-                      priors,
+run_model <- function(priors,
+                      data = NULL,
+                      file_path = NULL,
                       covariate_formula = ~0 + infection_history,
                       preds_sd = 0.25,
                       time_type = "relative",
                       ...) {
+  if (is.null(data) && is.null(file_path)) {
+    stop("One of 'data' or 'file_path' must be provided")
+  }
+  if (!is.null(data) && !is.null(file_path)) {
+    stop("Only one of 'data' or 'file_path' should be provided")
+  }
   if (!inherits(priors, "epikinetics_priors")) {
     stop("'priors' must be of type 'epikinetics_priors'")
   }
@@ -27,6 +35,9 @@ run_model <- function(data,
   }
   if (!(time_type %in% c("relative", "absolute"))) {
     stop("'time_type' must be one of 'relative' or 'absolute'")
+  }
+  if (is.null(data)) {
+    data <- data.table::fread(file_path)
   }
   stan_data <- prepare_stan_data(dt = data,
                                  formula = covariate_formula,

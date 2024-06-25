@@ -5,8 +5,9 @@
 \title{Fit the model.}
 \usage{
 run_model(
-  data,
   priors,
+  data = NULL,
+  file_path = NULL,
   covariate_formula = ~0 + infection_history,
   preds_sd = 0.25,
   time_type = "relative",
@@ -14,9 +15,11 @@ run_model(
 )
 }
 \arguments{
-\item{data}{Model inputs.}
-
 \item{priors}{Object of type 'epikinetic_priors'.}
+
+\item{data}{Optional data table of model inputs. One of data or file must be provided.}
+
+\item{file_path}{Optional file path to model inputs in CSV format. One of data or file must be provided.}
 
 \item{time_type}{One of 'relative' or 'absolute'.}
 
