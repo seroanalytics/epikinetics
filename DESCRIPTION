@@ -14,6 +14,7 @@ Imports:
     data.table,
     forcats,
     instantiate,
+    logger,
     stringr,
     tidybayes
 Additional_repositories:
