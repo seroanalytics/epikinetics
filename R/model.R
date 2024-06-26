@@ -39,15 +39,18 @@ run_model <- function(priors,
   if (is.null(data)) {
     data <- data.table::fread(file_path)
   }
+  logger::log_info("Preparing stan data")
   stan_data <- prepare_stan_data(dt = data,
                                  formula = covariate_formula,
                                  priors = priors,
                                  time_type = time_type,
                                  preds_sd = preds_sd)
+  logger::log_info("Retrieving compiled model")
   model <- instantiate::stan_package_model(
     name = "antibody_kinetics_main",
     package = "epikinetics"
   )
+  logger::log_info("Fitting model")
   model$sample(stan_data, ...)
 }
 

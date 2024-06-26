@@ -5,6 +5,8 @@ for (file in c("symbols.rds", Sys.glob(paste0("*", SHLIB_EXT)))) {
     file.copy(file, file.path(libs, file))
   }
 }
+logger::log_debug("Installing cmdstan")
+cmdstanr::install_cmdstan()
 inst_stan <- file.path("..", "inst", "stan")
 if (dir.exists(inst_stan)) {
   warning(
@@ -26,6 +28,8 @@ bin_stan <- file.path(bin, "stan")
 fs::dir_copy(path = "stan", new_path = bin_stan)
 callr::r(
   func = function(bin_stan) {
+    models <- instantiate::stan_package_model_files(path = bin_stan)
+    logger::log_debug(paste("Compiling models:", paste0(models, collapse = ",")))
     instantiate::stan_package_compile(
       models = instantiate::stan_package_model_files(path = bin_stan),
       cpp_options = list(stan_threads = TRUE),
