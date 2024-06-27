@@ -22,11 +22,15 @@ process_fits(
 
 \item{dt}{Data table. The original data used to fit the model.}
 
+\item{covariate_formula}{Formula specifying hierarchical structure of model.}
+
 \item{time_type}{One of 'relative' or 'absolute'.}
 
 \item{t_max}{Numeric}
 
 \item{summarise}{Boolean}
+
+\item{by}{Covariates to summarise by.}
 
 \item{scale}{One of 'natural' or 'log'}
 

@@ -5,7 +5,7 @@
 #' @param data Optional data table of model inputs. One of data or file must be provided.
 #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
 #' @param priors Object of type 'epikinetic_priors'.
-#' @param covariate_formula
+#' @param covariate_formula Formula specifying hierarchical structure of model.
 #' @param preds_sd
 #' @param time_type One of 'relative' or 'absolute'.
 #' @param ... Named arguments to the `sample()` method of CmdStan model
@@ -27,7 +27,7 @@ run_model <- function(priors,
     stop("'priors' must be of type 'epikinetics_priors'")
   }
   if (!is.numeric(preds_sd)) {
-    stop("'pred_sd' must be a number")
+    stop("'preds_sd' must be a number")
   }
   if (!(time_type %in% c("relative", "absolute"))) {
     stop("'time_type' must be one of 'relative' or 'absolute'")
@@ -36,8 +36,8 @@ run_model <- function(priors,
     data <- data.table::fread(file_path)
   }
   logger::log_info("Preparing stan data")
-  stan_data <- prepare_stan_data(dt = data,
-                                 formula = covariate_formula,
+  stan_data <- prepare_stan_data(data = data,
+                                 covariate_formula = covariate_formula,
                                  priors = priors,
                                  time_type = time_type,
                                  preds_sd = preds_sd)
@@ -53,39 +53,46 @@ run_model <- function(priors,
 #' @title Prepare data for stan model.
 #' @description Shape the data to named list format for stan.
 #' @return A named list.
+#' @param data Data table of model inputs.
+#' @param priors Object of type 'epikinetic_priors'.
+#' @param covariate_formula Formula specifying hierarchical structure of model.
+#' @param preds_sd
+#' @param time_type One of 'relative' or 'absolute'.
 prepare_stan_data <- function(
-  dt,
+  data,
   priors,
-  formula,
-  time_type,
-  preds_sd) {
+  covariate_formula,
+  preds_sd,
+  time_type) {
 
+  stan_id <- titre <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- t_since_min_date <- NULL
   stan_data <- list(
-    N = dt[, .N],
-    # N_ind = dt[, data.table::uniqueN(id)],
-    N_events = dt[, data.table::uniqueN(stan_id)],
-    id = dt[, stan_id],
-    titre = dt[, titre],
-    censored = dt[, censored],
-    titre_type = dt[, titre_type_num],
+    N = data[, .N],
+    # N_ind = data[, data.table::uniqueN(id)],
+    N_events = data[, data.table::uniqueN(stan_id)],
+    id = data[, stan_id],
+    titre = data[, titre],
+    censored = data[, censored],
+    titre_type = data[, titre_type_num],
     preds_sd = preds_sd,
-    K = dt[, data.table::uniqueN(titre_type)],
-    N_uncens = dt[censored == 0, .N],
-    N_lo = dt[censored == -2, .N],
-    N_me = dt[censored == -1, .N],
-    N_hi = dt[censored == 1, .N],
-    uncens_idx = dt[censored == 0, obs_id],
-    cens_lo_idx = dt[censored == -2, obs_id],
-    cens_me_idx = dt[censored == -1, obs_id],
-    cens_hi_idx = dt[censored == 1, obs_id])
+    K = data[, data.table::uniqueN(titre_type)],
+    N_uncens = data[censored == 0, .N],
+    N_lo = data[censored == -2, .N],
+    N_me = data[censored == -1, .N],
+    N_hi = data[censored == 1, .N],
+    uncens_idx = data[censored == 0, obs_id],
+    cens_lo_idx = data[censored == -2, obs_id],
+    cens_me_idx = data[censored == -1, obs_id],
+    cens_hi_idx = data[censored == 1, obs_id])
 
   if (time_type == "relative") {
-    stan_data$t <- dt[, t_since_last_exp]
+    stan_data$t <- data[, t_since_last_exp]
   } else if (time_type == "absolute") {
-    stan_data$t <- dt[, t_since_min_date]
+    stan_data$t <- data[, t_since_min_date]
   }
 
-  X <- construct_design_matrix(dt, formula)
+  X <- construct_design_matrix(data = data,
+                               covariate_formula = covariate_formula)
   stan_data$X <- X
   stan_data$P <- ncol(X)
   # stan_data$formula <- formula
@@ -94,13 +101,15 @@ prepare_stan_data <- function(
   return(stan_data)
 }
 
-construct_design_matrix <- function(dt, formula) {
-  all_formula_variables <- all.vars(formula)
-  dt_design_matrix <- dt[, .SD, .SDcols = all_formula_variables, by = stan_id] |>
+construct_design_matrix <- function(data, covariate_formula) {
+  var <- stan_id <- NULL
+  all_formula_variables <- all.vars(covariate_formula)
+  dt_design_matrix <- data[, .SD, .SDcols = all_formula_variables, by = stan_id] |>
     unique()
 
   # Build the full design matrix using model.matrix
-  mm <- model_matrix_with_dummy(formula, data = dt_design_matrix)
+  mm <- model_matrix_with_dummy(data = dt_design_matrix,
+                                covariate_formula = covariate_formula)
 
   # Identify columns with no variance and remove them
   variance_per_column <- apply(mm, 2, var)
@@ -110,7 +119,7 @@ construct_design_matrix <- function(dt, formula) {
   return(mm_reduced)
 }
 
-model_matrix_with_dummy <- function(formula, data) {
+model_matrix_with_dummy <- function(data, covariate_formula) {
 
   # Identify columns that are factors with one level
   single_level_factors <- sapply(data, function(col) {
@@ -129,7 +138,7 @@ model_matrix_with_dummy <- function(formula, data) {
   }
 
   # Compute the model matrix
-  mm <- model.matrix(formula, data)
+  mm <- stats::model.matrix(covariate_formula, data)
 
   # If dummy row was added, remove the corresponding row from the model matrix
   if (any(single_level_factors)) {
@@ -145,11 +154,11 @@ model_matrix_with_dummy <- function(formula, data) {
 #' @return A Table.
 #' @param fit A CmdStanMCMC fitted model object.
 #' @param dt Data table. The original data used to fit the model.
-#' @param covariate_formula
+#' @param covariate_formula Formula specifying hierarchical structure of model.
 #' @param time_type One of 'relative' or 'absolute'.
 #' @param t_max Numeric
 #' @param summarise Boolean
-#' @param by
+#' @param by Covariates to summarise by.
 #' @param scale One of 'natural' or 'log'
 #' @param cleaned_names Vector of human readable variable names.
 #' @param n_draws Integer. Number of samples to draw.
@@ -172,7 +181,7 @@ process_fits <- function(
   dt_out <- recover_covariate_names(
     dt_sum, dt, covariate_formula)
 
-  setnames(
+  data.table::setnames(
     dt_out,
     c(all.vars(covariate_formula), "titre_type"),
     cleaned_names)
@@ -217,6 +226,9 @@ summarise_pop_fit <- function(
   summarise = TRUE,
   n_draws = 2500) {
 
+  t0_pop <- tp_pop <- ts_pop <- m1_pop <- m2_pop <- m3_pop <- beta_t0 <- beta_tp <- beta_ts <- beta_m1 <- beta_m2 <- beta_m3 <- NULL
+  k <- p <- .draw <- t_id <- mu <- NULL
+
   dt_samples_wide <- tidybayes::spread_draws(
     fit,
     t0_pop[k], tp_pop[k], ts_pop[k],
@@ -229,7 +241,7 @@ summarise_pop_fit <- function(
 
   dt_samples_wide[, `:=`(.chain = NULL, .iteration = NULL)]
 
-  setcolorder(dt_samples_wide, c("k", "p", ".draw"))
+  data.table::setcolorder(dt_samples_wide, c("k", "p", ".draw"))
 
   dt_samples_wide_adj <- adjust_parameters(dt_samples_wide)
 
@@ -255,11 +267,11 @@ summarise_pop_fit <- function(
 }
 
 summarise_draws <- function(dt_in, column_name, by = by) {
-
+  . <- NULL
   dt_out <- dt_in[, .(
-    me = quantile(get(column_name), 0.5),
-    lo = quantile(get(column_name), 0.025),
-    hi = quantile(get(column_name), 0.975)
+    me = stats::quantile(get(column_name), 0.5),
+    lo = stats::quantile(get(column_name), 0.025),
+    hi = stats::quantile(get(column_name), 0.975)
   ),
                     by = by
   ]

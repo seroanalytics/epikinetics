@@ -15,6 +15,7 @@ Imports:
     forcats,
     instantiate,
     logger,
+    stats,
     stringr,
     tidybayes
 Additional_repositories:

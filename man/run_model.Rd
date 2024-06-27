@@ -21,6 +21,8 @@ run_model(
 
 \item{file_path}{Optional file path to model inputs in CSV format. One of data or file must be provided.}
 
+\item{covariate_formula}{Formula specifying hierarchical structure of model.}
+
 \item{time_type}{One of 'relative' or 'absolute'.}
 
 \item{...}{Named arguments to the \code{sample()} method of CmdStan model
@@ -31,9 +33,4 @@ A CmdStanMCMC fitted model object.
 }
 \description{
 Fit the kinetics model and return fitted model.
-}
-\examples{
-if (instantiate::stan_cmdstan_exists()) {
-  res <- run_model(data = dt, priors = epikinetic_priors(), chains = 4, parallel_chains = 4, iter_warmup = 100, iter_sampling = 400, threads_per_chain = 4)
-}
 }

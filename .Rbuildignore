@@ -1,1 +1,5 @@
 ^LICENSE\.md$
+^docker$
+^\.github$
+^Dockerfile$
+^\.idea$

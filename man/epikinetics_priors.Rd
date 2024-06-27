@@ -24,5 +24,6 @@ A named list of type 'epikinetics_priors'.
 Construct an object of type 'epikinetics_priors' to pass to the model.
 }
 \examples{
-priors <- epikinetics_priors(names = c("t0", "tp", "ts", "m1", "m2", "m3"), mu_values = c(4.0, 10, 60, 0.25, -0.02, 0), sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
+priors <- epikinetics_priors(names = c("t0", "tp", "ts", "m1", "m2", "m3"),
+mu_values = c(4.0, 10, 60, 0.25, -0.02, 0), sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
 }

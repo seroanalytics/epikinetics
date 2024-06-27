@@ -1,6 +1,8 @@
 recover_covariate_names <- function(
   dt, dt_stan_inputs, formula) {
 
+  titre_type <- NULL
+
   dt_titre_lookup <- data.table(
     k = 1:dt_stan_inputs[, length(unique(titre_type))],
     titre_type = dt_stan_inputs[, unique(titre_type)])
@@ -21,13 +23,13 @@ covariate_lookup_table <- function(data, covariate_formula) {
   split_data <- stringr::str_split(col_names, ":", simplify = TRUE)
 
   # Convert the matrix to a data.table
-  dt <- as.data.table(split_data)
+  dt <- data.table::as.data.table(split_data)
 
   # Extract category names from formula
   formula_vars <- all.vars(covariate_formula)
 
   # Set the new column names
-  setnames(dt, formula_vars)
+  data.table::setnames(dt, formula_vars)
 
   for (col_name in names(dt)) {
     # Find the matching formula variable for current column
@@ -38,11 +40,12 @@ covariate_lookup_table <- function(data, covariate_formula) {
     }
   }
 
+  p <- NULL
   # .I is a special symbol in data.table for row number
   dt[, p := .I]
 
   # Reorder columns to have 'i' first
-  setcolorder(dt, "p")
+  data.table::setcolorder(dt, "p")
 
   return(dt)
 }

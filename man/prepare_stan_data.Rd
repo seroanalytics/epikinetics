@@ -4,7 +4,16 @@
 \alias{prepare_stan_data}
 \title{Prepare data for stan model.}
 \usage{
-prepare_stan_data(dt, priors, formula, time_type, preds_sd)
+prepare_stan_data(data, priors, covariate_formula, preds_sd, time_type)
+}
+\arguments{
+\item{data}{Data table of model inputs.}
+
+\item{priors}{Object of type 'epikinetic_priors'.}
+
+\item{covariate_formula}{Formula specifying hierarchical structure of model.}
+
+\item{time_type}{One of 'relative' or 'absolute'.}
 }
 \value{
 A named list.
