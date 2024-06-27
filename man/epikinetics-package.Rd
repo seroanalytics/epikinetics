@@ -4,12 +4,17 @@
 \name{epikinetics-package}
 \alias{epikinetics}
 \alias{epikinetics-package}
-\title{epikinetics: What the Package Does (One Line, Title Case)}
+\title{epikinetics: Antibody and Cycle Threshold Kinetics Modelling}
 \description{
 What the package does (one paragraph).
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Alex Hill \email{alex.hill@gmail.com} [contributor]
+
+Authors:
+\itemize{
+  \item Timothy Russell \email{timothy.russell@lshtm.ac.uk}
+}
 
 }
 \keyword{internal}

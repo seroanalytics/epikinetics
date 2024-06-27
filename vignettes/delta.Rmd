@@ -2,9 +2,9 @@
 title: "Replicating Figure 2"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteIndexEntry{delta}
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{delta}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}

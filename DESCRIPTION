@@ -1,9 +1,8 @@
 Package: epikinetics
 Title: Antibody and Cycle Threshold Kinetics Modelling
 Version: 0.0.0.9000
-Authors@R:
-    c(person("Timothy", "Russell", , "timothy.russell@lshtm.ac.uk", role = c("aut")),
-    person("Alex", "Hill", , "alex.hill@gmail.com", role = c("aut")))
+Authors@R: c(person("Timothy", "Russell", email = "timothy.russell@lshtm.ac.uk", role = c("aut")),
+    person("Alex", "Hill", email = "alex.hill@gmail.com", role = c("ctb", "cre")))
 Description: What the package does (one paragraph).
 License: GPL (>= 3)
 Encoding: UTF-8
