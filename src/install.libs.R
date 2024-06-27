@@ -6,8 +6,8 @@ for (file in c("symbols.rds", Sys.glob(paste0("*", SHLIB_EXT)))) {
   }
 }
 if (is.null(cmdstanr::cmdstan_version(error_on_NA = FALSE))) {
-  cmdstanr::install_cmdstan()
   message("Installing cmdstan")
+  cmdstanr::install_cmdstan()
 } else {
   message(paste("Found cmdstan at path", cmdstanr::cmdstan_path()))
 }

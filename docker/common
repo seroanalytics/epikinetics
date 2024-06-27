@@ -1,0 +1,8 @@
+NAME=epikinetics
+ORG=seroanalytics
+PACKAGE_ROOT="${HERE}/.."
+GIT_ID=$(git -C "$PACKAGE_ROOT" rev-parse --short=7 HEAD)
+GIT_BRANCH=$(git -C "$PACKAGE_ROOT" symbolic-ref --short HEAD)
+
+DOCKER_COMMIT_TAG=$ORG/$NAME:$GIT_ID
+DOCKER_BRANCH_TAG=$ORG/$NAME:$GIT_BRANCH

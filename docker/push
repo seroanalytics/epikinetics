@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -ex
+
+HERE=$(realpath  "$(dirname $0)")
+. $HERE/common
+
+docker push $DOCKER_BRANCH_TAG
+docker push $DOCKER_COMMIT_TAG
