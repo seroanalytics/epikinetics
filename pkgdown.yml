@@ -2,6 +2,6 @@ pandoc: 3.1.11
 pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
-  delta: delta.html
-last_built: 2024-06-27T14:41Z
+  fig2: fig2.html
+last_built: 2024-06-27T16:33Z
 

@@ -32,7 +32,7 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/delta.html">Replicating Figure 2</a>
+      <a href="../articles/fig2.html">Replicating Figure 2</a>
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
@@ -55,26 +55,25 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">process_fits</span><span class="op">(</span></span>
-<span>  <span class="va">fit</span>,</span>
-<span>  <span class="va">dt</span>,</span>
+<span>  <span class="va">fits</span>,</span>
+<span>  <span class="va">data</span>,</span>
 <span>  covariate_formula <span class="op">=</span> <span class="op">~</span><span class="fl">0</span> <span class="op">+</span> <span class="va">infection_history</span>,</span>
 <span>  time_type <span class="op">=</span> <span class="st">"relative"</span>,</span>
 <span>  t_max <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  summarise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Infection history"</span>, <span class="st">"Titre type"</span><span class="op">)</span>,</span>
+<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"infection_history"</span>, <span class="st">"titre_type"</span><span class="op">)</span>,</span>
 <span>  scale <span class="op">=</span> <span class="st">"natural"</span>,</span>
-<span>  cleaned_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Infection history"</span>, <span class="st">"Titre type"</span><span class="op">)</span>,</span>
 <span>  n_draws <span class="op">=</span> <span class="fl">2500</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>fit</dt>
+    <dl><dt>fits</dt>
 <dd><p>A CmdStanMCMC fitted model object.</p></dd>
 
 
-<dt>dt</dt>
+<dt>data</dt>
 <dd><p>Data table. The original data used to fit the model.</p></dd>
 
 
@@ -95,16 +94,12 @@
 
 
 <dt>by</dt>
-<dd><p>Vector of covariates to summarise by. Values must match cleaned variable names.
-Default c('Infection history', 'Titre type').</p></dd>
+<dd><p>Vector of covariates to summarise by. Can be any of 'titre_type' plus covariates specified
+in covariate_formula. Default c("infection_history", "titre_type").</p></dd>
 
 
 <dt>scale</dt>
 <dd><p>One of 'natural' or 'log'. Default 'natural'.</p></dd>
-
-
-<dt>cleaned_names</dt>
-<dd><p>Vector of human readable variable names. Default c('Infection history', 'Titre type').</p></dd>
 
 
 <dt>n_draws</dt>
@@ -126,7 +121,7 @@ Default c('Infection history', 'Titre type').</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by First Last.</p>
+  <p></p><p>Developed by Timothy Russell, Alex Hill.</p>
 </div>
 
 <div class="pkgdown">
