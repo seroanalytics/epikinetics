@@ -5,10 +5,10 @@
 #' @param data Optional data table of model inputs. One of data or file must be provided.
 #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
 #' @param priors Object of type 'epikinetic_priors'.
-#' @param covariate_formula Formula specifying hierarchical structure of model.
-#' @param preds_sd
-#' @param time_type One of 'relative' or 'absolute'.
-#' @param ... Named arguments to the `sample()` method of CmdStan model
+#' @param covariate_formula Formula specifying hierarchical structure of model. Default ~0 + infection_history.
+#' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
+#' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
+#' @param ... Named arguments to the `sample()` method of CmdStan model.
 #'   objects: <https://mc-stan.org/cmdstanr/reference/model-method-sample.html>
 run_model <- function(priors,
                       data = NULL,
@@ -56,7 +56,7 @@ run_model <- function(priors,
 #' @param data Data table of model inputs.
 #' @param priors Object of type 'epikinetic_priors'.
 #' @param covariate_formula Formula specifying hierarchical structure of model.
-#' @param preds_sd
+#' @param preds_sd Standard deviation of predictor coefficients.
 #' @param time_type One of 'relative' or 'absolute'.
 prepare_stan_data <- function(
   data,
@@ -154,18 +154,19 @@ model_matrix_with_dummy <- function(data, covariate_formula) {
 #' @return A Table.
 #' @param fit A CmdStanMCMC fitted model object.
 #' @param dt Data table. The original data used to fit the model.
-#' @param covariate_formula Formula specifying hierarchical structure of model.
-#' @param time_type One of 'relative' or 'absolute'.
+#' @param covariate_formula Formula specifying hierarchical structure of model. Ddefault  ~0 + infection_history.
+#' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
 #' @param t_max Numeric
 #' @param summarise Boolean
-#' @param by Covariates to summarise by.
-#' @param scale One of 'natural' or 'log'
-#' @param cleaned_names Vector of human readable variable names.
-#' @param n_draws Integer. Number of samples to draw.
+#' @param by Vector of covariates to summarise by. Values must match cleaned variable names.
+#' Default c('Infection history', 'Titre type').
+#' @param scale One of 'natural' or 'log'. Default 'natural'.
+#' @param cleaned_names Vector of human readable variable names. Default c('Infection history', 'Titre type').
+#' @param n_draws Integer. Number of samples to draw. Default 2500.
 process_fits <- function(
   fit,
   dt,
-  covariate_formula,
+  covariate_formula = ~0 + infection_history,
   time_type = "relative",
   t_max = 150,
   summarise = TRUE,

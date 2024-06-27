@@ -7,7 +7,7 @@
 process_fits(
   fit,
   dt,
-  covariate_formula,
+  covariate_formula = ~0 + infection_history,
   time_type = "relative",
   t_max = 150,
   summarise = TRUE,
@@ -22,21 +22,22 @@ process_fits(
 
 \item{dt}{Data table. The original data used to fit the model.}
 
-\item{covariate_formula}{Formula specifying hierarchical structure of model.}
+\item{covariate_formula}{Formula specifying hierarchical structure of model. Ddefault  ~0 + infection_history.}
 
-\item{time_type}{One of 'relative' or 'absolute'.}
+\item{time_type}{One of 'relative' or 'absolute'. Default 'relative'.}
 
 \item{t_max}{Numeric}
 
 \item{summarise}{Boolean}
 
-\item{by}{Covariates to summarise by.}
+\item{by}{Vector of covariates to summarise by. Values must match cleaned variable names.
+Default c('Infection history', 'Titre type').}
 
-\item{scale}{One of 'natural' or 'log'}
+\item{scale}{One of 'natural' or 'log'. Default 'natural'.}
 
-\item{cleaned_names}{Vector of human readable variable names.}
+\item{cleaned_names}{Vector of human readable variable names. Default c('Infection history', 'Titre type').}
 
-\item{n_draws}{Integer. Number of samples to draw.}
+\item{n_draws}{Integer. Number of samples to draw. Default 2500.}
 }
 \value{
 A Table.

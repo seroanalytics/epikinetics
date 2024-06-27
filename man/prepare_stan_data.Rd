@@ -13,6 +13,8 @@ prepare_stan_data(data, priors, covariate_formula, preds_sd, time_type)
 
 \item{covariate_formula}{Formula specifying hierarchical structure of model.}
 
+\item{preds_sd}{Standard deviation of predictor coefficients.}
+
 \item{time_type}{One of 'relative' or 'absolute'.}
 }
 \value{

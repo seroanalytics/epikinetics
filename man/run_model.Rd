@@ -21,11 +21,13 @@ run_model(
 
 \item{file_path}{Optional file path to model inputs in CSV format. One of data or file must be provided.}
 
-\item{covariate_formula}{Formula specifying hierarchical structure of model.}
+\item{covariate_formula}{Formula specifying hierarchical structure of model. Default ~0 + infection_history.}
 
-\item{time_type}{One of 'relative' or 'absolute'.}
+\item{preds_sd}{Standard deviation of predictor coefficients. Default 0.25.}
 
-\item{...}{Named arguments to the \code{sample()} method of CmdStan model
+\item{time_type}{One of 'relative' or 'absolute'. Default 'relative'.}
+
+\item{...}{Named arguments to the \code{sample()} method of CmdStan model.
 objects: \url{https://mc-stan.org/cmdstanr/reference/model-method-sample.html}}
 }
 \value{
