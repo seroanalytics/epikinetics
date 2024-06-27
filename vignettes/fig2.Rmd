@@ -35,6 +35,7 @@ head(res)
 And now plot using `ggplot` and `ggh4x`:
 
 ```{r}
+library(ggplot2)
 manual_pal <-
   c("#CC6677",
     "#DDCC77",
