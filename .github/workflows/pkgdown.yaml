@@ -32,8 +32,14 @@ jobs:
           echo "CMDSTAN=${HOME}/.cmdstan" >> $GITHUB_ENV
         shell: bash
 
+      - name: Repos
+        run: |
+          cat("\noptions(repos=c(ropensci='https://ropensci.r-universe.dev',CRAN ='https://cloud.r-project.org', stan = 'https://stan-dev.r-universe.dev'))\n", file = "~/.Rprofile", append = TRUE)
+        shell: Rscript {0}
+
       - name: Install cmdstan
         run: |
+          install.packages("cmdstanr")
           cmdstanr::check_cmdstan_toolchain(fix = TRUE)
           cmdstanr::install_cmdstan(cores = 2)
         shell: Rscript {0}
