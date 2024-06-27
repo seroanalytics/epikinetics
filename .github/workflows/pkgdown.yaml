@@ -27,6 +27,16 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
+      - name: cmdstan env vars
+        run: |
+          echo "CMDSTAN=${HOME}/.cmdstan" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Install cmdstan
+        run: |
+          cmdstanr::check_cmdstan_toolchain(fix = TRUE)
+          cmdstanr::install_cmdstan(cores = 2)
+        shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:

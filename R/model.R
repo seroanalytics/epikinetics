@@ -10,10 +10,6 @@
 #' @param time_type One of 'relative' or 'absolute'.
 #' @param ... Named arguments to the `sample()` method of CmdStan model
 #'   objects: <https://mc-stan.org/cmdstanr/reference/model-method-sample.html>
-#' @examples
-#' if (instantiate::stan_cmdstan_exists()) {
-#'   res <- run_model(data = dt, priors = epikinetic_priors(), chains = 4, parallel_chains = 4, iter_warmup = 100, iter_sampling = 400, threads_per_chain = 4)
-#' }
 run_model <- function(priors,
                       data = NULL,
                       file_path = NULL,
