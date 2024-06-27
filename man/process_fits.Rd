@@ -5,22 +5,21 @@
 \title{Process model fits.}
 \usage{
 process_fits(
-  fit,
-  dt,
+  fits,
+  data,
   covariate_formula = ~0 + infection_history,
   time_type = "relative",
   t_max = 150,
   summarise = TRUE,
-  by = c("Infection history", "Titre type"),
+  by = c("infection_history", "titre_type"),
   scale = "natural",
-  cleaned_names = c("Infection history", "Titre type"),
   n_draws = 2500
 )
 }
 \arguments{
-\item{fit}{A CmdStanMCMC fitted model object.}
+\item{fits}{A CmdStanMCMC fitted model object.}
 
-\item{dt}{Data table. The original data used to fit the model.}
+\item{data}{Data table. The original data used to fit the model.}
 
 \item{covariate_formula}{Formula specifying hierarchical structure of model. Ddefault  ~0 + infection_history.}
 
@@ -30,12 +29,10 @@ process_fits(
 
 \item{summarise}{Boolean}
 
-\item{by}{Vector of covariates to summarise by. Values must match cleaned variable names.
-Default c('Infection history', 'Titre type').}
+\item{by}{Vector of covariates to summarise by. Can be any of 'titre_type' plus covariates specified
+in covariate_formula. Default c("infection_history", "titre_type").}
 
 \item{scale}{One of 'natural' or 'log'. Default 'natural'.}
-
-\item{cleaned_names}{Vector of human readable variable names. Default c('Infection history', 'Titre type').}
 
 \item{n_draws}{Integer. Number of samples to draw. Default 2500.}
 }

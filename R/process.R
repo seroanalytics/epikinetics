@@ -1,6 +1,8 @@
 recover_covariate_names <- function(
   dt, dt_stan_inputs, formula) {
 
+  # Declare variables to suppress notes when compiling package
+  # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   titre_type <- NULL
 
   dt_titre_lookup <- data.table(
@@ -40,7 +42,10 @@ covariate_lookup_table <- function(data, covariate_formula) {
     }
   }
 
+  # Declare variables to suppress notes when compiling package
+  # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   p <- NULL
+
   # .I is a special symbol in data.table for row number
   dt[, p := .I]
 

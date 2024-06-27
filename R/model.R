@@ -152,40 +152,33 @@ model_matrix_with_dummy <- function(data, covariate_formula) {
 #' @export
 #' @description Process the stan model results into a data table.
 #' @return A Table.
-#' @param fit A CmdStanMCMC fitted model object.
-#' @param dt Data table. The original data used to fit the model.
+#' @param fits A CmdStanMCMC fitted model object.
+#' @param data Data table. The original data used to fit the model.
 #' @param covariate_formula Formula specifying hierarchical structure of model. Ddefault  ~0 + infection_history.
 #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
 #' @param t_max Numeric
 #' @param summarise Boolean
-#' @param by Vector of covariates to summarise by. Values must match cleaned variable names.
-#' Default c('Infection history', 'Titre type').
+#' @param by Vector of covariates to summarise by. Can be any of 'titre_type' plus covariates specified
+#' in covariate_formula. Default c("infection_history", "titre_type").
 #' @param scale One of 'natural' or 'log'. Default 'natural'.
-#' @param cleaned_names Vector of human readable variable names. Default c('Infection history', 'Titre type').
 #' @param n_draws Integer. Number of samples to draw. Default 2500.
 process_fits <- function(
-  fit,
-  dt,
+  fits,
+  data,
   covariate_formula = ~0 + infection_history,
   time_type = "relative",
   t_max = 150,
   summarise = TRUE,
-  by = c("Infection history", "Titre type"),
+  by = c("infection_history", "titre_type"),
   scale = "natural",
-  cleaned_names = c("Infection history", "Titre type"),
   n_draws = 2500) {
 
   dt_sum <- summarise_pop_fit(
-    fit, time_range = seq(0, t_max), summarise = summarise,
+    fits, time_range = seq(0, t_max), summarise = summarise,
     n_draws = n_draws)
 
   dt_out <- recover_covariate_names(
-    dt_sum, dt, covariate_formula)
-
-  data.table::setnames(
-    dt_out,
-    c(all.vars(covariate_formula), "titre_type"),
-    cleaned_names)
+    dt_sum, data, covariate_formula)
 
   if (time_type == "absolute") {
     dt_out[, date := dt[, unique(min(date))] + t,
@@ -227,7 +220,10 @@ summarise_pop_fit <- function(
   summarise = TRUE,
   n_draws = 2500) {
 
-  t0_pop <- tp_pop <- ts_pop <- m1_pop <- m2_pop <- m3_pop <- beta_t0 <- beta_tp <- beta_ts <- beta_m1 <- beta_m2 <- beta_m3 <- NULL
+  # Declare variables to suppress notes when compiling package
+  # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
+  t0_pop <- tp_pop <- ts_pop <- m1_pop <- m2_pop <- m3_pop <- NULL
+  beta_t0 <- beta_tp <- beta_ts <- beta_m1 <- beta_m2 <- beta_m3 <- NULL
   k <- p <- .draw <- t_id <- mu <- NULL
 
   dt_samples_wide <- tidybayes::spread_draws(
@@ -268,7 +264,10 @@ summarise_pop_fit <- function(
 }
 
 summarise_draws <- function(dt_in, column_name, by = by) {
+  # Declare variables to suppress notes when compiling package
+  # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   . <- NULL
+
   dt_out <- dt_in[, .(
     me = stats::quantile(get(column_name), 0.5),
     lo = stats::quantile(get(column_name), 0.025),

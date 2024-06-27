@@ -2,9 +2,9 @@
 title: "Replicating Figure 2"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{delta}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+%\VignetteIndexEntry{delta}
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -14,7 +14,75 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(epikinetics)
+Figure 2 from the paper shows population level fits for each wave, disaggregated by infection history
+and titre type. This is a partial reconstruction of that figure to demonstrate how to use the package.
+
+To generate this figure, first run the model for each wave separately, using the data files installed with this package.
+Here we run it just for the Delta wave:
+
+```{r}
+dt <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+delta <- epikinetics::run_model(data = dt, priors = epikinetics::epikinetics_priors())
 ```
 
+Once the model has been fitted, process the fits into trajectories:
+
+```{r}
+res <- epikinetics::process_fits(delta, dt)
+head(res)
+```
+
+And now plot using `ggplot` and `ggh4x`:
+
+```{r}
+manual_pal <-
+  c("#CC6677",
+    "#DDCC77",
+    "#88CCEE",
+    "#882255",
+    "#44AA99",
+    "grey",
+    "#D95F02",
+    "#66A61E")
+res$titre_type <- forcats::fct_relevel(res$titre_type, c("Ancestral", "Alpha", "Delta"))
+ggplot() +
+  geom_line(data = res,
+            aes(x = t,
+                y = me,
+                colour = titre_type,
+                linetype = "Retrospective")) +
+  geom_ribbon(data = res,
+              aes(x = t,
+                  ymin = lo,
+                  ymax = hi,
+                  fill = titre_type), alpha = 0.65) +
+  scale_y_continuous(
+    trans = "log2",
+    breaks = c(40, 80, 160, 320, 640, 1280,
+               2560, 5120),
+    labels = c("40", "80", "160", "320", "640", "1280", "2560", "5120"),
+    limits = c(40, 10240)) +
+  scale_x_continuous(breaks = c(0, 30, 60, 90, 120),
+                     labels = c("0", "30", "60", "90", "120"),
+                     expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  labs(x = "Time since last exposure (days)",
+       y = expression(paste("Titre (IC"[50], ")"))) +
+  facet_wrap(infection_history ~ titre_type) +
+  theme(
+    legend.position = "bottom",
+    strip.text.x.top = element_text(size = 8, family = "Helvetica"),
+    strip.text.x = element_text(size = 8, family = "Helvetica")) +
+  scale_colour_manual(values = manual_pal) +
+  scale_fill_manual(values = manual_pal) +
+  theme_linedraw() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 8, family = "Helvetica"),
+        strip.background = element_rect(fill = "white"),
+        strip.text = element_text(colour = 'black'),
+        strip.placement = "outside",
+        plot.title = element_text(face = "bold", size = 9),
+        panel.grid = element_line(linewidth = 0.4)) +
+  labs(tag = "A", title = "Population-level fits") +
+  guides(colour = "none", fill = "none")
+```
