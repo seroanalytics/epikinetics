@@ -22,18 +22,15 @@
     <loc>/reference/epikinetics-package.html</loc>
   </url>
   <url>
-    <loc>/reference/epikinetics_priors.html</loc>
+    <loc>/reference/gaussian_priors.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/prepare_stan_data.html</loc>
+    <loc>/reference/sam.html</loc>
   </url>
   <url>
-    <loc>/reference/process_fits.html</loc>
-  </url>
-  <url>
-    <loc>/reference/run_model.html</loc>
+    <loc>/reference/sam_priors.html</loc>
   </url>
 </urlset>

@@ -85,9 +85,11 @@ reconstruction of that figure to demonstrate how to use the package.</p>
 separately, using the data files installed with this package. Here we
 run it just for the Delta wave:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"delta_full.rds"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">delta</span> <span class="op">&lt;-</span> <span class="fu">epikinetics</span><span class="fu">::</span><span class="fu"><a href="../reference/run_model.html">run_model</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dt</span>, priors <span class="op">=</span> <span class="fu">epikinetics</span><span class="fu">::</span><span class="fu"><a href="../reference/epikinetics_priors.html">epikinetics_priors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; CmdStan path set to: /home/runner/.cmdstan/cmdstan-2.35.0</span></span>
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"delta_full.rds"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">epikinetics</span><span class="fu">::</span><span class="va"><a href="../reference/sam.html">sam</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; CmdStan path set to: /home/runner/.cmdstan/cmdstan-2.35.0</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">delta</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running MCMC with 4 sequential chains...</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration:    1 / 2000 [  0%]  (Warmup) </span></span>
@@ -112,10 +114,10 @@ run it just for the Delta wave:</p>
 <span><span class="co">#&gt; Chain 1 Iteration: 1800 / 2000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 1900 / 2000 [ 95%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 216.7 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 214.8 seconds.</span></span>
 <span><span class="co">#&gt; Chain 2 Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 2 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 2 Exception: normal_lpdf: Location parameter[4] is inf, but must be finite! (in '/tmp/RtmpipO2ev/model-27e35ef84eca.stan', line 149, column 2 to column 52)</span></span>
+<span><span class="co">#&gt; Chain 2 Exception: normal_lpdf: Location parameter[4] is inf, but must be finite! (in '/tmp/RtmpALtKfp/model-28fc52a4c622.stan', line 149, column 2 to column 52)</span></span>
 <span><span class="co">#&gt; Chain 2 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 2 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 2</span></span>
@@ -140,10 +142,10 @@ run it just for the Delta wave:</p>
 <span><span class="co">#&gt; Chain 2 Iteration: 1800 / 2000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 2 Iteration: 1900 / 2000 [ 95%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 2 finished in 232.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 230.3 seconds.</span></span>
 <span><span class="co">#&gt; Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 3 Exception: normal_lpdf: Location parameter[5] is inf, but must be finite! (in '/tmp/RtmpipO2ev/model-27e35ef84eca.stan', line 149, column 2 to column 52)</span></span>
+<span><span class="co">#&gt; Chain 3 Exception: normal_lpdf: Location parameter[5] is inf, but must be finite! (in '/tmp/RtmpALtKfp/model-28fc52a4c622.stan', line 149, column 2 to column 52)</span></span>
 <span><span class="co">#&gt; Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 3</span></span>
@@ -168,10 +170,10 @@ run it just for the Delta wave:</p>
 <span><span class="co">#&gt; Chain 3 Iteration: 1800 / 2000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 3 Iteration: 1900 / 2000 [ 95%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 3 finished in 218.0 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 finished in 216.0 seconds.</span></span>
 <span><span class="co">#&gt; Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
 <span><span class="co">#&gt; Chain 4 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:</span></span>
-<span><span class="co">#&gt; Chain 4 Exception: normal_lpdf: Location parameter[57] is inf, but must be finite! (in '/tmp/RtmpipO2ev/model-27e35ef84eca.stan', line 149, column 2 to column 52)</span></span>
+<span><span class="co">#&gt; Chain 4 Exception: normal_lpdf: Location parameter[57] is inf, but must be finite! (in '/tmp/RtmpALtKfp/model-28fc52a4c622.stan', line 149, column 2 to column 52)</span></span>
 <span><span class="co">#&gt; Chain 4 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,</span></span>
 <span><span class="co">#&gt; Chain 4 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.</span></span>
 <span><span class="co">#&gt; Chain 4</span></span>
@@ -196,15 +198,15 @@ run it just for the Delta wave:</p>
 <span><span class="co">#&gt; Chain 4 Iteration: 1800 / 2000 [ 90%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 4 Iteration: 1900 / 2000 [ 95%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 4 finished in 223.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 220.8 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 222.6 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 890.9 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 220.5 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 882.4 seconds.</span></span></code></pre></div>
 <p>Once the model has been fitted, process the fits into
 trajectories:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">epikinetics</span><span class="fu">::</span><span class="fu"><a href="../reference/process_fits.html">process_fits</a></span><span class="op">(</span><span class="va">delta</span>, <span class="va">dt</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">population_trajectories</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        t     p     k        me        lo       hi infection_history titre_type</span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;num&gt;     &lt;num&gt;    &lt;num&gt;            &lt;char&gt;     &lt;char&gt;</span></span>
@@ -214,8 +216,8 @@ trajectories:</p>
 <span><span class="co">#&gt; 4:     3     1     1 221.17931 176.08767 279.2467   Infection naive  Ancestral</span></span>
 <span><span class="co">#&gt; 5:     4     1     1 303.14292 240.43029 386.7644   Infection naive  Ancestral</span></span>
 <span><span class="co">#&gt; 6:     5     1     1 414.97701 324.29633 549.2957   Infection naive  Ancestral</span></span></code></pre></div>
-<p>And now plot using <code>ggplot</code> and <code>ggh4x</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>And now plot using <code>ggplot</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="va">manual_pal</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#CC6677"</span>,</span>
@@ -265,7 +267,6 @@ trajectories:</p>
 <span>        strip.placement <span class="op">=</span> <span class="st">"outside"</span>,</span>
 <span>        plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"bold"</span>, size <span class="op">=</span> <span class="fl">9</span><span class="op">)</span>,</span>
 <span>        panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>tag <span class="op">=</span> <span class="st">"A"</span>, title <span class="op">=</span> <span class="st">"Population-level fits"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"none"</span>, fill <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Removed 6 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_line()`).</span></span></code></pre></div>
