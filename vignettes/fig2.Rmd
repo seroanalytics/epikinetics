@@ -21,18 +21,19 @@ To generate this figure, first run the model for each wave separately, using the
 Here we run it just for the Delta wave:
 
 ```{r}
-dt <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-delta <- epikinetics::run_model(data = dt, priors = epikinetics::epikinetics_priors())
+dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+mod <- epikinetics::sam$new(data = dat)
+delta <- mod$fit()
 ```
 
 Once the model has been fitted, process the fits into trajectories:
 
 ```{r}
-res <- epikinetics::process_fits(delta, dt)
+res <- mod$population_trajectories()
 head(res)
 ```
 
-And now plot using `ggplot` and `ggh4x`:
+And now plot using `ggplot`:
 
 ```{r}
 library(ggplot2)
@@ -84,6 +85,5 @@ ggplot() +
         strip.placement = "outside",
         plot.title = element_text(face = "bold", size = 9),
         panel.grid = element_line(linewidth = 0.4)) +
-  labs(tag = "A", title = "Population-level fits") +
   guides(colour = "none", fill = "none")
 ```

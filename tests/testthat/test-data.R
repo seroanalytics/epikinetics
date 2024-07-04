@@ -1,11 +1,31 @@
+mock_model <- function(name, package) {
+  list(sample = function(stan_dt, ...) stan_dt)
+}
+
+local_mocked_bindings(
+  stan_package_model = mock_model, .package = "instantiate"
+)
+
 test_that("Can construct stan data", {
   dt <- data.table::fread(system.file("delta_trunc.rds", package = "epikinetics"))
-  stan_dt <- prepare_stan_data(data = dt,
-                               priors = epikinetics_priors(),
-                               covariate_formula = ~ 0 + infection_history,
-                               preds_sd = 0.25,
-                               time_type = "relative")
-  expect_equal(stan_dt$N, 1220)
+  mod <- sam$new(data = dt,
+                 priors = sam_priors(),
+                 covariate_formula = ~0 + infection_history,
+                 preds_sd = 0.25,
+                 time_type = "relative")
+  # the fit function has been mocked above to return the stan inputs
+  stan_dt <- mod$fit()
   expect_equal(stan_dt$N_events, 286)
   expect_equal(unlist(stan_dt$id), unname(unlist(dt[, "stan_id"])))
+})
+
+test_that("Can initialise file path data", {
+  expect_true(inherits(sam$new(file_path = system.file("delta_trunc.rds", package = "epikinetics"),
+                               priors = sam_priors()), "sam"))
+})
+
+test_that("Can provide data directly", {
+  dat <- data.table::fread(system.file("delta_trunc.rds", package = "epikinetics"))
+  expect_true(inherits(sam$new(data = dat,
+                               priors = sam_priors()), "sam"))
 })
