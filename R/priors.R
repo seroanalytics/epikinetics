@@ -1,12 +1,3 @@
-#' @title Construct Gaussian priors for model variables.
-#' @export
-#' @description Construct an object of type 'gaussian_priors' to pass to the model.
-#' @return A named list of type 'gaussian_priors'.
-#' @param names Names of the variables.
-#' @param mu_values Mean of Gaussian prior for each named variable.
-#' @param sigma_values Standard deviation of Gaussian prior for each named variable.
-#' @examples
-#' priors <- gaussian_priors(names = c("t0", "tp"), mu_values = c(4.0, 10), sigma_values = c(2.0, 2.0))
 gaussian_priors <- function(names, mu_values, sigma_values) {
   if (length(names) != length(mu_values) ||
     length(names) != length(sigma_values)) {
