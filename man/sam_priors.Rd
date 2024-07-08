@@ -21,5 +21,6 @@ A named list of type 'sam_priors'.
 Construct an object of type 'sam_priors' to pass to the model.
 }
 \examples{
-priors <- sam_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0), sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
+priors <- sam_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
+sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
 }

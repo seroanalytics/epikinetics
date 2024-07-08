@@ -18,7 +18,8 @@ gaussian_priors <- function(names, mu_values, sigma_values) {
 #' @param mu_values Mean of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.
 #' @param sigma_values Standard deviation of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.
 #' @examples
-#' priors <- sam_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0), sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
+#' priors <- sam_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
+#' sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
 sam_priors <- function(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
                        sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01)) {
   names <- c("t0", "tp", "ts", "m1", "m2", "m3")
