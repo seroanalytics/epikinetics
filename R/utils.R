@@ -1,11 +1,10 @@
 convert_log_scale_inverse <- function(dt_in, vars_to_transform) {
-
+  dt_out <- data.table::copy(dt_in)
   for(var in vars_to_transform) {
     # # Reverse the log2 transformation and multiplication by 5.
-    dt_in[, (var) := 5*2^(get(var))]
-
+    dt_out[, (var) := 5*2^(get(var))]
   }
-  return(dt_in)
+  dt_out
 }
 
 summarise_draws <- function(dt_in, column_name, by = by) {
@@ -21,5 +20,5 @@ summarise_draws <- function(dt_in, column_name, by = by) {
                     by = by
   ]
 
-  return(dt_out)
+  dt_out
 }

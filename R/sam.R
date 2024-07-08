@@ -172,6 +172,9 @@ sam <- R6::R6Class(
       }
       max(mu, 0)
     },
+    simulate_trajectories = function(dat) {
+      data.table::setDT(simulate_trajectories_cpp(dat))
+    },
     prepare_stan_data = function() {
       stan_id <- titre <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- t_since_min_date <- NULL
       stan_data <- list(
@@ -204,8 +207,7 @@ sam <- R6::R6Class(
 
       c(stan_data, private$priors)
     },
-
-    extract_parameters_pop = function(n_draws = 2500) {
+    extract_parameters_pop = function(n_draws) {
 
       params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]", "m1_pop[k]", "m2_pop[k]",
                   "m3_pop[k]", "beta_t0[p]", "beta_tp[p]", "beta_ts[p]", "beta_m1[p]",
@@ -220,13 +222,30 @@ sam <- R6::R6Class(
 
       data.table::setcolorder(dt_proc, c("k", "p", ".draw"))
 
-      if (adjust == TRUE) {
-        dt_out <- adjust_parameters(dt_proc)
-      } else {
-        dt_out <- dt_proc
+      adjust_parameters(dt_proc)
+    },
+    extract_parameters_ind = function(add_variation_params) {
+
+      params <- c("t0_ind[n, k]", "tp_ind[n, k]", "ts_ind[n, k]",
+        "m1_ind[n, k]", "m2_ind[n, k]", "m3_ind[n, k]")
+
+      if(add_variation_params == TRUE) {
+        ind_var_params <- c(
+          "z_t0[n]", "z_tp[n]", "z_ts[n]", "z_m1[n]", "z_m2[n]", "z_m3[n]")
+        params <- c(params, ind_var_params)
       }
 
-      dt_out[.draw %in% n_draws]
+      params_proc <- rlang::parse_exprs(params)
+
+      dt_out <- tidybayes::spread_draws(private$fitted, !!!params_proc) |>
+        data.table()
+
+      dt_out[, `:=` (.chain = NULL, .iteration = NULL)]
+
+      data.table::setcolorder(dt_out, c("n", "k", ".draw"))
+      data.table::setnames(dt_out, c("n", "k", ".draw"), c("stan_id", "titre_type", "draw"))
+
+      dt_out
     }
   ),
   public = list(
@@ -287,13 +306,14 @@ sam <- R6::R6Class(
     #' @param ... Named arguments to the `sample()` method of CmdStan model.
     #'   objects: <https://mc-stan.org/cmdstanr/reference/model-method-sample.html>
     fit = function(...) {
+      logger::log_info("Fitting model")
       private$fitted <- private$model$sample(private$stan_input_data, ...)
       private$fitted
     },
     #' @description Process the model results into a data table of titre values over time.
     #' @return A Table containing titre values at time points.
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
-    #' @param t_max Numeric. Maximum number of time points to include.
+    #' @param t_max Integer. Maximum number of time points to include.
     #' @param summarise Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
     #' individual values.
     #' @param scale One of 'natural' or 'log'. Default 'natural'.
@@ -309,6 +329,7 @@ sam <- R6::R6Class(
       validate_time_type(time_type)
       validate_scale(scale)
 
+      logger::log_info("Summarising fits")
       dt_sum <- private$summarise_pop_fit(
         time_range = seq(0, t_max),
         summarise = summarise,
@@ -317,6 +338,7 @@ sam <- R6::R6Class(
       dt_out <- private$recover_covariate_names(dt_sum)
 
       if (time_type == "absolute") {
+        logger::log_info("Converting to absolute time")
         dt_out[, date := dt[, unique(min(date))] + t,
                  by = c(private$all_formula_vars, "titre_type")]
       }
@@ -324,28 +346,28 @@ sam <- R6::R6Class(
       dt_out <- dt_out[
         , lapply(.SD, function(x) if (is.factor(x)) forcats::fct_drop(x) else x)]
 
-      if (scale == "natural" & summarise == FALSE) {
-        dt_out <- convert_log_scale_inverse(
-          dt_out, vars_to_transform = "mu")
-      } else if (scale == "natural" & summarise == TRUE) {
-        dt_out <- convert_log_scale_inverse(
-          dt_out, vars_to_transform = c("me", "lo", "hi"))
+      if (scale == "natural") {
+        logger::log_info("Converting to natural scale")
+        if (summarise) {
+          dt_out <- convert_log_scale_inverse(
+            dt_out, vars_to_transform = c("me", "lo", "hi"))
+        } else {
+          dt_out <- convert_log_scale_inverse(
+            dt_out, vars_to_transform = "mu")
+        }
       }
-
       dt_out
     },
     #' @description Process the stan model results into a data table.
     #' @return A Table.
     #' @param n_draws Integer. Number of samples to draw. Default 2500.
-    population_stationary_points = function(
-      n_draws = 2500) {
-
+    population_stationary_points = function(n_draws = 2500) {
+      validate_numeric(n_draws)
       private$check_fitted()
-      # Extracting population-level parameters
-      dt_peak_switch <- private$extract_parameters_pop(n_draws = 2500)
 
-      # Calculating the peak and switch titre values stratified by covariates
-      # and titre types
+      dt_peak_switch <- private$extract_parameters_pop(n_draws)
+
+      logger::log_info("Calculating peak and switch titre values")
       dt_peak_switch[, `:=`(
         mu_0 = private$simulate_trajectory(
           0, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
@@ -355,12 +377,103 @@ sam <- R6::R6Class(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
                        by = c("p", "k", ".draw")]
 
-      # Convert back to natural units
+      logger::log_info("Converting to natural scale")
       convert_log_scale_inverse(
         dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
 
-      # Recover which covariates were used in the inference
-      private$recover_covariate_names(dt_peak_switch)
+      logger::log_info("Recovering covariate names")
+      dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
+
+      logger::log_info("Calculating relative drops")
+      dt_peak_switch[
+        , rel_drop := mu_s/mu_p,
+          by = c(private$all_formula_vars, "titre_type")][
+        , `:=` (
+        rel_drop_me = quantile(rel_drop, 0.5),
+        mu_p_me = quantile(mu_p, 0.5),
+        mu_s_me = quantile(mu_s, 0.5)),
+          by = c(private$all_formula_vars, "titre_type")]
+    },
+    #' @description Simulate individual trajectories from the model. This is
+    #' computationally expensive and may take a while to run.
+    #' @return A Table.
+    #' @param n_draws Integer. Number of samples to draw.
+    #' @param time_shift Integer.
+    #' @param scale One of 'natural' or 'log'. Default 'log'.
+    #' @param adjust_dates Logical. Default FALSE.
+    #' @param add_variation_params Logical. Default FALSE.
+    #' @param t_max Integer. Maximum number of time points to include. Default 150.
+    individual_trajectories = function(
+      n_draws,
+      time_shift,
+      scale = "log",
+      adjust_dates = FALSE,
+      add_variation_params = FALSE,
+      t_max = 150) {
+
+      private$check_fitted()
+      validate_numeric(n_draws)
+      validate_numeric(time_shift)
+      validate_scale(scale)
+      validate_logical(adjust_dates)
+      validate_logical(add_variation_params)
+      validate_numeric(t_max)
+
+      # Extracting parameters from fit
+      dt_params_ind <- private$extract_parameters_ind(add_variation_params)[!is.nan(t0_ind)]
+
+      # Calculating the maximum time each individual has data for after the
+      # exposure of interest
+      dt_max_dates <- private$data[
+        , .(t_max = max(t_since_last_exp)), by = .(stan_id)]
+
+      # A very small number of individuals have bleeds on the same day or a few days
+      # after their recorded exposure dates, resulting in very short trajectories.
+      # Adding a 50 day buffer to any individuals with less than or equal to 50 days
+      # of observations after their focal exposure
+      dt_max_dates <- dt_max_dates[t_max <= 50, t_max := 50, by = .(stan_id)]
+
+      # Merging the parameter draws with the maximum time data.table
+      dt_params_ind <- merge(dt_params_ind, dt_max_dates, by = "stan_id")
+
+      dt_params_ind_trim <- dt_params_ind[, .SD[draw %in% 1:n_draws], by = stan_id]
+
+      # Running the C++ code to simulate trajectories for each parameter sample
+      # for each individual
+      dt_params_ind_traj <- private$simulate_trajectories(dt_params_ind_trim)
+
+      if(scale == "natural") {
+        # Converting back to the original scale
+        dt_params_ind_traj <- convert_log_scale_inverse_cpp(
+          dt_params_ind_traj, vars_to_transform = "mu")
+      }
+
+      dt_titre_types <- data.table(
+        titre_type = private$data[, unique(titre_type)],
+        titre_type_num = dt_params_ind_traj[, unique(titre_type_num)])
+
+      dt_params_ind_traj <- merge(
+        dt_params_ind_traj,
+        dt_titre_types,
+        by = "titre_type_num")[, titre_type_num := NULL]
+
+      if (adjust_dates) {
+        dt_lookup <- private$data[, .(
+          exposure_date = min(last_exp_date) - time_shift),
+                                    by = c(private$all_formula_vars, "stan_id")]
+      } else {
+          dt_lookup <- private$data[, .(
+            exposure_date = min(last_exp_date)),
+                                      by = c(private$all_formula_vars, "stan_id")]
+      }
+
+      dt_out <- merge(dt_params_ind_traj, dt_lookup, by = "stan_id")
+
+      dt_out[
+        , calendar_date := exposure_date + t,
+          by = c(private$all_formula_vars, "stan_id", "titre_type")]
+
+      dt_out
     }
   )
 )

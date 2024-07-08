@@ -14,6 +14,7 @@ fit it to a dataset using Gaussian priors and a given hierarchical model structu
 \item \href{#method-sam-fit}{\code{sam$fit()}}
 \item \href{#method-sam-population_trajectories}{\code{sam$population_trajectories()}}
 \item \href{#method-sam-population_stationary_points}{\code{sam$population_stationary_points()}}
+\item \href{#method-sam-individual_trajectories}{\code{sam$individual_trajectories()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -94,7 +95,7 @@ Process the model results into a data table of titre values over time.
 \describe{
 \item{\code{time_type}}{One of 'relative' or 'absolute'. Default 'relative'.}
 
-\item{\code{t_max}}{Numeric. Maximum number of time points to include.}
+\item{\code{t_max}}{Integer. Maximum number of time points to include.}
 
 \item{\code{summarise}}{Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
 individual values.}
@@ -122,6 +123,44 @@ Process the stan model results into a data table.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{n_draws}}{Integer. Number of samples to draw. Default 2500.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A Table.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-sam-individual_trajectories"></a>}}
+\if{latex}{\out{\hypertarget{method-sam-individual_trajectories}{}}}
+\subsection{Method \code{individual_trajectories()}}{
+Simulate individual trajectories from the model. This is
+computationally expensive and may take a while to run.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{sam$individual_trajectories(
+  n_draws,
+  time_shift,
+  scale = "log",
+  adjust_dates = FALSE,
+  add_variation_params = FALSE,
+  t_max = 150
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n_draws}}{Integer. Number of samples to draw.}
+
+\item{\code{time_shift}}{Integer.}
+
+\item{\code{scale}}{One of 'natural' or 'log'. Default 'log'.}
+
+\item{\code{adjust_dates}}{Logical. Default FALSE.}
+
+\item{\code{add_variation_params}}{Logical. Default FALSE.}
+
+\item{\code{t_max}}{Integer. Maximum number of time points to include. Default 150.}
 }
 \if{html}{\out{</div>}}
 }
