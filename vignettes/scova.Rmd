@@ -21,7 +21,7 @@ Here we run it just for the Delta wave:
 
 ```{r}
 dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-mod <- epikinetics::sam$new(data = dat)
+mod <- epikinetics::scova$new(data = dat)
 delta <- mod$fit()
 ```
 

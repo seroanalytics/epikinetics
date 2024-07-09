@@ -4,8 +4,8 @@
 ##' fit it to a dataset using Gaussian priors and a given hierarchical model structure.
 ##' @export
 ##' @importFrom R6 R6Class
-sam <- R6::R6Class(
-  "sam",
+scova <- R6::R6Class(
+  "scova",
   cloneable = FALSE,
   private = list(
     priors = NULL,
@@ -249,22 +249,22 @@ sam <- R6::R6Class(
     }
   ),
   public = list(
-    #' @description Initialise the kinetics model and return fitted model.
+    #' @description Initialise the kinetics model.
     #' @return An epikinetics::sam object.
     #' @param data Optional data table of model inputs. One of data or file must be provided.
     #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
-    #' @param priors Object of type 'sam_priors'. Default sam_priors().
+    #' @param priors Object of type 'scova_priors'. Default scova_priors().
     #' @param covariate_formula Formula specifying hierarchical structure of model. Default ~0 + infection_history.
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
-    initialize = function(priors = sam_priors(),
+    initialize = function(priors = scova_priors(),
                           data = NULL,
                           file_path = NULL,
                           covariate_formula = ~0 + infection_history,
                           preds_sd = 0.25,
                           time_type = "relative") {
-      if (!inherits(priors, "sam_priors")) {
-        stop("'priors' must be of type 'sam_priors'")
+      if (!inherits(priors, "scova_priors")) {
+        stop("'priors' must be of type 'scova_priors'")
       }
       private$priors <- priors
       if (!is.numeric(preds_sd)) {
@@ -311,7 +311,11 @@ sam <- R6::R6Class(
       private$fitted
     },
     #' @description Process the model results into a data table of titre values over time.
-    #' @return A Table containing titre values at time points.
+    #' @return A Table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
+    #' titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t_id, k,
+    #' p, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3,
+    #' t, mu, titre_type and a column for each covariate in the hierarchical model.
+    #' lower and upper bounds of titre values; if summarise = FALSE then
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     #' @param t_max Integer. Maximum number of time points to include.
     #' @param summarise Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns

@@ -7,8 +7,8 @@ local_mocked_bindings(
 )
 
 test_that("Can run model with arguments", {
-  res <- sam$new(file_path = system.file("delta_trunc.rds", package = "epikinetics"),
-                 priors = sam_priors())$fit(chains = 4,
+  res <- scova$new(file_path = system.file("delta_trunc.rds", package = "epikinetics"),
+                 priors = scova_priors())$fit(chains = 4,
                                             parallel_chains = 4,
                                             iter_warmup = 100,
                                             iter_sampling = 400,

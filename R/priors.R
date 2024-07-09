@@ -13,17 +13,17 @@ gaussian_priors <- function(names, mu_values, sigma_values) {
 
 #' @title Construct priors for the SARS-CoV-2 antibody model.
 #' @export
-#' @description Construct an object of type 'sam_priors' to pass to the model.
-#' @return A named list of type 'sam_priors'.
+#' @description Construct an object of type 'scova_priors' to pass to the model.
+#' @return A named list of type 'scova_priors'.
 #' @param mu_values Mean of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.
 #' @param sigma_values Standard deviation of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.
 #' @examples
-#' priors <- sam_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
+#' priors <- scova_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
 #' sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
-sam_priors <- function(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
-                       sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01)) {
+scova_priors <- function(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
+                         sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01)) {
   names <- c("t0", "tp", "ts", "m1", "m2", "m3")
   ret <- gaussian_priors(names, mu_values, sigma_values)
-  class(ret) <- append("sam_priors", class(ret))
+  class(ret) <- append("scova_priors", class(ret))
   ret
 }

@@ -8,8 +8,8 @@ local_mocked_bindings(
 
 test_that("Can construct stan data", {
   dt <- data.table::fread(system.file("delta_trunc.rds", package = "epikinetics"))
-  mod <- sam$new(data = dt,
-                 priors = sam_priors(),
+  mod <- scova$new(data = dt,
+                 priors = scova_priors(),
                  covariate_formula = ~0 + infection_history,
                  preds_sd = 0.25,
                  time_type = "relative")
@@ -20,12 +20,12 @@ test_that("Can construct stan data", {
 })
 
 test_that("Can initialise file path data", {
-  expect_true(inherits(sam$new(file_path = system.file("delta_trunc.rds", package = "epikinetics"),
-                               priors = sam_priors()), "sam"))
+  expect_true(inherits(scova$new(file_path = system.file("delta_trunc.rds", package = "epikinetics"),
+                               priors = scova_priors()), "scova"))
 })
 
 test_that("Can provide data directly", {
   dat <- data.table::fread(system.file("delta_trunc.rds", package = "epikinetics"))
-  expect_true(inherits(sam$new(data = dat,
-                               priors = sam_priors()), "sam"))
+  expect_true(inherits(scova$new(data = dat,
+                               priors = scova_priors()), "scova"))
 })
