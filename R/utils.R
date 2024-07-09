@@ -12,13 +12,11 @@ summarise_draws <- function(dt_in, column_name, by = by) {
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   . <- NULL
 
-  dt_out <- dt_in[, .(
+  dt_in[, .(
     me = stats::quantile(get(column_name), 0.5),
     lo = stats::quantile(get(column_name), 0.025),
     hi = stats::quantile(get(column_name), 0.975)
   ),
                     by = by
   ]
-
-  dt_out
 }

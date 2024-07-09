@@ -382,7 +382,7 @@ scova <- R6::R6Class(
                        by = c("p", "k", ".draw")]
 
       logger::log_info("Converting to natural scale")
-      convert_log_scale_inverse(
+      dt_peak_switch <- convert_log_scale_inverse(
         dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
 
       logger::log_info("Recovering covariate names")
