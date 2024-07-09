@@ -1,0 +1,151 @@
+---
+title: "SARS-CoV-2 antibody model: replicating paper figures"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{SARS-CoV-2 antibody model: replicating paper figures}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Fitting the model
+
+First run the model for each wave separately, using the data files installed with this package.
+Here we run it just for the Delta wave:
+
+```{r}
+dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+mod <- epikinetics::sam$new(data = dat)
+delta <- mod$fit()
+```
+
+# Figure 2
+Figure 2 from the paper shows population level fits for each wave, disaggregated by infection history
+and titre type. This is a partial reconstruction of that figure to demonstrate how to use the package.
+
+Once the model has been fitted, process the fits into trajectories:
+
+```{r}
+res <- mod$population_trajectories()
+head(res)
+```
+
+And now plot using `ggplot`:
+
+```{r}
+library(ggplot2)
+manual_pal <-
+  c("#CC6677",
+    "#DDCC77",
+    "#88CCEE",
+    "#882255",
+    "#44AA99",
+    "grey",
+    "#D95F02",
+    "#66A61E")
+res$titre_type <- forcats::fct_relevel(res$titre_type, c("Ancestral", "Alpha", "Delta"))
+ggplot() +
+  geom_line(data = res,
+            aes(x = t,
+                y = me,
+                colour = titre_type,
+                linetype = "Retrospective")) +
+  geom_ribbon(data = res,
+              aes(x = t,
+                  ymin = lo,
+                  ymax = hi,
+                  fill = titre_type), alpha = 0.65) +
+  scale_y_continuous(
+    trans = "log2",
+    breaks = c(40, 80, 160, 320, 640, 1280,
+               2560, 5120),
+    labels = c("40", "80", "160", "320", "640", "1280", "2560", "5120"),
+    limits = c(40, 10240)) +
+  scale_x_continuous(breaks = c(0, 30, 60, 90, 120),
+                     labels = c("0", "30", "60", "90", "120"),
+                     expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  labs(x = "Time since last exposure (days)",
+       y = expression(paste("Titre (IC"[50], ")"))) +
+  facet_wrap(infection_history ~ titre_type) +
+  theme(
+    legend.position = "bottom",
+    strip.text.x.top = element_text(size = 8, family = "Helvetica"),
+    strip.text.x = element_text(size = 8, family = "Helvetica")) +
+  scale_colour_manual(values = manual_pal) +
+  scale_fill_manual(values = manual_pal) +
+  theme_linedraw() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 8, family = "Helvetica"),
+        strip.background = element_rect(fill = "white"),
+        strip.text = element_text(colour = 'black'),
+        strip.placement = "outside",
+        plot.title = element_text(face = "bold", size = 9),
+        panel.grid = element_line(linewidth = 0.4)) +
+  guides(colour = "none", fill = "none")
+```
+
+# Figure 4
+
+Figure 4 A and B show the relationship between infection history and titre values at peak and set points, for different
+titre types. For Figure 4.A, in the paper there are facets for each wave, but here we just generate the facet for the Delta wave.
+
+```{r}
+res <- mod$population_stationary_points()
+head(res)
+```
+
+```{r}
+ggplot(data = res, aes(
+  x = mu_p, y = mu_s,
+  colour = titre_type)) +
+  geom_density_2d(
+    aes(
+      group = interaction(
+        infection_history,
+        titre_type))) +
+  geom_point(data = res[.draw <= 2000],
+             alpha = 0.05, size = 0.2) +
+  geom_point(data = res,
+             aes(x = mu_p_me, y = mu_s_me,
+                 shape = infection_history),
+             colour = "black") +
+  geom_path(data = res,
+            aes(x = mu_p_me, y = mu_s_me,
+                group = titre_type),
+            colour = "black") +
+  geom_vline(xintercept = 2560, linetype = "twodash", colour = "gray30") +
+  scale_x_continuous(
+    trans = "log2",
+    breaks = c(40, 80, 160, 320, 640, 1280, 2560, 5120, 10240),
+    labels = c(expression(" " <= 40),
+               "80", "160", "320", "640", "1280", "2560", "5120", "10240"),
+    limits = c(NA, 10240)) +
+  geom_hline(yintercept = 2560, linetype = "twodash", colour = "gray30") +
+  scale_y_continuous(
+    trans = "log2",
+    breaks = c(40, 80, 160, 320, 640, 1280, 2560, 5120, 10240),
+    labels = c(expression(" " <= 40),
+               "80", "160", "320", "640", "1280", "2560", "5120", "10240"),
+    limits = c(NA, 5120)) +
+  theme_linedraw() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 9, family = "Helvetica"),
+        strip.placement = "outside",
+        plot.title = element_text(face = "plain", size = 9),
+        legend.box = "vertical",
+        legend.margin = margin(),
+        strip.background = element_rect(fill = "white"),
+        strip.text = element_text(colour = 'black')) +
+  scale_shape_manual(values = c(1, 2, 3)) +
+  labs(x = expression(paste("Population-level titre value at peak (IC"[50], ")")),
+       y = expression(paste("Population-level titre value at set-point (IC"[50], ")"))) +
+  scale_colour_manual(values = manual_pal) +
+  guides(colour = guide_legend(override.aes = list(alpha = 1, size = 1)))
+```
