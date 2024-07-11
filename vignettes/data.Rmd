@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Input data
+
 The model requires a data table containing the following columns:
 
 stan_id:
@@ -30,3 +32,32 @@ censored:
 It can also contain further columns for any covariates to be included in the model. The data files installed with this package have additional columns infection_history, last_vax_type, and exp_num.
 
 The model also accepts a covariate formula for a hierarchical model. The variables in the formula must correspond to column names in the dataset.
+
+# Ouput data
+
+After fitting a model, a [CmdStanMCMC](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html) object is returned. This means
+that users who are already familiar with `cmdstanr` are free to do what they want with the fitted model. But three further functions
+provide model outputs that we think are particularly useful in [data.table](https://cran.r-project.org/web/packages/data.table/) format.
+[Scova](../reference/scova.html) contains documentation on each of these functions so please read that first; this Vignette provides
+guidance on the correct interpretation of each column in the returned tables.
+
+### simulate_population_trajectories
+
+See the documentation for this function [here](../reference/scova.html#method-simulate-population-trajectories).
+There are 2 different output formats depending on whether the provided `summarise` argument is `TRUE` or `FALSE`.
+
+* `summarise = TRUE`
+  Returned columns are:
+  * t:
+  * p:
+  * k:
+  * me:
+  * lo
+  * hi
+  * titre_type
+
+  There will also be a column for each covariate in the hierarchical model.
+
+* `summarise = FALSE`
+  Returned columns are t, p, k, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu .draw, titre_type and a column for each covariate in the hierarchical model.
+

@@ -303,7 +303,7 @@ scova <- R6::R6Class(
         }
         private$data <- data
       }
-      unknown_vars <- private$all_formula_vars[which(private$all_formula_vars %notin% names(private$data))]
+      unknown_vars <- private$all_formula_vars[which(!(private$all_formula_vars %in% names(private$data)))]
       if (length(unknown_vars) > 0) {
         stop(paste("All variables in 'covariate_formula' must correspond to data columns. Found unknown variables:",
                    paste(unknown_vars, collapse = ", ")))
@@ -319,7 +319,7 @@ scova <- R6::R6Class(
       )
     },
     #' @description Fit the model and return CmdStanMCMC fitted model object.
-    #' @return A CmdStanMCMC fitted model object.
+    #' @return A CmdStanMCMC fitted model object: <https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html>
     #' @param ... Named arguments to the `sample()` method of CmdStan model.
     #'   objects: <https://mc-stan.org/cmdstanr/reference/model-method-sample.html>
     fit = function(...) {
@@ -328,7 +328,7 @@ scova <- R6::R6Class(
       private$fitted
     },
     #' @description Process the model results into a data table of titre values over time.
-    #' @return A Table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
+    #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
     #' titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
     #' t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
     #' .draw, titre_type and a column for each covariate in the hierarchical model.

@@ -72,7 +72,7 @@ objects: \url{https://mc-stan.org/cmdstanr/reference/model-method-sample.html}}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A CmdStanMCMC fitted model object.
+A CmdStanMCMC fitted model object: \url{https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html}
 }
 }
 \if{html}{\out{<hr>}}
@@ -104,7 +104,7 @@ individual values.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A Table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
+A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
 titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
 t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
 .draw, titre_type and a column for each covariate in the hierarchical model.
