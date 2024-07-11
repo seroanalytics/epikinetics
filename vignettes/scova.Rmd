@@ -232,7 +232,7 @@ results_list <- lapply(indices, function(index) {
   result
 })
 
-combined_data <- data.table::data.table(rbindlist(results_list))
+combined_data <- data.table::data.table(data.table::rbindlist(results_list))
 ```
 
 Plotting the median values:
