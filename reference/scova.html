@@ -66,7 +66,7 @@ fit it to a dataset using Gaussian priors and a given hierarchical model structu
 <li><p><a href="#method-scova-fit"><code>scova$fit()</code></a></p></li>
 <li><p><a href="#method-scova-population_trajectories"><code>scova$population_trajectories()</code></a></p></li>
 <li><p><a href="#method-scova-population_stationary_points"><code>scova$population_stationary_points()</code></a></p></li>
-<li><p><a href="#method-scova-individual_trajectories"><code>scova$individual_trajectories()</code></a></p></li>
+<li><p><a href="#method-scova-simulate_individual_trajectories"><code>scova$simulate_individual_trajectories()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-scova-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Initialise the kinetics model.</p><div class="section">
@@ -143,7 +143,6 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 <span>  time_type <span class="op">=</span> <span class="st">"relative"</span>,</span>
 <span>  t_max <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  summarise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  scale <span class="op">=</span> <span class="st">"natural"</span>,</span>
 <span>  n_draws <span class="op">=</span> <span class="fl">2500</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -163,12 +162,8 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 individual values.</p></dd>
 
 
-<dt><code>scale</code></dt>
-<dd><p>One of 'natural' or 'log'. Default 'natural'.</p></dd>
-
-
 <dt><code>n_draws</code></dt>
-<dd><p>Integer. Number of samples to draw. Default 2500.</p></dd>
+<dd><p>Integer. Maximum number of samples to include. Default 2500.</p></dd>
 
 
 </dl><p></p></div>
@@ -176,15 +171,15 @@ individual values.</p></dd>
 <div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>A Table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
-titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t_id, k,
-p, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3,
-t, mu, titre_type and a column for each covariate in the hierarchical model.
+titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
+t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
+.draw, titre_type and a column for each covariate in the hierarchical model.
 lower and upper bounds of titre values; if summarise = FALSE then</p>
 </div>
 
 </div><p></p><hr><a id="method-scova-population_stationary_points"></a><div class="section">
 <h3 id="method-population-stationary-points-">Method <code>population_stationary_points()</code><a class="anchor" aria-label="anchor" href="#method-population-stationary-points-"></a></h3>
-<p>Process the stan model results into a data table.</p><div class="section">
+<p>Process the stan model results into a data.table.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">population_stationary_points</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">2500</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -192,47 +187,38 @@ lower and upper bounds of titre values; if summarise = FALSE then</p>
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
-<dd><p>Integer. Number of samples to draw. Default 2500.</p></dd>
+<dd><p>Integer. Maximum number of samples to include. Default 2500.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 <div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
-<p>A Table.</p>
+<p>A data.table of peak and set titre values</p>
 </div>
 
-</div><p></p><hr><a id="method-scova-individual_trajectories"></a><div class="section">
-<h3 id="method-individual-trajectories-">Method <code>individual_trajectories()</code><a class="anchor" aria-label="anchor" href="#method-individual-trajectories-"></a></h3>
+</div><p></p><hr><a id="method-scova-simulate_individual_trajectories"></a><div class="section">
+<h3 id="method-simulate-individual-trajectories-">Method <code>simulate_individual_trajectories()</code><a class="anchor" aria-label="anchor" href="#method-simulate-individual-trajectories-"></a></h3>
 <p>Simulate individual trajectories from the model. This is
-computationally expensive and may take a while to run.</p><div class="section">
+computationally expensive and may take a while to run if n_draws is large.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">individual_trajectories</span><span class="op">(</span></span>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span></span>
 <span>  <span class="va">n_draws</span>,</span>
-<span>  <span class="va">time_shift</span>,</span>
-<span>  scale <span class="op">=</span> <span class="st">"log"</span>,</span>
-<span>  adjust_dates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  time_shift <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  add_variation_params <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  t_max <span class="op">=</span> <span class="fl">150</span></span>
+<span>  t_max <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>  summarise <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
-<dd><p>Integer. Number of samples to draw.</p></dd>
+<dd><p>Integer. Maximum number of samples to draw.</p></dd>
 
 
 <dt><code>time_shift</code></dt>
-<dd><p>Integer.</p></dd>
-
-
-<dt><code>scale</code></dt>
-<dd><p>One of 'natural' or 'log'. Default 'log'.</p></dd>
-
-
-<dt><code>adjust_dates</code></dt>
-<dd><p>Logical. Default FALSE.</p></dd>
+<dd><p>Integer. Number of days to adjust the exposure date by. Default 0.</p></dd>
 
 
 <dt><code>add_variation_params</code></dt>
@@ -243,11 +229,17 @@ computationally expensive and may take a while to run.</p><div class="section">
 <dd><p>Integer. Maximum number of time points to include. Default 150.</p></dd>
 
 
+<dt><code>summarise</code></dt>
+<dd><p>Boolean. If TRUE, average the individual trajectories to get lo, me and
+hi values for the population. If FALSE return the simulated indidivudal trajectories.
+Default TRUE.</p></dd>
+
+
 </dl><p></p></div>
 </div>
 <div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
-<p>A Table.</p>
+<p>A data.table.</p>
 </div>
 
 </div>
