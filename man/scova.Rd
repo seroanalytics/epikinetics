@@ -12,7 +12,7 @@ fit it to a dataset using Gaussian priors and a given hierarchical model structu
 \itemize{
 \item \href{#method-scova-new}{\code{scova$new()}}
 \item \href{#method-scova-fit}{\code{scova$fit()}}
-\item \href{#method-scova-population_trajectories}{\code{scova$population_trajectories()}}
+\item \href{#method-scova-simulate_population_trajectories}{\code{scova$simulate_population_trajectories()}}
 \item \href{#method-scova-population_stationary_points}{\code{scova$population_stationary_points()}}
 \item \href{#method-scova-simulate_individual_trajectories}{\code{scova$simulate_individual_trajectories()}}
 }
@@ -27,7 +27,7 @@ Initialise the kinetics model.
   priors = scova_priors(),
   data = NULL,
   file_path = NULL,
-  covariate_formula = ~0 + infection_history,
+  covariate_formula = ~0,
   preds_sd = 0.25,
   time_type = "relative"
 )}\if{html}{\out{</div>}}
@@ -42,7 +42,7 @@ Initialise the kinetics model.
 
 \item{\code{file_path}}{Optional file path to model inputs in CSV format. One of data or file must be provided.}
 
-\item{\code{covariate_formula}}{Formula specifying hierarchical structure of model. Default ~0 + infection_history.}
+\item{\code{covariate_formula}}{Formula specifying hierarchical structure of model. Default ~0.}
 
 \item{\code{preds_sd}}{Standard deviation of predictor coefficients. Default 0.25.}
 
@@ -76,12 +76,12 @@ A CmdStanMCMC fitted model object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-scova-population_trajectories"></a>}}
-\if{latex}{\out{\hypertarget{method-scova-population_trajectories}{}}}
-\subsection{Method \code{population_trajectories()}}{
+\if{html}{\out{<a id="method-scova-simulate_population_trajectories"></a>}}
+\if{latex}{\out{\hypertarget{method-scova-simulate_population_trajectories}{}}}
+\subsection{Method \code{simulate_population_trajectories()}}{
 Process the model results into a data table of titre values over time.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{scova$population_trajectories(
+\if{html}{\out{<div class="r">}}\preformatted{scova$simulate_population_trajectories(
   time_type = "relative",
   t_max = 150,
   summarise = TRUE,

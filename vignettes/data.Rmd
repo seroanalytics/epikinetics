@@ -1,0 +1,32 @@
+---
+title: "A guide to model input data format"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A guide to model input data format}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The model requires a data table containing the following columns:
+
+stan_id:
+date:
+obs_id:
+t_since_last_exp:
+titre:,
+titre_type: ,
+titre_type_num: ,
+last_exp_date: ,
+relevant_last_exp_date: ,
+censored:
+
+It can also contain further columns for any covariates to be included in the model. The data files installed with this package have additional columns infection_history, last_vax_type, and exp_num.
+
+The model also accepts a covariate formula for a hierarchical model. The variables in the formula must correspond to column names in the dataset.

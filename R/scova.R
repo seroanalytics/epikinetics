@@ -265,13 +265,13 @@ scova <- R6::R6Class(
     #' @param data Optional data table of model inputs. One of data or file must be provided.
     #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
     #' @param priors Object of type 'scova_priors'. Default scova_priors().
-    #' @param covariate_formula Formula specifying hierarchical structure of model. Default ~0 + infection_history.
+    #' @param covariate_formula Formula specifying hierarchical structure of model. Default ~0.
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     initialize = function(priors = scova_priors(),
                           data = NULL,
                           file_path = NULL,
-                          covariate_formula = ~0 + infection_history,
+                          covariate_formula = ~0,
                           preds_sd = 0.25,
                           time_type = "relative") {
       if (!inherits(priors, "scova_priors")) {
@@ -303,6 +303,11 @@ scova <- R6::R6Class(
         }
         private$data <- data
       }
+      unknown_vars <- private$all_formula_vars[which(private$all_formula_vars %notin% names(private$data))]
+      if (length(unknown_vars) > 0) {
+        stop(paste("All variables in 'covariate_formula' must correspond to data columns. Found unknown variables:",
+                   paste(unknown_vars, collapse = ", ")))
+      }
       logger::log_info("Preparing data for stan")
       private$data <- convert_log_scale(private$data, "titre")
       private$stan_input_data <- private$prepare_stan_data()
@@ -333,7 +338,7 @@ scova <- R6::R6Class(
     #' @param summarise Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
     #' individual values.
     #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
-    population_trajectories = function(
+    simulate_population_trajectories = function(
       time_type = "relative",
       t_max = 150,
       summarise = TRUE,

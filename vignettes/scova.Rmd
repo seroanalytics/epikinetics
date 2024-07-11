@@ -16,12 +16,13 @@ knitr::opts_chunk$set(
 
 # Fitting the model
 
-First run the model for each wave separately, using the data files installed with this package.
-Here we run it just for the Delta wave:
+To initialise a model object, the only required argument is a path to the data in CSV format, or a [data.table]("https://cran.r-project.org/web/packages/data.table/index.html"). See [Scova](../reference/scova.html) for all available arguments. In this Vignette we use a dataset representing the Delta wave which is installed with this package, specifying a hierarchical model that just looks at the effect of infection history.
 
-```{r}
+The `fit` method then has the same function signature as the underlying [cmdstanr::sample](https://mc-stan.org/cmdstanr/reference/model-method-sample.html) method. Here we specify a relatively small number of iterations of the algorithm to limit the time it takes to compile this Vignette.
+
+```{r, warning=FALSE}
 dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-mod <- epikinetics::scova$new(data = dat)
+mod <- epikinetics::scova$new(data = dat, covariate_formula = ~0 + infection_history)
 delta <- mod$fit(parallel_chains = 4,
                  iter_warmup = 50,
                  iter_sampling = 200,
@@ -30,41 +31,42 @@ delta <- mod$fit(parallel_chains = 4,
 
 # Figure 2
 Figure 2 from the paper shows population level fits for each wave, disaggregated by infection history
-and titre type. This is a partial reconstruction of that figure to demonstrate how to use the package.
-
-Once the model has been fitted, process the fits into trajectories:
+and titre type. Here we reproduce the facets for the Delta wave. Once the model has been fitted, simulate population trajectories using the fitted population parameters.
 
 ```{r}
-res <- mod$population_trajectories()
+res <- mod$simulate_population_trajectories()
 head(res)
 ```
 
-And now plot using `ggplot`:
+Using `ggplot2`:
+
 
 ```{r}
 library(ggplot2)
-manual_pal <-
-  c("#CC6677",
-    "#DDCC77",
-    "#88CCEE",
-    "#882255",
-    "#44AA99",
-    "grey",
-    "#D95F02",
-    "#66A61E")
+custom_theme <- theme_linedraw() + theme(
+    legend.position = "bottom",
+    text = element_text(size = 8, family = "Helvetica"),
+    strip.text.x.top = element_text(size = 8, family = "Helvetica"),
+    strip.text.x = element_text(size = 8, family = "Helvetica"),
+    strip.background = element_rect(fill = "white"),
+    strip.text = element_text(colour = 'black'),
+    strip.placement = "outside",
+    legend.box = "vertical",
+    legend.margin = margin(),
+)
+
+custom_palette <- c("#CC6677", "#DDCC77", "#88CCEE")
+
 plot_data <- res
 plot_data[, titre_type := forcats::fct_relevel(
   titre_type,
   c("Ancestral", "Alpha", "Delta"))]
 
-ggplot() +
-  geom_line(data = plot_data,
-            aes(x = t,
+ggplot(data = plot_data) +
+  geom_line(aes(x = t,
                 y = me,
-                colour = titre_type,
-                linetype = "Retrospective")) +
-  geom_ribbon(data = plot_data,
-              aes(x = t,
+                colour = titre_type)) +
+  geom_ribbon(aes(x = t,
                   ymin = lo,
                   ymax = hi,
                   fill = titre_type), alpha = 0.65) +
@@ -81,32 +83,23 @@ ggplot() +
   labs(x = "Time since last exposure (days)",
        y = expression(paste("Titre (IC"[50], ")"))) +
   facet_wrap(infection_history ~ titre_type) +
-  theme(
-    legend.position = "bottom",
-    strip.text.x.top = element_text(size = 8, family = "Helvetica"),
-    strip.text.x = element_text(size = 8, family = "Helvetica")) +
-  scale_colour_manual(values = manual_pal) +
-  scale_fill_manual(values = manual_pal) +
-  theme_linedraw() +
-  theme(legend.position = "bottom",
-        text = element_text(size = 8, family = "Helvetica"),
-        strip.background = element_rect(fill = "white"),
-        strip.text = element_text(colour = 'black'),
-        strip.placement = "outside",
-        plot.title = element_text(face = "bold", size = 9),
-        panel.grid = element_line(linewidth = 0.4)) +
-  guides(colour = "none", fill = "none")
+  scale_colour_manual(values = custom_palette) +
+  scale_fill_manual(values = custom_palette) +
+  guides(colour = "none", fill = "none") +
+  custom_theme
 ```
 
 # Figure 4
 
-Figure 4 A and B show the relationship between infection history and titre values at peak and set points, for different
-titre types. For Figure 4.A, in the paper there are facets for each wave, but here we just generate the facet for the Delta wave.
+Figure 4 shows the relationship between infection history and titre values at peak and set points, for different
+titre types. We first simulate estimates for these from the fitted model:
 
 ```{r}
 res <- mod$population_stationary_points()
 head(res)
 ```
+
+The values we're going to plot are the mean peak titre values (`mu_p_me`) and mean set point titre values (`mu_s_me`), for different titre types and infection histories. Using `ggplot2`:
 
 ```{r}
 plot_data <- res[, titre_type := forcats::fct_relevel(
@@ -123,12 +116,10 @@ ggplot(data = plot_data, aes(
         titre_type))) +
   geom_point(data = plot_data[.draw <= 2000],
              alpha = 0.05, size = 0.2) +
-  geom_point(data = plot_data,
-             aes(x = mu_p_me, y = mu_s_me,
+  geom_point(aes(x = mu_p_me, y = mu_s_me,
                  shape = infection_history),
              colour = "black") +
-  geom_path(data = plot_data,
-            aes(x = mu_p_me, y = mu_s_me,
+  geom_path(aes(x = mu_p_me, y = mu_s_me,
                 group = titre_type),
             colour = "black") +
   geom_vline(xintercept = 2560, linetype = "twodash", colour = "gray30") +
@@ -145,35 +136,33 @@ ggplot(data = plot_data, aes(
     labels = c(expression(" " <= 40),
                "80", "160", "320", "640", "1280", "2560", "5120", "10240"),
     limits = c(NA, 5120)) +
-  theme_linedraw() +
-  theme(legend.position = "bottom",
-        text = element_text(size = 9, family = "Helvetica"),
-        strip.placement = "outside",
-        plot.title = element_text(face = "plain", size = 9),
-        legend.box = "vertical",
-        legend.margin = margin(),
-        strip.background = element_rect(fill = "white"),
-        strip.text = element_text(colour = 'black')) +
+  custom_theme +
   scale_shape_manual(values = c(1, 2, 3)) +
   labs(x = expression(paste("Population-level titre value at peak (IC"[50], ")")),
        y = expression(paste("Population-level titre value at set-point (IC"[50], ")"))) +
-  scale_colour_manual(values = manual_pal) +
-  guides(colour = guide_legend(override.aes = list(alpha = 1, size = 1)))
+  scale_colour_manual(values = custom_palette) +
+  guides(colour = guide_legend(title = "Titre type", override.aes = list(alpha = 1, size = 1)),
+         shape = guide_legend(title = "Infection history"))
 ```
 
 # Figure 5
-Figure 5 uses simulations of individual trajectories to derive population level titre values. This can take a while; here we set the maximum number of draws to just 250 for speed.
-Figure 5 A plots these across time; again, here we just replicate a portion of the figure for the Delta wave.
+Figure 5 uses simulations of individual trajectories to derive population level titre values. This can take a while so here we set the maximum number of draws to just 250 for speed.
 
 ```{r}
-result <- mod$simulate_individual_trajectories(n_draws = 250)
+res <- mod$simulate_individual_trajectories(n_draws = 250)
+head(res)
+```
+
+Figure 5 A plots the derived trend. Here we replicate a portion of the graph from the paper, from the minimum date in the dataset until the date at which the next variant emerged.
+
+```{r}
 date_delta <- lubridate::ymd("2021-05-07")
 date_ba2 <- lubridate::ymd("2022-01-24")
 
-result$wave <- "Delta"
+res$wave <- "Delta"
 dat$wave <- "Delta"
 plot_data <- merge(
-  result, dat[, .(
+  res, dat[, .(
     min_date = min(date), max_date = max(date)), by = wave])[
   , .SD[calendar_date >= min_date & calendar_date <= date_ba2], by = wave]
 
@@ -201,9 +190,9 @@ ggplot() + geom_line(
        x = "Date",
        y = expression(paste("Titre (IC"[50], ")"))) +
   scale_colour_manual(
-    values = manual_pal) +
+    values = custom_palette) +
   scale_fill_manual(
-    values = manual_pal) +
+    values = custom_palette) +
   scale_x_date(
     date_labels = "%b %Y",
     limits = c(min(dat$date), date_ba2)) +
@@ -215,7 +204,8 @@ ggplot() + geom_line(
         colour = titre_type,
         group = interaction(titre_type, wave)),
     alpha = 0.5, span = 0.2) +
-  theme_linedraw()
+  theme_linedraw() +
+  guides(colour = guide_legend(title = "Titre type"))
 ```
 
 Figure 5 C shows counterfactual trajectories varying vaccination timings. To do this, we simulate
@@ -257,18 +247,12 @@ ggplot(
     breaks = c(40, 80, 160, 320, 640, 1280),
     labels = c("40", "80", "160", "320", "640", "1280")) +
   scale_colour_manual(
-    values = manual_pal) +
+    values = custom_palette) +
   labs(title = "Population titre values varying vaccine timings",
        x = "Time shift (days)",
        y = expression(paste("Titre (IC"[50], ")"))) +
   theme_linedraw() +
-  guides(colour = guide_legend(nrow = 1, override.aes = list(alpha = 1, size = 1))) +
-  theme(legend.position = "bottom",
-        text = element_text(size = 8, family = "Helvetica"),
-        strip.background =element_rect(fill="white"),
-        strip.text = element_text(colour = 'black'),
-        strip.placement = "outside",
-        plot.title = element_text(face = "bold", size = 9)) +
+  guides(colour = guide_legend(title = "Titre Type", nrow = 1, override.aes = list(alpha = 1, size = 1))) +
   labs(tag = "C",
        title = "Counterfactual population-level titres varying vaccination timings")
 ```

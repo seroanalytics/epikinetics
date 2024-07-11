@@ -16,3 +16,9 @@ test_that("Time type must be 'absolute' or 'relative'", {
   expect_error(scova$new(time_type = "bad"),
                "'time_type' must be one of 'relative' or 'absolute'")
 })
+
+test_that("Covariates must be present in data", {
+  dat <- data.table(test = 1)
+  expect_error(scova$new(data = dat, covariate_formula = 0~ bad),
+               "All variables in 'covariate_formula' must correspond to data columns. Found unknown variables: bad")
+})
