@@ -24,6 +24,7 @@ SystemRequirements: CmdStan (https://mc-stan.org/users/interfaces/cmdstan)
 Suggests:
     ggplot2,
     knitr,
+    lubridate,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
