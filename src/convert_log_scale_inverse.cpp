@@ -13,7 +13,7 @@ cpp11::data_frame convert_log_scale_inverse_cpp(cpp11::writable::list dt,
     
     // Apply the inverse transformation
     for (int j = 0; j < col.size(); j++) {
-      col[j] = (col[j] <= 1) ? 5 * pow(2, col[j]) : 5 * pow(2, col[j] + 1);
+      col[j] = 5 * pow(2, col[j]);
     }
     
     // Replace the column

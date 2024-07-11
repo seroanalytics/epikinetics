@@ -189,5 +189,3 @@ model {
   // Overall measurement error
   sigma ~ normal(0, 2);
 }
-
-

@@ -1,3 +1,17 @@
+convert_log_scale <- function(
+  dt_in, vars_to_transform = "titre",
+  simplify_limits = TRUE) {
+
+  dt_out <- data.table::copy(dt_in)
+  for(var in vars_to_transform) {
+    if(simplify_limits == TRUE) {
+      dt_out[get(var) > 2560, (var) := 2560]
+    }
+    dt_out[, (var) := log2(get(var)/5)]
+  }
+  return(dt_out)
+}
+
 convert_log_scale_inverse <- function(dt_in, vars_to_transform) {
   dt_out <- data.table::copy(dt_in)
   for(var in vars_to_transform) {
@@ -19,4 +33,17 @@ summarise_draws <- function(dt_in, column_name, by = by) {
   ),
                     by = by
   ]
+}
+
+summarise_individual_trajectories <- function(trajectories) {
+  dt_trajectories_mean <- trajectories[
+    !is.nan(mu), .(pop_mu_sum = mean(mosaic::resample(mu))),
+    by = .(calendar_date, draw, Wave, titre_type)]
+
+  dt_trajectories_mean_sum <- summarise_draws(
+    dt_trajectories_mean,
+    column_name = "pop_mu_sum",
+    by = c("calendar_date", "titre_type"))
+
+  convert_log_scale_inverse(dt_trajectories_mean_sum)
 }

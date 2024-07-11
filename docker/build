@@ -4,5 +4,5 @@ set -ex
 HERE=$(realpath  "$(dirname "$0")")
 . "$HERE"/common
 
-docker build -t $DOCKER_COMMIT_TAG --progress plain .
+docker build -t $DOCKER_COMMIT_TAG --progress plain --build-arg CACHEBUST=$(date +%s)  .
 docker tag $DOCKER_COMMIT_TAG $DOCKER_BRANCH_TAG

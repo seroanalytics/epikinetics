@@ -21,7 +21,7 @@ scova <- R6::R6Class(
     covariate_lookup_table = NULL,
     check_fitted = function() {
       if (is.null(private$fitted)) {
-        stop("Model has not been fitted yet. Call 'run' before calling this function.")
+        stop("Model has not been fitted yet. Call 'fit' before calling this function.")
       }
     },
     model_matrix_with_dummy = function(data) {
@@ -114,10 +114,9 @@ scova <- R6::R6Class(
         private$covariate_lookup_table, on = "p"][
         dt_titre_lookup, on = "k"]
     },
-    summarise_pop_fit = function(
-      time_range = seq(0, 200, 1),
-      summarise = TRUE,
-      n_draws = 2500) {
+    summarise_pop_fit = function(time_range,
+                                 summarise,
+                                 n_draws) {
 
       # Declare variables to suppress notes when compiling package
       # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
@@ -139,27 +138,33 @@ scova <- R6::R6Class(
 
       data.table::setcolorder(dt_samples_wide, c("k", "p", ".draw"))
 
-      dt_samples_wide_adj <- adjust_parameters(dt_samples_wide)
+      if (length(private$all_formula_vars) > 0) {
+        logger::log_info("Adjusting by regression coefficients")
+        dt_samples_wide <- adjust_parameters(dt_samples_wide)
+      }
 
+      # adding artificial ids so that we can do a big merge, adding times to
+      # each set of parameter samples
       dt_times <- data.table(t = time_range)
-
-      # Artificial time IDs so merge creates all time points for each sample
       dt_times[, t_id := 1, by = t]
-      dt_samples_wide_adj[, t_id := 1]
+      dt_samples_wide[, t_id := 1]
 
       dt_out <- merge(
-        dt_samples_wide_adj, dt_times, by = "t_id", allow.cartesian = TRUE)
+        dt_samples_wide, dt_times, by = "t_id", allow.cartesian = TRUE)
 
       dt_out[, mu := private$simulate_trajectory(
         t, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
                by = c("t", "p", "k", ".draw")]
 
+      dt_out[, t_id := NULL]
+
       if (summarise == TRUE) {
+        logger::log_info("Summarising into quantiles")
         dt_out <- summarise_draws(
           dt_out, column_name = "mu", by = c("t", "p", "k"))
       }
 
-      dt_out
+      data.table::setcolorder(dt_out, c("t", "p", "k"))
     },
     simulate_trajectory = function(t, t0, tp, ts, m1, m2, m3) {
       mu <- t0
@@ -220,16 +225,22 @@ scova <- R6::R6Class(
 
       dt_proc[, `:=`(.chain = NULL, .iteration = NULL)]
 
+      dt_proc <- dt_proc[.draw %in% 1:n_draws]
+
       data.table::setcolorder(dt_proc, c("k", "p", ".draw"))
 
-      adjust_parameters(dt_proc)
+      if (length(private$all_formula_vars) > 0) {
+        return(adjust_parameters(dt_proc))
+      } else {
+        return(dt_proc)
+      }
     },
     extract_parameters_ind = function(add_variation_params) {
 
       params <- c("t0_ind[n, k]", "tp_ind[n, k]", "ts_ind[n, k]",
-        "m1_ind[n, k]", "m2_ind[n, k]", "m3_ind[n, k]")
+                  "m1_ind[n, k]", "m2_ind[n, k]", "m3_ind[n, k]")
 
-      if(add_variation_params == TRUE) {
+      if (add_variation_params == TRUE) {
         ind_var_params <- c(
           "z_t0[n]", "z_tp[n]", "z_ts[n]", "z_m1[n]", "z_m2[n]", "z_m3[n]")
         params <- c(params, ind_var_params)
@@ -240,7 +251,7 @@ scova <- R6::R6Class(
       dt_out <- tidybayes::spread_draws(private$fitted, !!!params_proc) |>
         data.table()
 
-      dt_out[, `:=` (.chain = NULL, .iteration = NULL)]
+      dt_out[, `:=`(.chain = NULL, .iteration = NULL)]
 
       data.table::setcolorder(dt_out, c("n", "k", ".draw"))
       data.table::setnames(dt_out, c("n", "k", ".draw"), c("stan_id", "titre_type", "draw"))
@@ -292,7 +303,8 @@ scova <- R6::R6Class(
         }
         private$data <- data
       }
-      logger::log_info("Preparing stan data")
+      logger::log_info("Preparing data for stan")
+      private$data <- convert_log_scale(private$data, "titre")
       private$stan_input_data <- private$prepare_stan_data()
       private$build_covariate_lookup_table()
       logger::log_info("Retrieving compiled model")
@@ -312,26 +324,25 @@ scova <- R6::R6Class(
     },
     #' @description Process the model results into a data table of titre values over time.
     #' @return A Table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
-    #' titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t_id, k,
-    #' p, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3,
-    #' t, mu, titre_type and a column for each covariate in the hierarchical model.
+    #' titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
+    #' t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
+    #' .draw, titre_type and a column for each covariate in the hierarchical model.
     #' lower and upper bounds of titre values; if summarise = FALSE then
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     #' @param t_max Integer. Maximum number of time points to include.
     #' @param summarise Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
     #' individual values.
-    #' @param scale One of 'natural' or 'log'. Default 'natural'.
-    #' @param n_draws Integer. Number of samples to draw. Default 2500.
+    #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
     population_trajectories = function(
       time_type = "relative",
       t_max = 150,
       summarise = TRUE,
-      scale = "natural",
       n_draws = 2500) {
-
       private$check_fitted()
       validate_time_type(time_type)
-      validate_scale(scale)
+      validate_numeric(t_max)
+      validate_logical(summarise)
+      validate_numeric(n_draws)
 
       logger::log_info("Summarising fits")
       dt_sum <- private$summarise_pop_fit(
@@ -350,24 +361,21 @@ scova <- R6::R6Class(
       dt_out <- dt_out[
         , lapply(.SD, function(x) if (is.factor(x)) forcats::fct_drop(x) else x)]
 
-      if (scale == "natural") {
-        logger::log_info("Converting to natural scale")
-        if (summarise) {
-          dt_out <- convert_log_scale_inverse(
-            dt_out, vars_to_transform = c("me", "lo", "hi"))
-        } else {
-          dt_out <- convert_log_scale_inverse(
-            dt_out, vars_to_transform = "mu")
-        }
+      if (summarise) {
+        dt_out <- convert_log_scale_inverse(
+          dt_out, vars_to_transform = c("me", "lo", "hi"))
+      } else {
+        dt_out <- convert_log_scale_inverse(
+          dt_out, vars_to_transform = "mu")
       }
       dt_out
     },
-    #' @description Process the stan model results into a data table.
-    #' @return A Table.
-    #' @param n_draws Integer. Number of samples to draw. Default 2500.
+    #' @description Process the stan model results into a data.table.
+    #' @return A data.table of peak and set titre values
+    #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
     population_stationary_points = function(n_draws = 2500) {
-      validate_numeric(n_draws)
       private$check_fitted()
+      validate_numeric(n_draws)
 
       dt_peak_switch <- private$extract_parameters_pop(n_draws)
 
@@ -381,7 +389,6 @@ scova <- R6::R6Class(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
                        by = c("p", "k", ".draw")]
 
-      logger::log_info("Converting to natural scale")
       dt_peak_switch <- convert_log_scale_inverse(
         dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
 
@@ -390,36 +397,34 @@ scova <- R6::R6Class(
 
       logger::log_info("Calculating relative drops")
       dt_peak_switch[
-        , rel_drop := mu_s/mu_p,
+        , rel_drop := mu_s / mu_p,
           by = c(private$all_formula_vars, "titre_type")][
-        , `:=` (
+        , `:=`(
         rel_drop_me = quantile(rel_drop, 0.5),
         mu_p_me = quantile(mu_p, 0.5),
         mu_s_me = quantile(mu_s, 0.5)),
           by = c(private$all_formula_vars, "titre_type")]
     },
     #' @description Simulate individual trajectories from the model. This is
-    #' computationally expensive and may take a while to run.
-    #' @return A Table.
-    #' @param n_draws Integer. Number of samples to draw.
-    #' @param time_shift Integer.
-    #' @param scale One of 'natural' or 'log'. Default 'log'.
-    #' @param adjust_dates Logical. Default FALSE.
+    #' computationally expensive and may take a while to run if n_draws is large.
+    #' @return A data.table.
+    #' @param n_draws Integer. Maximum number of samples to draw.
+    #' @param time_shift Integer. Number of days to adjust the exposure date by. Default 0.
     #' @param add_variation_params Logical. Default FALSE.
     #' @param t_max Integer. Maximum number of time points to include. Default 150.
-    individual_trajectories = function(
+    #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
+    #' hi values for the population. If FALSE return the simulated indidivudal trajectories.
+    #' Default TRUE.
+    simulate_individual_trajectories = function(
       n_draws,
-      time_shift,
-      scale = "log",
-      adjust_dates = FALSE,
+      time_shift = 0,
       add_variation_params = FALSE,
-      t_max = 150) {
+      t_max = 150,
+      summarise = TRUE) {
 
       private$check_fitted()
       validate_numeric(n_draws)
       validate_numeric(time_shift)
-      validate_scale(scale)
-      validate_logical(adjust_dates)
       validate_logical(add_variation_params)
       validate_numeric(t_max)
 
@@ -444,13 +449,11 @@ scova <- R6::R6Class(
 
       # Running the C++ code to simulate trajectories for each parameter sample
       # for each individual
+      logger::log_info("Simulating individual trajectories")
       dt_params_ind_traj <- private$simulate_trajectories(dt_params_ind_trim)
 
-      if(scale == "natural") {
-        # Converting back to the original scale
-        dt_params_ind_traj <- convert_log_scale_inverse_cpp(
-          dt_params_ind_traj, vars_to_transform = "mu")
-      }
+      dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
+          dt_params_ind_traj, vars_to_transform = "mu"))
 
       dt_titre_types <- data.table(
         titre_type = private$data[, unique(titre_type)],
@@ -461,15 +464,10 @@ scova <- R6::R6Class(
         dt_titre_types,
         by = "titre_type_num")[, titre_type_num := NULL]
 
-      if (adjust_dates) {
-        dt_lookup <- private$data[, .(
-          exposure_date = min(last_exp_date) - time_shift),
-                                    by = c(private$all_formula_vars, "stan_id")]
-      } else {
-          dt_lookup <- private$data[, .(
-            exposure_date = min(last_exp_date)),
-                                      by = c(private$all_formula_vars, "stan_id")]
-      }
+      logger::log_info(paste("Calculating exposure dates. Adjusting exposures by", time_shift, "days"))
+      dt_lookup <- private$data[, .(
+        exposure_date = min(last_exp_date) - time_shift),
+                                  by = c(private$all_formula_vars, "stan_id")]
 
       dt_out <- merge(dt_params_ind_traj, dt_lookup, by = "stan_id")
 
@@ -477,6 +475,19 @@ scova <- R6::R6Class(
         , calendar_date := exposure_date + t,
           by = c(private$all_formula_vars, "stan_id", "titre_type")]
 
+      dt_out$time_shift <- time_shift
+
+      if (summarise) {
+        logger::log_info("Summarising into population quantiles")
+        dt_out <- dt_out[
+          !is.nan(mu), .(pop_mu_sum = mean(mosaic::resample(mu))),
+          by = .(calendar_date, draw, titre_type)]
+
+        dt_out <- summarise_draws(
+          dt_out,
+          column_name = "pop_mu_sum",
+          by = c("calendar_date", "titre_type"))
+      }
       dt_out
     }
   )

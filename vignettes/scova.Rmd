@@ -22,7 +22,11 @@ Here we run it just for the Delta wave:
 ```{r}
 dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
 mod <- epikinetics::scova$new(data = dat)
-delta <- mod$fit()
+delta <- mod$fit(chains = 4,
+                 parallel_chains = 4,
+                 iter_warmup = 10,
+                 iter_sampling = 40,
+                 threads_per_chain = 4)
 ```
 
 # Figure 2
@@ -148,4 +152,9 @@ ggplot(data = res, aes(
        y = expression(paste("Population-level titre value at set-point (IC"[50], ")"))) +
   scale_colour_manual(values = manual_pal) +
   guides(colour = guide_legend(override.aes = list(alpha = 1, size = 1)))
+```
+
+```{r}
+result <- mod$simulate_individual_trajectories(n_draws = 500)
+date_delta <- lubridate::ymd("2021-05-07")
 ```
