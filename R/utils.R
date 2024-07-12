@@ -48,7 +48,7 @@ summarise_individual_trajectories <- function(trajectories) {
 
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-  mu <- < calendar_date <- draw <- titre_type <- NULL
+  mu <- calendar_date <- draw <- titre_type <- NULL
 
   dt_trajectories_mean <- trajectories[
     !is.nan(mu), .(pop_mu_sum = mean(mosaic::resample(mu))),
