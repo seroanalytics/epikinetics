@@ -90,13 +90,13 @@ figures</h1>
 <p>To initialise a model object, the only required argument is a path to
 the data in CSV format, or a <a href="%22https://cran.r-project.org/web/packages/data.table/index.html%22" class="external-link">data.table</a>.
 See <a href="../reference/scova.html">scova</a> for all available
-arguments. In this Vignette we use a dataset representing the Delta wave
+arguments. In this vignette we use a dataset representing the Delta wave
 which is installed with this package, specifying a hierarchical model
 that just looks at the effect of infection history.</p>
 <p>The <code>fit</code> method then has the same function signature as
 the underlying <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.html" class="external-link">cmdstanr::sample</a>
 method. Here we specify a relatively small number of iterations of the
-algorithm to limit the time it takes to compile this Vignette.</p>
+algorithm to limit the time it takes to compile this vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"delta_full.rds"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">epikinetics</span><span class="fu">::</span><span class="va"><a href="../reference/scova.html">scova</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat</span>, covariate_formula <span class="op">=</span> <span class="op">~</span><span class="fl">0</span> <span class="op">+</span> <span class="va">infection_history</span><span class="op">)</span></span>
@@ -143,21 +143,21 @@ algorithm to limit the time it takes to compile this Vignette.</p>
 <span><span class="co">#&gt; Chain 2 Iteration:  51 / 250 [ 20%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 4 Iteration:  51 / 250 [ 20%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 3 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 2 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
+<span><span class="co">#&gt; Chain 3 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 4 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
 <span><span class="co">#&gt; Chain 1 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 248.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 3 finished in 250.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1 finished in 248.5 seconds.</span></span>
 <span><span class="co">#&gt; Chain 2 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 2 finished in 252.5 seconds.</span></span>
+<span><span class="co">#&gt; Chain 3 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
+<span><span class="co">#&gt; Chain 3 finished in 252.2 seconds.</span></span>
+<span><span class="co">#&gt; Chain 2 finished in 252.3 seconds.</span></span>
 <span><span class="co">#&gt; Chain 4 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 4 finished in 253.4 seconds.</span></span>
+<span><span class="co">#&gt; Chain 4 finished in 253.9 seconds.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 251.2 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 253.6 seconds.</span></span></code></pre></div>
+<span><span class="co">#&gt; Mean chain execution time: 251.7 seconds.</span></span>
+<span><span class="co">#&gt; Total execution time: 254.1 seconds.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="figure-2">Figure 2<a class="anchor" aria-label="anchor" href="#figure-2"></a>

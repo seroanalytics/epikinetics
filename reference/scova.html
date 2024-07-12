@@ -165,7 +165,7 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 
 <dt><code>summarise</code></dt>
 <dd><p>Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
-individual values.</p></dd>
+all values.</p></dd>
 
 
 <dt><code>n_draws</code></dt>
@@ -209,18 +209,28 @@ lower and upper bounds of titre values; if summarise = FALSE then</p>
 computationally expensive and may take a while to run if n_draws is large.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span></span>
-<span>  <span class="va">n_draws</span>,</span>
-<span>  time_shift <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  add_variation_params <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  t_max <span class="op">=</span> <span class="fl">150</span>,</span>
-<span>  summarise <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  summarise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  n_draws <span class="op">=</span> <span class="fl">2500</span>,</span>
+<span>  time_shift <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  add_variation_params <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
-<dd><p>Integer. Maximum number of samples to draw.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>t_max</code></dt>
+<dd><p>Integer. Maximum number of time points to include. Default 150.</p></dd>
+
+
+<dt><code>summarise</code></dt>
+<dd><p>Boolean. If TRUE, average the individual trajectories to get lo, me and
+hi values for the population. If FALSE return the simulated indidivudal trajectories.
+Default TRUE.</p></dd>
+
+
+<dt><code>n_draws</code></dt>
+<dd><p>Integer. Maximum number of samples to draw. Default 2500.</p></dd>
 
 
 <dt><code>time_shift</code></dt>
@@ -229,16 +239,6 @@ computationally expensive and may take a while to run if n_draws is large.</p><d
 
 <dt><code>add_variation_params</code></dt>
 <dd><p>Logical. Default FALSE.</p></dd>
-
-
-<dt><code>t_max</code></dt>
-<dd><p>Integer. Maximum number of time points to include. Default 150.</p></dd>
-
-
-<dt><code>summarise</code></dt>
-<dd><p>Boolean. If TRUE, average the individual trajectories to get lo, me and
-hi values for the population. If FALSE return the simulated indidivudal trajectories.
-Default TRUE.</p></dd>
 
 
 </dl><p></p></div>
