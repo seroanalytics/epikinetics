@@ -80,9 +80,9 @@
 
     
     
-<div class="section level3">
-<h3 id="input-data">Input data<a class="anchor" aria-label="anchor" href="#input-data"></a>
-</h3>
+<div class="section level2">
+<h2 id="input-data">Input data<a class="anchor" aria-label="anchor" href="#input-data"></a>
+</h2>
 <p>The model requires a data table containing the following columns:</p>
 <p>stan_id: date: obs_id: t_since_last_exp: titre:, titre_type: ,
 titre_type_num: , last_exp_date: , relevant_last_exp_date: ,
@@ -100,15 +100,22 @@ dataset.</p>
 <p>After fitting a model, a <a href="https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html" class="external-link">CmdStanMCMC</a>
 object is returned. This means that users who are already familiar with
 <code>cmdstanr</code> are free to do what they want with the fitted
-model. But three further functions provide model outputs that we think
-are particularly useful in <a href="https://cran.r-project.org/web/packages/data.table/" class="external-link">data.table</a>
+model.</p>
+<p><strong>Important!</strong> <em>The data provided to
+<code>scova$new</code> is converted to a base2 log scale before
+inference is performed. This means that if working directly with the
+fitted <code>CmdStanMCMC</code> all values will be on this scale. The
+package provides a helper function for converting back to the original
+scale: <a href="../reference/convert_log_scale_inverse.html">convert_log_scale_inverse</a>.</em></p>
+<p>Three further functions provide model outputs that we think are
+particularly useful in <a href="https://cran.r-project.org/web/packages/data.table/" class="external-link">data.table</a>
 format. <a href="../reference/scova.html">Scova</a> contains
 documentation on each of these functions so please read that first; this
 Vignette provides guidance on the correct interpretation of each column
 in the returned tables.</p>
-<div class="section level4">
-<h4 id="simulate_population_trajectories">simulate_population_trajectories<a class="anchor" aria-label="anchor" href="#simulate_population_trajectories"></a>
-</h4>
+<div class="section level3">
+<h3 id="simulate_population_trajectories">simulate_population_trajectories<a class="anchor" aria-label="anchor" href="#simulate_population_trajectories"></a>
+</h3>
 <p>See the documentation for this function <a href="../reference/scova.html#method-simulate-population-trajectories">here</a>.
 There are 2 different output formats depending on whether the provided
 <code>summarise</code> argument is <code>TRUE</code> or
