@@ -2,7 +2,7 @@
 title: "A guide to model input data format"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A guide to model input data format}
+  %\VignetteIndexEntry{A guide to model data formats}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Input data
+# Input data
 
 The model requires a data table containing the following columns:
 
@@ -36,12 +36,18 @@ The model also accepts a covariate formula for a hierarchical model. The variabl
 # Ouput data
 
 After fitting a model, a [CmdStanMCMC](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html) object is returned. This means
-that users who are already familiar with `cmdstanr` are free to do what they want with the fitted model. But three further functions
-provide model outputs that we think are particularly useful in [data.table](https://cran.r-project.org/web/packages/data.table/) format.
+that users who are already familiar with `cmdstanr` are free to do what they want with the fitted model.
+
+**Important!**
+*The data provided to `scova$new` is converted to a base2 log scale before inference is performed. This means that if working
+directly with the fitted `CmdStanMCMC` all values will be on this scale. The package provides a helper function for converting
+back to the original scale: [convert_log_scale_inverse](../reference/convert_log_scale_inverse.html).*
+
+Three further functions provide model outputs that we think are particularly useful in [data.table](https://cran.r-project.org/web/packages/data.table/) format.
 [Scova](../reference/scova.html) contains documentation on each of these functions so please read that first; this Vignette provides
 guidance on the correct interpretation of each column in the returned tables.
 
-### simulate_population_trajectories
+## simulate_population_trajectories
 
 See the documentation for this function [here](../reference/scova.html#method-simulate-population-trajectories).
 There are 2 different output formats depending on whether the provided `summarise` argument is `TRUE` or `FALSE`.
