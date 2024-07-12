@@ -334,7 +334,7 @@ scova <- R6::R6Class(
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     #' @param t_max Integer. Maximum number of time points to include.
     #' @param summarise Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
-    #' individual values.
+    #' all values.
     #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
     simulate_population_trajectories = function(
       time_type = "relative",
@@ -411,19 +411,19 @@ scova <- R6::R6Class(
     #' @description Simulate individual trajectories from the model. This is
     #' computationally expensive and may take a while to run if n_draws is large.
     #' @return A data.table.
-    #' @param n_draws Integer. Maximum number of samples to draw.
-    #' @param time_shift Integer. Number of days to adjust the exposure date by. Default 0.
-    #' @param add_variation_params Logical. Default FALSE.
     #' @param t_max Integer. Maximum number of time points to include. Default 150.
     #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
     #' hi values for the population. If FALSE return the simulated indidivudal trajectories.
     #' Default TRUE.
+    #' @param n_draws Integer. Maximum number of samples to draw. Default 2500.
+    #' @param time_shift Integer. Number of days to adjust the exposure date by. Default 0.
+    #' @param add_variation_params Logical. Default FALSE.
     simulate_individual_trajectories = function(
-      n_draws,
-      time_shift = 0,
-      add_variation_params = FALSE,
       t_max = 150,
-      summarise = TRUE) {
+      summarise = TRUE,
+      n_draws = 2500,
+      time_shift = 0,
+      add_variation_params = FALSE) {
 
       private$check_fitted()
       validate_numeric(n_draws)

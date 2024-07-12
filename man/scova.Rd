@@ -97,7 +97,7 @@ Process the model results into a data table of titre values over time.
 \item{\code{t_max}}{Integer. Maximum number of time points to include.}
 
 \item{\code{summarise}}{Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
-individual values.}
+all values.}
 
 \item{\code{n_draws}}{Integer. Maximum number of samples to include. Default 2500.}
 }
@@ -139,28 +139,28 @@ Simulate individual trajectories from the model. This is
 computationally expensive and may take a while to run if n_draws is large.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{scova$simulate_individual_trajectories(
-  n_draws,
-  time_shift = 0,
-  add_variation_params = FALSE,
   t_max = 150,
-  summarise = TRUE
+  summarise = TRUE,
+  n_draws = 2500,
+  time_shift = 0,
+  add_variation_params = FALSE
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n_draws}}{Integer. Maximum number of samples to draw.}
-
-\item{\code{time_shift}}{Integer. Number of days to adjust the exposure date by. Default 0.}
-
-\item{\code{add_variation_params}}{Logical. Default FALSE.}
-
 \item{\code{t_max}}{Integer. Maximum number of time points to include. Default 150.}
 
 \item{\code{summarise}}{Boolean. If TRUE, average the individual trajectories to get lo, me and
 hi values for the population. If FALSE return the simulated indidivudal trajectories.
 Default TRUE.}
+
+\item{\code{n_draws}}{Integer. Maximum number of samples to draw. Default 2500.}
+
+\item{\code{time_shift}}{Integer. Number of days to adjust the exposure date by. Default 0.}
+
+\item{\code{add_variation_params}}{Logical. Default FALSE.}
 }
 \if{html}{\out{</div>}}
 }
