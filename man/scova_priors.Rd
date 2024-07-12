@@ -18,7 +18,10 @@ scova_priors(
 A named list of type 'scova_priors'.
 }
 \description{
-Construct an object of type 'scova_priors' to pass to the model.
+The scova model has 6 parameters: t0, tp, ts, m1, m2, m3 corresponding to critical time points and
+gradients. See the model vignette for details: \code{vignette("model", package = "epikinetics")}. Each of these
+parameters has a Gaussian prior, and these can be specified by the user. This function takes means and standard
+deviations for each prior and constructs an object of type 'scova_priors' to be passed to the model.
 }
 \examples{
 priors <- scova_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),

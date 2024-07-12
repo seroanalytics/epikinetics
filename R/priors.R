@@ -13,7 +13,10 @@ gaussian_priors <- function(names, mu_values, sigma_values) {
 
 #' @title Construct priors for the SARS-CoV-2 antibody model.
 #' @export
-#' @description Construct an object of type 'scova_priors' to pass to the model.
+#' @description The scova model has 6 parameters: t0, tp, ts, m1, m2, m3 corresponding to critical time points and
+#' gradients. See the model vignette for details: \code{vignette("model", package = "epikinetics")}. Each of these
+#' parameters has a Gaussian prior, and these can be specified by the user. This function takes means and standard
+#' deviations for each prior and constructs an object of type 'scova_priors' to be passed to the model.
 #' @return A named list of type 'scova_priors'.
 #' @param mu_values Mean of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.
 #' @param sigma_values Standard deviation of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.

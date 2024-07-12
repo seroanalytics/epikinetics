@@ -45,7 +45,7 @@ test_that("Absolute dates are returned if time_type is 'absolute'", {
   mod$fit()
   trajectories <- mod$simulate_population_trajectories(summarise = TRUE, time_type = "absolute")
   expect_equal(class(trajectories$date), c("IDate", "Date"))
-  expect_equal(trajectories$date, as.IDate("2021-01-29") + trajectories$t)
+  expect_equal(trajectories$date, data.table::as.IDate("2021-01-29") + trajectories$t)
 })
 
 test_that("Only times up to t_max are returned", {

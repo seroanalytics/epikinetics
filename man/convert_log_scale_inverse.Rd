@@ -2,12 +2,12 @@
 % Please edit documentation in R/utils.R
 \name{convert_log_scale_inverse}
 \alias{convert_log_scale_inverse}
-\title{Invert log scale conversion}
+\title{Invert base 2 log scale conversion}
 \usage{
 convert_log_scale_inverse(dt_in, vars_to_transform)
 }
 \arguments{
-\item{dt_in}{data.table containing data to be transformed from base2 log to natural scale.}
+\item{dt_in}{data.table containing data to be transformed from base 2 log to natural scale.}
 
 \item{vars_to_transform}{Names of columns to apply the transformation to.}
 }
@@ -15,7 +15,7 @@ convert_log_scale_inverse(dt_in, vars_to_transform)
 A data.table, identical to the input data but with specified columns transformed.
 }
 \description{
-User provided data is converted to a base2 log scale before model fitting. This
+User provided data is converted to a base 2 log scale before model fitting. This
 function reverses that transformation. This function does not modify the provided data.table in-place,
 but returns a transformed copy.
 }

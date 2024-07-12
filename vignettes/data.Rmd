@@ -45,7 +45,7 @@ back to the original scale: [convert_log_scale_inverse](../reference/convert_log
 
 Three further functions provide model outputs that we think are particularly useful in [data.table](https://cran.r-project.org/web/packages/data.table/) format.
 [Scova](../reference/scova.html) contains documentation on each of these functions so please read that first; this Vignette provides
-guidance on the correct interpretation of each column in the returned tables.
+guidance on the correct interpretation of each column in the returned tables. (In these functions data is returned on the original scale).
 
 ## simulate_population_trajectories
 
