@@ -16,11 +16,11 @@ knitr::opts_chunk$set(
 
 # Fitting the model
 
-To initialise a model object, the only required argument is a path to the data in CSV format, or a [data.table]("https://cran.r-project.org/web/packages/data.table/index.html"). See [Scova](../reference/scova.html) for all available arguments. In this Vignette we use a dataset representing the Delta wave which is installed with this package, specifying a hierarchical model that just looks at the effect of infection history.
+To initialise a model object, the only required argument is a path to the data in CSV format, or a [data.table]("https://cran.r-project.org/web/packages/data.table/index.html"). See [scova](../reference/scova.html) for all available arguments. In this Vignette we use a dataset representing the Delta wave which is installed with this package, specifying a hierarchical model that just looks at the effect of infection history.
 
 The `fit` method then has the same function signature as the underlying [cmdstanr::sample](https://mc-stan.org/cmdstanr/reference/model-method-sample.html) method. Here we specify a relatively small number of iterations of the algorithm to limit the time it takes to compile this Vignette.
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE}
 dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
 mod <- epikinetics::scova$new(data = dat, covariate_formula = ~0 + infection_history)
 delta <- mod$fit(parallel_chains = 4,
@@ -31,12 +31,15 @@ delta <- mod$fit(parallel_chains = 4,
 
 # Figure 2
 Figure 2 from the paper shows population level fits for each wave, disaggregated by infection history
-and titre type. Here we reproduce the facets for the Delta wave. Once the model has been fitted, simulate population trajectories using the fitted population parameters.
+and titre type. Here we reproduce the facets for the Delta wave. Once the model has been fitted, simulate population trajectories
+using the fitted population parameters.
 
 ```{r}
 res <- mod$simulate_population_trajectories()
 head(res)
 ```
+
+See [data](data.html) for the definition of the returned columns.
 
 Using `ggplot2`:
 
@@ -99,7 +102,7 @@ res <- mod$population_stationary_points()
 head(res)
 ```
 
-The values we're going to plot are the mean peak titre values (`mu_p_me`) and mean set point titre values (`mu_s_me`), for different titre types and infection histories. Using `ggplot2`:
+The values we're going to plot are the mean peak titre values (`mu_p_me`) and mean set point titre values (`mu_s_me`), for different titre types and infection histories. See [data](data.html) for a full definition of all the returned columns. Using `ggplot2`:
 
 ```{r}
 plot_data <- res[, titre_type := forcats::fct_relevel(
@@ -153,7 +156,9 @@ res <- mod$simulate_individual_trajectories(n_draws = 250)
 head(res)
 ```
 
-Figure 5 A plots the derived trend. Here we replicate a portion of the graph from the paper, from the minimum date in the dataset until the date at which the next variant emerged.
+See [data](data.html) for a definition of all the returned columns.
+Figure 5 A plots the derived population trajectories. Here we replicate a portion of the graph from the paper,
+from the minimum date in the dataset until the date at which the next variant emerged.
 
 ```{r}
 date_delta <- lubridate::ymd("2021-05-07")
@@ -204,7 +209,7 @@ ggplot() + geom_line(
         colour = titre_type,
         group = interaction(titre_type, wave)),
     alpha = 0.5, span = 0.2) +
-  theme_linedraw() +
+  custom_theme +
   guides(colour = guide_legend(title = "Titre type"))
 ```
 
@@ -251,7 +256,8 @@ ggplot(
   labs(title = "Population titre values varying vaccine timings",
        x = "Time shift (days)",
        y = expression(paste("Titre (IC"[50], ")"))) +
-  theme_linedraw() +
+  custom_theme +
+  theme(legend.position = "none") +
   guides(colour = guide_legend(title = "Titre Type", nrow = 1, override.aes = list(alpha = 1, size = 1))) +
   labs(tag = "C",
        title = "Counterfactual population-level titres varying vaccination timings")

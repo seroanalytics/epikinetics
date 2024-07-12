@@ -1,8 +1,8 @@
 ---
-title: "A guide to model input data format"
+title: "A guide to model input and output data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A guide to model data formats}
+  %\VignetteIndexEntry{A guide to model input and output data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -39,9 +39,9 @@ After fitting a model, a [CmdStanMCMC](https://mc-stan.org/cmdstanr/reference/Cm
 that users who are already familiar with `cmdstanr` are free to do what they want with the fitted model.
 
 **Important!**
-*The data provided to `scova$new` is converted to a base2 log scale before inference is performed. This means that if working
+**The data provided to `scova$new` is converted to a base2 log scale before inference is performed. This means that if working
 directly with the fitted `CmdStanMCMC` all values will be on this scale. The package provides a helper function for converting
-back to the original scale: [convert_log_scale_inverse](../reference/convert_log_scale_inverse.html).*
+back to the original scale: [convert_log_scale_inverse](../reference/convert_log_scale_inverse.html).**
 
 Three further functions provide model outputs that we think are particularly useful in [data.table](https://cran.r-project.org/web/packages/data.table/) format.
 [Scova](../reference/scova.html) contains documentation on each of these functions so please read that first; this Vignette provides
