@@ -278,9 +278,7 @@ scova <- R6::R6Class(
         stop("'priors' must be of type 'scova_priors'")
       }
       private$priors <- priors
-      if (!is.numeric(preds_sd)) {
-        stop("'preds_sd' must be a number")
-      }
+      validate_numeric(preds_sd)
       private$preds_sd <- preds_sd
       validate_time_type(time_type)
       private$time_type <- time_type
@@ -359,7 +357,7 @@ scova <- R6::R6Class(
 
       if (time_type == "absolute") {
         logger::log_info("Converting to absolute time")
-        dt_out[, date := dt[, unique(min(date))] + t,
+        dt_out[, date := private$data[, unique(min(date))] + t,
                  by = c(private$all_formula_vars, "titre_type")]
       }
 

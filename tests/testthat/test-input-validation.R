@@ -12,6 +12,11 @@ test_that("Priors must be of type 'scova_priors'", {
                "'priors' must be of type 'scova_priors'")
 })
 
+test_that("preds_sd must be numeric", {
+  expect_error(scova$new(preds_sd = "bad"),
+               "'preds_sd' must be numeric")
+})
+
 test_that("Time type must be 'absolute' or 'relative'", {
   expect_error(scova$new(time_type = "bad"),
                "'time_type' must be one of 'relative' or 'absolute'")
