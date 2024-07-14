@@ -152,7 +152,7 @@ scova <- R6::R6Class(
       dt_out <- merge(
         dt_samples_wide, dt_times, by = "t_id", allow.cartesian = TRUE)
 
-      dt_out[, mu := private$simulate_trajectory(
+      dt_out[, mu := scova_simulate_trajectory(
         t, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
                by = c("t", "p", "k", ".draw")]
 
@@ -165,20 +165,6 @@ scova <- R6::R6Class(
       }
 
       data.table::setcolorder(dt_out, c("t", "p", "k"))
-    },
-    simulate_trajectory = function(t, t0, tp, ts, m1, m2, m3) {
-      mu <- t0
-      if (t < tp) {
-        mu <- mu + m1 * t
-      } else if (t <= ts) {
-        mu <- mu + m1 * tp + m2 * (t - tp)
-      } else if (t > ts) {
-        mu <- mu + m1 * tp + m2 * (ts - tp) + m3 * (t - ts)
-      }
-      max(mu, 0)
-    },
-    simulate_trajectories = function(dat) {
-      data.table::setDT(simulate_trajectories_cpp(dat))
     },
     prepare_stan_data = function() {
       stan_id <- titre <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- t_since_min_date <- NULL
@@ -258,7 +244,7 @@ scova <- R6::R6Class(
 
       dt_out
     },
-    adjust_parameters <- function(dt) {
+    adjust_parameters = function(dt) {
       params_to_adjust <- c(
         "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop", "m3_pop")
       # Loop through the parameters you want to adjust
@@ -396,11 +382,11 @@ scova <- R6::R6Class(
 
       logger::log_info("Calculating peak and switch titre values")
       dt_peak_switch[, `:=`(
-        mu_0 = private$simulate_trajectory(
+        mu_0 = scova_simulate_trajectory(
           0, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
-        mu_p = private$simulate_trajectory(
+        mu_p = scova_simulate_trajectory(
           tp_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
-        mu_s = private$simulate_trajectory(
+        mu_s = scova_simulate_trajectory(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
                        by = c("p", "k", ".draw")]
 
@@ -465,7 +451,7 @@ scova <- R6::R6Class(
       # Running the C++ code to simulate trajectories for each parameter sample
       # for each individual
       logger::log_info("Simulating individual trajectories")
-      dt_params_ind_traj <- private$simulate_trajectories(dt_params_ind_trim)
+      dt_params_ind_traj <- scova_simulate_trajectories(dt_params_ind_trim)
 
       dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
           dt_params_ind_traj, vars_to_transform = "mu"))
