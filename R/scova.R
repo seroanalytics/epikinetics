@@ -294,8 +294,8 @@ scova <- R6::R6Class(
       if (is.null(data)) {
         private$data <- data.table::fread(file_path)
       } else {
-        if (!is.data.frame(data)) {
-          stop("'data' must be a data frame")
+        if (!data.table::is.data.table(data)) {
+          stop("'data' must be a data.table")
         }
         private$data <- data
       }
