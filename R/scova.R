@@ -140,7 +140,7 @@ scova <- R6::R6Class(
 
       if (length(private$all_formula_vars) > 0) {
         logger::log_info("Adjusting by regression coefficients")
-        dt_samples_wide <- adjust_parameters(dt_samples_wide)
+        dt_samples_wide <- private$adjust_parameters(dt_samples_wide)
       }
 
       # adding artificial ids so that we can do a big merge, adding times to
@@ -230,7 +230,7 @@ scova <- R6::R6Class(
       data.table::setcolorder(dt_proc, c("k", "p", ".draw"))
 
       if (length(private$all_formula_vars) > 0) {
-        return(adjust_parameters(dt_proc))
+        return(private$adjust_parameters(dt_proc))
       } else {
         return(dt_proc)
       }
@@ -257,6 +257,18 @@ scova <- R6::R6Class(
       data.table::setnames(dt_out, c("n", "k", ".draw"), c("stan_id", "titre_type", "draw"))
 
       dt_out
+    },
+    adjust_parameters <- function(dt) {
+      params_to_adjust <- c(
+        "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop", "m3_pop")
+      # Loop through the parameters you want to adjust
+      for (param in params_to_adjust) {
+        # Remove the '_pop' suffix to construct the beta variable name
+        beta_var <- paste0("beta_", gsub("_pop$", "", param))
+        dt[, (param) := get(param) + get(beta_var)]
+      }
+
+      return(dt)
     }
   ),
   public = list(

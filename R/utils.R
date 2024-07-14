@@ -43,21 +43,3 @@ summarise_draws <- function(dt_in, column_name, by = by) {
                     by = by
   ]
 }
-
-summarise_individual_trajectories <- function(trajectories) {
-
-  # Declare variables to suppress notes when compiling package
-  # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-  mu <- calendar_date <- draw <- titre_type <- NULL
-
-  dt_trajectories_mean <- trajectories[
-    !is.nan(mu), .(pop_mu_sum = mean(mosaic::resample(mu))),
-    by = .(calendar_date, draw, titre_type)]
-
-  dt_trajectories_mean_sum <- summarise_draws(
-    dt_trajectories_mean,
-    column_name = "pop_mu_sum",
-    by = c("calendar_date", "titre_type"))
-
-  convert_log_scale_inverse(dt_trajectories_mean_sum)
-}
