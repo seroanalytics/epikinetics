@@ -139,7 +139,6 @@ Simulate individual trajectories from the model. This is
 computationally expensive and may take a while to run if n_draws is large.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{scova$simulate_individual_trajectories(
-  t_max = 150,
   summarise = TRUE,
   n_draws = 2500,
   time_shift = 0,
@@ -150,10 +149,8 @@ computationally expensive and may take a while to run if n_draws is large.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{t_max}}{Integer. Maximum number of time points to include. Default 150.}
-
 \item{\code{summarise}}{Boolean. If TRUE, average the individual trajectories to get lo, me and
-hi values for the population. If FALSE return the simulated indidivudal trajectories.
+hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
 Default TRUE.}
 
 \item{\code{n_draws}}{Integer. Maximum number of samples to draw. Default 2500.}
@@ -165,7 +162,9 @@ Default TRUE.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A data.table.
+A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi.
+If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
+and a column for each covariate in the hierarchical model.
 }
 }
 }

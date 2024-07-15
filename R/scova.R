@@ -25,6 +25,7 @@ scova <- R6::R6Class(
       }
     },
     model_matrix_with_dummy = function(data) {
+
       # Identify columns that are factors with one level
       single_level_factors <- sapply(data, function(col) {
         is.factor(col) && length(levels(col)) == 1
@@ -81,7 +82,7 @@ scova <- R6::R6Class(
 
       for (col_name in names(dt)) {
         # Find the matching formula variable for current column
-        matching_formula_var <- private$all_formula_vars[which(startsWith(col_name, private$all_formula_vars))]
+        matching_formula_var <- all_formula_vars[which(startsWith(col_name, all_formula_vars))]
         if (length(matching_formula_var) > 0) {
           pattern_to_remove <- paste0("^", matching_formula_var)
           dt[, (col_name) := stringr::str_remove_all(get(col_name), pattern_to_remove)]
@@ -198,52 +199,6 @@ scova <- R6::R6Class(
 
       c(stan_data, private$priors)
     },
-    extract_parameters_pop = function(n_draws) {
-
-      params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]", "m1_pop[k]", "m2_pop[k]",
-                  "m3_pop[k]", "beta_t0[p]", "beta_tp[p]", "beta_ts[p]", "beta_m1[p]",
-                  "beta_m2[p]", "beta_m3[p]")
-
-      params_proc <- rlang::parse_exprs(params)
-
-      dt_proc <- tidybayes::spread_draws(private$fitted, !!!params_proc) |>
-        data.table::data.table()
-
-      dt_proc[, `:=`(.chain = NULL, .iteration = NULL)]
-
-      dt_proc <- dt_proc[.draw %in% 1:n_draws]
-
-      data.table::setcolorder(dt_proc, c("k", "p", ".draw"))
-
-      if (length(private$all_formula_vars) > 0) {
-        return(private$adjust_parameters(dt_proc))
-      } else {
-        return(dt_proc)
-      }
-    },
-    extract_parameters_ind = function(add_variation_params) {
-
-      params <- c("t0_ind[n, k]", "tp_ind[n, k]", "ts_ind[n, k]",
-                  "m1_ind[n, k]", "m2_ind[n, k]", "m3_ind[n, k]")
-
-      if (add_variation_params == TRUE) {
-        ind_var_params <- c(
-          "z_t0[n]", "z_tp[n]", "z_ts[n]", "z_m1[n]", "z_m2[n]", "z_m3[n]")
-        params <- c(params, ind_var_params)
-      }
-
-      params_proc <- rlang::parse_exprs(params)
-
-      dt_out <- tidybayes::spread_draws(private$fitted, !!!params_proc) |>
-        data.table()
-
-      dt_out[, `:=`(.chain = NULL, .iteration = NULL)]
-
-      data.table::setcolorder(dt_out, c("n", "k", ".draw"))
-      data.table::setnames(dt_out, c("n", "k", ".draw"), c("stan_id", "titre_type", "draw"))
-
-      dt_out
-    },
     adjust_parameters = function(dt) {
       params_to_adjust <- c(
         "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop", "m3_pop")
@@ -255,6 +210,17 @@ scova <- R6::R6Class(
       }
 
       return(dt)
+    },
+    extract_parameters = function(params, n_draws = 2500) {
+      private$check_fitted()
+      params_proc <- rlang::parse_exprs(params)
+
+      dt_out <- tidybayes::spread_draws(private$fitted, !!!params_proc) |>
+        data.table()
+
+      dt_out[, `:=`(.chain = NULL, .iteration = NULL)]
+
+      dt_out[.draw %in% 1:n_draws]
     }
   ),
   public = list(
@@ -323,6 +289,48 @@ scova <- R6::R6Class(
       private$fitted <- private$model$sample(private$stan_input_data, ...)
       private$fitted
     },
+    #' @description Extract fitted population parameters
+    #' @return A data.table
+    #' @param n_draws Numeric
+    extract_population_parameters = function(n_draws = 2500) {
+      private$check_fitted()
+      params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]", "m1_pop[k]", "m2_pop[k]",
+                  "m3_pop[k]", "beta_t0[p]", "beta_tp[p]", "beta_ts[p]", "beta_m1[p]",
+                  "beta_m2[p]", "beta_m3[p]")
+
+      dt_out <- private$extract_parameters(params, n_draws)
+
+      data.table::setcolorder(dt_out, c("k", "p", ".draw"))
+
+      if (length(private$all_formula_vars) > 0) {
+        return(private$adjust_parameters(dt_out))
+      } else {
+        return(dt_out)
+      }
+    },
+    #' @description Extract fitted individual parameters
+    #' @return A data.table
+    #' @param n_draws Numeric
+    #' @param include_variation_params Logical
+    extract_individual_parameters = function(include_variation_params = FALSE,
+                                             n_draws = 2500) {
+      private$check_fitted()
+      params <- c("t0_ind[n, k]", "tp_ind[n, k]", "ts_ind[n, k]",
+                  "m1_ind[n, k]", "m2_ind[n, k]", "m3_ind[n, k]")
+
+      if (include_variation_params == TRUE) {
+        ind_var_params <- c(
+          "z_t0[n]", "z_tp[n]", "z_ts[n]", "z_m1[n]", "z_m2[n]", "z_m3[n]")
+        params <- c(params, ind_var_params)
+      }
+
+      dt_out <- private$extract_parameters(params, n_draws)
+
+      data.table::setcolorder(dt_out, c("n", "k", ".draw"))
+      data.table::setnames(dt_out, c("n", "k", ".draw"), c("stan_id", "titre_type", "draw"))
+
+      dt_out
+    },
     #' @description Process the model results into a data table of titre values over time.
     #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
     #' titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
@@ -378,7 +386,7 @@ scova <- R6::R6Class(
       private$check_fitted()
       validate_numeric(n_draws)
 
-      dt_peak_switch <- private$extract_parameters_pop(n_draws)
+      dt_peak_switch <- self$extract_population_parameters(n_draws)
 
       logger::log_info("Calculating peak and switch titre values")
       dt_peak_switch[, `:=`(
@@ -390,17 +398,19 @@ scova <- R6::R6Class(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
                        by = c("p", "k", ".draw")]
 
-      dt_peak_switch <- convert_log_scale_inverse(
-        dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
-
       logger::log_info("Recovering covariate names")
       dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
 
-      logger::log_info("Calculating relative drops")
+      dt_peak_switch <- convert_log_scale_inverse(
+        dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
+
+      logger::log_info("Calculating medians")
       dt_peak_switch[
         , rel_drop := mu_s / mu_p,
           by = c(private$all_formula_vars, "titre_type")][
-        , `:=`(
+        , .(
+        mu_p,
+        mu_s,
         rel_drop_me = quantile(rel_drop, 0.5),
         mu_p_me = quantile(mu_p, 0.5),
         mu_s_me = quantile(mu_s, 0.5)),
@@ -408,29 +418,25 @@ scova <- R6::R6Class(
     },
     #' @description Simulate individual trajectories from the model. This is
     #' computationally expensive and may take a while to run if n_draws is large.
-    #' @return A data.table.
-    #' @param t_max Integer. Maximum number of time points to include. Default 150.
+    #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi.
+    #' If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
+    #' and a column for each covariate in the hierarchical model.
     #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
-    #' hi values for the population. If FALSE return the simulated indidivudal trajectories.
+    #' hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
     #' Default TRUE.
     #' @param n_draws Integer. Maximum number of samples to draw. Default 2500.
     #' @param time_shift Integer. Number of days to adjust the exposure date by. Default 0.
-    #' @param add_variation_params Logical. Default FALSE.
     simulate_individual_trajectories = function(
-      t_max = 150,
       summarise = TRUE,
       n_draws = 2500,
-      time_shift = 0,
-      add_variation_params = FALSE) {
-
+      time_shift = 0) {
       private$check_fitted()
+      validate_logical(summarise)
       validate_numeric(n_draws)
       validate_numeric(time_shift)
-      validate_logical(add_variation_params)
-      validate_numeric(t_max)
 
       # Extracting parameters from fit
-      dt_params_ind <- private$extract_parameters_ind(add_variation_params)[!is.nan(t0_ind)]
+      dt_params_ind <- self$extract_individual_parameters()[!is.nan(t0_ind)]
 
       # Calculating the maximum time each individual has data for after the
       # exposure of interest
@@ -467,7 +473,7 @@ scova <- R6::R6Class(
 
       logger::log_info(paste("Calculating exposure dates. Adjusting exposures by", time_shift, "days"))
       dt_lookup <- private$data[, .(
-        exposure_date = min(last_exp_date) - time_shift),
+        exposure_date = as.Date(min(last_exp_date)) - time_shift),
                                   by = c(private$all_formula_vars, "stan_id")]
 
       dt_out <- merge(dt_params_ind_traj, dt_lookup, by = "stan_id")
@@ -476,20 +482,19 @@ scova <- R6::R6Class(
         , calendar_date := exposure_date + t,
           by = c(private$all_formula_vars, "stan_id", "titre_type")]
 
-      dt_out$time_shift <- time_shift
-
       if (summarise) {
         logger::log_info("Summarising into population quantiles")
         dt_out <- dt_out[
           !is.nan(mu), .(pop_mu_sum = mean(mosaic::resample(mu))),
-          by = .(calendar_date, draw, titre_type)]
+          by = c("calendar_date", "draw", "titre_type")]
 
         dt_out <- summarise_draws(
           dt_out,
           column_name = "pop_mu_sum",
           by = c("calendar_date", "titre_type"))
       }
-      dt_out
+
+      dt_out[, time_shift:= time_shift]
     }
   )
 )

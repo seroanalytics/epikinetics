@@ -98,11 +98,11 @@ Figure 4 shows the relationship between infection history and titre values at pe
 titre types. We first simulate estimates for these from the fitted model:
 
 ```{r}
-res <- mod$population_stationary_points()
+res <- mod$population_stationary_points(n_draws = 2000)
 head(res)
 ```
 
-The values we're going to plot are the mean peak titre values (`mu_p_me`) and mean set point titre values (`mu_s_me`), for different titre types and infection histories. See [data](data.html) for a full definition of all the returned columns. Using `ggplot2`:
+The values we're going to plot are the mean peak titre values (`mu_p`) and mean set point titre values (`mu_s`), for different titre types and infection histories. See [data](data.html) for a full definition of all the returned columns. Using `ggplot2`:
 
 ```{r}
 plot_data <- res[, titre_type := forcats::fct_relevel(
@@ -117,7 +117,7 @@ ggplot(data = plot_data, aes(
       group = interaction(
         infection_history,
         titre_type))) +
-  geom_point(data = plot_data[.draw <= 2000],
+  geom_point(data = plot_data,
              alpha = 0.05, size = 0.2) +
   geom_point(aes(x = mu_p_me, y = mu_s_me,
                  shape = infection_history),
@@ -222,9 +222,7 @@ indices <- seq_along(time_shift_values)
 
 results_list <- lapply(indices, function(index) {
   shift <- time_shift_values[index]
-  result <- mod$simulate_individual_trajectories(n_draws = 50, time_shift = shift)
-  result[, time_shift:= shift]
-  result
+  mod$simulate_individual_trajectories(n_draws = 50, time_shift = shift)
 })
 
 combined_data <- data.table::data.table(data.table::rbindlist(results_list))
