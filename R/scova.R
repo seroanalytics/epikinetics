@@ -65,7 +65,6 @@ scova <- R6::R6Class(
       relevant_columns <- which(variance_per_column != 0)
       mm_reduced <- mm[, relevant_columns]
       private$design_matrix <- mm_reduced
-      mm_reduced
     },
     build_covariate_lookup_table = function() {
       # Extract column names
@@ -99,7 +98,6 @@ scova <- R6::R6Class(
       # Reorder columns to have 'i' first
       data.table::setcolorder(dt, "p")
       private$covariate_lookup_table <- dt
-      dt
     },
     recover_covariate_names = function(dt) {
       # Declare variables to suppress notes when compiling package
@@ -110,11 +108,11 @@ scova <- R6::R6Class(
         k = 1:private$data[, length(unique(titre_type))],
         titre_type = private$data[, unique(titre_type)])
 
+      dt_out <- dt[dt_titre_lookup, on = "k"][, `:=`(k = NULL)]
       if ("p" %in% colnames(dt)) {
-        return(dt[private$covariate_lookup_table, on = "p"][dt_titre_lookup, on = "k"])
-      } else {
-        return(dt[dt_titre_lookup, on = "k"])
+        dt_out <- dt_out[private$covariate_lookup_table, on = "p"][, `:=`(p = NULL)]
       }
+      dt_out
     },
     summarise_pop_fit = function(time_range,
                                  summarise,
@@ -194,11 +192,10 @@ scova <- R6::R6Class(
         stan_data$t <- private$data[, t_since_min_date]
       }
 
-      X <- private$construct_design_matrix()
-      stan_data$X <- X
-      stan_data$P <- ncol(X)
+      stan_data$X <- private$design_matrix
+      stan_data$P <- ncol(private$design_matrix)
 
-      c(stan_data, private$priors)
+      private$stan_input_data <- c(stan_data, private$priors)
     },
     adjust_parameters = function(dt) {
       params_to_adjust <- c(
@@ -273,8 +270,9 @@ scova <- R6::R6Class(
       }
       logger::log_info("Preparing data for stan")
       private$data <- convert_log_scale(private$data, "titre")
-      private$stan_input_data <- private$prepare_stan_data()
+      private$construct_design_matrix()
       private$build_covariate_lookup_table()
+      private$prepare_stan_data()
       logger::log_info("Retrieving compiled model")
       private$model <- instantiate::stan_package_model(
         name = "antibody_kinetics_main",
@@ -293,27 +291,38 @@ scova <- R6::R6Class(
     #' @description Extract fitted population parameters
     #' @return A data.table
     #' @param n_draws Numeric
-    extract_population_parameters = function(n_draws = 2500) {
+    #' @param human_readable_covariates Logical. Default TRUE.
+    extract_population_parameters = function(n_draws = 2500,
+                                             human_readable_covariates = TRUE) {
       private$check_fitted()
       params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]", "m1_pop[k]", "m2_pop[k]",
                   "m3_pop[k]", "beta_t0[p]", "beta_tp[p]", "beta_ts[p]", "beta_m1[p]",
                   "beta_m2[p]", "beta_m3[p]")
 
+      logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
       data.table::setcolorder(dt_out, c("k", "p", ".draw"))
+      data.table::setnames(dt_out, ".draw", "draw")
 
       if (length(private$all_formula_vars) > 0) {
+        logger::log_info("Adjusting by covariates")
         dt_out <- private$adjust_parameters(dt_out)
       }
-      private$recover_covariate_names(dt_out)
+      if (human_readable_covariates) {
+        logger::log_info("Recovering covariate names")
+        dt_out <- private$recover_covariate_names(dt_out)
+      }
+      dt_out
     },
     #' @description Extract fitted individual parameters
     #' @return A data.table
     #' @param n_draws Numeric
     #' @param include_variation_params Logical
-    extract_individual_parameters = function(include_variation_params = FALSE,
-                                             n_draws = 2500) {
+    #' @param human_readable_covariates Logical. Default TRUE.
+    extract_individual_parameters = function(n_draws = 2500,
+                                             include_variation_params = TRUE,
+                                             human_readable_covariates = TRUE) {
       private$check_fitted()
       params <- c("t0_ind[n, k]", "tp_ind[n, k]", "ts_ind[n, k]",
                   "m1_ind[n, k]", "m2_ind[n, k]", "m3_ind[n, k]")
@@ -324,12 +333,17 @@ scova <- R6::R6Class(
         params <- c(params, ind_var_params)
       }
 
+      logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
       data.table::setcolorder(dt_out, c("n", "k", ".draw"))
       data.table::setnames(dt_out, c("n", ".draw"), c("stan_id", "draw"))
 
-      private$recover_covariate_names(dt_out)
+      if (human_readable_covariates) {
+        logger::log_info("Recovering covariate names")
+        dt_out <- private$recover_covariate_names(dt_out)
+      }
+      dt_out
     },
     #' @description Process the model results into a data table of titre values over time.
     #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
@@ -386,7 +400,8 @@ scova <- R6::R6Class(
       private$check_fitted()
       validate_numeric(n_draws)
 
-      dt_peak_switch <- self$extract_population_parameters(n_draws)
+      dt_peak_switch <- self$extract_population_parameters(n_draws,
+                                                           human_readable_covariates = FALSE)
 
       logger::log_info("Calculating peak and switch titre values")
       dt_peak_switch[, `:=`(
@@ -396,10 +411,10 @@ scova <- R6::R6Class(
           tp_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
         mu_s = scova_simulate_trajectory(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
-                       by = c("p", "k", ".draw")]
+                       by = c("p", "k", "draw")]
 
-      # logger::log_info("Recovering covariate names")
-      # dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
+      logger::log_info("Recovering covariate names")
+      dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
 
       dt_peak_switch <- convert_log_scale_inverse(
         dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
@@ -436,7 +451,9 @@ scova <- R6::R6Class(
       validate_numeric(time_shift)
 
       # Extracting parameters from fit
-      dt_params_ind <- self$extract_individual_parameters()[!is.nan(t0_ind)]
+      dt_params_ind <- self$extract_individual_parameters(n_draws,
+                                                          human_readable_covariates = FALSE,
+                                                          include_variation_params = FALSE)[!is.nan(t0_ind)]
 
       # Calculating the maximum time each individual has data for after the
       # exposure of interest
@@ -462,14 +479,7 @@ scova <- R6::R6Class(
       dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
           dt_params_ind_traj, vars_to_transform = "mu"))
 
-      # dt_titre_types <- data.table(
-      #   titre_type = private$data[, unique(titre_type)],
-      #   titre_type_num = dt_params_ind_traj[, unique(titre_type_num)])
-      #
-      # dt_params_ind_traj <- merge(
-      #   dt_params_ind_traj,
-      #   dt_titre_types,
-      #   by = "titre_type_num")[, titre_type_num := NULL]
+      logger::log_info("Recovering covariate names")
       dt_params_ind_traj <- private$recover_covariate_names(dt_params_ind_traj)
 
       logger::log_info(paste("Calculating exposure dates. Adjusting exposures by", time_shift, "days"))

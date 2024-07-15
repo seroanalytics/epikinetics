@@ -60,7 +60,7 @@ test_that("Can retrieve un-summarised trajectories", {
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = FALSE, n_draws = 10)
-  expect_equal(names(trajectories), c("stan_id", "k", "draw", "t", "mu", "titre_type", "infection_history",
+  expect_equal(names(trajectories), c("stan_id", "draw", "t", "mu", "titre_type", "infection_history",
                                       "exposure_date", "calendar_date", "time_shift"))
 })
 

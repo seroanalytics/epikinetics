@@ -83,13 +83,18 @@ A CmdStanMCMC fitted model object: \url{https://mc-stan.org/cmdstanr/reference/C
 \subsection{Method \code{extract_population_parameters()}}{
 Extract fitted population parameters
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{scova$extract_population_parameters(n_draws = 2500)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{scova$extract_population_parameters(
+  n_draws = 2500,
+  human_readable_covariates = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{n_draws}}{Numeric}
+
+\item{\code{human_readable_covariates}}{Logical. Default TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -104,17 +109,20 @@ A data.table
 Extract fitted individual parameters
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{scova$extract_individual_parameters(
-  include_variation_params = FALSE,
-  n_draws = 2500
+  n_draws = 2500,
+  include_variation_params = TRUE,
+  human_readable_covariates = TRUE
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{n_draws}}{Numeric}
+
 \item{\code{include_variation_params}}{Logical}
 
-\item{\code{n_draws}}{Numeric}
+\item{\code{human_readable_covariates}}{Logical. Default TRUE.}
 }
 \if{html}{\out{</div>}}
 }

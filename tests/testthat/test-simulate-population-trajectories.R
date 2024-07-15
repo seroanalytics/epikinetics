@@ -26,7 +26,7 @@ test_that("Can retrieve summarised trajectories", {
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_population_trajectories(summarise = TRUE)
-  expect_equal(names(trajectories), c("t", "p", "k", "me", "lo", "hi", "infection_history", "titre_type"))
+  expect_equal(names(trajectories), c("t", "me", "lo", "hi", "titre_type", "infection_history"))
 })
 
 test_that("Can retrieve un-summarised trajectories", {
@@ -34,9 +34,9 @@ test_that("Can retrieve un-summarised trajectories", {
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_population_trajectories(summarise = FALSE)
-  expect_equal(names(trajectories), c("t", "p", "k", ".draw", "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop",
+  expect_equal(names(trajectories), c("t", ".draw", "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop",
                                       "m3_pop", "beta_t0", "beta_tp", "beta_ts", "beta_m1", "beta_m2",
-                                      "beta_m3", "mu", "infection_history", "titre_type"))
+                                      "beta_m3", "mu", "titre_type", "infection_history"))
 })
 
 test_that("Absolute dates are returned if time_type is 'absolute'", {
