@@ -12,6 +12,8 @@ fit it to a dataset using Gaussian priors and a given hierarchical model structu
 \itemize{
 \item \href{#method-scova-new}{\code{scova$new()}}
 \item \href{#method-scova-fit}{\code{scova$fit()}}
+\item \href{#method-scova-extract_population_parameters}{\code{scova$extract_population_parameters()}}
+\item \href{#method-scova-extract_individual_parameters}{\code{scova$extract_individual_parameters()}}
 \item \href{#method-scova-simulate_population_trajectories}{\code{scova$simulate_population_trajectories()}}
 \item \href{#method-scova-population_stationary_points}{\code{scova$population_stationary_points()}}
 \item \href{#method-scova-simulate_individual_trajectories}{\code{scova$simulate_individual_trajectories()}}
@@ -73,6 +75,51 @@ objects: \url{https://mc-stan.org/cmdstanr/reference/model-method-sample.html}}
 }
 \subsection{Returns}{
 A CmdStanMCMC fitted model object: \url{https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-scova-extract_population_parameters"></a>}}
+\if{latex}{\out{\hypertarget{method-scova-extract_population_parameters}{}}}
+\subsection{Method \code{extract_population_parameters()}}{
+Extract fitted population parameters
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{scova$extract_population_parameters(n_draws = 2500)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n_draws}}{Numeric}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A data.table
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-scova-extract_individual_parameters"></a>}}
+\if{latex}{\out{\hypertarget{method-scova-extract_individual_parameters}{}}}
+\subsection{Method \code{extract_individual_parameters()}}{
+Extract fitted individual parameters
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{scova$extract_individual_parameters(
+  include_variation_params = FALSE,
+  n_draws = 2500
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{include_variation_params}}{Logical}
+
+\item{\code{n_draws}}{Numeric}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A data.table
 }
 }
 \if{html}{\out{<hr>}}
@@ -141,8 +188,7 @@ computationally expensive and may take a while to run if n_draws is large.
 \if{html}{\out{<div class="r">}}\preformatted{scova$simulate_individual_trajectories(
   summarise = TRUE,
   n_draws = 2500,
-  time_shift = 0,
-  add_variation_params = FALSE
+  time_shift = 0
 )}\if{html}{\out{</div>}}
 }
 
@@ -156,8 +202,6 @@ Default TRUE.}
 \item{\code{n_draws}}{Integer. Maximum number of samples to draw. Default 2500.}
 
 \item{\code{time_shift}}{Integer. Number of days to adjust the exposure date by. Default 0.}
-
-\item{\code{add_variation_params}}{Logical. Default FALSE.}
 }
 \if{html}{\out{</div>}}
 }
