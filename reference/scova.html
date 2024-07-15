@@ -70,6 +70,8 @@ fit it to a dataset using Gaussian priors and a given hierarchical model structu
 
 <ul><li><p><a href="#method-scova-new"><code>scova$new()</code></a></p></li>
 <li><p><a href="#method-scova-fit"><code>scova$fit()</code></a></p></li>
+<li><p><a href="#method-scova-extract_population_parameters"><code>scova$extract_population_parameters()</code></a></p></li>
+<li><p><a href="#method-scova-extract_individual_parameters"><code>scova$extract_individual_parameters()</code></a></p></li>
 <li><p><a href="#method-scova-simulate_population_trajectories"><code>scova$simulate_population_trajectories()</code></a></p></li>
 <li><p><a href="#method-scova-population_stationary_points"><code>scova$population_stationary_points()</code></a></p></li>
 <li><p><a href="#method-scova-simulate_individual_trajectories"><code>scova$simulate_individual_trajectories()</code></a></p></li>
@@ -141,10 +143,57 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 <p>A CmdStanMCMC fitted model object: <a href="https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html" class="external-link">https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html</a></p>
 </div>
 
+</div><p></p><hr><a id="method-scova-extract_population_parameters"></a><div class="section">
+<h3 id="method-extract-population-parameters-">Method <code>extract_population_parameters()</code><a class="anchor" aria-label="anchor" href="#method-extract-population-parameters-"></a></h3>
+<p>Extract fitted population parameters</p><div class="section">
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">extract_population_parameters</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">2500</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
+<dd><p>Numeric</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p>A data.table</p>
+</div>
+
+</div><p></p><hr><a id="method-scova-extract_individual_parameters"></a><div class="section">
+<h3 id="method-extract-individual-parameters-">Method <code>extract_individual_parameters()</code><a class="anchor" aria-label="anchor" href="#method-extract-individual-parameters-"></a></h3>
+<p>Extract fitted individual parameters</p><div class="section">
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">extract_individual_parameters</span><span class="op">(</span></span>
+<span>  include_variation_params <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  n_draws <span class="op">=</span> <span class="fl">2500</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>include_variation_params</code></dt>
+<dd><p>Logical</p></dd>
+
+
+<dt><code>n_draws</code></dt>
+<dd><p>Numeric</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>A data.table</p>
+</div>
+
 </div><p></p><hr><a id="method-scova-simulate_population_trajectories"></a><div class="section">
 <h3 id="method-simulate-population-trajectories-">Method <code>simulate_population_trajectories()</code><a class="anchor" aria-label="anchor" href="#method-simulate-population-trajectories-"></a></h3>
 <p>Process the model results into a data table of titre values over time.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">simulate_population_trajectories</span><span class="op">(</span></span>
 <span>  time_type <span class="op">=</span> <span class="st">"relative"</span>,</span>
 <span>  t_max <span class="op">=</span> <span class="fl">150</span>,</span>
@@ -154,7 +203,7 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>time_type</code></dt>
 <dd><p>One of 'relative' or 'absolute'. Default 'relative'.</p></dd>
 
@@ -175,7 +224,7 @@ all values.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
 titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
 t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
@@ -186,12 +235,12 @@ lower and upper bounds of titre values; if summarise = FALSE then</p>
 </div><p></p><hr><a id="method-scova-population_stationary_points"></a><div class="section">
 <h3 id="method-population-stationary-points-">Method <code>population_stationary_points()</code><a class="anchor" aria-label="anchor" href="#method-population-stationary-points-"></a></h3>
 <p>Process the stan model results into a data.table.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">population_stationary_points</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">2500</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
 <dd><p>Integer. Maximum number of samples to include. Default 2500.</p></dd>
 
@@ -199,7 +248,7 @@ lower and upper bounds of titre values; if summarise = FALSE then</p>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>A data.table of peak and set titre values</p>
 </div>
 
@@ -207,17 +256,16 @@ lower and upper bounds of titre values; if summarise = FALSE then</p>
 <h3 id="method-simulate-individual-trajectories-">Method <code>simulate_individual_trajectories()</code><a class="anchor" aria-label="anchor" href="#method-simulate-individual-trajectories-"></a></h3>
 <p>Simulate individual trajectories from the model. This is
 computationally expensive and may take a while to run if n_draws is large.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span></span>
 <span>  summarise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_draws <span class="op">=</span> <span class="fl">2500</span>,</span>
-<span>  time_shift <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  add_variation_params <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  time_shift <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>summarise</code></dt>
 <dd><p>Boolean. If TRUE, average the individual trajectories to get lo, me and
 hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
@@ -232,14 +280,10 @@ Default TRUE.</p></dd>
 <dd><p>Integer. Number of days to adjust the exposure date by. Default 0.</p></dd>
 
 
-<dt><code>add_variation_params</code></dt>
-<dd><p>Logical. Default FALSE.</p></dd>
-
-
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi.
 If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
 and a column for each covariate in the hierarchical model.</p>
