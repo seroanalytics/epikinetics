@@ -6,9 +6,9 @@ local_mocked_bindings(
   stan_package_model = mock_model, .package = "instantiate"
 )
 
-test_that("Can run model with arguments", {
+test_that("Can fit model with arguments", {
   res <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                 priors = scova_priors())$fit(chains = 4,
+                   priors = scova_priors())$fit(chains = 4,
                                             parallel_chains = 4,
                                             iter_warmup = 100,
                                             iter_sampling = 400,

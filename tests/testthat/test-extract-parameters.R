@@ -17,16 +17,20 @@ test_that("Cannot retrieve individual params until model is fitted", {
 })
 
 test_that("Can extract population parameters", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
+  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                   covariate_formula =  ~0 + infection_history)
   mod$fit()
   params <- mod$extract_population_parameters()
   expect_equal(names(params), c("k", "p", ".draw", "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop", "m3_pop",
-                                "beta_t0", "beta_tp", "beta_ts", "beta_m1", "beta_m2", "beta_m3"))
+                                "beta_t0", "beta_tp", "beta_ts", "beta_m1", "beta_m2", "beta_m3",
+                                "infection_history", "titre_type"))
 })
 
 test_that("Can extract individual parameters", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
+  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                   covariate_formula =  ~0 + infection_history)
   mod$fit()
   params <- mod$extract_individual_parameters(n_draws = 10)
-  expect_equal(names(params), c("stan_id", "titre_type", "draw", "t0_ind", "tp_ind", "ts_ind", "m1_ind", "m2_ind", "m3_ind"))
+  expect_equal(names(params), c("stan_id", "k", "draw", "t0_ind", "tp_ind", "ts_ind",
+                                "m1_ind", "m2_ind", "m3_ind", "titre_type"))
 })

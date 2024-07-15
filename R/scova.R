@@ -82,7 +82,7 @@ scova <- R6::R6Class(
 
       for (col_name in names(dt)) {
         # Find the matching formula variable for current column
-        matching_formula_var <- all_formula_vars[which(startsWith(col_name, all_formula_vars))]
+        matching_formula_var <- private$all_formula_vars[which(startsWith(col_name, private$all_formula_vars))]
         if (length(matching_formula_var) > 0) {
           pattern_to_remove <- paste0("^", matching_formula_var)
           dt[, (col_name) := stringr::str_remove_all(get(col_name), pattern_to_remove)]
@@ -102,7 +102,6 @@ scova <- R6::R6Class(
       dt
     },
     recover_covariate_names = function(dt) {
-
       # Declare variables to suppress notes when compiling package
       # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
       titre_type <- NULL
@@ -111,9 +110,11 @@ scova <- R6::R6Class(
         k = 1:private$data[, length(unique(titre_type))],
         titre_type = private$data[, unique(titre_type)])
 
-      dt[
-        private$covariate_lookup_table, on = "p"][
-        dt_titre_lookup, on = "k"]
+      if ("p" %in% colnames(dt)) {
+        return(dt[private$covariate_lookup_table, on = "p"][dt_titre_lookup, on = "k"])
+      } else {
+        return(dt[dt_titre_lookup, on = "k"])
+      }
     },
     summarise_pop_fit = function(time_range,
                                  summarise,
@@ -303,10 +304,9 @@ scova <- R6::R6Class(
       data.table::setcolorder(dt_out, c("k", "p", ".draw"))
 
       if (length(private$all_formula_vars) > 0) {
-        return(private$adjust_parameters(dt_out))
-      } else {
-        return(dt_out)
+        dt_out <- private$adjust_parameters(dt_out)
       }
+      private$recover_covariate_names(dt_out)
     },
     #' @description Extract fitted individual parameters
     #' @return A data.table
@@ -327,9 +327,9 @@ scova <- R6::R6Class(
       dt_out <- private$extract_parameters(params, n_draws)
 
       data.table::setcolorder(dt_out, c("n", "k", ".draw"))
-      data.table::setnames(dt_out, c("n", "k", ".draw"), c("stan_id", "titre_type", "draw"))
+      data.table::setnames(dt_out, c("n", ".draw"), c("stan_id", "draw"))
 
-      dt_out
+      private$recover_covariate_names(dt_out)
     },
     #' @description Process the model results into a data table of titre values over time.
     #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
@@ -398,8 +398,8 @@ scova <- R6::R6Class(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
                        by = c("p", "k", ".draw")]
 
-      logger::log_info("Recovering covariate names")
-      dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
+      # logger::log_info("Recovering covariate names")
+      # dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
 
       dt_peak_switch <- convert_log_scale_inverse(
         dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
@@ -462,18 +462,19 @@ scova <- R6::R6Class(
       dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
           dt_params_ind_traj, vars_to_transform = "mu"))
 
-      dt_titre_types <- data.table(
-        titre_type = private$data[, unique(titre_type)],
-        titre_type_num = dt_params_ind_traj[, unique(titre_type_num)])
-
-      dt_params_ind_traj <- merge(
-        dt_params_ind_traj,
-        dt_titre_types,
-        by = "titre_type_num")[, titre_type_num := NULL]
+      # dt_titre_types <- data.table(
+      #   titre_type = private$data[, unique(titre_type)],
+      #   titre_type_num = dt_params_ind_traj[, unique(titre_type_num)])
+      #
+      # dt_params_ind_traj <- merge(
+      #   dt_params_ind_traj,
+      #   dt_titre_types,
+      #   by = "titre_type_num")[, titre_type_num := NULL]
+      dt_params_ind_traj <- private$recover_covariate_names(dt_params_ind_traj)
 
       logger::log_info(paste("Calculating exposure dates. Adjusting exposures by", time_shift, "days"))
       dt_lookup <- private$data[, .(
-        exposure_date = as.Date(min(last_exp_date)) - time_shift),
+        exposure_date = min(last_exp_date) - time_shift),
                                   by = c(private$all_formula_vars, "stan_id")]
 
       dt_out <- merge(dt_params_ind_traj, dt_lookup, by = "stan_id")

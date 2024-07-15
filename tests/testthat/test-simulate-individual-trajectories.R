@@ -11,7 +11,7 @@ test_that("Cpp and R function produce same values", {
   res_pop <- dat_pop[, mu := scova_simulate_trajectory(t, t0, tp, ts, m1, m2, m3), by = "t"]
   dat_ind <- data.table(stan_id = 1L,
                         t_max = t_max,
-                        titre_type = 3L,
+                        k = 3L,
                         draw = 10L,
                         t0_ind = 0,
                         tp_ind = 3,
@@ -60,7 +60,8 @@ test_that("Can retrieve un-summarised trajectories", {
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = FALSE, n_draws = 10)
-  expect_equal(names(trajectories), c("stan_id", "draw", "t", "mu", "titre_type", "infection_history", "exposure_date", "calendar_date", "time_shift"))
+  expect_equal(names(trajectories), c("stan_id", "k", "draw", "t", "mu", "titre_type", "infection_history",
+                                      "exposure_date", "calendar_date", "time_shift"))
 })
 
 test_that("Only n_draws draws are returned", {

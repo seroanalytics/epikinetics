@@ -29,7 +29,7 @@ cpp11::writable::data_frame simulate_trajectories_cpp(const data_frame &person_p
   doubles m2_ind = person_params["m2_ind"];
   doubles m3_ind = person_params["m3_ind"];
   integers t_max_individual = person_params["t_max"];
-  integers titre_type = person_params["titre_type"];
+  integers titre_type = person_params["k"];
   integers draw = person_params["draw"];
 
   // Create a placeholder for results
@@ -56,7 +56,7 @@ cpp11::writable::data_frame simulate_trajectories_cpp(const data_frame &person_p
 
   return cpp11::writable::data_frame({
                             "stan_id"_nm = out_id,
-                            "titre_type_num"_nm = out_titre_type,
+                            "k"_nm = out_titre_type,
                             "draw"_nm = out_draw,
                             "t"_nm = out_t,
                             "mu"_nm = out_mu
