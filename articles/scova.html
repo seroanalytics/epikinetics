@@ -183,45 +183,20 @@ columns.</p>
 values at peak and set points, for different titre types. We first
 simulate estimates for these from the fitted model:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">population_stationary_points</span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">population_stationary_points</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        k     p .draw   t0_pop   tp_pop   ts_pop   m1_pop      m2_pop</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;       &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:     1     1     1 4.410820 8.168995 69.35724 0.447930 -0.03998171</span></span>
-<span><span class="co">#&gt; 2:     1     1     2 4.122570 8.220406 69.89225 0.463090 -0.03673517</span></span>
-<span><span class="co">#&gt; 3:     1     1     3 3.992784 8.429232 69.34377 0.469506 -0.03856111</span></span>
-<span><span class="co">#&gt; 4:     1     1     4 4.129627 8.695681 71.54112 0.440083 -0.03990376</span></span>
-<span><span class="co">#&gt; 5:     1     1     5 3.985967 8.358872 64.51578 0.488066 -0.04816820</span></span>
-<span><span class="co">#&gt; 6:     1     1     6 4.005071 8.560220 67.98897 0.504561 -0.04687770</span></span>
-<span><span class="co">#&gt;         m3_pop    beta_t0   beta_tp   beta_ts  beta_m1    beta_m2     beta_m3</span></span>
-<span><span class="co">#&gt;          &lt;num&gt;      &lt;num&gt;     &lt;num&gt;     &lt;num&gt;    &lt;num&gt;      &lt;num&gt;       &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: -0.00738625  0.0892197 -0.193925 -0.209364 0.200908 -0.0399520 -0.00468916</span></span>
-<span><span class="co">#&gt; 2: -0.00799955 -0.0617495 -0.158054  0.556248 0.217805 -0.0366927 -0.00573989</span></span>
-<span><span class="co">#&gt; 3: -0.00853792 -0.4106060  0.393672 -0.335826 0.226357 -0.0385086 -0.00599007</span></span>
-<span><span class="co">#&gt; 4: -0.00836698 -0.1504630 -0.168249 -0.374482 0.193636 -0.0392022 -0.00675386</span></span>
-<span><span class="co">#&gt; 5: -0.00784776 -0.3478230  0.104802  0.918281 0.255142 -0.0207145 -0.00605556</span></span>
-<span><span class="co">#&gt; 6: -0.00581304 -0.1382590  0.120330 -0.719028 0.267724 -0.0139650 -0.00431706</span></span>
-<span><span class="co">#&gt;         mu_0     mu_p     mu_s infection_history titre_type  rel_drop</span></span>
-<span><span class="co">#&gt;        &lt;num&gt;    &lt;num&gt;    &lt;num&gt;            &lt;char&gt;     &lt;char&gt;     &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: 106.35528 1343.598 246.5053   Infection naive  Ancestral 0.1834666</span></span>
-<span><span class="co">#&gt; 2:  87.09383 1218.834 253.4858   Infection naive  Ancestral 0.2079739</span></span>
-<span><span class="co">#&gt; 3:  79.60086 1236.706 242.7546   Infection naive  Ancestral 0.1962912</span></span>
-<span><span class="co">#&gt; 4:  87.52087 1241.937 218.3664   Infection naive  Ancestral 0.1758272</span></span>
-<span><span class="co">#&gt; 5:  79.22562 1339.590 205.4437   Infection naive  Ancestral 0.1533630</span></span>
-<span><span class="co">#&gt; 6:  80.28169 1602.548 232.3682   Infection naive  Ancestral 0.1449992</span></span>
-<span><span class="co">#&gt;    rel_drop_me  mu_p_me  mu_s_me</span></span>
-<span><span class="co">#&gt;          &lt;num&gt;    &lt;num&gt;    &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 2:   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 3:   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 4:   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 5:   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 6:   0.1734832 1315.809 228.7876</span></span></code></pre></div>
+<span><span class="co">#&gt;    infection_history titre_type     mu_p     mu_s rel_drop_me  mu_p_me  mu_s_me</span></span>
+<span><span class="co">#&gt;               &lt;char&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;       &lt;num&gt;    &lt;num&gt;    &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:   Infection naive  Ancestral 1343.598 246.5053   0.1734832 1315.809 228.7876</span></span>
+<span><span class="co">#&gt; 2:   Infection naive  Ancestral 1218.834 253.4858   0.1734832 1315.809 228.7876</span></span>
+<span><span class="co">#&gt; 3:   Infection naive  Ancestral 1236.706 242.7546   0.1734832 1315.809 228.7876</span></span>
+<span><span class="co">#&gt; 4:   Infection naive  Ancestral 1241.937 218.3664   0.1734832 1315.809 228.7876</span></span>
+<span><span class="co">#&gt; 5:   Infection naive  Ancestral 1339.590 205.4437   0.1734832 1315.809 228.7876</span></span>
+<span><span class="co">#&gt; 6:   Infection naive  Ancestral 1602.548 232.3682   0.1734832 1315.809 228.7876</span></span></code></pre></div>
 <p>The values we’re going to plot are the mean peak titre values
-(<code>mu_p_me</code>) and mean set point titre values
-(<code>mu_s_me</code>), for different titre types and infection
-histories. See <a href="data.html">data</a> for a full definition of all
-the returned columns. Using <code>ggplot2</code>:</p>
+(<code>mu_p</code>) and mean set point titre values (<code>mu_s</code>),
+for different titre types and infection histories. See <a href="data.html">data</a> for a full definition of all the returned
+columns. Using <code>ggplot2</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span>, <span class="va">titre_type</span> <span class="op">:=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span></span>
 <span>  <span class="va">titre_type</span>,</span>
@@ -235,7 +210,7 @@ the returned columns. Using <code>ggplot2</code>:</p>
 <span>      group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span></span>
 <span>        <span class="va">infection_history</span>,</span>
 <span>        <span class="va">titre_type</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plot_data</span><span class="op">[</span><span class="va">.draw</span> <span class="op">&lt;=</span> <span class="fl">2000</span><span class="op">]</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">plot_data</span>,</span>
 <span>             alpha <span class="op">=</span> <span class="fl">0.05</span>, size <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mu_p_me</span>, y <span class="op">=</span> <span class="va">mu_s_me</span>,</span>
 <span>                 shape <span class="op">=</span> <span class="va">infection_history</span><span class="op">)</span>,</span>
@@ -278,14 +253,14 @@ maximum number of draws to just 250 for speed.</p>
 <span><span class="co">#&gt;   method                           from   </span></span>
 <span><span class="co">#&gt;   fortify.SpatialPolygonsDataFrame ggplot2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    calendar_date titre_type       me       lo       hi</span></span>
-<span><span class="co">#&gt;           &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:    2021-03-08  Ancestral 1122.561 899.7913 1474.929</span></span>
-<span><span class="co">#&gt; 2:    2021-03-09  Ancestral 1114.609 882.1468 1450.662</span></span>
-<span><span class="co">#&gt; 3:    2021-03-10  Ancestral 1150.423 911.1426 1530.973</span></span>
-<span><span class="co">#&gt; 4:    2021-03-11  Ancestral 1121.402 878.6975 1447.972</span></span>
-<span><span class="co">#&gt; 5:    2021-03-12  Ancestral 1115.039 851.9412 1443.723</span></span>
-<span><span class="co">#&gt; 6:    2021-03-13  Ancestral 1150.059 900.9269 1520.740</span></span></code></pre></div>
+<span><span class="co">#&gt;    calendar_date titre_type       me       lo       hi time_shift</span></span>
+<span><span class="co">#&gt;           &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;      &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:    2021-03-08  Ancestral 1122.561 899.7913 1474.929          0</span></span>
+<span><span class="co">#&gt; 2:    2021-03-09  Ancestral 1114.609 882.1468 1450.662          0</span></span>
+<span><span class="co">#&gt; 3:    2021-03-10  Ancestral 1150.423 911.1426 1530.973          0</span></span>
+<span><span class="co">#&gt; 4:    2021-03-11  Ancestral 1121.402 878.6975 1447.972          0</span></span>
+<span><span class="co">#&gt; 5:    2021-03-12  Ancestral 1115.039 851.9412 1443.723          0</span></span>
+<span><span class="co">#&gt; 6:    2021-03-13  Ancestral 1150.059 900.9269 1520.740          0</span></span></code></pre></div>
 <p>See <a href="data.html">data</a> for a definition of all the returned
 columns. Figure 5 A plots the derived population trajectories. Here we
 replicate a portion of the graph from the paper, from the minimum date
@@ -353,9 +328,7 @@ draws to just 50 for speed.</p>
 <span></span>
 <span><span class="va">results_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">indices</span>, <span class="kw">function</span><span class="op">(</span><span class="va">index</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">shift</span> <span class="op">&lt;-</span> <span class="va">time_shift_values</span><span class="op">[</span><span class="va">index</span><span class="op">]</span></span>
-<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">50</span>, time_shift <span class="op">=</span> <span class="va">shift</span><span class="op">)</span></span>
-<span>  <span class="va">result</span><span class="op">[</span>, <span class="va">time_shift</span><span class="op">:=</span> <span class="va">shift</span><span class="op">]</span></span>
-<span>  <span class="va">result</span></span>
+<span>  <span class="va">mod</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">50</span>, time_shift <span class="op">=</span> <span class="va">shift</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">combined_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">results_list</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>

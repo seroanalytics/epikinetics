@@ -209,7 +209,6 @@ lower and upper bounds of titre values; if summarise = FALSE then</p>
 computationally expensive and may take a while to run if n_draws is large.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">scova</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span></span>
-<span>  t_max <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  summarise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_draws <span class="op">=</span> <span class="fl">2500</span>,</span>
 <span>  time_shift <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -219,13 +218,9 @@ computationally expensive and may take a while to run if n_draws is large.</p><d
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>t_max</code></dt>
-<dd><p>Integer. Maximum number of time points to include. Default 150.</p></dd>
-
-
-<dt><code>summarise</code></dt>
+<p></p><div class="arguments"><dl><dt><code>summarise</code></dt>
 <dd><p>Boolean. If TRUE, average the individual trajectories to get lo, me and
-hi values for the population. If FALSE return the simulated indidivudal trajectories.
+hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
 Default TRUE.</p></dd>
 
 
@@ -245,7 +240,9 @@ Default TRUE.</p></dd>
 </div>
 <div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
-<p>A data.table.</p>
+<p>A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi.
+If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
+and a column for each covariate in the hierarchical model.</p>
 </div>
 
 </div>
