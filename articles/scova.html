@@ -103,61 +103,7 @@ algorithm to limit the time it takes to compile this vignette.</p>
 <span><span class="va">delta</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span>parallel_chains <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>                 iter_warmup <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>                 iter_sampling <span class="op">=</span> <span class="fl">200</span>,</span>
-<span>                 threads_per_chain <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Running MCMC with 4 parallel chains...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Chain 1 WARNING: There aren't enough warmup iterations to fit the </span></span>
-<span><span class="co">#&gt; Chain 1          three stages of adaptation as currently configured. </span></span>
-<span><span class="co">#&gt; Chain 1          Reducing each adaptation stage to 15%/75%/10% of </span></span>
-<span><span class="co">#&gt; Chain 1          the given number of warmup iterations: </span></span>
-<span><span class="co">#&gt; Chain 1            init_buffer = 7 </span></span>
-<span><span class="co">#&gt; Chain 1            adapt_window = 38 </span></span>
-<span><span class="co">#&gt; Chain 1            term_buffer = 5 </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration:   1 / 250 [  0%]  (Warmup) </span></span>
-<span><span class="co">#&gt; Chain 2 WARNING: There aren't enough warmup iterations to fit the </span></span>
-<span><span class="co">#&gt; Chain 2          three stages of adaptation as currently configured. </span></span>
-<span><span class="co">#&gt; Chain 2          Reducing each adaptation stage to 15%/75%/10% of </span></span>
-<span><span class="co">#&gt; Chain 2          the given number of warmup iterations: </span></span>
-<span><span class="co">#&gt; Chain 2            init_buffer = 7 </span></span>
-<span><span class="co">#&gt; Chain 2            adapt_window = 38 </span></span>
-<span><span class="co">#&gt; Chain 2            term_buffer = 5 </span></span>
-<span><span class="co">#&gt; Chain 2 Iteration:   1 / 250 [  0%]  (Warmup)</span></span>
-<span><span class="co">#&gt; Chain 3 WARNING: There aren't enough warmup iterations to fit the </span></span>
-<span><span class="co">#&gt; Chain 3          three stages of adaptation as currently configured. </span></span>
-<span><span class="co">#&gt; Chain 3          Reducing each adaptation stage to 15%/75%/10% of </span></span>
-<span><span class="co">#&gt; Chain 3          the given number of warmup iterations: </span></span>
-<span><span class="co">#&gt; Chain 3            init_buffer = 7 </span></span>
-<span><span class="co">#&gt; Chain 3            adapt_window = 38 </span></span>
-<span><span class="co">#&gt; Chain 3            term_buffer = 5 </span></span>
-<span><span class="co">#&gt; Chain 3 Iteration:   1 / 250 [  0%]  (Warmup)</span></span>
-<span><span class="co">#&gt; Chain 4 WARNING: There aren't enough warmup iterations to fit the </span></span>
-<span><span class="co">#&gt; Chain 4          three stages of adaptation as currently configured. </span></span>
-<span><span class="co">#&gt; Chain 4          Reducing each adaptation stage to 15%/75%/10% of </span></span>
-<span><span class="co">#&gt; Chain 4          the given number of warmup iterations: </span></span>
-<span><span class="co">#&gt; Chain 4            init_buffer = 7 </span></span>
-<span><span class="co">#&gt; Chain 4            adapt_window = 38 </span></span>
-<span><span class="co">#&gt; Chain 4            term_buffer = 5 </span></span>
-<span><span class="co">#&gt; Chain 4 Iteration:   1 / 250 [  0%]  (Warmup)</span></span>
-<span><span class="co">#&gt; Chain 1 Iteration:  51 / 250 [ 20%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 3 Iteration:  51 / 250 [ 20%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 2 Iteration:  51 / 250 [ 20%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 4 Iteration:  51 / 250 [ 20%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 3 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 2 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 4 Iteration: 150 / 250 [ 60%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 1 finished in 248.3 seconds.</span></span>
-<span><span class="co">#&gt; Chain 2 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 2 finished in 252.0 seconds.</span></span>
-<span><span class="co">#&gt; Chain 3 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 3 finished in 252.8 seconds.</span></span>
-<span><span class="co">#&gt; Chain 4 Iteration: 250 / 250 [100%]  (Sampling) </span></span>
-<span><span class="co">#&gt; Chain 4 finished in 254.4 seconds.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; All 4 chains finished successfully.</span></span>
-<span><span class="co">#&gt; Mean chain execution time: 251.9 seconds.</span></span>
-<span><span class="co">#&gt; Total execution time: 254.6 seconds.</span></span></code></pre></div>
+<span>                 threads_per_chain <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="figure-2">Figure 2<a class="anchor" aria-label="anchor" href="#figure-2"></a>
@@ -394,7 +340,7 @@ in the dataset until the date at which the next variant emerged.</p>
 <span>        group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">titre_type</span>, <span class="va">wave</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    alpha <span class="op">=</span> <span class="fl">0.5</span>, span <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="va">custom_theme</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Titre type"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Titre type"</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"none"</span>,<span class="op">)</span></span>
 <span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
 <p><img src="scova_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p>Figure 5 C shows counterfactual trajectories varying vaccination
