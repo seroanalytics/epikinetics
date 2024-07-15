@@ -115,14 +115,14 @@ population trajectories using the fitted population parameters.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">simulate_population_trajectories</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        t     p     k        me        lo       hi infection_history titre_type</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;num&gt;     &lt;num&gt;    &lt;num&gt;            &lt;char&gt;     &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:     0     1     1  85.03283  61.79873 113.4266   Infection naive  Ancestral</span></span>
-<span><span class="co">#&gt; 2:     1     1     1 117.52245  87.99594 151.6198   Infection naive  Ancestral</span></span>
-<span><span class="co">#&gt; 3:     2     1     1 161.60170 124.69805 203.8376   Infection naive  Ancestral</span></span>
-<span><span class="co">#&gt; 4:     3     1     1 221.98993 173.94588 277.0610   Infection naive  Ancestral</span></span>
-<span><span class="co">#&gt; 5:     4     1     1 302.97036 238.14148 381.2043   Infection naive  Ancestral</span></span>
-<span><span class="co">#&gt; 6:     5     1     1 417.55537 325.74862 544.8846   Infection naive  Ancestral</span></span></code></pre></div>
+<span><span class="co">#&gt;        t        me        lo       hi titre_type infection_history</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;     &lt;num&gt;     &lt;num&gt;    &lt;num&gt;     &lt;char&gt;            &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:     0  85.03283  61.79873 113.4266  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 2:     1 117.52245  87.99594 151.6198  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 3:     2 161.60170 124.69805 203.8376  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 4:     3 221.98993 173.94588 277.0610  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 5:     4 302.97036 238.14148 381.2043  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 6:     5 417.55537 325.74862 544.8846  Ancestral   Infection naive</span></span></code></pre></div>
 <p>See <a href="data.html">data</a> for the definition of the returned
 columns.</p>
 <p>Using <code>ggplot2</code>:</p>
