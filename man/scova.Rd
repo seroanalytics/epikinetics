@@ -38,9 +38,10 @@ Initialise the kinetics model.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{priors}}{Object of type 'scova_priors'. Default scova_priors().}
+\item{\code{priors}}{Object of type \link[epikinetics]{scova_priors}. Default scova_priors().}
 
-\item{\code{data}}{Optional data table of model inputs. One of data or file must be provided.}
+\item{\code{data}}{Optional data table of model inputs. One of data or file must be provided. See the data vignette
+for required columns: \code{vignette("data", package = "epikinetics")}.}
 
 \item{\code{file_path}}{Optional file path to model inputs in CSV format. One of data or file must be provided.}
 
@@ -53,7 +54,7 @@ Initialise the kinetics model.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-An epikinetics::sam object.
+An epikinetics::scova object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -151,19 +152,20 @@ Process the model results into a data table of titre values over time.
 
 \item{\code{t_max}}{Integer. Maximum number of time points to include.}
 
-\item{\code{summarise}}{Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
-all values.}
+\item{\code{summarise}}{Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
+return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
+draws from posterior parameter distributions.}
 
 \item{\code{n_draws}}{Integer. Maximum number of samples to include. Default 2500.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
-titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
+A data.table containing titre values at time points. If summarise = TRUE, columns are t, me, lo, hi,
+titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, .draw
 t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
-.draw, titre_type and a column for each covariate in the hierarchical model.
-lower and upper bounds of titre values; if summarise = FALSE then
+titre_type and a column for each covariate in the hierarchical model. See the data vignette for details:
+\code{vignette("data", package = "epikinetics")}
 }
 }
 \if{html}{\out{<hr>}}
@@ -183,7 +185,9 @@ Process the stan model results into a data.table.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A data.table of peak and set titre values
+A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
+mu_s_me, and a column for each covariate. See the data vignette for details:
+\code{vignette("data", package = "epikinetics")}
 }
 }
 \if{html}{\out{<hr>}}
@@ -214,9 +218,10 @@ Default TRUE.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi.
+A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
 If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
-and a column for each covariate in the hierarchical model.
+and a column for each covariate in the hierarchical model. See the data vignette for details:
+\code{vignette("data", package = "epikinetics")}.
 }
 }
 }

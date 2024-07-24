@@ -223,10 +223,11 @@ scova <- R6::R6Class(
   ),
   public = list(
     #' @description Initialise the kinetics model.
-    #' @return An epikinetics::sam object.
-    #' @param data Optional data table of model inputs. One of data or file must be provided.
+    #' @return An epikinetics::scova object.
+    #' @param data Optional data table of model inputs. One of data or file must be provided. See the data vignette
+    #' for required columns: \code{vignette("data", package = "epikinetics")}.
     #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
-    #' @param priors Object of type 'scova_priors'. Default scova_priors().
+    #' @param priors Object of type \link[epikinetics]{scova_priors}. Default scova_priors().
     #' @param covariate_formula Formula specifying hierarchical structure of model. Default ~0.
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
@@ -346,15 +347,16 @@ scova <- R6::R6Class(
       dt_out
     },
     #' @description Process the model results into a data table of titre values over time.
-    #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
-    #' titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
+    #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are t, me, lo, hi,
+    #' titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, .draw
     #' t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
-    #' .draw, titre_type and a column for each covariate in the hierarchical model.
-    #' lower and upper bounds of titre values; if summarise = FALSE then
+    #' titre_type and a column for each covariate in the hierarchical model. See the data vignette for details:
+    #' \code{vignette("data", package = "epikinetics")}
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     #' @param t_max Integer. Maximum number of time points to include.
-    #' @param summarise Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
-    #' all values.
+    #' @param summarise Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
+    #' return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
+    #' draws from posterior parameter distributions.
     #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
     simulate_population_trajectories = function(
       time_type = "relative",
@@ -394,7 +396,9 @@ scova <- R6::R6Class(
       dt_out
     },
     #' @description Process the stan model results into a data.table.
-    #' @return A data.table of peak and set titre values
+    #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
+    #' mu_s_me, and a column for each covariate. See the data vignette for details:
+    #' \code{vignette("data", package = "epikinetics")}
     #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
     population_stationary_points = function(n_draws = 2500) {
       private$check_fitted()
@@ -433,9 +437,10 @@ scova <- R6::R6Class(
     },
     #' @description Simulate individual trajectories from the model. This is
     #' computationally expensive and may take a while to run if n_draws is large.
-    #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi.
+    #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
     #' If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
-    #' and a column for each covariate in the hierarchical model.
+    #' and a column for each covariate in the hierarchical model. See the data vignette for details:
+    #' \code{vignette("data", package = "epikinetics")}.
     #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
     #' hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
     #' Default TRUE.
