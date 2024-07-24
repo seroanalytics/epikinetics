@@ -92,11 +92,12 @@ fit it to a dataset using Gaussian priors and a given hierarchical model structu
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>priors</code></dt>
-<dd><p>Object of type 'scova_priors'. Default scova_priors().</p></dd>
+<dd><p>Object of type <a href="scova_priors.html">scova_priors</a>. Default scova_priors().</p></dd>
 
 
 <dt><code>data</code></dt>
-<dd><p>Optional data table of model inputs. One of data or file must be provided.</p></dd>
+<dd><p>Optional data table of model inputs. One of data or file must be provided. See the data vignette
+for required columns: <code><a href="../articles/data.html">vignette("data", package = "epikinetics")</a></code>.</p></dd>
 
 
 <dt><code>file_path</code></dt>
@@ -119,7 +120,7 @@ fit it to a dataset using Gaussian priors and a given hierarchical model structu
 </div>
 <div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
-<p>An epikinetics::sam object.</p>
+<p>An epikinetics::scova object.</p>
 </div>
 
 </div><p></p><hr><a id="method-scova-fit"></a><div class="section">
@@ -225,8 +226,9 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 
 
 <dt><code>summarise</code></dt>
-<dd><p>Boolean. Default TRUE. If TRUE returns values for 0.025, 0.5 and 0.975 quantiles, if FALSE returns
-all values.</p></dd>
+<dd><p>Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
+return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
+draws from posterior parameter distributions.</p></dd>
 
 
 <dt><code>n_draws</code></dt>
@@ -237,11 +239,11 @@ all values.</p></dd>
 </div>
 <div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
-<p>A data.table containing titre values at time points. If summarise = TRUE, columns are t, p, k, me, lo, hi,
-titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, p, k,
+<p>A data.table containing titre values at time points. If summarise = TRUE, columns are t, me, lo, hi,
+titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, .draw
 t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
-.draw, titre_type and a column for each covariate in the hierarchical model.
-lower and upper bounds of titre values; if summarise = FALSE then</p>
+titre_type and a column for each covariate in the hierarchical model. See the data vignette for details:
+<code><a href="../articles/data.html">vignette("data", package = "epikinetics")</a></code></p>
 </div>
 
 </div><p></p><hr><a id="method-scova-population_stationary_points"></a><div class="section">
@@ -261,7 +263,9 @@ lower and upper bounds of titre values; if summarise = FALSE then</p>
 </div>
 <div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
-<p>A data.table of peak and set titre values</p>
+<p>A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
+mu_s_me, and a column for each covariate. See the data vignette for details:
+<code><a href="../articles/data.html">vignette("data", package = "epikinetics")</a></code></p>
 </div>
 
 </div><p></p><hr><a id="method-scova-simulate_individual_trajectories"></a><div class="section">
@@ -296,9 +300,10 @@ Default TRUE.</p></dd>
 </div>
 <div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
-<p>A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi.
+<p>A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
 If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
-and a column for each covariate in the hierarchical model.</p>
+and a column for each covariate in the hierarchical model. See the data vignette for details:
+<code><a href="../articles/data.html">vignette("data", package = "epikinetics")</a></code>.</p>
 </div>
 
 </div>
@@ -317,7 +322,7 @@ and a column for each covariate in the hierarchical model.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
