@@ -67,37 +67,9 @@ scova <- R6::R6Class(
       private$design_matrix <- mm_reduced
     },
     build_covariate_lookup_table = function() {
-      # Extract column names
-      col_names <- colnames(private$design_matrix)
-
-      # Split column names based on the ':' delimiter
-      split_data <- stringr::str_split(col_names, ":", simplify = TRUE)
-
-      # Convert the matrix to a data.table
-      dt <- data.table::as.data.table(split_data)
-
-      # Set the new column names
-      data.table::setnames(dt, private$all_formula_vars)
-
-      for (col_name in names(dt)) {
-        # Find the matching formula variable for current column
-        matching_formula_var <- private$all_formula_vars[which(startsWith(col_name, private$all_formula_vars))]
-        if (length(matching_formula_var) > 0) {
-          pattern_to_remove <- paste0("^", matching_formula_var)
-          dt[, (col_name) := stringr::str_remove_all(get(col_name), pattern_to_remove)]
-        }
-      }
-
-      # Declare variables to suppress notes when compiling package
-      # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-      p <- NULL
-
-      # .I is a special symbol in data.table for row number
-      dt[, p := .I]
-
-      # Reorder columns to have 'i' first
-      data.table::setcolorder(dt, "p")
-      private$covariate_lookup_table <- dt
+      private$covariate_lookup_table <- build_covariate_lookup_table(private$data,
+                                                                     private$design_matrix,
+                                                                     private$all_formula_vars)
     },
     recover_covariate_names = function(dt) {
       # Declare variables to suppress notes when compiling package
@@ -110,7 +82,7 @@ scova <- R6::R6Class(
 
       dt_out <- dt[dt_titre_lookup, on = "k"][, `:=`(k = NULL)]
       if ("p" %in% colnames(dt)) {
-        dt_out <- dt_out[private$covariate_lookup_table, on = "p"][, `:=`(p = NULL)]
+        dt_out <- dt_out[private$covariate_lookup_table, on = "p", nomatch = NULL][, `:=`(p = NULL)]
       }
       dt_out
     },
@@ -279,6 +251,9 @@ scova <- R6::R6Class(
         name = "antibody_kinetics_main",
         package = "epikinetics"
       )
+    },
+    get_design_matrix = function() {
+      private$design_matrix
     },
     #' @description Fit the model and return CmdStanMCMC fitted model object.
     #' @return A CmdStanMCMC fitted model object: <https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html>
