@@ -63,7 +63,7 @@ scova <- R6::R6Class(
       # Identify columns with no variance and remove them
       variance_per_column <- apply(mm, 2, var)
       relevant_columns <- which(variance_per_column != 0)
-      mm_reduced <- mm[, relevant_columns]
+      mm_reduced <- mm[, relevant_columns, drop = FALSE]
       private$design_matrix <- mm_reduced
     },
     build_covariate_lookup_table = function() {
