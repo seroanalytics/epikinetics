@@ -1,6 +1,5 @@
 library(ggplot2)
 library(epikinetics)
-# plot functions for manual testing
 
 mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                  priors = scova_priors())
@@ -68,4 +67,51 @@ ggplot(data = dat, aes(
   guides(colour = guide_legend(title = "Titre type", override.aes = list(alpha = 1, size = 1)),
          shape = guide_legend(title = "Infection history"))
 
-dat <- mod$simulate_individual_trajectories(summarise = FALSE)
+dat <- mod$simulate_individual_trajectories()
+
+rawdat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+
+date_delta <- lubridate::ymd("2021-05-07")
+date_ba2 <- lubridate::ymd("2022-01-24")
+
+dat$wave <- "Delta"
+rawdat$wave <- "Delta"
+plot_data <- merge(
+  dat, rawdat[, .(
+    min_date = min(date), max_date = max(date)), by = wave])[
+  , .SD[calendar_date >= min_date & calendar_date <= date_ba2], by = wave]
+
+plot_data[, titre_type := forcats::fct_relevel(
+  titre_type,
+  c("Ancestral", "Alpha", "Delta"))]
+
+ggplot() + geom_line(
+  data = plot_data,
+  aes(x = calendar_date,
+      y = me,
+      group = interaction(titre_type, wave),
+      colour = titre_type),
+  alpha = 0.2) +
+  geom_ribbon(
+    data = plot_data,
+    aes(x = calendar_date,
+        ymin = lo,
+        ymax = hi,
+        group = interaction(titre_type, wave)
+    ),
+    alpha = 0.2) +
+  labs(title = "Population-level titre values",
+       tag = "A",
+       x = "Date",
+       y = expression(paste("Titre (IC"[50], ")"))) +
+  scale_x_date(
+    date_labels = "%b %Y",
+    limits = c(min(rawdat$date), date_ba2)) +
+  geom_smooth(
+    data = plot_data,
+    aes(x = calendar_date,
+        y = me,
+        fill = titre_type,
+        colour = titre_type,
+        group = interaction(titre_type, wave)),
+    alpha = 0.5, span = 0.2)
