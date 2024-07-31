@@ -504,11 +504,12 @@ scova <- R6::R6Class(
           by = c(private$all_formula_vars, "stan_id", "titre_type")]
 
       if (summarise) {
-        logger::log_info("Summarising into population quantiles")
+        logger::log_info("Resampling")
         dt_out <- dt_out[
           !is.nan(mu), .(pop_mu_sum = mean(mosaic::resample(mu))),
           by = c("calendar_date", "draw", "titre_type")]
 
+        logger::log_info("Summarising into population quantiles")
         dt_out <- summarise_draws(
           dt_out,
           column_name = "pop_mu_sum",
