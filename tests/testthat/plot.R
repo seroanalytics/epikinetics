@@ -1,0 +1,71 @@
+library(ggplot2)
+library(epikinetics)
+# plot functions for manual testing
+
+mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                 priors = scova_priors())
+
+mod$fit(chains = 4,
+        parallel_chains = 4,
+        iter_warmup = 50,
+        iter_sampling = 200,
+        threads_per_chain = 4)
+
+dat <- mod$simulate_population_trajectories()
+dat[, titre_type := forcats::fct_relevel(
+  titre_type,
+  c("Ancestral", "Alpha", "Delta"))]
+
+ggplot(data = dat) +
+  geom_line(aes(x = t,
+                y = me,
+                colour = titre_type)) +
+  geom_ribbon(aes(x = t,
+                  ymin = lo,
+                  ymax  = hi,
+                  fill = titre_type), alpha = 0.65) +
+  coord_cartesian(clip = "off") +
+  labs(x = "Time since last exposure (days)",
+       y = expression(paste("Titre (IC"[50], ")"))) +
+  scale_y_continuous(
+    trans = "log2") +
+  facet_wrap(~titre_type)
+
+dat <- mod$population_stationary_points()
+dat[, titre_type := forcats::fct_relevel(
+  titre_type,
+  c("Ancestral", "Alpha", "Delta"))]
+
+ggplot(data = dat, aes(
+  x = mu_p, y = mu_s,
+  colour = titre_type)) +
+  geom_density_2d(
+    aes(
+      group = titre_type)) +
+  geom_point(alpha = 0.05, size = 0.2) +
+  geom_point(aes(x = mu_p_me, y = mu_s_me),
+             colour = "black") +
+  geom_path(aes(x = mu_p_me, y = mu_s_me,
+                group = titre_type),
+            colour = "black") +
+  geom_vline(xintercept = 2560, linetype = "twodash", colour = "gray30") +
+  scale_x_continuous(
+    trans = "log2",
+    breaks = c(40, 80, 160, 320, 640, 1280, 2560, 5120, 10240),
+    labels = c(expression(" " <= 40),
+               "80", "160", "320", "640", "1280", "2560", "5120", "10240"),
+    limits = c(NA, 10240)) +
+  geom_hline(yintercept = 2560, linetype = "twodash", colour = "gray30") +
+  scale_y_continuous(
+    trans = "log2",
+    breaks = c(40, 80, 160, 320, 640, 1280, 2560, 5120, 10240),
+    labels = c(expression(" " <= 40),
+               "80", "160", "320", "640", "1280", "2560", "5120", "10240"),
+    limits = c(NA, 5120)) +
+  scale_shape_manual(values = c(1, 2, 3)) +
+  labs(x = expression(paste("Population-level titre value at peak (IC"[50], ")")),
+       y = expression(paste("Population-level titre value at set-point (IC"[50], ")"))) +
+  guides(colour = guide_legend(title = "Titre type", override.aes = list(alpha = 1, size = 1)),
+         shape = guide_legend(title = "Infection history"))
+
+dat <- mod$simulate_individual_trajectories(summarise = FALSE)
