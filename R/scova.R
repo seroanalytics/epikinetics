@@ -216,7 +216,8 @@ scova <- R6::R6Class(
     #' for required columns: \code{vignette("data", package = "epikinetics")}.
     #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
     #' @param priors Object of type \link[epikinetics]{scova_priors}. Default scova_priors().
-    #' @param covariate_formula Formula specifying hierarchical structure of model. Default ~0.
+    #' @param covariate_formula Formula specifying linear regression model. Note all variables in the formula
+    #' will be treated as categorical variables. Default ~0.
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     initialize = function(priors = scova_priors(),
@@ -267,9 +268,6 @@ scova <- R6::R6Class(
         name = "antibody_kinetics_main",
         package = "epikinetics"
       )
-    },
-    get_design_matrix = function() {
-      private$design_matrix
     },
     #' @description Fit the model and return CmdStanMCMC fitted model object.
     #' @return A CmdStanMCMC fitted model object: <https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html>
