@@ -4,3 +4,4 @@ src/stan/**/*.exe
 src/stan/**/*.EXE
 inst/doc
 .idea
+*.png

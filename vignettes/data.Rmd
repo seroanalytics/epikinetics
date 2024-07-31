@@ -31,7 +31,7 @@ censored:
 
 It can also contain further columns for any covariates to be included in the model. The data files installed with this package have additional columns infection_history, last_vax_type, and exp_num.
 
-The model also accepts a covariate formula for a hierarchical model. The variables in the formula must correspond to column names in the dataset.
+The model also accepts a covariate formula to define the regression model. The variables in the formula must correspond to column names in the dataset. Not that all variables will be treated as **categorical variables**, that is converted to factors regardless of their input type.
 
 # Ouput data
 
