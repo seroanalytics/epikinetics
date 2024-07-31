@@ -90,27 +90,38 @@ scova <- R6::R6Class(
                                  summarise,
                                  n_draws) {
 
+      has_covariates <- length(private$all_formula_vars) > 0
+
       # Declare variables to suppress notes when compiling package
       # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
       t0_pop <- tp_pop <- ts_pop <- m1_pop <- m2_pop <- m3_pop <- NULL
-      beta_t0 <- beta_tp <- beta_ts <- beta_m1 <- beta_m2 <- beta_m3 <- NULL
       k <- p <- .draw <- t_id <- mu <- NULL
 
+      params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]",
+                  "m1_pop[k]", "m2_pop[k]", "m3_pop[k]")
+      if (has_covariates) {
+        params <- c(params, "beta_t0[p]", "beta_tp[p]", "beta_ts[p]",
+                    "beta_m1[p]", "beta_m2[p]", "beta_m3[p]")
+      }
+
+      params_proc <- rlang::parse_exprs(params)
+
       dt_samples_wide <- tidybayes::spread_draws(
-        private$fitted,
-        t0_pop[k], tp_pop[k], ts_pop[k],
-        m1_pop[k], m2_pop[k], m3_pop[k],
-        beta_t0[p], beta_tp[p], beta_ts[p],
-        beta_m1[p], beta_m2[p], beta_m3[p]) |>
+        private$fitted, !!!params_proc) |>
         data.table()
 
       dt_samples_wide <- dt_samples_wide[.draw %in% 1:n_draws]
-
       dt_samples_wide[, `:=`(.chain = NULL, .iteration = NULL)]
+
+      if (!has_covariates) {
+        # there are no covariates, so add dummy column
+        # that will be removed after processing
+        dt_samples_wide$p <- 1
+      }
 
       data.table::setcolorder(dt_samples_wide, c("k", "p", ".draw"))
 
-      if (length(private$all_formula_vars) > 0) {
+      if (has_covariates) {
         logger::log_info("Adjusting by regression coefficients")
         dt_samples_wide <- private$adjust_parameters(dt_samples_wide)
       }
@@ -137,6 +148,11 @@ scova <- R6::R6Class(
       }
 
       data.table::setcolorder(dt_out, c("t", "p", "k"))
+
+      if (!has_covariates) {
+        dt_out[, p:= NULL]
+      }
+      dt_out
     },
     prepare_stan_data = function() {
       stan_id <- titre <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- t_since_min_date <- NULL
@@ -271,14 +287,18 @@ scova <- R6::R6Class(
     extract_population_parameters = function(n_draws = 2500,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
-      params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]", "m1_pop[k]", "m2_pop[k]",
-                  "m3_pop[k]", "beta_t0[p]", "beta_tp[p]", "beta_ts[p]", "beta_m1[p]",
-                  "beta_m2[p]", "beta_m3[p]")
+      has_covariates <- length(private$all_formula_vars) > 0
+
+      params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]", "m1_pop[k]", "m2_pop[k]", "m3_pop[k]")
+
+      if (has_covariates) {
+        params <- c(params, "beta_t0[p]", "beta_tp[p]", "beta_ts[p]", "beta_m1[p]", "beta_m2[p]", "beta_m3[p]")
+      }
 
       logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
-      data.table::setcolorder(dt_out, c("k", "p", ".draw"))
+      data.table::setcolorder(dt_out, c("k", ".draw"))
       data.table::setnames(dt_out, ".draw", "draw")
 
       if (length(private$all_formula_vars) > 0) {
@@ -383,6 +403,12 @@ scova <- R6::R6Class(
                                                            human_readable_covariates = FALSE)
 
       logger::log_info("Calculating peak and switch titre values")
+
+      by <- c("k", "draw")
+      if ("p" %in% colnames(dt_peak_switch)) {
+        by <- c("p", by)
+      }
+
       dt_peak_switch[, `:=`(
         mu_0 = scova_simulate_trajectory(
           0, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
@@ -390,7 +416,7 @@ scova <- R6::R6Class(
           tp_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
         mu_s = scova_simulate_trajectory(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
-                       by = c("p", "k", "draw")]
+                       by = by]
 
       logger::log_info("Recovering covariate names")
       dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
@@ -457,7 +483,7 @@ scova <- R6::R6Class(
       dt_params_ind_traj <- scova_simulate_trajectories(dt_params_ind_trim)
 
       dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
-          dt_params_ind_traj, vars_to_transform = "mu"))
+        dt_params_ind_traj, vars_to_transform = "mu"))
 
       logger::log_info("Recovering covariate names")
       dt_params_ind_traj <- private$recover_covariate_names(dt_params_ind_traj)
@@ -485,7 +511,7 @@ scova <- R6::R6Class(
           by = c("calendar_date", "titre_type"))
       }
 
-      dt_out[, time_shift:= time_shift]
+      dt_out[, time_shift := time_shift]
     }
   )
 )
