@@ -298,7 +298,12 @@ scova <- R6::R6Class(
       logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
-      data.table::setcolorder(dt_out, c("k", ".draw"))
+      if (has_covariates){
+        data.table::setcolorder(dt_out, c("p", "k", ".draw"))
+      } else {
+        data.table::setcolorder(dt_out, c("k", ".draw"))
+      }
+
       data.table::setnames(dt_out, ".draw", "draw")
 
       if (length(private$all_formula_vars) > 0) {
@@ -333,6 +338,7 @@ scova <- R6::R6Class(
       dt_out <- private$extract_parameters(params, n_draws)
 
       data.table::setcolorder(dt_out, c("n", "k", ".draw"))
+
       data.table::setnames(dt_out, c("n", ".draw"), c("stan_id", "draw"))
 
       if (human_readable_covariates) {
