@@ -53,8 +53,8 @@ biokinetics <- R6::R6Class(
       mm
     },
     construct_design_matrix = function() {
-      var <- stan_id <- NULL
-      dt_design_matrix <- private$data[, .SD, .SDcols = private$all_formula_vars, by = stan_id] |>
+      var <- pid <- NULL
+      dt_design_matrix <- private$data[, .SD, .SDcols = private$all_formula_vars, by = pid] |>
         unique()
 
       # Build the full design matrix using model.matrix
@@ -167,12 +167,12 @@ biokinetics <- R6::R6Class(
       data.table::setcolorder(dt_out, c("t", "p", "k"))
     },
     prepare_stan_data = function() {
-      stan_id <- titre <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- t_since_min_date <- NULL
+      pid <- value <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- t_since_min_date <- NULL
       stan_data <- list(
         N = private$data[, .N],
-        N_events = private$data[, data.table::uniqueN(stan_id)],
-        id = private$data[, stan_id],
-        titre = private$data[, titre],
+        N_events = private$data[, data.table::uniqueN(pid)],
+        id = private$data[, pid],
+        value = private$data[, value],
         censored = private$data[, censored],
         titre_type = private$data[, titre_type_num],
         preds_sd = private$preds_sd,
@@ -270,7 +270,14 @@ biokinetics <- R6::R6Class(
                    paste(unknown_vars, collapse = ", ")))
       }
       logger::log_info("Preparing data for stan")
-      private$data <- convert_log_scale(private$data, "titre")
+      private$data <- convert_log_scale(private$data, "value")
+      private$data[, `:=`(titre_type_num = as.numeric(as.factor(titre_type)),
+                          obs_id = seq_len(.N))]
+      if (time_type == "relative") {
+        private$data[, t_since_last_exp := as.integer(date - last_exp_date, units = "days")]
+      } else {
+        private$data[, t_since_min_date := as.integer(date - min(date), units = "days")]
+      }
       private$construct_design_matrix()
       private$build_covariate_lookup_table()
       private$prepare_stan_data()
@@ -289,10 +296,10 @@ biokinetics <- R6::R6Class(
       private$fitted <- private$model$sample(private$stan_input_data, ...)
       private$fitted
     },
-    #' @description Extract fitted population parameters
-    #' @return A data.table
-    #' @param n_draws Numeric
-    #' @param human_readable_covariates Logical. Default TRUE.
+        #' @description Extract fitted population parameters
+        #' @return A data.table
+        #' @param n_draws Numeric
+        #' @param human_readable_covariates Logical. Default TRUE.
     extract_population_parameters = function(n_draws = 2500,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
@@ -338,7 +345,7 @@ biokinetics <- R6::R6Class(
       dt_out <- private$extract_parameters(params, n_draws)
 
       data.table::setcolorder(dt_out, c("n", "k", ".draw"))
-      data.table::setnames(dt_out, c("n", ".draw"), c("stan_id", "draw"))
+      data.table::setnames(dt_out, c("n", ".draw"), c("pid", "draw"))
 
       if (human_readable_covariates) {
         logger::log_info("Recovering covariate names")
@@ -395,11 +402,11 @@ biokinetics <- R6::R6Class(
       }
       dt_out
     },
-    #' @description Process the stan model results into a data.table.
-    #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
-    #' mu_s_me, and a column for each covariate. See the data vignette for details:
-    #' \code{vignette("data", package = "epikinetics")}
-    #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
+        #' @description Process the stan model results into a data.table.
+        #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
+        #' mu_s_me, and a column for each covariate. See the data vignette for details:
+        #' \code{vignette("data", package = "epikinetics")}
+        #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
     population_stationary_points = function(n_draws = 2500) {
       private$check_fitted()
       validate_numeric(n_draws)
@@ -438,7 +445,7 @@ biokinetics <- R6::R6Class(
     #' @description Simulate individual trajectories from the model. This is
     #' computationally expensive and may take a while to run if n_draws is large.
     #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
-    #' If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
+    #' If summarise = FALSE, columns are pid, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
     #' and a column for each covariate in the hierarchical model. See the data vignette for details:
     #' \code{vignette("data", package = "epikinetics")}.
     #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
@@ -463,18 +470,18 @@ biokinetics <- R6::R6Class(
       # Calculating the maximum time each individual has data for after the
       # exposure of interest
       dt_max_dates <- private$data[
-        , .(t_max = max(t_since_last_exp)), by = .(stan_id)]
+        , .(t_max = max(t_since_last_exp)), by = .(pid)]
 
       # A very small number of individuals have bleeds on the same day or a few days
       # after their recorded exposure dates, resulting in very short trajectories.
       # Adding a 50 day buffer to any individuals with less than or equal to 50 days
       # of observations after their focal exposure
-      dt_max_dates <- dt_max_dates[t_max <= 50, t_max := 50, by = .(stan_id)]
+      dt_max_dates <- dt_max_dates[t_max <= 50, t_max := 50, by = .(pid)]
 
       # Merging the parameter draws with the maximum time data.table
-      dt_params_ind <- merge(dt_params_ind, dt_max_dates, by = "stan_id")
+      dt_params_ind <- merge(dt_params_ind, dt_max_dates, by = "pid")
 
-      dt_params_ind_trim <- dt_params_ind[, .SD[draw %in% 1:n_draws], by = stan_id]
+      dt_params_ind_trim <- dt_params_ind[, .SD[draw %in% 1:n_draws], by = pid]
 
       # Running the C++ code to simulate trajectories for each parameter sample
       # for each individual
@@ -482,7 +489,7 @@ biokinetics <- R6::R6Class(
       dt_params_ind_traj <- biokinetics_simulate_trajectories(dt_params_ind_trim)
 
       dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
-          dt_params_ind_traj, vars_to_transform = "mu"))
+        dt_params_ind_traj, vars_to_transform = "mu"))
 
       logger::log_info("Recovering covariate names")
       dt_params_ind_traj <- private$recover_covariate_names(dt_params_ind_traj)
@@ -490,13 +497,13 @@ biokinetics <- R6::R6Class(
       logger::log_info(paste("Calculating exposure dates. Adjusting exposures by", time_shift, "days"))
       dt_lookup <- private$data[, .(
         exposure_date = min(last_exp_date) - time_shift),
-                                  by = c(private$all_formula_vars, "stan_id")]
+                                  by = c(private$all_formula_vars, "pid")]
 
-      dt_out <- merge(dt_params_ind_traj, dt_lookup, by = "stan_id")
+      dt_out <- merge(dt_params_ind_traj, dt_lookup, by = "pid")
 
       dt_out[
         , calendar_date := exposure_date + t,
-          by = c(private$all_formula_vars, "stan_id", "titre_type")]
+          by = c(private$all_formula_vars, "pid", "titre_type")]
 
       if (summarise) {
         logger::log_info("Summarising into population quantiles")
@@ -510,7 +517,7 @@ biokinetics <- R6::R6Class(
           by = c("calendar_date", "titre_type"))
       }
 
-      dt_out[, time_shift:= time_shift]
+      dt_out[, time_shift := time_shift]
     }
   )
 )

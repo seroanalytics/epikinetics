@@ -31,7 +31,7 @@ data {
   int K; // Number of titre types
   array[N] int<lower=1, upper=K> titre_type; // Titre type for each observation
   vector[N] t; // Time for each observation
-  vector[N] titre; // Observed titre values
+  vector[N] value; // Observed titre values
   array[N] int<lower=-2, upper=1> censored; // Censoring indicator: -2 for lo, -1 for me 1 for upper, 0 for none
   
   // Indices for different censoring scenarios
@@ -145,13 +145,13 @@ model {
   mu = boost_wane_ind(
     t, t0_ind, tp_ind, ts_ind, m1_ind, m2_ind, m3_ind, titre_type, id);
   
-  // Likelihood for observations in the range 1 < log2(titre/5) <= 7
-  titre[uncens_idx] ~ normal(mu[uncens_idx], sigma);
+  // Likelihood for observations in the range 1 < log2(value/5) <= 7
+  value[uncens_idx] ~ normal(mu[uncens_idx], sigma);
 
-  // Likelihood for observations at lower limit: log2(titre/5) = 0
+  // Likelihood for observations at lower limit: log2(value/5) = 0
   target += normal_lcdf(0 | mu[cens_lo_idx], sigma);
 
-  // Censoring at log2(titre/5) = 7, originally titre = 2560
+  // Censoring at log2(value/5) = 7, originally value = 2560
   target += normal_lccdf(9 | mu[cens_hi_idx], sigma); 
   
   // Covariate-level mean priors, parameterised from previous studies

@@ -16,7 +16,7 @@ test_that("Can construct stan data", {
   # the fit function has been mocked above to return the stan inputs
   stan_dt <- mod$fit()
   expect_equal(stan_dt$N_events, 335)
-  expect_equal(unlist(stan_dt$id), unname(unlist(dt[, "stan_id"])))
+  expect_equal(unlist(stan_dt$id), unname(unlist(dt[, "pid"])))
 })
 
 test_that("Can initialise file path data", {

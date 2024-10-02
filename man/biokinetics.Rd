@@ -219,7 +219,7 @@ Default TRUE.}
 }
 \subsection{Returns}{
 A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
-If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
+If summarise = FALSE, columns are pid, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
 and a column for each covariate in the hierarchical model. See the data vignette for details:
 \code{vignette("data", package = "epikinetics")}.
 }
