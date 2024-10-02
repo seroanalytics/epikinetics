@@ -237,17 +237,13 @@ biokinetics <- R6::R6Class(
                           covariate_formula = ~0,
                           preds_sd = 0.25,
                           time_type = "relative") {
-      if (!inherits(priors, "biokinetics_priors")) {
-        stop("'priors' must be of type 'biokinetics_priors'")
-      }
+      validate_priors(priors)
       private$priors <- priors
       validate_numeric(preds_sd)
       private$preds_sd <- preds_sd
       validate_time_type(time_type)
       private$time_type <- time_type
-      if (!(class(covariate_formula) == "formula")) {
-        stop("'covariate_formula' must be a formula")
-      }
+      validate_formula(covariate_formula)
       private$covariate_formula <- covariate_formula
       private$all_formula_vars <- all.vars(covariate_formula)
       if (is.null(data) && is.null(file_path)) {
@@ -264,11 +260,8 @@ biokinetics <- R6::R6Class(
         }
         private$data <- data
       }
-      unknown_vars <- private$all_formula_vars[which(!(private$all_formula_vars %in% names(private$data)))]
-      if (length(unknown_vars) > 0) {
-        stop(paste("All variables in 'covariate_formula' must correspond to data columns. Found unknown variables:",
-                   paste(unknown_vars, collapse = ", ")))
-      }
+      validate_required_cols(private$data)
+      validate_formula_vars(private$all_formula_vars, private$data)
       logger::log_info("Preparing data for stan")
       private$data <- convert_log_scale(private$data, "value")
       private$data[, `:=`(titre_type_num = as.numeric(as.factor(titre_type)),
