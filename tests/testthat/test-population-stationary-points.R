@@ -7,12 +7,12 @@ local_mocked_bindings(
 )
 
 test_that("Cannot retrieve data until model is fitted", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
   expect_error(mod$population_stationary_points(), "Model has not been fitted yet. Call 'fit' before calling this function.")
 })
 
 test_that("Can get population stationary poins", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   result <- mod$population_stationary_points()
