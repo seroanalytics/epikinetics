@@ -296,10 +296,10 @@ biokinetics <- R6::R6Class(
       private$fitted <- private$model$sample(private$stan_input_data, ...)
       private$fitted
     },
-        #' @description Extract fitted population parameters
-        #' @return A data.table
-        #' @param n_draws Numeric
-        #' @param human_readable_covariates Logical. Default TRUE.
+    #' @description Extract fitted population parameters
+    #' @return A data.table
+    #' @param n_draws Numeric
+    #' @param human_readable_covariates Logical. Default TRUE.
     extract_population_parameters = function(n_draws = 2500,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
@@ -402,11 +402,11 @@ biokinetics <- R6::R6Class(
       }
       dt_out
     },
-        #' @description Process the stan model results into a data.table.
-        #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
-        #' mu_s_me, and a column for each covariate. See the data vignette for details:
-        #' \code{vignette("data", package = "epikinetics")}
-        #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
+    #' @description Process the stan model results into a data.table.
+    #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
+    #' mu_s_me, and a column for each covariate. See the data vignette for details:
+    #' \code{vignette("data", package = "epikinetics")}
+    #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
     population_stationary_points = function(n_draws = 2500) {
       private$check_fitted()
       validate_numeric(n_draws)
