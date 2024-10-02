@@ -49,13 +49,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/biokinetics.html">biokinetics case study</a>
+    </li>
+    <li>
       <a href="../articles/data.html">A guide to model input and output data</a>
     </li>
     <li>
       <a href="../articles/model.html">Model</a>
-    </li>
-    <li>
-      <a href="../articles/scova.html">SARS-CoV-2 antibody model: replicating paper figures</a>
     </li>
   </ul>
 </li>
@@ -105,14 +105,14 @@ object is returned. This means that users who are already familiar with
 <code>cmdstanr</code> are free to do what they want with the fitted
 model.</p>
 <p><strong>Important!</strong> <strong>The data provided to
-<code>scova$new</code> is converted to a base2 log scale before
+<code>biokinetics$new</code> is converted to a base2 log scale before
 inference is performed. This means that if working directly with the
 fitted <code>CmdStanMCMC</code> all values will be on this scale. The
 package provides a helper function for converting back to the original
 scale: <a href="../reference/convert_log_scale_inverse.html">convert_log_scale_inverse</a>.</strong></p>
 <p>Three further functions provide model outputs that we think are
 particularly useful in <a href="https://cran.r-project.org/web/packages/data.table/" class="external-link">data.table</a>
-format. <a href="../reference/scova.html">Scova</a> contains
+format. <a href="../reference/biokinetics.html">biokinetics</a> contains
 documentation on each of these functions so please read that first; this
 Vignette provides guidance on the correct interpretation of each column
 in the returned tables. (In these functions data is returned on the
@@ -120,7 +120,7 @@ original scale).</p>
 <div class="section level3">
 <h3 id="simulate_population_trajectories">simulate_population_trajectories<a class="anchor" aria-label="anchor" href="#simulate_population_trajectories"></a>
 </h3>
-<p>See the documentation for this function <a href="../reference/scova.html#method-simulate-population-trajectories">here</a>.
+<p>See the documentation for this function <a href="../reference/biokinetics.html#method-simulate-population-trajectories">here</a>.
 There are 2 different output formats depending on whether the provided
 <code>summarise</code> argument is <code>TRUE</code> or
 <code>FALSE</code>.</p>
@@ -163,7 +163,7 @@ for each covariate in the hierarchical model.</p></li>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

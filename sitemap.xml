@@ -1,16 +1,16 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>/404.html</loc></url>
 <url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/biokinetics.html</loc></url>
 <url><loc>/articles/data.html</loc></url>
 <url><loc>/articles/index.html</loc></url>
 <url><loc>/articles/model.html</loc></url>
-<url><loc>/articles/scova.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
+<url><loc>/reference/biokinetics.html</loc></url>
+<url><loc>/reference/biokinetics_priors.html</loc></url>
 <url><loc>/reference/convert_log_scale_inverse.html</loc></url>
 <url><loc>/reference/epikinetics-package.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
-<url><loc>/reference/scova.html</loc></url>
-<url><loc>/reference/scova_priors.html</loc></url>
 </urlset>
 
