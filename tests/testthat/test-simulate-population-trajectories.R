@@ -7,12 +7,12 @@ local_mocked_bindings(
 )
 
 test_that("Cannot retrieve trajectories until model is fitted", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
   expect_error(mod$simulate_population_trajectories(), "Model has not been fitted yet. Call 'fit' before calling this function.")
 })
 
 test_that("Validates inputs", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   expect_error(mod$simulate_population_trajectories(summarise = "bad"), "'summarise' must be logical")
@@ -22,7 +22,7 @@ test_that("Validates inputs", {
 })
 
 test_that("Can retrieve summarised trajectories", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_population_trajectories(summarise = TRUE)
@@ -30,7 +30,7 @@ test_that("Can retrieve summarised trajectories", {
 })
 
 test_that("Can retrieve un-summarised trajectories", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_population_trajectories(summarise = FALSE)
@@ -40,7 +40,7 @@ test_that("Can retrieve un-summarised trajectories", {
 })
 
 test_that("Absolute dates are returned if time_type is 'absolute'", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_population_trajectories(summarise = TRUE, time_type = "absolute")
@@ -49,7 +49,7 @@ test_that("Absolute dates are returned if time_type is 'absolute'", {
 })
 
 test_that("Only times up to t_max are returned", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_population_trajectories(summarise = TRUE, t_max = 10)

@@ -7,8 +7,8 @@ local_mocked_bindings(
 )
 
 test_that("Can fit model with arguments", {
-  res <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   priors = scova_priors())$fit(chains = 4,
+  res <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                   priors = biokinetics_priors())$fit(chains = 4,
                                             parallel_chains = 4,
                                             iter_warmup = 100,
                                             iter_sampling = 400,

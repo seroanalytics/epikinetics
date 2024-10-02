@@ -1,11 +1,11 @@
-##' @title SARS-CoV-2 Antibody Kinetics Model
+##' @title Biomarker Kinetics Model
 ##'
-##' @description Create an instance of the SARS-CoV-2 antibody model and
-##' fit it to a dataset using Gaussian priors and a given hierarchical model structure.
+##' @description Create an instance of the biomarker kinetics model and
+##' fit it to a dataset.
 ##' @export
 ##' @importFrom R6 R6Class
-scova <- R6::R6Class(
-  "scova",
+biokinetics <- R6::R6Class(
+  "biokinetics",
   cloneable = FALSE,
   private = list(
     priors = NULL,
@@ -152,7 +152,7 @@ scova <- R6::R6Class(
       dt_out <- merge(
         dt_samples_wide, dt_times, by = "t_id", allow.cartesian = TRUE)
 
-      dt_out[, mu := scova_simulate_trajectory(
+      dt_out[, mu := biokinetics_simulate_trajectory(
         t, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
                by = c("t", "p", "k", ".draw")]
 
@@ -223,22 +223,22 @@ scova <- R6::R6Class(
   ),
   public = list(
     #' @description Initialise the kinetics model.
-    #' @return An epikinetics::scova object.
+    #' @return An epikinetics::biokinetics object.
     #' @param data Optional data table of model inputs. One of data or file must be provided. See the data vignette
     #' for required columns: \code{vignette("data", package = "epikinetics")}.
     #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
-    #' @param priors Object of type \link[epikinetics]{scova_priors}. Default scova_priors().
+    #' @param priors Object of type \link[epikinetics]{biokinetics_priors}. Default biokinetics_priors().
     #' @param covariate_formula Formula specifying hierarchical structure of model. Default ~0.
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
-    initialize = function(priors = scova_priors(),
+    initialize = function(priors = biokinetics_priors(),
                           data = NULL,
                           file_path = NULL,
                           covariate_formula = ~0,
                           preds_sd = 0.25,
                           time_type = "relative") {
-      if (!inherits(priors, "scova_priors")) {
-        stop("'priors' must be of type 'scova_priors'")
+      if (!inherits(priors, "biokinetics_priors")) {
+        stop("'priors' must be of type 'biokinetics_priors'")
       }
       private$priors <- priors
       validate_numeric(preds_sd)
@@ -409,11 +409,11 @@ scova <- R6::R6Class(
 
       logger::log_info("Calculating peak and switch titre values")
       dt_peak_switch[, `:=`(
-        mu_0 = scova_simulate_trajectory(
+        mu_0 = biokinetics_simulate_trajectory(
           0, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
-        mu_p = scova_simulate_trajectory(
+        mu_p = biokinetics_simulate_trajectory(
           tp_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
-        mu_s = scova_simulate_trajectory(
+        mu_s = biokinetics_simulate_trajectory(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
                        by = c("p", "k", "draw")]
 
@@ -479,7 +479,7 @@ scova <- R6::R6Class(
       # Running the C++ code to simulate trajectories for each parameter sample
       # for each individual
       logger::log_info("Simulating individual trajectories")
-      dt_params_ind_traj <- scova_simulate_trajectories(dt_params_ind_trim)
+      dt_params_ind_traj <- biokinetics_simulate_trajectories(dt_params_ind_trim)
 
       dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
           dt_params_ind_traj, vars_to_transform = "mu"))

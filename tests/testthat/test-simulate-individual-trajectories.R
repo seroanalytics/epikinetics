@@ -8,7 +8,7 @@ test_that("Cpp and R function produce same values", {
                         m2 = 1,
                         m3 = 1.5
   )
-  res_pop <- dat_pop[, mu := scova_simulate_trajectory(t, t0, tp, ts, m1, m2, m3), by = "t"]
+  res_pop <- dat_pop[, mu := biokinetics_simulate_trajectory(t, t0, tp, ts, m1, m2, m3), by = "t"]
   dat_ind <- data.table(stan_id = 1L,
                         t_max = t_max,
                         k = 3L,
@@ -21,7 +21,7 @@ test_that("Cpp and R function produce same values", {
                         m3_ind = 1.5
   )
 
-  res_ind <- scova_simulate_trajectories(dat_ind)
+  res_ind <- biokinetics_simulate_trajectories(dat_ind)
   expect_equal(res_pop$mu, res_ind$mu)
 })
 
@@ -34,12 +34,12 @@ local_mocked_bindings(
 )
 
 test_that("Cannot retrieve trajectories until model is fitted", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
   expect_error(mod$simulate_individual_trajectories(), "Model has not been fitted yet. Call 'fit' before calling this function.")
 })
 
 test_that("Validates inputs", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   expect_error(mod$simulate_individual_trajectories(summarise = "bad"), "'summarise' must be logical")
@@ -48,7 +48,7 @@ test_that("Validates inputs", {
 })
 
 test_that("Can retrieve summarised trajectories", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = TRUE, n_draws = 10)
@@ -56,7 +56,7 @@ test_that("Can retrieve summarised trajectories", {
 })
 
 test_that("Can retrieve un-summarised trajectories", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = FALSE, n_draws = 10)
@@ -65,7 +65,7 @@ test_that("Can retrieve un-summarised trajectories", {
 })
 
 test_that("Only n_draws draws are returned", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = FALSE, n_draws = 10)
@@ -73,7 +73,7 @@ test_that("Only n_draws draws are returned", {
 })
 
 test_that("Exposure dates are brought forward by time_shift days", {
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = FALSE, n_draws = 10)
