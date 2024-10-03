@@ -97,9 +97,8 @@ package to replicate some of the key paper figures.</p>
 the data in CSV format, or a <a href="%22https://cran.r-project.org/web/packages/data.table/index.html%22" class="external-link">data.table</a>.
 See <a href="../reference/biokinetics.html">biokinetics</a> for all
 available arguments. In this vignette we use a dataset representing the
-Delta wave which is installed with this package, specifying a
-hierarchical model that just looks at the effect of infection
-history.</p>
+Delta wave which is installed with this package, specifying a regression
+model that just looks at the effect of infection history.</p>
 <p>The <code>fit</code> method then has the same function signature as
 the underlying <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.html" class="external-link">cmdstanr::sample</a>
 method. Here we specify a relatively small number of iterations of the

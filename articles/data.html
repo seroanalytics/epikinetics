@@ -93,9 +93,11 @@ censored:</p>
 <p>It can also contain further columns for any covariates to be included
 in the model. The data files installed with this package have additional
 columns infection_history, last_vax_type, and exp_num.</p>
-<p>The model also accepts a covariate formula for a hierarchical model.
-The variables in the formula must correspond to column names in the
-dataset.</p>
+<p>The model also accepts a covariate formula to define the regression
+model. The variables in the formula must correspond to column names in
+the dataset. Note that all variables will be treated as
+<strong>categorical variables</strong>; that is, converted to factors
+regardless of their input type.</p>
 </div>
 <div class="section level2">
 <h2 id="ouput-data">Ouput data<a class="anchor" aria-label="anchor" href="#ouput-data"></a>
