@@ -78,6 +78,11 @@
 <div class="page-header"><h1 id="epikinetics">epikinetics<a class="anchor" aria-label="anchor" href="#epikinetics"></a>
 </h1></div>
 <p><a href="https://www.repostatus.org/#wip" class="external-link"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public."></a> <a href="https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://codecov.io/gh/seroanalytics/epikinetics" class="external-link"><img src="https://codecov.io/gh/seroanalytics/epikinetics/graph/badge.svg?token=5MZYYDUZYH" alt="codecov"></a></p>
+<p><code>epikinetics</code> is an R package for Bayesian hierarchical modelling of antibody kinetics.</p>
+<p>The underlying model is taken from <a href="#References">Russell TW et al., Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study.</a> See the <a href="https://seroanalytics.org/epikinetics/articles/biokinetics.html" class="external-link">case study vignette</a> for a replication of some key figures from the paper using <code>epikinetics</code>.</p>
+<p>Three publicly available datasets from the above paper are also installed with the package and can be used as test input data:</p>
+<p><code>{r} delta &lt;- data.table::fread(system.file("delta_full.rds", package = "epikinetics")) ba2 &lt;- data.table::fread(system.file("ba2_full.rds", package = "epikinetics")) xbb &lt;- data.table::fread(system.file("xbb_full.rds", package = "epikinetics"))</code></p>
+<p>If running the model with your own data, see the <a href="https://seroanalytics.org/epikinetics/articles/data.html" class="external-link">data vignette</a> for an explanation of the input format.</p>
 </div>
 <div class="section level1">
 <h1 id="installing">Installing<a class="anchor" aria-label="anchor" href="#installing"></a>
@@ -91,7 +96,8 @@
 <h1 id="running-in-docker">Running in Docker<a class="anchor" aria-label="anchor" href="#running-in-docker"></a>
 </h1>
 <p>Alternatively, you can run <code>epikinetics</code> via a Docker image, mounting a working directory which contains your input data files:</p>
-<pre><code>docker run -v /workdir:/ -it seroanalytics/epikinetics:main</code></pre>
+<pre><code>docker pull seroanalytics/epikinetics:main
+docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main</code></pre>
 </div>
 <div class="section level1">
 <h1 id="developing">Developing<a class="anchor" aria-label="anchor" href="#developing"></a>
@@ -103,6 +109,11 @@
 </h2>
 <p>To build a Docker image, run <code>docker/build</code>. To push a new image to Dockerhub, <code>docker/push</code>. An image is built and pushed during CI on merge to main.</p>
 </div>
+</div>
+<div class="section level1">
+<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h1>
+<p>Russell TW, Townsley H, Hellewell J, Gahir J, Shawe-Taylor M, Greenwood D, Hodgson D, Hobbs A, Dowgier G, Penn R, Sanderson T, Stevenson-Leggett P, Bazire J, Harvey R, Fowler AS, Miah M, Smith C, Miranda M, Bawumia P, Mears HV, Adams L, Hatipoglu E, O’Reilly N, Warchal S, Ambrose K, Strange A, Kelly G, Kjar S, Papineni P, Corrah T, Gilson R, Libri V, Kassiotis G, Gamblin S, Lewis NS, Williams B, Swanton C, Gandhi S, Beale R, Wu MY, Bauer DLV, Carr EJ, Wall EC, Kucharski AJ. Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study. Lancet Infect Dis. 2024 Sep 11:S1473-3099(24)00484-5. doi: <a href="https://doi.org/10.1016/s1473-3099(24)00484-5" class="external-link">10.1016/S1473-3099(24)00484-5</a>.</p>
 </div>
 
   </div>
