@@ -1,8 +1,8 @@
 ---
-title: "SARS-CoV-2 antibody model: replicating paper figures"
+title: "biokinetics case study"
 output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{SARS-CoV-2 antibody model: replicating paper figures}
+    %\VignetteIndexEntry{biokinetics case study}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
@@ -14,15 +14,20 @@ knitr::opts_chunk$set(
 )
 ```
 
+The underlying `biokinetics` model was developed in the following paper:
+[Russell TW et al. Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study. Lancet Infect Dis. 2024 Sep 11:S1473-3099(24)00484-5](https://doi.org/10.1016/s1473-3099(24)00484-5)
+
+This vignette demonstrates how to use the `epikinetics` package to replicate some of the key paper figures.
+
 # Fitting the model
 
-To initialise a model object, the only required argument is a path to the data in CSV format, or a [data.table]("https://cran.r-project.org/web/packages/data.table/index.html"). See [scova](../reference/scova.html) for all available arguments. In this vignette we use a dataset representing the Delta wave which is installed with this package, specifying a regression model that just looks at the effect of infection history.
+To initialise a model object, the only required argument is a path to the data in CSV format, or a [data.table]("https://cran.r-project.org/web/packages/data.table/index.html"). See [biokinetics](../reference/biokinetics.html) for all available arguments. In this vignette we use a dataset representing the Delta wave which is installed with this package, specifying a regression model that just looks at the effect of infection history.
 
 The `fit` method then has the same function signature as the underlying [cmdstanr::sample](https://mc-stan.org/cmdstanr/reference/model-method-sample.html) method. Here we specify a relatively small number of iterations of the algorithm to limit the time it takes to compile this vignette.
 
 ```{r, warning=FALSE, message=FALSE, results="hide"}
 dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-mod <- epikinetics::scova$new(data = dat, covariate_formula = ~0 + infection_history)
+mod <- epikinetics::biokinetics$new(data = dat, covariate_formula = ~0 + infection_history)
 delta <- mod$fit(parallel_chains = 4,
                  iter_warmup = 50,
                  iter_sampling = 200,

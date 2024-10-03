@@ -11,22 +11,22 @@ gaussian_priors <- function(names, mu_values, sigma_values) {
   ret
 }
 
-#' @title Construct priors for the SARS-CoV-2 antibody model.
+#' @title Construct priors for the biomarker model.
 #' @export
-#' @description The scova model has 6 parameters: t0, tp, ts, m1, m2, m3 corresponding to critical time points and
+#' @description The biokinetics model has 6 parameters: t0, tp, ts, m1, m2, m3 corresponding to critical time points and
 #' gradients. See the model vignette for details: \code{vignette("model", package = "epikinetics")}. Each of these
 #' parameters has a Gaussian prior, and these can be specified by the user. This function takes means and standard
-#' deviations for each prior and constructs an object of type 'scova_priors' to be passed to the model.
-#' @return A named list of type 'scova_priors'.
+#' deviations for each prior and constructs an object of type 'biokinetics_priors' to be passed to the model.
+#' @return A named list of type 'biokinetics_priors'.
 #' @param mu_values Mean of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.
 #' @param sigma_values Standard deviation of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.
 #' @examples
-#' priors <- scova_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
+#' priors <- biokinetics_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
 #' sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
-scova_priors <- function(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
+biokinetics_priors <- function(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
                          sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01)) {
   names <- c("t0", "tp", "ts", "m1", "m2", "m3")
   ret <- gaussian_priors(names, mu_values, sigma_values)
-  class(ret) <- append("scova_priors", class(ret))
+  class(ret) <- append("biokinetics_priors", class(ret))
   ret
 }

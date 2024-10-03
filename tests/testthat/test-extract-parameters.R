@@ -6,7 +6,7 @@ test_that("Cannot retrieve population params until model is fitted", {
   local_mocked_bindings(
     stan_package_model = mock_model, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
   expect_error(mod$extract_population_parameters(), "Model has not been fitted yet. Call 'fit' before calling this function.")
 })
 
@@ -14,16 +14,18 @@ test_that("Cannot retrieve individual params until model is fitted", {
   local_mocked_bindings(
     stan_package_model = mock_model, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
   expect_error(mod$extract_individual_parameters(), "Model has not been fitted yet. Call 'fit' before calling this function.")
 })
 
 test_that("Can extract population parameters without human readable covariates", {
+
   local_mocked_bindings(
     stan_package_model = mock_model, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   covariate_formula =  ~0 + infection_history)
+
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history)
   mod$fit()
   params <- mod$extract_population_parameters(n_draws = 10, human_readable_covariates = FALSE)
   expect_equal(names(params), c("p", "k", "draw", "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop", "m3_pop",
@@ -34,8 +36,8 @@ test_that("Can extract population parameters with human readable covariates", {
   local_mocked_bindings(
     stan_package_model = mock_model, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   covariate_formula =  ~0 + infection_history)
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history)
   mod$fit()
   params <- mod$extract_population_parameters(n_draws = 10, human_readable_covariates = TRUE)
   expect_equal(names(params), c("draw", "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop", "m3_pop",
@@ -47,8 +49,8 @@ test_that("Can extract individual parameters without human readable covariates",
   local_mocked_bindings(
     stan_package_model = mock_model, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   covariate_formula =  ~0 + infection_history)
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history)
   mod$fit()
   params <- mod$extract_individual_parameters(n_draws = 10,
                                               human_readable_covariates = FALSE,
@@ -61,8 +63,8 @@ test_that("Can extract individual parameters with human readable covariates", {
   local_mocked_bindings(
     stan_package_model = mock_model, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   covariate_formula =  ~0 + infection_history)
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history)
   mod$fit()
   params <- mod$extract_individual_parameters(n_draws = 10,
                                               human_readable_covariates = TRUE,
@@ -75,8 +77,9 @@ test_that("Can extract individual parameters with variation params", {
   local_mocked_bindings(
     stan_package_model = mock_model, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   covariate_formula =  ~0 + infection_history)
+
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history)
   mod$fit()
   params <- mod$extract_individual_parameters(n_draws = 10,
                                               human_readable_covariates = TRUE,

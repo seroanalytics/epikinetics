@@ -14,12 +14,12 @@ test_that("Can fit model with arguments", {
   local_mocked_bindings(
     stan_package_model = mock_model_return_args, .package = "instantiate"
   )
-  res <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   priors = scova_priors())$fit(chains = 4,
-                                                parallel_chains = 4,
-                                                iter_warmup = 100,
-                                                iter_sampling = 400,
-                                                threads_per_chain = 4)
+  res <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                   priors = biokinetics_priors())$fit(chains = 4,
+                                            parallel_chains = 4,
+                                            iter_warmup = 100,
+                                            iter_sampling = 400,
+                                            threads_per_chain = 4)
   expect_equal(names(res), c("chains", "parallel_chains", "iter_warmup", "iter_sampling", "threads_per_chain"))
 })
 
@@ -27,8 +27,7 @@ test_that("Can process model fits with no covariates", {
   local_mocked_bindings(
     stan_package_model = mock_model_no_covariates, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   priors = scova_priors())
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
 
   res <- mod$fit(chains = 4,
                  parallel_chains = 4,
@@ -58,8 +57,7 @@ test_that("Can process model fits with multiple covariates", {
   local_mocked_bindings(
     stan_package_model = mock_model_multiple_covariates, .package = "instantiate"
   )
-  mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                   priors = scova_priors(),
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
                    covariate_formula = ~0 + infection_history + last_vax_type)
 
   res <- mod$fit(chains = 4,
