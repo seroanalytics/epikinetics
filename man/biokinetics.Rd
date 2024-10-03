@@ -11,6 +11,7 @@ fit it to a dataset.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-biokinetics-new}{\code{biokinetics$new()}}
+\item \href{#method-biokinetics-get_stan_data}{\code{biokinetics$get_stan_data()}}
 \item \href{#method-biokinetics-fit}{\code{biokinetics$fit()}}
 \item \href{#method-biokinetics-extract_population_parameters}{\code{biokinetics$extract_population_parameters()}}
 \item \href{#method-biokinetics-extract_individual_parameters}{\code{biokinetics$extract_individual_parameters()}}
@@ -55,6 +56,19 @@ for required columns: \code{vignette("data", package = "epikinetics")}.}
 }
 \subsection{Returns}{
 An epikinetics::biokinetics object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-biokinetics-get_stan_data"></a>}}
+\if{latex}{\out{\hypertarget{method-biokinetics-get_stan_data}{}}}
+\subsection{Method \code{get_stan_data()}}{
+View the data that is passed to the stan model, for debugging purposes.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$get_stan_data()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A list of arguments that will be passed to the stan model.
 }
 }
 \if{html}{\out{<hr>}}

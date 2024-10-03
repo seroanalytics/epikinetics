@@ -280,6 +280,11 @@ biokinetics <- R6::R6Class(
         package = "epikinetics"
       )
     },
+    #' @description View the data that is passed to the stan model, for debugging purposes.
+    #' @return A list of arguments that will be passed to the stan model.
+    get_stan_data = function() {
+      private$stan_input_data
+    },
     #' @description Fit the model and return CmdStanMCMC fitted model object.
     #' @return A CmdStanMCMC fitted model object: <https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html>
     #' @param ... Named arguments to the `sample()` method of CmdStan model.
