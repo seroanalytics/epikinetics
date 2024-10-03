@@ -21,7 +21,7 @@ std::vector<double> simulate_trajectory_cpp(
 [[cpp11::register]]
 cpp11::writable::data_frame simulate_trajectories_cpp(const data_frame &person_params) {
   // Extract parameters from DataFrame
-  integers stan_id = person_params["stan_id"];
+  integers pid = person_params["pid"];
   doubles t0_ind = person_params["t0_ind"];
   doubles tp_ind = person_params["tp_ind"];
   doubles ts_ind = person_params["ts_ind"];
@@ -36,8 +36,8 @@ cpp11::writable::data_frame simulate_trajectories_cpp(const data_frame &person_p
   std::vector<int> out_id, out_titre_type, out_draw, out_t;
   std::vector<double> out_mu;
 
-  for(int p = 0; p < stan_id.size(); p++) {
-    int curr_id = stan_id[p];
+  for(int p = 0; p < pid.size(); p++) {
+    int curr_id = pid[p];
     int curr_titre_type = titre_type[p];
     int curr_draw = draw[p];
     int t_max = t_max_individual[p];
@@ -55,7 +55,7 @@ cpp11::writable::data_frame simulate_trajectories_cpp(const data_frame &person_p
   }
 
   return cpp11::writable::data_frame({
-                            "stan_id"_nm = out_id,
+                            "pid"_nm = out_id,
                             "k"_nm = out_titre_type,
                             "draw"_nm = out_draw,
                             "t"_nm = out_t,

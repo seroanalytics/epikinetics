@@ -55,7 +55,7 @@ test_that("Can extract individual parameters without human readable covariates",
   params <- mod$extract_individual_parameters(n_draws = 10,
                                               human_readable_covariates = FALSE,
                                               include_variation_params = FALSE)
-  expect_equal(names(params), c("stan_id", "k", "draw", "t0_ind", "tp_ind", "ts_ind",
+  expect_equal(names(params), c("pid", "k", "draw", "t0_ind", "tp_ind", "ts_ind",
                                 "m1_ind", "m2_ind", "m3_ind"))
 })
 
@@ -69,7 +69,7 @@ test_that("Can extract individual parameters with human readable covariates", {
   params <- mod$extract_individual_parameters(n_draws = 10,
                                               human_readable_covariates = TRUE,
                                               include_variation_params = FALSE)
-  expect_equal(names(params), c("stan_id", "draw", "t0_ind", "tp_ind", "ts_ind",
+  expect_equal(names(params), c("pid", "draw", "t0_ind", "tp_ind", "ts_ind",
                                 "m1_ind", "m2_ind", "m3_ind", "titre_type"))
 })
 
@@ -84,7 +84,7 @@ test_that("Can extract individual parameters with variation params", {
   params <- mod$extract_individual_parameters(n_draws = 10,
                                               human_readable_covariates = TRUE,
                                               include_variation_params = TRUE)
-  expect_equal(names(params), c("stan_id", "draw",
+  expect_equal(names(params), c("pid", "draw",
                                 "t0_ind", "tp_ind", "ts_ind",
                                 "m1_ind", "m2_ind", "m3_ind",
                                 "z_t0", "z_tp", "z_ts",

@@ -11,6 +11,7 @@ fit it to a dataset.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-biokinetics-new}{\code{biokinetics$new()}}
+\item \href{#method-biokinetics-get_stan_data}{\code{biokinetics$get_stan_data()}}
 \item \href{#method-biokinetics-fit}{\code{biokinetics$fit()}}
 \item \href{#method-biokinetics-extract_population_parameters}{\code{biokinetics$extract_population_parameters()}}
 \item \href{#method-biokinetics-extract_individual_parameters}{\code{biokinetics$extract_individual_parameters()}}
@@ -56,6 +57,19 @@ will be treated as categorical variables. Default ~0.}
 }
 \subsection{Returns}{
 An epikinetics::biokinetics object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-biokinetics-get_stan_data"></a>}}
+\if{latex}{\out{\hypertarget{method-biokinetics-get_stan_data}{}}}
+\subsection{Method \code{get_stan_data()}}{
+View the data that is passed to the stan model, for debugging purposes.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$get_stan_data()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A list of arguments that will be passed to the stan model.
 }
 }
 \if{html}{\out{<hr>}}
@@ -220,7 +234,7 @@ Default TRUE.}
 }
 \subsection{Returns}{
 A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
-If summarise = FALSE, columns are stan_id, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
+If summarise = FALSE, columns are pid, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
 and a column for each covariate in the hierarchical model. See the data vignette for details:
 \code{vignette("data", package = "epikinetics")}.
 }

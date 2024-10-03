@@ -29,9 +29,14 @@ test_that("Covariate formula must be a formula", {
 })
 
 test_that("Covariates must be present in data", {
+  expect_error(biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"), covariate_formula = 0~ bad),
+               "All variables in 'covariate_formula' must correspond to data columns. Found unknown variables: bad")
+})
+
+test_that("Required columns must be present in data", {
   dat <- data.table(test = 1)
   expect_error(biokinetics$new(data = dat, covariate_formula = 0~ bad),
-               "All variables in 'covariate_formula' must correspond to data columns. Found unknown variables: bad")
+               "Missing required columns: pid, date, last_exp_date, titre_type, value, censored")
 })
 
 test_that("Data must be a data.table", {

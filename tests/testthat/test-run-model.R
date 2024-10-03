@@ -43,7 +43,7 @@ test_that("Can process model fits with no covariates", {
   expect_equal(names(pt), c("t", "me", "lo", "hi", "titre_type"))
 
   it <- mod$simulate_individual_trajectories(n_draws = 100, summarise = FALSE)
-  expect_equal(names(it),  c("stan_id", "draw", "t", "mu", "titre_type",
+  expect_equal(names(it),  c("pid", "draw", "t", "mu", "titre_type",
                              "exposure_date", "calendar_date", "time_shift"))
 
  # it <- mod$simulate_individual_trajectories(n_draws = 100, summarise = TRUE)

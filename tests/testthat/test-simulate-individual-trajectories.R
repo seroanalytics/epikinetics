@@ -9,7 +9,7 @@ test_that("Cpp and R function produce same values", {
                         m3 = 1.5
   )
   res_pop <- dat_pop[, mu := biokinetics_simulate_trajectory(t, t0, tp, ts, m1, m2, m3), by = "t"]
-  dat_ind <- data.table(stan_id = 1L,
+  dat_ind <- data.table(pid = 1L,
                         t_max = t_max,
                         k = 3L,
                         draw = 10L,
@@ -60,7 +60,7 @@ test_that("Can retrieve un-summarised trajectories", {
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = FALSE, n_draws = 10)
-  expect_equal(names(trajectories), c("stan_id", "draw", "t", "mu", "titre_type", "infection_history",
+  expect_equal(names(trajectories), c("pid", "draw", "t", "mu", "titre_type", "infection_history",
                                       "exposure_date", "calendar_date", "time_shift"))
 })
 
