@@ -63,41 +63,13 @@ biokinetics <- R6::R6Class(
       # Identify columns with no variance and remove them
       variance_per_column <- apply(mm, 2, var)
       relevant_columns <- which(variance_per_column != 0)
-      mm_reduced <- mm[, relevant_columns]
+      mm_reduced <- mm[, relevant_columns, drop = FALSE]
       private$design_matrix <- mm_reduced
     },
     build_covariate_lookup_table = function() {
-      # Extract column names
-      col_names <- colnames(private$design_matrix)
-
-      # Split column names based on the ':' delimiter
-      split_data <- stringr::str_split(col_names, ":", simplify = TRUE)
-
-      # Convert the matrix to a data.table
-      dt <- data.table::as.data.table(split_data)
-
-      # Set the new column names
-      data.table::setnames(dt, private$all_formula_vars)
-
-      for (col_name in names(dt)) {
-        # Find the matching formula variable for current column
-        matching_formula_var <- private$all_formula_vars[which(startsWith(col_name, private$all_formula_vars))]
-        if (length(matching_formula_var) > 0) {
-          pattern_to_remove <- paste0("^", matching_formula_var)
-          dt[, (col_name) := stringr::str_remove_all(get(col_name), pattern_to_remove)]
-        }
-      }
-
-      # Declare variables to suppress notes when compiling package
-      # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-      p <- NULL
-
-      # .I is a special symbol in data.table for row number
-      dt[, p := .I]
-
-      # Reorder columns to have 'i' first
-      data.table::setcolorder(dt, "p")
-      private$covariate_lookup_table <- dt
+      private$covariate_lookup_table <- build_covariate_lookup_table(private$data,
+                                                                     private$design_matrix,
+                                                                     private$all_formula_vars)
     },
     recover_covariate_names = function(dt) {
       # Declare variables to suppress notes when compiling package
@@ -110,7 +82,7 @@ biokinetics <- R6::R6Class(
 
       dt_out <- dt[dt_titre_lookup, on = "k"][, `:=`(k = NULL)]
       if ("p" %in% colnames(dt)) {
-        dt_out <- dt_out[private$covariate_lookup_table, on = "p"][, `:=`(p = NULL)]
+        dt_out <- dt_out[private$covariate_lookup_table, on = "p", nomatch = NULL][, `:=`(p = NULL)]
       }
       dt_out
     },
@@ -118,27 +90,38 @@ biokinetics <- R6::R6Class(
                                  summarise,
                                  n_draws) {
 
+      has_covariates <- length(private$all_formula_vars) > 0
+
       # Declare variables to suppress notes when compiling package
       # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
       t0_pop <- tp_pop <- ts_pop <- m1_pop <- m2_pop <- m3_pop <- NULL
-      beta_t0 <- beta_tp <- beta_ts <- beta_m1 <- beta_m2 <- beta_m3 <- NULL
       k <- p <- .draw <- t_id <- mu <- NULL
 
+      params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]",
+                  "m1_pop[k]", "m2_pop[k]", "m3_pop[k]")
+      if (has_covariates) {
+        params <- c(params, "beta_t0[p]", "beta_tp[p]", "beta_ts[p]",
+                    "beta_m1[p]", "beta_m2[p]", "beta_m3[p]")
+      }
+
+      params_proc <- rlang::parse_exprs(params)
+
       dt_samples_wide <- tidybayes::spread_draws(
-        private$fitted,
-        t0_pop[k], tp_pop[k], ts_pop[k],
-        m1_pop[k], m2_pop[k], m3_pop[k],
-        beta_t0[p], beta_tp[p], beta_ts[p],
-        beta_m1[p], beta_m2[p], beta_m3[p]) |>
+        private$fitted, !!!params_proc) |>
         data.table()
 
       dt_samples_wide <- dt_samples_wide[.draw %in% 1:n_draws]
-
       dt_samples_wide[, `:=`(.chain = NULL, .iteration = NULL)]
+
+      if (!has_covariates) {
+        # there are no covariates, so add dummy column
+        # that will be removed after processing
+        dt_samples_wide$p <- 1
+      }
 
       data.table::setcolorder(dt_samples_wide, c("k", "p", ".draw"))
 
-      if (length(private$all_formula_vars) > 0) {
+      if (has_covariates) {
         logger::log_info("Adjusting by regression coefficients")
         dt_samples_wide <- private$adjust_parameters(dt_samples_wide)
       }
@@ -165,6 +148,11 @@ biokinetics <- R6::R6Class(
       }
 
       data.table::setcolorder(dt_out, c("t", "p", "k"))
+
+      if (!has_covariates) {
+        dt_out[, p:= NULL]
+      }
+      dt_out
     },
     prepare_stan_data = function() {
       pid <- value <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- t_since_min_date <- NULL
@@ -228,7 +216,8 @@ biokinetics <- R6::R6Class(
     #' for required columns: \code{vignette("data", package = "epikinetics")}.
     #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
     #' @param priors Object of type \link[epikinetics]{biokinetics_priors}. Default biokinetics_priors().
-    #' @param covariate_formula Formula specifying hierarchical structure of model. Default ~0.
+    #' @param covariate_formula Formula specifying linear regression model. Note all variables in the formula
+    #' will be treated as categorical variables. Default ~0.
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     initialize = function(priors = biokinetics_priors(),
@@ -301,14 +290,23 @@ biokinetics <- R6::R6Class(
     extract_population_parameters = function(n_draws = 2500,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
-      params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]", "m1_pop[k]", "m2_pop[k]",
-                  "m3_pop[k]", "beta_t0[p]", "beta_tp[p]", "beta_ts[p]", "beta_m1[p]",
-                  "beta_m2[p]", "beta_m3[p]")
+      has_covariates <- length(private$all_formula_vars) > 0
+
+      params <- c("t0_pop[k]", "tp_pop[k]", "ts_pop[k]", "m1_pop[k]", "m2_pop[k]", "m3_pop[k]")
+
+      if (has_covariates) {
+        params <- c(params, "beta_t0[p]", "beta_tp[p]", "beta_ts[p]", "beta_m1[p]", "beta_m2[p]", "beta_m3[p]")
+      }
 
       logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
-      data.table::setcolorder(dt_out, c("k", "p", ".draw"))
+      if (has_covariates){
+        data.table::setcolorder(dt_out, c("p", "k", ".draw"))
+      } else {
+        data.table::setcolorder(dt_out, c("k", ".draw"))
+      }
+
       data.table::setnames(dt_out, ".draw", "draw")
 
       if (length(private$all_formula_vars) > 0) {
@@ -413,6 +411,12 @@ biokinetics <- R6::R6Class(
                                                            human_readable_covariates = FALSE)
 
       logger::log_info("Calculating peak and switch titre values")
+
+      by <- c("k", "draw")
+      if ("p" %in% colnames(dt_peak_switch)) {
+        by <- c("p", by)
+      }
+
       dt_peak_switch[, `:=`(
         mu_0 = biokinetics_simulate_trajectory(
           0, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
@@ -420,7 +424,7 @@ biokinetics <- R6::R6Class(
           tp_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop),
         mu_s = biokinetics_simulate_trajectory(
           ts_pop, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop)),
-                       by = c("p", "k", "draw")]
+                       by = by]
 
       logger::log_info("Recovering covariate names")
       dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
@@ -504,11 +508,12 @@ biokinetics <- R6::R6Class(
           by = c(private$all_formula_vars, "pid", "titre_type")]
 
       if (summarise) {
-        logger::log_info("Summarising into population quantiles")
+        logger::log_info("Resampling")
         dt_out <- dt_out[
           !is.nan(mu), .(pop_mu_sum = mean(mosaic::resample(mu))),
           by = c("calendar_date", "draw", "titre_type")]
 
+        logger::log_info("Summarising into population quantiles")
         dt_out <- summarise_draws(
           dt_out,
           column_name = "pop_mu_sum",

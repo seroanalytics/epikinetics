@@ -21,7 +21,7 @@ This vignette demonstrates how to use the `epikinetics` package to replicate som
 
 # Fitting the model
 
-To initialise a model object, the only required argument is a path to the data in CSV format, or a [data.table]("https://cran.r-project.org/web/packages/data.table/index.html"). See [biokinetics](../reference/biokinetics.html) for all available arguments. In this vignette we use a dataset representing the Delta wave which is installed with this package, specifying a hierarchical model that just looks at the effect of infection history.
+To initialise a model object, the only required argument is a path to the data in CSV format, or a [data.table]("https://cran.r-project.org/web/packages/data.table/index.html"). See [biokinetics](../reference/biokinetics.html) for all available arguments. In this vignette we use a dataset representing the Delta wave which is installed with this package, specifying a regression model that just looks at the effect of infection history.
 
 The `fit` method then has the same function signature as the underlying [cmdstanr::sample](https://mc-stan.org/cmdstanr/reference/model-method-sample.html) method. Here we specify a relatively small number of iterations of the algorithm to limit the time it takes to compile this vignette.
 

@@ -46,7 +46,8 @@ for required columns: \code{vignette("data", package = "epikinetics")}.}
 
 \item{\code{file_path}}{Optional file path to model inputs in CSV format. One of data or file must be provided.}
 
-\item{\code{covariate_formula}}{Formula specifying hierarchical structure of model. Default ~0.}
+\item{\code{covariate_formula}}{Formula specifying linear regression model. Note all variables in the formula
+will be treated as categorical variables. Default ~0.}
 
 \item{\code{preds_sd}}{Standard deviation of predictor coefficients. Default 0.25.}
 
