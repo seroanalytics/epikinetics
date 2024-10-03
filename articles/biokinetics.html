@@ -123,12 +123,12 @@ population trajectories using the fitted population parameters.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;        t        me        lo       hi titre_type infection_history</span></span>
 <span><span class="co">#&gt;    &lt;int&gt;     &lt;num&gt;     &lt;num&gt;    &lt;num&gt;     &lt;char&gt;            &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:     0  85.03283  61.79873 113.4266  Ancestral   Infection naive</span></span>
-<span><span class="co">#&gt; 2:     1 117.52245  87.99594 151.6198  Ancestral   Infection naive</span></span>
-<span><span class="co">#&gt; 3:     2 161.60170 124.69805 203.8376  Ancestral   Infection naive</span></span>
-<span><span class="co">#&gt; 4:     3 221.98993 173.94588 277.0610  Ancestral   Infection naive</span></span>
-<span><span class="co">#&gt; 5:     4 302.97036 238.14148 381.2043  Ancestral   Infection naive</span></span>
-<span><span class="co">#&gt; 6:     5 417.55537 325.74862 544.8846  Ancestral   Infection naive</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:     0  76.47141  57.27662 102.3284  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 2:     1  95.17182  72.93386 123.2567  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 3:     2 117.85935  92.96590 147.9895  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 4:     3 145.82635 115.93716 178.9671  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 5:     4 180.04790 145.31797 220.9776  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 6:     5 222.61054 179.30822 277.7049  Ancestral   Infection naive</span></span></code></pre></div>
 <p>See <a href="data.html">data</a> for the definition of the returned
 columns.</p>
 <p>Using <code>ggplot2</code>:</p>
@@ -177,9 +177,7 @@ columns.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">custom_palette</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">custom_palette</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"none"</span>, fill <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="va">custom_theme</span></span>
-<span><span class="co">#&gt; Warning: Removed 6 rows containing missing values or values outside the scale range</span></span>
-<span><span class="co">#&gt; (`geom_line()`).</span></span></code></pre></div>
+<span>  <span class="va">custom_theme</span></span></code></pre></div>
 <p><img src="biokinetics_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
 <div class="section level2">
@@ -193,12 +191,12 @@ simulate estimates for these from the fitted model:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    infection_history titre_type     mu_p     mu_s rel_drop_me  mu_p_me  mu_s_me</span></span>
 <span><span class="co">#&gt;               &lt;char&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;       &lt;num&gt;    &lt;num&gt;    &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:   Infection naive  Ancestral 1343.598 246.5053   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 2:   Infection naive  Ancestral 1218.834 253.4858   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 3:   Infection naive  Ancestral 1236.706 242.7546   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 4:   Infection naive  Ancestral 1241.937 218.3664   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 5:   Infection naive  Ancestral 1339.590 205.4437   0.1734832 1315.809 228.7876</span></span>
-<span><span class="co">#&gt; 6:   Infection naive  Ancestral 1602.548 232.3682   0.1734832 1315.809 228.7876</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:   Infection naive  Ancestral 533.1158 251.9865   0.3927568 559.8482 219.1231</span></span>
+<span><span class="co">#&gt; 2:   Infection naive  Ancestral 575.2759 214.5542   0.3927568 559.8482 219.1231</span></span>
+<span><span class="co">#&gt; 3:   Infection naive  Ancestral 536.4465 234.0302   0.3927568 559.8482 219.1231</span></span>
+<span><span class="co">#&gt; 4:   Infection naive  Ancestral 518.4062 210.3247   0.3927568 559.8482 219.1231</span></span>
+<span><span class="co">#&gt; 5:   Infection naive  Ancestral 549.9587 240.2445   0.3927568 559.8482 219.1231</span></span>
+<span><span class="co">#&gt; 6:   Infection naive  Ancestral 555.5118 228.2212   0.3927568 559.8482 219.1231</span></span></code></pre></div>
 <p>The values we’re going to plot are the mean peak titre values
 (<code>mu_p</code>) and mean set point titre values (<code>mu_s</code>),
 for different titre types and infection histories. See <a href="data.html">data</a> for a full definition of all the returned
@@ -261,12 +259,12 @@ maximum number of draws to just 250 for speed.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    calendar_date titre_type       me       lo       hi time_shift</span></span>
 <span><span class="co">#&gt;           &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:    2021-03-08  Ancestral 1122.561 899.7913 1474.929          0</span></span>
-<span><span class="co">#&gt; 2:    2021-03-09  Ancestral 1114.609 882.1468 1450.662          0</span></span>
-<span><span class="co">#&gt; 3:    2021-03-10  Ancestral 1150.423 911.1426 1530.973          0</span></span>
-<span><span class="co">#&gt; 4:    2021-03-11  Ancestral 1121.402 878.6975 1447.972          0</span></span>
-<span><span class="co">#&gt; 5:    2021-03-12  Ancestral 1115.039 851.9412 1443.723          0</span></span>
-<span><span class="co">#&gt; 6:    2021-03-13  Ancestral 1150.059 900.9269 1520.740          0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:    2021-03-08  Ancestral 522.7076 425.0735 669.0837          0</span></span>
+<span><span class="co">#&gt; 2:    2021-03-09  Ancestral 519.7460 434.3634 642.1416          0</span></span>
+<span><span class="co">#&gt; 3:    2021-03-10  Ancestral 543.9154 449.0063 695.4239          0</span></span>
+<span><span class="co">#&gt; 4:    2021-03-11  Ancestral 531.7709 426.7716 652.3356          0</span></span>
+<span><span class="co">#&gt; 5:    2021-03-12  Ancestral 529.0004 426.9940 653.2677          0</span></span>
+<span><span class="co">#&gt; 6:    2021-03-13  Ancestral 546.2597 447.0206 679.0612          0</span></span></code></pre></div>
 <p>See <a href="data.html">data</a> for a definition of all the returned
 columns. Figure 5 A plots the derived population trajectories. Here we
 replicate a portion of the graph from the paper, from the minimum date
