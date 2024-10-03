@@ -39,7 +39,7 @@ test_that("Can get stan data", {
   expect_true(is.list(stan_data))
   expect_equal(names(stan_data), c("N", "N_events", "id", "value", "censored",
                                    "titre_type", "preds_sd", "K", "N_uncens", "N_lo",
-                                   "N_me", "N_hi", "uncens_idx", "cens_lo_idx", "cens_me_idx",
+                                   "N_hi", "uncens_idx", "cens_lo_idx",
                                    "cens_hi_idx", "t", "X", "P", "mu_t0",
                                    "mu_tp", "mu_ts", "mu_m1", "mu_m2", "mu_m3",
                                    "sigma_t0", "sigma_tp", "sigma_ts", "sigma_m1", "sigma_m2",

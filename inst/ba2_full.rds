@@ -185,7 +185,7 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 39,2022-01-27,2021-12-25,BA.2,804.989998629278,0,Infection naive,BNT162b2,4
 40,2021-12-14,2021-12-14,Delta,63.0935002600001,0,Infection naive,BNT162b2,3
 40,2022-01-18,2021-12-14,Delta,635.350458433831,0,Infection naive,BNT162b2,3
-40,2021-12-14,2021-12-14,BA.1,5,-2,Infection naive,BNT162b2,3
+40,2021-12-14,2021-12-14,BA.1,5,-1,Infection naive,BNT162b2,3
 40,2022-01-18,2021-12-14,BA.1,432.419565403068,0,Infection naive,BNT162b2,3
 40,2021-12-14,2021-12-14,BA.2,65.6893251900002,0,Infection naive,BNT162b2,3
 40,2022-01-18,2021-12-14,BA.2,545.480453207638,0,Infection naive,BNT162b2,3
@@ -207,13 +207,13 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 43,2022-03-21,2021-12-03,BA.1,221.740700900001,0,Infection naive,BNT162b2,3
 43,2021-12-15,2021-12-03,BA.2,280.945805803223,0,Infection naive,BNT162b2,3
 43,2022-03-21,2021-12-03,BA.2,216.175459200001,0,Infection naive,BNT162b2,3
-44,2021-12-15,2021-12-15,Delta,5,-2,Infection naive,BNT162b2,3
+44,2021-12-15,2021-12-15,Delta,5,-1,Infection naive,BNT162b2,3
 44,2022-01-10,2021-12-15,Delta,163.3038598957,0,Infection naive,BNT162b2,3
 44,2022-03-21,2021-12-15,Delta,111.534972,0,Infection naive,BNT162b2,3
-44,2021-12-15,2021-12-15,BA.1,5,-2,Infection naive,BNT162b2,3
+44,2021-12-15,2021-12-15,BA.1,5,-1,Infection naive,BNT162b2,3
 44,2022-01-10,2021-12-15,BA.1,133.723232907625,0,Infection naive,BNT162b2,3
 44,2022-03-21,2021-12-15,BA.1,75.5125462099998,0,Infection naive,BNT162b2,3
-44,2021-12-15,2021-12-15,BA.2,5,-2,Infection naive,BNT162b2,3
+44,2021-12-15,2021-12-15,BA.2,5,-1,Infection naive,BNT162b2,3
 44,2022-01-10,2021-12-15,BA.2,233.304689105237,0,Infection naive,BNT162b2,3
 44,2022-03-21,2021-12-15,BA.2,107.7867745,0,Infection naive,BNT162b2,3
 45,2021-12-22,2021-12-22,Delta,208.544860600001,0,Infection naive,BNT162b2,4
@@ -448,9 +448,9 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 81,2022-01-31,2021-10-05,BA.2,249.1567586,0,Infection naive,BNT162b2,3
 81,2022-07-06,2021-10-05,BA.2,157.2636095,0,Infection naive,BNT162b2,3
 81,2022-07-06,2021-10-05,BA.2,157.2636095,0,Infection naive,BNT162b2,3
-82,2021-12-20,2021-12-17,Delta,5,-2,Infection naive,BNT162b2,3
+82,2021-12-20,2021-12-17,Delta,5,-1,Infection naive,BNT162b2,3
 82,2022-01-26,2021-12-17,Delta,248.720372925193,0,Infection naive,BNT162b2,3
-82,2021-12-20,2021-12-17,BA.1,5,-2,Infection naive,BNT162b2,3
+82,2021-12-20,2021-12-17,BA.1,5,-1,Infection naive,BNT162b2,3
 82,2022-01-26,2021-12-17,BA.1,385.851371049329,0,Infection naive,BNT162b2,3
 82,2021-12-20,2021-12-17,BA.2,93.5188578000003,0,Infection naive,BNT162b2,3
 82,2022-01-26,2021-12-17,BA.2,471.204717896184,0,Infection naive,BNT162b2,3
@@ -593,17 +593,17 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 101,2021-12-21,2021-09-24,BA.1,732.926266099998,0,Infection naive,BNT162b2,3
 101,2021-10-12,2021-09-24,BA.2,1109.45732967998,0,Infection naive,BNT162b2,3
 101,2021-12-21,2021-09-24,BA.2,476.604522400001,0,Infection naive,BNT162b2,3
-102,2021-10-21,2021-10-21,Delta,5,-2,Infection naive,BNT162b2,3
+102,2021-10-21,2021-10-21,Delta,5,-1,Infection naive,BNT162b2,3
 102,2021-11-15,2021-10-21,Delta,388.226020488708,0,Infection naive,BNT162b2,3
 102,2022-01-12,2021-10-21,Delta,265.3871612,0,Infection naive,BNT162b2,3
 102,2022-07-06,2021-10-21,Delta,77.8649621299998,0,Infection naive,BNT162b2,3
 102,2022-10-31,2021-10-21,Delta,59.9136687389031,0,Infection naive,BNT162b2,3
-102,2021-10-21,2021-10-21,BA.1,5,-2,Infection naive,BNT162b2,3
+102,2021-10-21,2021-10-21,BA.1,5,-1,Infection naive,BNT162b2,3
 102,2021-11-15,2021-10-21,BA.1,334.775575709082,0,Infection naive,BNT162b2,3
 102,2022-01-12,2021-10-21,BA.1,113.1101451,0,Infection naive,BNT162b2,3
 102,2022-07-06,2021-10-21,BA.1,100.5758351,0,Infection naive,BNT162b2,3
 102,2022-10-31,2021-10-21,BA.1,41.353131194697,0,Infection naive,BNT162b2,3
-102,2021-10-21,2021-10-21,BA.2,5,-2,Infection naive,BNT162b2,3
+102,2021-10-21,2021-10-21,BA.2,5,-1,Infection naive,BNT162b2,3
 102,2021-11-15,2021-10-21,BA.2,434.318787559875,0,Infection naive,BNT162b2,3
 102,2022-01-12,2021-10-21,BA.2,186.903521306488,0,Infection naive,BNT162b2,3
 102,2022-07-06,2021-10-21,BA.2,97.6228182400002,0,Infection naive,BNT162b2,3
@@ -620,8 +620,8 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 106,2021-10-21,2021-10-01,Delta,47.7877573284979,0,Infection naive,BNT162b2,3
 106,2022-06-22,2021-10-01,Delta,40.88461104,0,Infection naive,BNT162b2,3
 106,2022-10-27,2021-10-01,Delta,40.813003674215,0,Infection naive,BNT162b2,3
-106,2021-10-21,2021-10-01,BA.1,5,-2,Infection naive,BNT162b2,3
-106,2021-10-21,2021-10-01,BA.2,5,-2,Infection naive,BNT162b2,3
+106,2021-10-21,2021-10-01,BA.1,5,-1,Infection naive,BNT162b2,3
+106,2021-10-21,2021-10-01,BA.2,5,-1,Infection naive,BNT162b2,3
 107,2022-01-06,2021-12-06,Delta,396.479179303829,0,Infection naive,BNT162b2,3
 107,2022-03-21,2021-12-06,Delta,417.521739700002,0,Infection naive,BNT162b2,3
 107,2022-01-06,2021-12-06,BA.1,307.219990500133,0,Infection naive,BNT162b2,3
@@ -648,11 +648,11 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 110,2022-07-11,2021-11-19,Delta,183.6556791,0,Previously infected (Pre-Omicron),BNT162b2,4
 110,2022-07-11,2021-11-19,Delta,183.6556791,0,Previously infected (Pre-Omicron),BNT162b2,4
 110,2021-11-30,2021-11-19,BA.1,48.7609029313075,0,Previously infected (Pre-Omicron),BNT162b2,4
-110,2022-01-17,2021-11-19,BA.1,5,-2,Previously infected (Pre-Omicron),BNT162b2,4
+110,2022-01-17,2021-11-19,BA.1,5,-1,Previously infected (Pre-Omicron),BNT162b2,4
 110,2021-11-30,2021-11-19,BA.2,85.2963225104831,0,Previously infected (Pre-Omicron),BNT162b2,4
 110,2022-01-17,2021-11-19,BA.2,68.2123499119002,0,Previously infected (Pre-Omicron),BNT162b2,4
-110,2022-07-11,2021-11-19,BA.2,5,-2,Previously infected (Pre-Omicron),BNT162b2,4
-110,2022-07-11,2021-11-19,BA.2,5,-2,Previously infected (Pre-Omicron),BNT162b2,4
+110,2022-07-11,2021-11-19,BA.2,5,-1,Previously infected (Pre-Omicron),BNT162b2,4
+110,2022-07-11,2021-11-19,BA.2,5,-1,Previously infected (Pre-Omicron),BNT162b2,4
 111,2022-01-12,2021-12-06,Delta,2560,1,Previously infected (Pre-Omicron),BNT162b2,4
 111,2022-07-27,2021-12-06,Delta,2560,1,Previously infected (Pre-Omicron),BNT162b2,4
 111,2022-01-12,2021-12-06,BA.1,434.699631799999,0,Previously infected (Pre-Omicron),BNT162b2,4
@@ -908,9 +908,9 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 152,2022-04-21,2021-12-20,BA.1,1143.017579,0,Infection naive,BNT162b2,4
 152,2022-01-19,2021-12-20,BA.2,2560,1,Infection naive,BNT162b2,4
 152,2022-04-21,2021-12-20,BA.2,1049.854881,0,Infection naive,BNT162b2,4
-153,2021-12-10,2021-12-10,Delta,5,-2,Infection naive,BNT162b2,3
+153,2021-12-10,2021-12-10,Delta,5,-1,Infection naive,BNT162b2,3
 153,2022-01-06,2021-12-10,Delta,1067.48489126961,0,Infection naive,BNT162b2,3
-153,2021-12-10,2021-12-10,BA.1,5,-2,Infection naive,BNT162b2,3
+153,2021-12-10,2021-12-10,BA.1,5,-1,Infection naive,BNT162b2,3
 153,2022-01-06,2021-12-10,BA.1,456.968924936853,0,Infection naive,BNT162b2,3
 153,2021-12-10,2021-12-10,BA.2,52.0283781100002,0,Infection naive,BNT162b2,3
 153,2022-01-06,2021-12-10,BA.2,723.353263113297,0,Infection naive,BNT162b2,3
@@ -1174,10 +1174,10 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 198,2021-09-30,2021-09-30,BA.2,146.4856553,0,Infection naive,BNT162b2,3
 198,2022-01-11,2021-09-30,BA.2,170.1716794,0,Infection naive,BNT162b2,3
 198,2022-07-11,2021-09-30,BA.2,120.2672786,0,Infection naive,BNT162b2,3
-199,2021-09-30,2021-09-27,Delta,5,-2,Infection naive,BNT162b2,3
-199,2021-09-30,2021-09-27,BA.1,5,-2,Infection naive,BNT162b2,3
-199,2021-09-30,2021-09-27,BA.2,5,-2,Infection naive,BNT162b2,3
-199,2022-04-07,2021-09-27,BA.2,5,-2,Infection naive,BNT162b2,3
+199,2021-09-30,2021-09-27,Delta,5,-1,Infection naive,BNT162b2,3
+199,2021-09-30,2021-09-27,BA.1,5,-1,Infection naive,BNT162b2,3
+199,2021-09-30,2021-09-27,BA.2,5,-1,Infection naive,BNT162b2,3
+199,2022-04-07,2021-09-27,BA.2,5,-1,Infection naive,BNT162b2,3
 200,2021-12-21,2021-12-02,Delta,2560,1,Previously infected (Pre-Omicron),BNT162b2,5
 200,2022-03-21,2021-12-02,Delta,2560,1,Previously infected (Pre-Omicron),BNT162b2,5
 200,2022-07-11,2021-12-02,Delta,1219.611353,0,Previously infected (Pre-Omicron),BNT162b2,5
@@ -1310,7 +1310,7 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 217,2022-01-10,2021-12-08,BA.1,520.720195179818,0,Infection naive,BNT162b2,3
 217,2022-03-21,2021-12-08,BA.1,126.9837534,0,Infection naive,BNT162b2,3
 217,2022-06-16,2021-12-08,BA.1,58.2055320999998,0,Infection naive,BNT162b2,3
-217,2021-12-08,2021-12-08,BA.2,5,-2,Infection naive,BNT162b2,3
+217,2021-12-08,2021-12-08,BA.2,5,-1,Infection naive,BNT162b2,3
 217,2022-01-10,2021-12-08,BA.2,551.731425861521,0,Infection naive,BNT162b2,3
 217,2022-03-21,2021-12-08,BA.2,135.968821300001,0,Infection naive,BNT162b2,3
 217,2022-06-16,2021-12-08,BA.2,99.6108005499997,0,Infection naive,BNT162b2,3
@@ -1482,7 +1482,7 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 246,2022-01-11,2021-12-16,BA.1,2034.813448,0,Infection naive,BNT162b2,4
 246,2022-01-11,2021-12-16,BA.2,978.7612945,0,Infection naive,BNT162b2,4
 247,2021-10-08,2021-10-08,Delta,51.5743457200001,0,Previously infected (Pre-Omicron),BNT162b2,5
-247,2021-10-08,2021-10-08,BA.1,5,-2,Previously infected (Pre-Omicron),BNT162b2,5
+247,2021-10-08,2021-10-08,BA.1,5,-1,Previously infected (Pre-Omicron),BNT162b2,5
 247,2021-10-08,2021-10-08,BA.2,51.3938441100001,0,Previously infected (Pre-Omicron),BNT162b2,5
 248,2022-02-08,2022-01-23,Delta,2560,1,Previously infected (Pre-Omicron),mRNA1273,4
 248,2023-01-16,2022-01-23,Delta,2560,1,Previously infected (Pre-Omicron),mRNA1273,4
@@ -1659,8 +1659,8 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 275,2022-01-17,2022-01-07,BA.1,374.522351602284,0,Infection naive,mRNA1273,3
 275,2022-01-17,2022-01-07,BA.2,278.250104602277,0,Infection naive,mRNA1273,3
 276,2021-09-24,2021-09-24,Delta,90.6935144899999,0,Infection naive,BNT162b2,3
-276,2021-09-24,2021-09-24,BA.1,5,-2,Infection naive,BNT162b2,3
-276,2021-09-24,2021-09-24,BA.2,5,-2,Infection naive,BNT162b2,3
+276,2021-09-24,2021-09-24,BA.1,5,-1,Infection naive,BNT162b2,3
+276,2021-09-24,2021-09-24,BA.2,5,-1,Infection naive,BNT162b2,3
 277,2022-01-26,2022-01-10,Delta,2560,1,Previously infected (Omicron),BNT162b2,4
 277,2022-04-12,2022-01-10,Delta,1828.45619200001,0,Previously infected (Omicron),BNT162b2,4
 277,2022-07-13,2022-01-10,Delta,1253.204069,0,Previously infected (Omicron),BNT162b2,4
@@ -1913,7 +1913,7 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 322,2021-09-23,2021-09-23,Delta,110.9499539,0,Infection naive,BNT162b2,3
 322,2021-10-08,2021-09-23,Delta,450.210391439885,0,Infection naive,BNT162b2,3
 322,2022-01-12,2021-09-23,Delta,337.1312525,0,Infection naive,BNT162b2,3
-322,2021-09-23,2021-09-23,BA.1,5,-2,Infection naive,BNT162b2,3
+322,2021-09-23,2021-09-23,BA.1,5,-1,Infection naive,BNT162b2,3
 322,2021-10-08,2021-09-23,BA.1,484.608050076034,0,Infection naive,BNT162b2,3
 322,2022-01-12,2021-09-23,BA.1,159.9045069,0,Infection naive,BNT162b2,3
 322,2021-09-23,2021-09-23,BA.2,48.3353845899999,0,Infection naive,BNT162b2,3

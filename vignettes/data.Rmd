@@ -29,7 +29,7 @@ The name of the titre
 ### value
 The value of the titre
 ### censored
-Whether this observation should be censored: -2 for lower, -1 for me, 1 for upper, 0 for none
+Whether this observation should be censored: -1 for lower, 1 for upper, 0 for none
 
 It can also contain further columns for any covariates to be included in the model. The data files installed with this package have additional columns infection_history, last_vax_type, and exp_num.
 

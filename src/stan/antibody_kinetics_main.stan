@@ -37,12 +37,10 @@ data {
   // Indices for different censoring scenarios
   int N_uncens; // number of uncensored observations
   int N_lo; // number of lower censored observations
-  int N_me; // number of lower censored observations
   int N_hi; // number of upper censored observations
   
   array[N_uncens] int uncens_idx;
   array[N_lo] int cens_lo_idx;
-  array[N_me] int cens_me_idx;
   array[N_hi] int cens_hi_idx;
   
   // Standard deviation of effect size parameters

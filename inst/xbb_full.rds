@@ -287,7 +287,7 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 69,2022-11-01,2022-10-16,XBB,639.821155970214,0,Previously infected (Pre-Omicron),BNT162b2,5
 69,2023-01-10,2022-10-16,XBB,557.076628047233,0,Previously infected (Pre-Omicron),BNT162b2,5
 70,2023-01-19,2022-12-26,BA.5,66.2676181593159,0,Infection naive,BNT162b2+BA1,5
-70,2023-01-19,2022-12-26,BQ.1.1,5,-2,Infection naive,BNT162b2+BA1,5
+70,2023-01-19,2022-12-26,BQ.1.1,5,-1,Infection naive,BNT162b2+BA1,5
 70,2023-01-19,2022-12-26,XBB,483.335457280892,0,Infection naive,BNT162b2+BA1,5
 71,2023-01-16,2022-12-24,BA.5,2560,1,Infection naive,BNT162b2+BA1,6
 71,2023-01-16,2022-12-24,BQ.1.1,1035.23459045094,0,Infection naive,BNT162b2+BA1,6
@@ -586,11 +586,11 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 140,2023-01-12,2022-12-10,BA.5,2560,1,Infection naive,BNT162b2,5
 140,2023-01-12,2022-12-10,BQ.1.1,1603.19426329011,0,Infection naive,BNT162b2,5
 140,2023-01-12,2022-12-10,XBB,368.014237214278,0,Infection naive,BNT162b2,5
-141,2022-11-17,2022-10-30,BA.5,5,-2,Infection naive,BNT162b2,4
-141,2022-12-06,2022-10-30,BA.5,5,-2,Infection naive,BNT162b2,4
-141,2022-11-17,2022-10-30,BQ.1.1,5,-2,Infection naive,BNT162b2,4
+141,2022-11-17,2022-10-30,BA.5,5,-1,Infection naive,BNT162b2,4
+141,2022-12-06,2022-10-30,BA.5,5,-1,Infection naive,BNT162b2,4
+141,2022-11-17,2022-10-30,BQ.1.1,5,-1,Infection naive,BNT162b2,4
 141,2022-12-06,2022-10-30,BQ.1.1,41.2807032377651,0,Infection naive,BNT162b2,4
-141,2022-11-17,2022-10-30,XBB,5,-2,Infection naive,BNT162b2,4
+141,2022-11-17,2022-10-30,XBB,5,-1,Infection naive,BNT162b2,4
 141,2022-12-06,2022-10-30,XBB,269.843756512819,0,Infection naive,BNT162b2,4
 142,2022-11-17,2022-10-23,BA.5,2560,1,Previously infected (Omicron),BNT162b2+BA1,7
 142,2023-01-26,2022-10-23,BA.5,2560,1,Previously infected (Omicron),BNT162b2+BA1,7
@@ -671,11 +671,11 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 160,2022-10-03,2022-09-20,BA.5,1374.01249795787,0,Previously infected (Pre-Omicron),mRNA1273,5
 160,2022-09-20,2022-09-20,BQ.1.1,46.7930015601292,0,Previously infected (Pre-Omicron),mRNA1273,5
 160,2022-10-03,2022-09-20,BQ.1.1,430.906169068342,0,Previously infected (Pre-Omicron),mRNA1273,5
-160,2022-09-20,2022-09-20,XBB,5,-2,Previously infected (Pre-Omicron),mRNA1273,5
+160,2022-09-20,2022-09-20,XBB,5,-1,Previously infected (Pre-Omicron),mRNA1273,5
 160,2022-10-03,2022-09-20,XBB,688.705744441976,0,Previously infected (Pre-Omicron),mRNA1273,5
-161,2022-10-11,2022-10-11,BA.5,5,-2,Infection naive,BNT162b2+BA1,4
+161,2022-10-11,2022-10-11,BA.5,5,-1,Infection naive,BNT162b2+BA1,4
 161,2022-10-27,2022-10-11,BA.5,866.494068070684,0,Infection naive,BNT162b2+BA1,4
-161,2022-10-11,2022-10-11,BQ.1.1,5,-2,Infection naive,BNT162b2+BA1,4
+161,2022-10-11,2022-10-11,BQ.1.1,5,-1,Infection naive,BNT162b2+BA1,4
 161,2022-10-27,2022-10-11,BQ.1.1,155.073554719911,0,Infection naive,BNT162b2+BA1,4
 161,2022-10-11,2022-10-11,XBB,85.2963225104831,0,Infection naive,BNT162b2+BA1,4
 161,2022-10-27,2022-10-11,XBB,128.890026491534,0,Infection naive,BNT162b2+BA1,4
@@ -704,7 +704,7 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 166,2022-10-18,2022-10-02,XBB,1859.16110394001,0,Previously infected (Omicron),mRNA1273.214,5
 166,2023-01-26,2022-10-02,XBB,871.826742274675,0,Previously infected (Omicron),mRNA1273.214,5
 167,2022-12-08,2022-12-08,BA.5,40.0335520056376,0,Infection naive,BNT162b2+BA1,4
-167,2022-12-08,2022-12-08,BQ.1.1,5,-2,Infection naive,BNT162b2+BA1,4
+167,2022-12-08,2022-12-08,BQ.1.1,5,-1,Infection naive,BNT162b2+BA1,4
 167,2022-12-08,2022-12-08,XBB,140.820400557588,0,Infection naive,BNT162b2+BA1,4
 168,2022-09-29,2022-09-15,BA.5,2560,1,Previously infected (Pre-Omicron),mRNA1273.214,5
 168,2022-11-14,2022-09-15,BA.5,846.228952921684,0,Previously infected (Pre-Omicron),mRNA1273.214,5
@@ -748,10 +748,10 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 179,2022-12-06,2022-09-09,BQ.1.1,258.953353207664,0,Infection naive,mRNA1273.214,4
 179,2022-10-04,2022-09-09,XBB,291.992313933846,0,Infection naive,mRNA1273.214,4
 179,2022-12-06,2022-09-09,XBB,453.775892277874,0,Infection naive,mRNA1273.214,4
-180,2022-09-27,2022-09-25,BA.5,5,-2,Infection naive,mRNA1273.214,7
+180,2022-09-27,2022-09-25,BA.5,5,-1,Infection naive,mRNA1273.214,7
 180,2022-10-18,2022-09-25,BA.5,2560,1,Infection naive,mRNA1273.214,7
 180,2023-01-26,2022-09-25,BA.5,2056.3283925985,0,Infection naive,mRNA1273.214,7
-180,2022-09-27,2022-09-25,BQ.1.1,5,-2,Infection naive,mRNA1273.214,7
+180,2022-09-27,2022-09-25,BQ.1.1,5,-1,Infection naive,mRNA1273.214,7
 180,2022-10-18,2022-09-25,BQ.1.1,420.828358433089,0,Infection naive,mRNA1273.214,7
 180,2023-01-26,2022-09-25,BQ.1.1,157.125829413333,0,Infection naive,mRNA1273.214,7
 180,2022-09-27,2022-09-25,XBB,42.2692751858847,0,Infection naive,mRNA1273.214,7
@@ -930,7 +930,7 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 222,2023-01-12,2022-11-23,XBB,1015.46355533338,0,Infection naive,BNT162b2+BA1,4
 223,2022-12-01,2022-12-01,BA.5,1147.03200007966,0,Infection naive,BNT162b2+BA1,4
 223,2022-12-01,2022-12-01,BQ.1.1,234.534860507757,0,Infection naive,BNT162b2+BA1,4
-223,2022-12-01,2022-12-01,XBB,5,-2,Infection naive,BNT162b2+BA1,4
+223,2022-12-01,2022-12-01,XBB,5,-1,Infection naive,BNT162b2+BA1,4
 224,2022-10-18,2022-10-01,BA.5,2560,1,Previously infected (Omicron),mRNA1273.214,6
 224,2023-01-19,2022-10-01,BA.5,2560,1,Previously infected (Omicron),mRNA1273.214,6
 224,2022-10-18,2022-10-01,BQ.1.1,2560,1,Previously infected (Omicron),mRNA1273.214,6
@@ -1037,4 +1037,4 @@ pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type
 247,2023-01-09,2022-12-12,XBB,412.429677483237,0,Infection naive,mRNA1273.214,5
 248,2022-10-17,2022-10-02,BA.5,486.310054130306,0,Infection naive,BNT162b2,4
 248,2022-10-17,2022-10-02,BQ.1.1,194.25238085558,0,Infection naive,BNT162b2,4
-248,2022-10-17,2022-10-02,XBB,5,-2,Infection naive,BNT162b2,4
+248,2022-10-17,2022-10-02,XBB,5,-1,Infection naive,BNT162b2,4
