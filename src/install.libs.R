@@ -11,19 +11,6 @@ if (is.null(cmdstanr::cmdstan_version(error_on_NA = FALSE))) {
 } else {
   message(paste("Found cmdstan at path", cmdstanr::cmdstan_path()))
 }
-inst_stan <- file.path("..", "inst", "stan")
-if (dir.exists(inst_stan)) {
-  warning(
-    "Stan models in inst/stan/ are deprecated in {instantiate} ",
-    ">= 0.0.4.9001 (2024-01-03). Please put them in src/stan/ instead."
-  )
-  if (file.exists("stan")) {
-    warning("src/stan/ already exists. Not copying models from inst/stan/.")
-  } else {
-    message("Copying inst/stan/ to src/stan/.")
-    fs::dir_copy(path = inst_stan, new_path = "stan")
-  }
-}
 bin <- file.path(R_PACKAGE_DIR, "bin")
 if (!file.exists(bin)) {
   dir.create(bin, recursive = TRUE, showWarnings = FALSE)
