@@ -46,8 +46,8 @@ docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main
 This package relies on the [instantiate](https://wlandau.github.io/instantiate/) package 
 to ship pre-compiled stan models. See the `src/install.libs.R` file for the logic.
 
-This does seem to mean that `devtools::load_all()` won't work, which is a bit annoying. For testing
-local changes you have to actually run `devtools::install()`.
+Annoyingly, `devtools::load_all()` won't work due to [this issue](https://github.com/r-lib/devtools/issues/1444). For testing
+local changes you will have to actually run `devtools::install()`.
 
 ## Docker
 To build a Docker image, run `docker/build`. 
