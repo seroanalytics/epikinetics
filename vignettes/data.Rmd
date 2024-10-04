@@ -20,14 +20,19 @@ The model requires a data table containing the following columns:
 
 ### pid
 A unique numeric id to identify a person across observations
+
 ### date
 The date of the observation
+
 ### last_exp_date
 The last date on which the person was exposed
+
 ### titre_type
 The name of the titre
+
 ### value
 The value of the titre
+
 ### censored
 Whether this observation should be censored: -1 for lower, 1 for upper, 0 for none
 

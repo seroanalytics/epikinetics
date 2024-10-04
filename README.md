@@ -1,6 +1,23 @@
 # epikinetics
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) [![R-CMD-check](https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml) [![codecov](https://codecov.io/gh/seroanalytics/epikinetics/graph/badge.svg?token=5MZYYDUZYH)](https://codecov.io/gh/seroanalytics/epikinetics)
 
+`epikinetics` is an R package for Bayesian hierarchical modelling of antibody kinetics.
+
+The underlying model is taken from [Russell TW et al., Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study.](#References)
+See the [case study vignette](https://seroanalytics.org/epikinetics/articles/biokinetics.html) for a replication of some key figures from the paper using `epikinetics`.
+
+Three publicly available datasets from the above paper are also installed with the package and 
+can be used as test input data:
+
+```{r}
+delta <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+ba2 <- data.table::fread(system.file("ba2_full.rds", package = "epikinetics"))
+xbb <- data.table::fread(system.file("xbb_full.rds", package = "epikinetics"))
+```
+
+If running the model with your own data, see the [data vignette](https://seroanalytics.org/epikinetics/articles/data.html) for 
+an explanation of the input format. 
+
 # Installing
 
 This package uses `cmdstanr`, which isn't available on cran, so you will first have to install it as follows:
@@ -20,7 +37,8 @@ remotes::install_github("seroanalytics/epikinetics")
 Alternatively, you can run `epikinetics` via a Docker image, mounting a working directory which contains your input data files:
 
 ```
-docker run -v /workdir:/ -it seroanalytics/epikinetics:main
+docker pull seroanalytics/epikinetics:main
+docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main
 ```
 
 # Developing
@@ -35,3 +53,6 @@ local changes you have to actually run `devtools::install()`.
 To build a Docker image, run `docker/build`. 
 To push a new image to Dockerhub, `docker/push`. An image is built and pushed 
 during CI on merge to main.
+
+# References
+Russell TW, Townsley H, Hellewell J, Gahir J, Shawe-Taylor M, Greenwood D, Hodgson D, Hobbs A, Dowgier G, Penn R, Sanderson T, Stevenson-Leggett P, Bazire J, Harvey R, Fowler AS, Miah M, Smith C, Miranda M, Bawumia P, Mears HV, Adams L, Hatipoglu E, O'Reilly N, Warchal S, Ambrose K, Strange A, Kelly G, Kjar S, Papineni P, Corrah T, Gilson R, Libri V, Kassiotis G, Gamblin S, Lewis NS, Williams B, Swanton C, Gandhi S, Beale R, Wu MY, Bauer DLV, Carr EJ, Wall EC, Kucharski AJ. Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study. Lancet Infect Dis. 2024 Sep 11:S1473-3099(24)00484-5. doi: [10.1016/S1473-3099(24)00484-5](https://doi.org/10.1016/s1473-3099(24)00484-5).
