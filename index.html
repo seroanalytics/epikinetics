@@ -103,7 +103,7 @@ docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main
 <h1 id="developing">Developing<a class="anchor" aria-label="anchor" href="#developing"></a>
 </h1>
 <p>This package relies on the <a href="https://wlandau.github.io/instantiate/" class="external-link">instantiate</a> package to ship pre-compiled stan models. See the <code>src/install.libs.R</code> file for the logic.</p>
-<p>This does seem to mean that <code>devtools::load_all()</code> won’t work, which is a bit annoying. For testing local changes you have to actually run <code>devtools::install()</code>.</p>
+<p>Annoyingly, <code>devtools::load_all()</code> won’t work due to <a href="https://github.com/r-lib/devtools/issues/1444" class="external-link">this issue</a>. For testing local changes you will have to actually run <code>devtools::install()</code>.</p>
 <div class="section level2">
 <h2 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
 </h2>
