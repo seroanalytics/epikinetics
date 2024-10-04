@@ -14,7 +14,7 @@
     # system.file("bin/stan/model.stan", "epikinetics") will resolve correctly
     bin <- file.path(libname, pkgname, "bin")
     if (!dir.exists(bin)) {
-      message("Creating local bin directory")
+      packageStartupMessage("Creating local bin directory")
       dir.create(bin, recursive = TRUE, showWarnings = FALSE)
     }
     bin_stan <- file.path(libname, pkgname, "bin", "stan")
@@ -25,6 +25,6 @@
       cpp_options = list(stan_threads = TRUE),
       stanc_options = list("O1")
     )
-    message("Finished compiling models")
+    packageStartupMessage("Finished compiling models")
   }
 }

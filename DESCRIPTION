@@ -14,6 +14,7 @@ Imports:
     instantiate,
     logger,
     mosaic,
+    pkgload,
     R6,
     stats,
     stringr,
