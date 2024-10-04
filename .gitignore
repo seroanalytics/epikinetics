@@ -3,5 +3,6 @@ src/stan/**
 src/stan/**/*.exe
 src/stan/**/*.EXE
 inst/doc
+bin
 .idea
 *.png

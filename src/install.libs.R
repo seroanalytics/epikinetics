@@ -17,15 +17,11 @@ if (!file.exists(bin)) {
 }
 bin_stan <- file.path(bin, "stan")
 fs::dir_copy(path = "stan", new_path = bin_stan)
-callr::r(
-  func = function(bin_stan) {
-    models <- instantiate::stan_package_model_files(path = bin_stan)
-    message(paste("Compiling models:", paste0(models, collapse = ",")))
-    instantiate::stan_package_compile(
-      models = instantiate::stan_package_model_files(path = bin_stan),
-      cpp_options = list(stan_threads = TRUE),
-      stanc_options = list("O1")
-    )
-  },
-  args = list(bin_stan = bin_stan)
+models <- instantiate::stan_package_model_files(path = bin_stan)
+message(paste("Compiling models:", paste0(models, collapse = ",")))
+instantiate::stan_package_compile(
+  models = instantiate::stan_package_model_files(path = bin_stan),
+  cpp_options = list(stan_threads = TRUE),
+  stanc_options = list("O1")
 )
+message("Finished compiling models")
