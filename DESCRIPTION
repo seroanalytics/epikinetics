@@ -11,6 +11,7 @@ RoxygenNote: 7.3.1
 Imports:
     data.table,
     forcats,
+    fs,
     instantiate,
     logger,
     mosaic,

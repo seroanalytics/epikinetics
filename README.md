@@ -20,7 +20,7 @@ an explanation of the input format.
 
 # Installing
 
-This package uses `cmdstanr`, which isn't available on cran, so you will first have to install it as follows:
+To interface with [cmdstan](https://mc-stan.org/users/interfaces/cmdstan), this package uses `cmdstanr`, which isn't available on cran, so you will first have to install it as follows:
 
 ```
 install.packages('cmdstanr', repos = c('https://stan-dev.r-universe.dev', getOption('repos')))
@@ -30,6 +30,23 @@ You can then install `epikinetics` from GitHub:
 
 ```
 remotes::install_github("seroanalytics/epikinetics")
+```
+
+## Troubleshooting installation
+
+If you don't already have [cmdstan](https://mc-stan.org/users/interfaces/cmdstan) installed, the `epikinetics` installer will attempt 
+to install it, which can take a few minutes. If you see errors as part of installation, it is 
+probably a good idea to try and install `cmdstan` first, for easier debugging. You can 
+do this using the `cmdstanr` package as follows:
+
+```{r}
+cmdstanr::install_cmdstan()
+```
+
+Verify the installation is working with
+
+```{r}
+cmdstanr::cmdstan_version()
 ```
 
 # Running in Docker
@@ -51,6 +68,28 @@ When running via `devtools` (e.g. `test` or `load_all`) the `install.libs.R` log
 so for this we use an `onLoad` hook which checks whether the package is being loaded via `devtools`
 and if so, copies compiled models into a local `bin` directory where the `system.file` shim
 can access them.
+
+Note that if you are running `devtools::load_all` or `devtool::test` and you don't yet 
+have `cmdstan` installed, this will trigger an installation of `cmdstan` which can take 
+a few minutes.
+
+## Testing
+
+Most tests are run with
+
+```{r}
+devtools::test()
+```
+
+For snapshot testing of stan model outputs, we need the outputs to be exactly 
+reproducible. As well as setting a seed, this requires the machine environment 
+to be exactly the same, so we run these inside a Docker container, via a bash script:
+
+```{shell}
+./tests/snapshots/test-snapshots
+```
+
+This involves recompiling the model, so takes a while to run.
 
 ## Docker
 To build a Docker image, run `docker/build`. 
