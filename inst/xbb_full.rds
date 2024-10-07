@@ -1,4 +1,4 @@
-pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type,exp_num
+pid,day,last_exp_day,titre_type,value,censored,infection_history,last_vax_type,exp_num
 1,2022-12-07,2022-11-16,BA.5,2560,1,Previously infected (Omicron),BNT162b2+BA1,7
 1,2022-12-07,2022-11-16,BQ.1.1,2560,1,Previously infected (Omicron),BNT162b2+BA1,7
 1,2022-12-07,2022-11-16,XBB,2560,1,Previously infected (Omicron),BNT162b2+BA1,7
