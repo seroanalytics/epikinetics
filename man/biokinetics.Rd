@@ -31,8 +31,7 @@ Initialise the kinetics model.
   data = NULL,
   file_path = NULL,
   covariate_formula = ~0,
-  preds_sd = 0.25,
-  time_type = "relative"
+  preds_sd = 0.25
 )}\if{html}{\out{</div>}}
 }
 
@@ -50,8 +49,6 @@ for required columns: \code{vignette("data", package = "epikinetics")}.}
 will be treated as categorical variables. Default ~0.}
 
 \item{\code{preds_sd}}{Standard deviation of predictor coefficients. Default 0.25.}
-
-\item{\code{time_type}}{One of 'relative' or 'absolute'. Default 'relative'.}
 }
 \if{html}{\out{</div>}}
 }
@@ -153,7 +150,6 @@ A data.table
 Process the model results into a data table of titre values over time.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{biokinetics$simulate_population_trajectories(
-  time_type = "relative",
   t_max = 150,
   summarise = TRUE,
   n_draws = 2500
@@ -163,8 +159,6 @@ Process the model results into a data table of titre values over time.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{time_type}}{One of 'relative' or 'absolute'. Default 'relative'.}
-
 \item{\code{t_max}}{Integer. Maximum number of time points to include.}
 
 \item{\code{summarise}}{Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
@@ -176,9 +170,9 @@ draws from posterior parameter distributions.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A data.table containing titre values at time points. If summarise = TRUE, columns are t, me, lo, hi,
-titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, .draw
-t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
+A data.table containing titre values at time points. If summarise = TRUE, columns are time_since_last_exp,
+me, lo, hi, titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are
+time_since_last_exp, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
 titre_type and a column for each covariate in the hierarchical model. See the data vignette for details:
 \code{vignette("data", package = "epikinetics")}
 }

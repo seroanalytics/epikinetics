@@ -94,4 +94,3 @@ There will also be a column for each covariate in the regression model.
     | titre_type          | numeric | Name of the titre or biomarker     |
 
 There will also be column for each covariate in the hierarchical model.
-
