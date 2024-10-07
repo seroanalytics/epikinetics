@@ -87,10 +87,18 @@
 <div class="section level1">
 <h1 id="installing">Installing<a class="anchor" aria-label="anchor" href="#installing"></a>
 </h1>
-<p>This package uses <code>cmdstanr</code>, which isn’t available on cran, so you will first have to install it as follows:</p>
+<p>To interface with <a href="https://mc-stan.org/users/interfaces/cmdstan" class="external-link">cmdstan</a>, this package uses <code>cmdstanr</code>, which isn’t available on cran, so you will first have to install it as follows:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'cmdstanr'</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'https://stan-dev.r-universe.dev'</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">'repos'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 <p>You can then install <code>epikinetics</code> from GitHub:</p>
 <pre><code><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"seroanalytics/epikinetics"</span><span class="op">)</span></span></code></pre>
+<div class="section level2">
+<h2 id="troubleshooting-installation">Troubleshooting installation<a class="anchor" aria-label="anchor" href="#troubleshooting-installation"></a>
+</h2>
+<p>If you don’t already have <a href="https://mc-stan.org/users/interfaces/cmdstan" class="external-link">cmdstan</a> installed, the <code>epikinetics</code> installer will attempt to install it, which can take a few minutes. If you see errors as part of installation, it is probably a good idea to try and install <code>cmdstan</code> first, for easier debugging. You can do this using the <code>cmdstanr</code> package as follows:</p>
+<p><code>{r} cmdstanr::install_cmdstan()</code></p>
+<p>Verify the installation is working with</p>
+<p><code>{r} cmdstanr::cmdstan_version()</code></p>
+</div>
 </div>
 <div class="section level1">
 <h1 id="running-in-docker">Running in Docker<a class="anchor" aria-label="anchor" href="#running-in-docker"></a>
@@ -102,8 +110,18 @@ docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main
 <div class="section level1">
 <h1 id="developing">Developing<a class="anchor" aria-label="anchor" href="#developing"></a>
 </h1>
-<p>This package relies on the <a href="https://wlandau.github.io/instantiate/" class="external-link">instantiate</a> package to ship pre-compiled stan models. See the <code>src/install.libs.R</code> file for the logic.</p>
-<p>Annoyingly, <code>devtools::load_all()</code> won’t work due to <a href="https://github.com/r-lib/devtools/issues/1444" class="external-link">this issue</a>. For testing local changes you will have to actually run <code>devtools::install()</code>.</p>
+<p>This package relies on the <a href="https://wlandau.github.io/instantiate/" class="external-link">instantiate</a> package to ship pre-compiled stan models. See the <code>src/install.libs.R</code> file for the logic for compiling and installing the stan models during package installation.</p>
+<p>When running via <code>devtools</code> (e.g. <code>test</code> or <code>load_all</code>) the <code>install.libs.R</code> logic is not run, so for this we use an <code>onLoad</code> hook which checks whether the package is being loaded via <code>devtools</code> and if so, copies compiled models into a local <code>bin</code> directory where the <code>system.file</code> shim can access them.</p>
+<p>Note that if you are running <code>devtools::load_all</code> or <code>devtool::test</code> and you don’t yet have <code>cmdstan</code> installed, this will trigger an installation of <code>cmdstan</code> which can take a few minutes.</p>
+<div class="section level2">
+<h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a>
+</h2>
+<p>Most tests are run with</p>
+<p><code>{r} devtools::test()</code></p>
+<p>For snapshot testing of stan model outputs, we need the outputs to be exactly reproducible. As well as setting a seed, this requires the machine environment to be exactly the same, so we run these inside a Docker container, via a bash script:</p>
+<p><code>{shell} ./tests/snapshots/test-snapshots</code></p>
+<p>This involves recompiling the model, so takes a while to run.</p>
+</div>
 <div class="section level2">
 <h2 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
 </h2>
