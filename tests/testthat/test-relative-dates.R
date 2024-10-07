@@ -18,11 +18,12 @@ test_that("Using relative and absolute dates gives the same answer", {
                    iter_sampling = 100,
                    seed = 100)
 
-  min_date <- min(dat_absolute$day)
-
   set.seed(1)
   trajectories_relative <- mod_relative$simulate_individual_trajectories()
-  trajectories_relative$calendar_day <- as.integer(mindate + trajectories_relative$calendar_day, units = "days")
+
+  # convert relative days to absolute
+  min_date <- min(dat_absolute$day)
+  trajectories_relative$calendar_day <- min_date + trajectories_relative$calendar_day
 
   expect_equal(trajectories_relative, trajectories_absolute)
 })
