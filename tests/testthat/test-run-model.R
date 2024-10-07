@@ -10,6 +10,15 @@ mock_model_no_covariates <- function(name, package) {
   list(sample = function(x, ...)  readRDS(test_path("testdata", "testdraws_nocovariates.rds")))
 }
 
+test_that("Can run model", {
+  dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(data = dat, covariate_formula = ~0 + infection_history)
+  delta <- mod$fit(parallel_chains = 4,
+                   iter_warmup = 10,
+                   iter_sampling = 100)
+  expect_equal(class(delta), c("CmdStanMCMC", "CmdStanFit", "R6"))
+})
+
 test_that("Can fit model with arguments", {
   local_mocked_bindings(
     stan_package_model = mock_model_return_args, .package = "instantiate"

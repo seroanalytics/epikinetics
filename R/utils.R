@@ -46,6 +46,8 @@ summarise_draws <- function(dt_in, column_name, by = by) {
 
 build_covariate_lookup_table <- function(data, design_matrix, all_formula_vars) {
 
+  p_name <- NULL
+
   if (length(all_formula_vars) == 0) {
     return(NULL)
   }

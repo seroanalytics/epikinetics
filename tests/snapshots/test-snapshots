@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -ex
+
+docker build . -f snapshot-tests.Dockerfile -t epikinetics-test
+docker run epikinetics-test Rscript -e "devtools::test(filter='snapshot')"

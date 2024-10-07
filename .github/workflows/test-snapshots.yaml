@@ -1,0 +1,23 @@
+name: Snapshot testing
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: ./tests/snapshots/test-snapshots
