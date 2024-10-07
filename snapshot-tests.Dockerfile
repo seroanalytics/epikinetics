@@ -9,6 +9,7 @@ WORKDIR /epikinetics
 COPY DESCRIPTION /epikinetics
 
 RUN Rscript -e "devtools::install_deps()"
+RUN Rscript -e "install.packages('decor')"
 
 COPY . /epikinetics
 COPY tests/snapshots/test-snapshots.R /epikinetics/tests/testthat
