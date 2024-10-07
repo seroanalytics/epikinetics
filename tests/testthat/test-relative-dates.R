@@ -1,0 +1,28 @@
+test_that("Using relative and absolute dates gives the same answer", {
+  # these take a while, so don't run on CI
+  skip_on_ci()
+  dat_absolute <- data.table::fread(test_path("testdata", "delta_full_relative.rds"))
+  mod_absolute <- biokinetics$new(data = dat_absolute, covariate_formula = ~0 + infection_history)
+  delta_absolute <- mod_absolute$fit(parallel_chains = 4,
+                   iter_warmup = 50,
+                   iter_sampling = 100,
+                   seed = 100)
+
+  set.seed(1)
+  trajectories_absolute <- mod_absolute$simulate_individual_trajectories()
+
+  dat_relative <- data.table::fread(system.file("delta_full_relative.rds", package = "epikinetics"))
+  mod_relative <- biokinetics$new(data = dat_relative, covariate_formula = ~0 + infection_history)
+  delta_relative <- mod_relative$fit(parallel_chains = 4,
+                   iter_warmup = 50,
+                   iter_sampling = 100,
+                   seed = 100)
+
+  min_date <- min(dat_absolute$day)
+
+  set.seed(1)
+  trajectories_relative <- mod_relative$simulate_individual_trajectories()
+  trajectories_relative$calendar_day <- as.integer(mindate + trajectories_relative$calendar_day, units = "days")
+
+  expect_equal(trajectories_relative, trajectories_absolute)
+})

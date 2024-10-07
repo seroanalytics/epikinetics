@@ -12,7 +12,6 @@ biokinetics <- R6::R6Class(
     preds_sd = NULL,
     data = NULL,
     covariate_formula = NULL,
-    time_type = NULL,
     fitted = NULL,
     stan_input_data = NULL,
     model = NULL,
@@ -76,14 +75,18 @@ biokinetics <- R6::R6Class(
       # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
       titre_type <- NULL
 
+      titre_types <- as.factor(unique(private$data$titre_type))
+
       dt_titre_lookup <- data.table(
-        k = 1:private$data[, length(unique(titre_type))],
-        titre_type = private$data[, unique(titre_type)])
+        k = as.numeric(titre_types),
+        titre_type = levels(titre_types)
+      )
 
       dt_out <- dt[dt_titre_lookup, on = "k"][, `:=`(k = NULL)]
       if ("p" %in% colnames(dt)) {
         dt_out <- dt_out[private$covariate_lookup_table, on = "p", nomatch = NULL][, `:=`(p = NULL)]
       }
+      data.table::setnames(dt_out, "t", "time_since_last_exp", skip_absent=TRUE)
       dt_out
     },
     summarise_pop_fit = function(time_range,
@@ -155,7 +158,7 @@ biokinetics <- R6::R6Class(
       dt_out
     },
     prepare_stan_data = function() {
-      pid <- value <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- t_since_min_date <- NULL
+      pid <- value <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- NULL
       stan_data <- list(
         N = private$data[, .N],
         N_events = private$data[, data.table::uniqueN(pid)],
@@ -172,12 +175,7 @@ biokinetics <- R6::R6Class(
         cens_lo_idx = private$data[censored == -2, obs_id],
         cens_hi_idx = private$data[censored == 1, obs_id])
 
-      if (private$time_type == "relative") {
-        stan_data$t <- private$data[, t_since_last_exp]
-      } else {
-        stan_data$t <- private$data[, t_since_min_date]
-      }
-
+      stan_data$t <- private$data[, t_since_last_exp]
       stan_data$X <- private$design_matrix
       stan_data$P <- ncol(private$design_matrix)
 
@@ -217,19 +215,15 @@ biokinetics <- R6::R6Class(
     #' @param covariate_formula Formula specifying linear regression model. Note all variables in the formula
     #' will be treated as categorical variables. Default ~0.
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
-    #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     initialize = function(priors = biokinetics_priors(),
                           data = NULL,
                           file_path = NULL,
                           covariate_formula = ~0,
-                          preds_sd = 0.25,
-                          time_type = "relative") {
+                          preds_sd = 0.25) {
       validate_priors(priors)
       private$priors <- priors
       validate_numeric(preds_sd)
       private$preds_sd <- preds_sd
-      validate_time_type(time_type)
-      private$time_type <- time_type
       validate_formula(covariate_formula)
       private$covariate_formula <- covariate_formula
       private$all_formula_vars <- all.vars(covariate_formula)
@@ -252,12 +246,8 @@ biokinetics <- R6::R6Class(
       logger::log_info("Preparing data for stan")
       private$data <- convert_log_scale(private$data, "value")
       private$data[, `:=`(titre_type_num = as.numeric(as.factor(titre_type)),
-                          obs_id = seq_len(.N))]
-      if (time_type == "relative") {
-        private$data[, t_since_last_exp := as.integer(date - last_exp_date, units = "days")]
-      } else {
-        private$data[, t_since_min_date := as.integer(date - min(date), units = "days")]
-      }
+                          obs_id = seq_len(.N),
+                          t_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
       private$construct_design_matrix()
       private$build_covariate_lookup_table()
       private$prepare_stan_data()
@@ -348,24 +338,21 @@ biokinetics <- R6::R6Class(
       dt_out
     },
     #' @description Process the model results into a data table of titre values over time.
-    #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are t, me, lo, hi,
-    #' titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, .draw
-    #' t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
+    #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are time_since_last_exp,
+    #' me, lo, hi, titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are
+    #' time_since_last_exp, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
     #' titre_type and a column for each covariate in the hierarchical model. See the data vignette for details:
     #' \code{vignette("data", package = "epikinetics")}
-    #' @param time_type One of 'relative' or 'absolute'. Default 'relative'.
     #' @param t_max Integer. Maximum number of time points to include.
     #' @param summarise Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
     #' return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
     #' draws from posterior parameter distributions.
     #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
     simulate_population_trajectories = function(
-      time_type = "relative",
       t_max = 150,
       summarise = TRUE,
       n_draws = 2500) {
       private$check_fitted()
-      validate_time_type(time_type)
       validate_numeric(t_max)
       validate_logical(summarise)
       validate_numeric(n_draws)
@@ -377,12 +364,6 @@ biokinetics <- R6::R6Class(
         n_draws = n_draws)
 
       dt_out <- private$recover_covariate_names(dt_sum)
-
-      if (time_type == "absolute") {
-        logger::log_info("Converting to absolute time")
-        dt_out[, date := private$data[, unique(min(date))] + t,
-                 by = c(private$all_formula_vars, "titre_type")]
-      }
 
       dt_out <- dt_out[
         , lapply(.SD, function(x) if (is.factor(x)) forcats::fct_drop(x) else x)]
@@ -494,28 +475,28 @@ biokinetics <- R6::R6Class(
       logger::log_info("Recovering covariate names")
       dt_params_ind_traj <- private$recover_covariate_names(dt_params_ind_traj)
 
-      logger::log_info(paste("Calculating exposure dates. Adjusting exposures by", time_shift, "days"))
+      logger::log_info(paste("Calculating exposure days. Adjusting exposures by", time_shift, "days"))
       dt_lookup <- private$data[, .(
-        exposure_date = min(last_exp_date) - time_shift),
+        exposure_day = min(last_exp_day) - time_shift),
                                   by = c(private$all_formula_vars, "pid")]
 
       dt_out <- merge(dt_params_ind_traj, dt_lookup, by = "pid")
 
       dt_out[
-        , calendar_date := exposure_date + t,
+        , calendar_day := exposure_day + time_since_last_exp,
           by = c(private$all_formula_vars, "pid", "titre_type")]
 
       if (summarise) {
         logger::log_info("Resampling")
         dt_out <- dt_out[
           !is.nan(mu), .(pop_mu_sum = mean(mosaic::resample(mu))),
-          by = c("calendar_date", "draw", "titre_type")]
+          by = c("calendar_day", "draw", "titre_type")]
 
         logger::log_info("Summarising into population quantiles")
         dt_out <- summarise_draws(
           dt_out,
           column_name = "pop_mu_sum",
-          by = c("calendar_date", "titre_type"))
+          by = c("calendar_day", "titre_type"))
       }
 
       dt_out[, time_shift := time_shift]

@@ -31,7 +31,7 @@ validate_formula_vars <- function(formula_vars, data) {
 }
 
 validate_required_cols <- function(dat) {
-  required_cols <- c("pid", "date", "last_exp_date", "titre_type", "value", "censored")
+  required_cols <- c("pid", "day", "last_exp_day", "titre_type", "value", "censored")
   missing_cols <- required_cols[!(required_cols %in% colnames(dat))]
   if (length(missing_cols) > 0) {
     stop(paste("Missing required columns:",

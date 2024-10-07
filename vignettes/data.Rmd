@@ -2,9 +2,9 @@
 title: "A guide to model input and output data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A guide to model input and output data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+%\VignetteIndexEntry{A guide to model input and output data}
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -18,27 +18,25 @@ knitr::opts_chunk$set(
 
 The model requires a data table containing the following columns:
 
-### pid
-A unique numeric id to identify a person across observations
-
-### date
-The date of the observation
-
-### last_exp_date
-The last date on which the person was exposed
-
-### titre_type
-The name of the titre
-
-### value
-The value of the titre
-
-### censored
-Whether this observation should be censored: -1 for lower, 1 for upper, 0 for none
+| name         | type            | description                                                                                       |
+|--------------|-----------------|---------------------------------------------------------------------------------------------------|
+| pid          | numeric         | Unique number to identify a person across observations                                            |
+| day          | integer or date | The day of the observation. Can be a date or an integer representing a relative day of study      |
+| last_exp_day | integer or date | The most recent day on which the person was exposed. Must be of the same type as the 'day' column |
+| titre_type   | character       | Name of the titre or biomarker                                                                    |
+| value        | numeric         | Titre value                                                                                       |
+| censored     | -1, 0 or 1      | Whether this observation should be treated as censored: -1 for lower, 1 for upper, 0 for none     |
 
 It can also contain further columns for any covariates to be included in the model. The data files installed with this package have additional columns infection_history, last_vax_type, and exp_num.
 
 The model also accepts a covariate formula to define the regression model. The variables in the formula must correspond to column names in the dataset. Note that all variables will be treated as **categorical variables**; that is, converted to factors regardless of their input type.
+
+## Example
+
+```{r}
+dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+head(dat)
+```
 
 # Ouput data
 
@@ -60,17 +58,40 @@ See the documentation for this function [here](../reference/biokinetics.html#met
 There are 2 different output formats depending on whether the provided `summarise` argument is `TRUE` or `FALSE`.
 
 * `summarise = TRUE`
-  Returned columns are:
-  * t:
-  * p:
-  * k:
-  * me:
-  * lo
-  * hi
-  * titre_type
+    Returned columns are
 
-  There will also be a column for each covariate in the hierarchical model.
+    | name                | type       | description                                                                                   |
+    |---------------------|------------|-----------------------------------------------------------------------------------------------|
+    | time_since_last_exp | integer    | Number of days since last exposure                                                            |
+    | me                  | numeric    | Median titre value                                                                            |
+    | lo                  | numeric    | Titre value at the 0.025 quantile                                                             |
+    | hi                  | numeric    | Titre value at the 0.975 quantile                                                             |
+    | titre_type          | character  | Name of the titre or biomarker                                                                |
+    | censored            | -1, 0 or 1 | Whether this observation should be treated as censored: -1 for lower, 1 for upper, 0 for none |
+
+There will also be a column for each covariate in the regression model.
 
 * `summarise = FALSE`
-  Returned columns are t, p, k, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu .draw, titre_type and a column for each covariate in the hierarchical model.
+    Returned columns are
+
+    | name                | type    | description                        |
+    |---------------------|---------|------------------------------------|
+    | time_since_last_exp | integer | Number of days since last exposure |
+    | t0_pop              | numeric |                                    |
+    | tp_pop              | numeric |                                    |
+    | ts_pop              | numeric |                                    |
+    | m1_pop              | numeric |                                    |
+    | m2_pop              | numeric |                                    |
+    | m3_pop              | numeric |                                    |
+    | beta_t0             | numeric |                                    |
+    | beta_tp             | numeric |                                    |
+    | beta_ts             | numeric |                                    |
+    | beta_m1             | numeric |                                    |
+    | beta_m2             | numeric |                                    |
+    | beta_t3             | numeric |                                    |
+    | mu                  | numeric | Titre value                        |
+    | .draw               | integer | Draw number                        |
+    | titre_type          | numeric | Name of the titre or biomarker     |
+
+There will also be column for each covariate in the hierarchical model.
 

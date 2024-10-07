@@ -1,4 +1,4 @@
-pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type,exp_num
+pid,day,last_exp_day,titre_type,value,censored,infection_history,last_vax_type,exp_num
 1,2021-03-10,2021-03-08,Ancestral,175.9349878,0,Infection naive,BNT162b2,2
 1,2021-04-15,2021-03-08,Ancestral,607.57499,0,Infection naive,BNT162b2,2
 1,2021-07-08,2021-03-08,Ancestral,179.0462942,0,Infection naive,BNT162b2,2

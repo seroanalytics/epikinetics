@@ -11,8 +11,7 @@ test_that("Can construct stan data", {
   mod <- biokinetics$new(data = dt,
                          priors = biokinetics_priors(),
                          covariate_formula = ~0 + infection_history,
-                         preds_sd = 0.25,
-                         time_type = "relative")
+                         preds_sd = 0.25)
   # the fit function has been mocked above to return the stan inputs
   stan_dt <- mod$fit()
   expect_equal(stan_dt$N_events, 335)

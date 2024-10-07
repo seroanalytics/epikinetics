@@ -83,7 +83,7 @@ devtools::test()
 
 For snapshot testing of stan model outputs, we need the outputs to be exactly 
 reproducible. As well as setting a seed, this requires the machine environment 
-to be exactly the same, so we run these inside a Docker container, via a bash script:
+to be exactly the same, so on CI we run these inside a Docker container, via a bash script:
 
 ```{shell}
 ./tests/snapshots/test-snapshots

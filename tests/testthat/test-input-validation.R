@@ -17,11 +17,6 @@ test_that("preds_sd must be numeric", {
                "'preds_sd' must be numeric")
 })
 
-test_that("Time type must be 'absolute' or 'relative'", {
-  expect_error(biokinetics$new(time_type = "bad"),
-               "'time_type' must be one of 'relative' or 'absolute'")
-})
-
 test_that("Covariate formula must be a formula", {
   dat <- data.table(test = 1)
   expect_error(biokinetics$new(data = dat, covariate_formula = "bad"),
@@ -36,7 +31,7 @@ test_that("Covariates must be present in data", {
 test_that("Required columns must be present in data", {
   dat <- data.table(test = 1)
   expect_error(biokinetics$new(data = dat, covariate_formula = 0~ bad),
-               "Missing required columns: pid, date, last_exp_date, titre_type, value, censored")
+               "Missing required columns: pid, day, last_exp_day, titre_type, value, censored")
 })
 
 test_that("Data must be a data.table", {
