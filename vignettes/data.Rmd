@@ -2,9 +2,9 @@
 title: "A guide to model input and output data"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteIndexEntry{A guide to model input and output data}
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{A guide to model input and output data}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
