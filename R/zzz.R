@@ -31,8 +31,8 @@
     packageStartupMessage("Copying stan files")
     bin_stan <- file.path(libname, pkgname, "bin", "stan")
     source_path <- file.path(libname, pkgname, "src", "stan")
-
-    fs::dir_copy(path = source_path, new_path = bin, overwrite = TRUE)
+    fs::dir_copy(path = source_path, new_path = bin_stan, overwrite = TRUE)
+    message(fs::dir_ls(bin))
     instantiate::stan_package_compile(
       models = instantiate::stan_package_model_files(path = bin_stan),
       cpp_options = list(stan_threads = TRUE),
