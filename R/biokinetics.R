@@ -18,6 +18,7 @@ biokinetics <- R6::R6Class(
     all_formula_vars = NULL,
     design_matrix = NULL,
     covariate_lookup_table = NULL,
+    pid_lookup = NULL,
     check_fitted = function() {
       if (is.null(private$fitted)) {
         stop("Model has not been fitted yet. Call 'fit' before calling this function.")
@@ -69,6 +70,12 @@ biokinetics <- R6::R6Class(
       private$covariate_lookup_table <- build_covariate_lookup_table(private$data,
                                                                      private$design_matrix,
                                                                      private$all_formula_vars)
+    },
+    build_pid_lookup = function() {
+      pids <- unique(private$data$pid)
+      ids <- seq_along(pids)
+      private$pid_lookup <- ids
+      names(private$pid_lookup) <- pids
     },
     recover_covariate_names = function(dt) {
       # Declare variables to suppress notes when compiling package
@@ -162,7 +169,7 @@ biokinetics <- R6::R6Class(
       stan_data <- list(
         N = private$data[, .N],
         N_events = private$data[, data.table::uniqueN(pid)],
-        id = private$data[, pid],
+        id = private$data[, private$pid_lookup[pid]],
         value = private$data[, value],
         censored = private$data[, censored],
         titre_type = private$data[, titre_type_num],
@@ -248,8 +255,12 @@ biokinetics <- R6::R6Class(
       private$data[, `:=`(titre_type_num = as.numeric(as.factor(titre_type)),
                           obs_id = seq_len(.N),
                           t_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
+      if (!("censored" %in% colnames(private$data))) {
+        private$data$censored <- 0
+      }
       private$construct_design_matrix()
       private$build_covariate_lookup_table()
+      private$build_pid_lookup()
       private$prepare_stan_data()
       logger::log_info("Retrieving compiled model")
       private$model <- instantiate::stan_package_model(
@@ -328,8 +339,14 @@ biokinetics <- R6::R6Class(
       logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
-      data.table::setcolorder(dt_out, c("n", "k", ".draw"))
-      data.table::setnames(dt_out, c("n", ".draw"), c("pid", "draw"))
+      data.table::setcolorder(dt_out, c("k", ".draw"))
+      data.table::setnames(dt_out, ".draw", "draw")
+
+      dt_out[, pid := names(private$pid_lookup)[n]]
+      if (is.numeric(private$data$pid)) {
+        dt_out[, pid := as.numeric(pid)]
+      }
+      dt_out$n <- NULL
 
       if (human_readable_covariates) {
         logger::log_info("Recovering covariate names")
@@ -464,6 +481,9 @@ biokinetics <- R6::R6Class(
 
       dt_params_ind_trim <- dt_params_ind[, .SD[draw %in% 1:n_draws], by = pid]
 
+      # convert original pid to numeric pid
+      dt_params_ind_trim[, pid := private$pid_lookup[pid]]
+
       # Running the C++ code to simulate trajectories for each parameter sample
       # for each individual
       logger::log_info("Simulating individual trajectories")
@@ -471,6 +491,12 @@ biokinetics <- R6::R6Class(
 
       dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
         dt_params_ind_traj, vars_to_transform = "mu"))
+
+      # convert numeric pid to original pid
+      dt_params_ind_traj[, pid := names(private$pid_lookup)[pid]]
+      if (is.numeric(private$data$pid)) {
+        dt_params_ind_traj[, pid := as.numeric(pid)]
+      }
 
       logger::log_info("Recovering covariate names")
       dt_params_ind_traj <- private$recover_covariate_names(dt_params_ind_traj)
