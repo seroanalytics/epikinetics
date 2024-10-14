@@ -38,12 +38,12 @@ convert_log_scale_inverse <- function(dt_in, vars_to_transform) {
 #' @return A data.table with all columns required by the biokinetics model.
 #' @param dat_sero data.table containing titre values in the format required by biokinetics. See data vignette: \code{vignette("data", package = "epikinetics")}.
 #' @param dat_inf data.table containing exposure days and person ids corresponding to those in dat_sero. By default the exposure days are expected in a column called 'day'.
-#' @param exposure_column. Default 'day'. The name of the column containing exposure days. These can be integers or dates.
+#' @param exposure_column Default 'day'. The name of the column containing exposure days. These can be integers or dates.
 #' @export
 add_exposure_data <- function(dat_sero, dat_inf, exposure_column = 'day') {
   validate_required_cols(dat_sero, required_cols = c("pid", "day", "titre_type", "value"))
   validate_required_cols(dat_inf, required_cols = c("pid", exposure_column))
-  dat_inf[, last_exp_day := max(get(exposure_column)), by  = "pid"]
+  dat_inf[, "last_exp_day" := max(get(exposure_column)), by  = "pid"]
   merge(dat_sero, dat_inf[, c("pid", "last_exp_day")], by = "pid", allow.cartesian=TRUE)
 }
 
@@ -88,4 +88,12 @@ build_covariate_lookup_table <- function(data, design_matrix, all_formula_vars) 
 
   dt_out[, p_name := NULL]
   dt_out
+}
+
+build_pid_lookup <- function(data) {
+  pids <- unique(data$pid)
+  ids <- seq_along(pids)
+  pid_lookup <- ids
+  names(pid_lookup) <- pids
+  pid_lookup
 }

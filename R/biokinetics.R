@@ -72,10 +72,7 @@ biokinetics <- R6::R6Class(
                                                                      private$all_formula_vars)
     },
     build_pid_lookup = function() {
-      pids <- unique(private$data$pid)
-      ids <- seq_along(pids)
-      private$pid_lookup <- ids
-      names(private$pid_lookup) <- pids
+      private$pid_lookup <- build_pid_lookup(private$data)
     },
     recover_covariate_names = function(dt) {
       # Declare variables to suppress notes when compiling package
@@ -339,7 +336,6 @@ biokinetics <- R6::R6Class(
       logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
-      data.table::setcolorder(dt_out, c("k", ".draw"))
       data.table::setnames(dt_out, ".draw", "draw")
 
       dt_out[, pid := names(private$pid_lookup)[n]]
@@ -347,6 +343,8 @@ biokinetics <- R6::R6Class(
         dt_out[, pid := as.numeric(pid)]
       }
       dt_out$n <- NULL
+
+      data.table::setcolorder(dt_out, c("pid", "k", "draw"))
 
       if (human_readable_covariates) {
         logger::log_info("Recovering covariate names")
@@ -443,14 +441,14 @@ biokinetics <- R6::R6Class(
     #' @description Simulate individual trajectories from the model. This is
     #' computationally expensive and may take a while to run if n_draws is large.
     #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
-    #' If summarise = FALSE, columns are pid, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
-    #' and a column for each covariate in the hierarchical model. See the data vignette for details:
+    #' If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
+    #' and a column for each covariate in the regression model. See the data vignette for details:
     #' \code{vignette("data", package = "epikinetics")}.
     #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
     #' hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
     #' Default TRUE.
     #' @param n_draws Integer. Maximum number of samples to draw. Default 2500.
-    #' @param time_shift Integer. Number of days to adjust the exposure date by. Default 0.
+    #' @param time_shift Integer. Number of days to adjust the exposure day by. Default 0.
     simulate_individual_trajectories = function(
       summarise = TRUE,
       n_draws = 2500,
@@ -468,26 +466,24 @@ biokinetics <- R6::R6Class(
       # Calculating the maximum time each individual has data for after the
       # exposure of interest
       dt_max_dates <- private$data[
-        , .(t_max = max(t_since_last_exp)), by = .(pid)]
+        , .(t_max = max(t_since_last_exp)), by = "pid"]
 
       # A very small number of individuals have bleeds on the same day or a few days
       # after their recorded exposure dates, resulting in very short trajectories.
       # Adding a 50 day buffer to any individuals with less than or equal to 50 days
       # of observations after their focal exposure
-      dt_max_dates <- dt_max_dates[t_max <= 50, t_max := 50, by = .(pid)]
+      dt_max_dates <- dt_max_dates[t_max <= 50, t_max := 50, by = "pid"]
 
       # Merging the parameter draws with the maximum time data.table
       dt_params_ind <- merge(dt_params_ind, dt_max_dates, by = "pid")
 
-      dt_params_ind_trim <- dt_params_ind[, .SD[draw %in% 1:n_draws], by = pid]
-
       # convert original pid to numeric pid
-      dt_params_ind_trim[, pid := private$pid_lookup[pid]]
+      dt_params_ind[, pid := private$pid_lookup[pid]]
 
       # Running the C++ code to simulate trajectories for each parameter sample
       # for each individual
       logger::log_info("Simulating individual trajectories")
-      dt_params_ind_traj <- biokinetics_simulate_trajectories(dt_params_ind_trim)
+      dt_params_ind_traj <- biokinetics_simulate_trajectories(dt_params_ind)
 
       dt_params_ind_traj <- data.table::setDT(convert_log_scale_inverse_cpp(
         dt_params_ind_traj, vars_to_transform = "mu"))

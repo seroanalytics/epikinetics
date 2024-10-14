@@ -26,7 +26,7 @@ test_that("Can construct stan data", {
   expect_equal(stan_data$N_events, 335)
   expect_equal(stan_data$mu_t0, priors$mu_t0)
   expect_equal(stan_data$sigma_t0, priors$sigma_t0)
-  expect_equal(stan_data$id, dat$pid)
+  expect_equivalent(stan_data$id, dat$pid)
 })
 
 test_that("All data is assumed uncensored if no censored column provided", {
@@ -45,5 +45,5 @@ test_that("Can handle non-numeric pids", {
   dat$pid <- paste0("ID-", dat$pid)
   mod <- biokinetics$new(data = dat)
   stan_data <- mod$get_stan_data()
-  expect_equal(stan_data$id, ids)
+  expect_equivalent(stan_data$id, ids)
 })

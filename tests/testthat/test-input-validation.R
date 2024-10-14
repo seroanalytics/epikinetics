@@ -31,7 +31,7 @@ test_that("Covariates must be present in data", {
 test_that("Required columns must be present in data", {
   dat <- data.table(test = 1)
   expect_error(biokinetics$new(data = dat, covariate_formula = 0~ bad),
-               "Missing required columns: pid, day, last_exp_day, titre_type, value, censored")
+               "Missing required columns: pid, day, last_exp_day, titre_type, value")
 })
 
 test_that("Data must be a data.table", {
