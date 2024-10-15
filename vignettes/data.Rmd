@@ -94,3 +94,37 @@ There will also be a column for each covariate in the regression model.
     | titre_type          | numeric | Name of the titre or biomarker     |
 
 There will also be column for each covariate in the hierarchical model.
+
+## simulate_individual_trajectories
+
+See the documentation for this function [here](../reference/biokinetics.html#method-simulate-individual-trajectories).
+There are 2 different output formats depending on whether the provided `summarise` argument is `TRUE` or `FALSE`.
+
+* `summarise = FALSE`
+    Returned columns are
+
+    | name                | type                 | description                                                                                 |
+    |---------------------|----------------------|---------------------------------------------------------------------------------------------|
+    | pid                 | character or numeric | Unique person identifier as provided in input data                                          |
+    | draw                | integer              | Which draw from the fits this is                                                            |
+    | time_since_last_exp | integer              | Number of days since last exposure                                                          |
+    | mu                  | numeric              | Titre value                                                                                 |
+    | titre_type          | character            | Name of the titre or biomarker                                                              |
+    | exposure_day        | integer              | Day of this person's last exposure                                                          |
+    | calendar_day        | integer              | Day of this titre value                                                                     |
+    | time_shift          | integer              | The number of days these exposures have been adjusted by, as provided in function arguments |
+
+    There will also be a column for each covariate in the regression model.
+
+  * `summarise = TRUE`
+      Returned columns are
+
+   | name         | type      | description                                                                          |
+   |--------------|-----------|--------------------------------------------------------------------------------------|
+   | me           | numeric   | Median titre value                                                                   |
+   | lo           | numeric   | Titre value at the 0.025 quantile                                                    |
+   | hi           | numeric   | Titre value at the 0.075 quantile                                                    |
+   | titre_type   | character | Name of the titre or biomarker                                                       |
+   | calendar_day | integer   | Day of this titre value                                                              |
+   | time_shift   | integer   | The number of days the exposures were adjusted by, as provided in function arguments |
+
