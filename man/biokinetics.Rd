@@ -222,14 +222,14 @@ Default TRUE.}
 
 \item{\code{n_draws}}{Integer. Maximum number of samples to draw. Default 2500.}
 
-\item{\code{time_shift}}{Integer. Number of days to adjust the exposure date by. Default 0.}
+\item{\code{time_shift}}{Integer. Number of days to adjust the exposure day by. Default 0.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
-If summarise = FALSE, columns are pid, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
-and a column for each covariate in the hierarchical model. See the data vignette for details:
+If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
+and a column for each covariate in the regression model. See the data vignette for details:
 \code{vignette("data", package = "epikinetics")}.
 }
 }

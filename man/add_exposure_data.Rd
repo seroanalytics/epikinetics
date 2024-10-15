@@ -11,7 +11,7 @@ add_exposure_data(dat_sero, dat_inf, exposure_column = "day")
 
 \item{dat_inf}{data.table containing exposure days and person ids corresponding to those in dat_sero. By default the exposure days are expected in a column called 'day'.}
 
-\item{exposure_column.}{Default 'day'. The name of the column containing exposure days. These can be integers or dates.}
+\item{exposure_column}{Default 'day'. The name of the column containing exposure days. These can be integers or dates.}
 }
 \value{
 A data.table with all columns required by the biokinetics model.
