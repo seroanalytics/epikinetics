@@ -71,10 +71,10 @@ plot_data[, titre_type := forcats::fct_relevel(
   c("Ancestral", "Alpha", "Delta"))]
 
 ggplot(data = plot_data) +
-  geom_line(aes(x = t,
+  geom_line(aes(x = time_since_last_exp,
                 y = me,
                 colour = titre_type)) +
-  geom_ribbon(aes(x = t,
+  geom_ribbon(aes(x = time_since_last_exp,
                   ymin = lo,
                   ymax = hi,
                   fill = titre_type), alpha = 0.65) +
@@ -173,8 +173,8 @@ res$wave <- "Delta"
 dat$wave <- "Delta"
 plot_data <- merge(
   res, dat[, .(
-    min_date = min(date), max_date = max(date)), by = wave])[
-  , .SD[calendar_date >= min_date & calendar_date <= date_ba2], by = wave]
+    min_date = min(day), max_date = max(day)), by = wave])[
+  , .SD[calendar_day >= min_date & calendar_day <= date_ba2], by = wave]
 
 plot_data[, titre_type := forcats::fct_relevel(
   titre_type,
@@ -182,14 +182,14 @@ plot_data[, titre_type := forcats::fct_relevel(
 
 ggplot() + geom_line(
   data = plot_data,
-  aes(x = calendar_date,
+  aes(x = calendar_day,
       y = me,
       group = interaction(titre_type, wave),
       colour = titre_type),
   alpha = 0.2) +
   geom_ribbon(
     data = plot_data,
-    aes(x = calendar_date,
+    aes(x = calendar_day,
         ymin = lo,
         ymax = hi,
         group = interaction(titre_type, wave)
@@ -205,10 +205,10 @@ ggplot() + geom_line(
     values = custom_palette) +
   scale_x_date(
     date_labels = "%b %Y",
-    limits = c(min(dat$date), date_ba2)) +
+    limits = c(min(dat$day), date_ba2)) +
   geom_smooth(
     data = plot_data,
-    aes(x = calendar_date,
+    aes(x = calendar_day,
         y = me,
         fill = titre_type,
         colour = titre_type,
@@ -236,7 +236,7 @@ combined_data <- data.table::data.table(data.table::rbindlist(results_list))
 Plotting the median values:
 
 ```{r}
-plot_data <- combined_data[calendar_date == date_delta]
+plot_data <- combined_data[calendar_day == date_delta]
 plot_data <- plot_data[, titre_type := forcats::fct_relevel(
     titre_type,
     c("Ancestral", "Alpha", "Delta"))]

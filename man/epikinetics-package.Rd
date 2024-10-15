@@ -4,12 +4,12 @@
 \name{epikinetics-package}
 \alias{epikinetics}
 \alias{epikinetics-package}
-\title{epikinetics: Antibody and Cycle Threshold Kinetics Modelling}
+\title{epikinetics: Biomarker Kinetics Modelling}
 \description{
-What the package does (one paragraph).
+Fit kinetic curves to biomarker data, using a Bayesian hierarchical model
 }
 \author{
-\strong{Maintainer}: Alex Hill \email{alex.hill@gmail.com} [contributor]
+\strong{Maintainer}: Alex Hill \email{alex.hill@gmail.com}
 
 Authors:
 \itemize{

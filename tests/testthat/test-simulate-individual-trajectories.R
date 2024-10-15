@@ -52,7 +52,7 @@ test_that("Can retrieve summarised trajectories", {
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = TRUE, n_draws = 10)
-  expect_equal(names(trajectories), c("calendar_date", "titre_type", "me", "lo", "hi", "time_shift"))
+  expect_equal(names(trajectories), c("calendar_day", "titre_type", "me", "lo", "hi", "time_shift"))
 })
 
 test_that("Can retrieve un-summarised trajectories", {
@@ -60,8 +60,8 @@ test_that("Can retrieve un-summarised trajectories", {
                    covariate_formula = ~0 + infection_history)
   mod$fit()
   trajectories <- mod$simulate_individual_trajectories(summarise = FALSE, n_draws = 10)
-  expect_equal(names(trajectories), c("pid", "draw", "t", "mu", "titre_type", "infection_history",
-                                      "exposure_date", "calendar_date", "time_shift"))
+  expect_equal(names(trajectories), c("pid", "draw", "time_since_last_exp", "mu", "titre_type", "infection_history",
+                                      "exposure_day", "calendar_day", "time_shift"))
 })
 
 test_that("Only n_draws draws are returned", {

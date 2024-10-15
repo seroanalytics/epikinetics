@@ -1,4 +1,4 @@
-pid,date,last_exp_date,titre_type,value,censored,infection_history,last_vax_type,exp_num
+pid,day,last_exp_day,titre_type,value,censored,infection_history,last_vax_type,exp_num
 1,2022-01-31,2021-12-26,Delta,2560,1,Infection naive,BNT162b2,5
 1,2022-01-31,2021-12-26,BA.1,1841.32228,0,Infection naive,BNT162b2,5
 1,2022-01-31,2021-12-26,BA.2,786.8526775,0,Infection naive,BNT162b2,5

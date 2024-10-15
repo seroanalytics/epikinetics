@@ -45,15 +45,15 @@ test_that("Can process model fits with no covariates", {
                  threads_per_chain = 4)
 
   pt <- mod$simulate_population_trajectories(n_draws = 100, summarise = FALSE)
-  expect_equal(names(pt), c("t", ".draw", "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop",
+  expect_equal(names(pt), c("time_since_last_exp", ".draw", "t0_pop", "tp_pop", "ts_pop", "m1_pop", "m2_pop",
                             "m3_pop", "mu", "titre_type"))
 
   pt <- mod$simulate_population_trajectories(n_draws = 100, summarise = TRUE)
-  expect_equal(names(pt), c("t", "me", "lo", "hi", "titre_type"))
+  expect_equal(names(pt), c("time_since_last_exp", "me", "lo", "hi", "titre_type"))
 
   it <- mod$simulate_individual_trajectories(n_draws = 100, summarise = FALSE)
-  expect_equal(names(it),  c("pid", "draw", "t", "mu", "titre_type",
-                             "exposure_date", "calendar_date", "time_shift"))
+  expect_equal(names(it),  c("pid", "draw", "time_since_last_exp", "mu", "titre_type",
+                             "exposure_day", "calendar_day", "time_shift"))
 
  # it <- mod$simulate_individual_trajectories(n_draws = 100, summarise = TRUE)
  # expect_equal(names(it), c("calendar_date", "titre_type", "me", "lo", "hi", "time_shift"))
@@ -76,10 +76,10 @@ test_that("Can process model fits with multiple covariates", {
                  threads_per_chain = 4)
 
   pt <- mod$simulate_population_trajectories(n_draws = 100)
-  expect_equal(names(pt), c("t", "me", "lo", "hi", "titre_type", "infection_history", "last_vax_type"))
+  expect_equal(names(pt), c("time_since_last_exp", "me", "lo", "hi", "titre_type", "infection_history", "last_vax_type"))
 
   it <- mod$simulate_individual_trajectories(n_draws = 100)
-  expect_equal(names(it), c("calendar_date", "titre_type", "me", "lo", "hi", "time_shift"))
+  expect_equal(names(it), c("calendar_day", "titre_type", "me", "lo", "hi", "time_shift"))
 
   sp <- mod$population_stationary_points()
   expect_equal(names(sp), c("infection_history", "last_vax_type", "titre_type",

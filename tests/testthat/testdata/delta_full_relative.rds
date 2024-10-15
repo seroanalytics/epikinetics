@@ -1,0 +1,2256 @@
+pid,day,last_exp_day,titre_type,value,censored,infection_history,last_vax_type,exp_num
+1,40,38,Ancestral,175.9349878,0,Infection naive,BNT162b2,2
+1,76,38,Ancestral,607.57499,0,Infection naive,BNT162b2,2
+1,160,38,Ancestral,179.0462942,0,Infection naive,BNT162b2,2
+1,40,38,Alpha,5,-1,Infection naive,BNT162b2,2
+1,76,38,Alpha,416.790471100001,0,Infection naive,BNT162b2,2
+1,160,38,Alpha,103.5273976,0,Infection naive,BNT162b2,2
+1,40,38,Delta,5,-1,Infection naive,BNT162b2,2
+1,76,38,Delta,288.1785015,0,Infection naive,BNT162b2,2
+1,160,38,Delta,128.8900265,0,Infection naive,BNT162b2,2
+2,25,-18,Ancestral,595.449313599998,0,Infection naive,BNT162b2,2
+2,46,-18,Ancestral,430.528648299999,0,Infection naive,BNT162b2,2
+2,88,-18,Ancestral,198.2081189,0,Infection naive,BNT162b2,2
+2,179,-18,Ancestral,110.3680043,0,Infection naive,BNT162b2,2
+2,25,-18,Alpha,189.0453557,0,Infection naive,BNT162b2,2
+2,46,-18,Alpha,142.9343886,0,Infection naive,BNT162b2,2
+2,88,-18,Alpha,133.8404918,0,Infection naive,BNT162b2,2
+2,179,-18,Alpha,93.9296002800003,0,Infection naive,BNT162b2,2
+2,25,-18,Delta,72.02175288,0,Infection naive,BNT162b2,2
+2,46,-18,Delta,92.7027533499997,0,Infection naive,BNT162b2,2
+2,88,-18,Delta,46.2628491,0,Infection naive,BNT162b2,2
+2,179,-18,Delta,54.55012061,0,Infection naive,BNT162b2,2
+3,87,53,Ancestral,1624.411259,0,Infection naive,BNT162b2,2
+3,171,53,Ancestral,1023.505653,0,Infection naive,BNT162b2,2
+3,87,53,Alpha,1095.926476,0,Infection naive,BNT162b2,2
+3,171,53,Alpha,961.753256300001,0,Infection naive,BNT162b2,2
+3,87,53,Delta,965.977355399999,0,Infection naive,BNT162b2,2
+3,171,53,Delta,643.758814500001,0,Infection naive,BNT162b2,2
+4,47,26,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+4,88,26,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+4,172,26,Ancestral,930.247978699997,0,Previously infected (Pre-Omicron),BNT162b2,3
+4,47,26,Alpha,2294.428243,0,Previously infected (Pre-Omicron),BNT162b2,3
+4,88,26,Alpha,1049.854881,0,Previously infected (Pre-Omicron),BNT162b2,3
+4,172,26,Alpha,933.515125899998,0,Previously infected (Pre-Omicron),BNT162b2,3
+4,47,26,Delta,694.1600408,0,Previously infected (Pre-Omicron),BNT162b2,3
+4,88,26,Delta,452.981126300002,0,Previously infected (Pre-Omicron),BNT162b2,3
+4,172,26,Delta,734.212202300003,0,Previously infected (Pre-Omicron),BNT162b2,3
+5,6,-18,Ancestral,2560,1,Infection naive,BNT162b2,2
+5,53,-18,Ancestral,426.024114999999,0,Infection naive,BNT162b2,2
+5,103,-18,Ancestral,213.5390003,0,Infection naive,BNT162b2,2
+5,187,-18,Ancestral,368.0142372,0,Infection naive,BNT162b2,2
+5,6,-18,Alpha,540.7202473,0,Infection naive,BNT162b2,2
+5,53,-18,Alpha,415.331774000001,0,Infection naive,BNT162b2,2
+5,103,-18,Alpha,250.909971299999,0,Infection naive,BNT162b2,2
+5,187,-18,Alpha,183.9779073,0,Infection naive,BNT162b2,2
+5,6,-18,Delta,311.83196,0,Infection naive,BNT162b2,2
+5,53,-18,Delta,280.4537432,0,Infection naive,BNT162b2,2
+5,103,-18,Delta,110.5616476,0,Infection naive,BNT162b2,2
+5,187,-18,Delta,79.1725334000003,0,Infection naive,BNT162b2,2
+6,41,41,Ancestral,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+6,41,41,Alpha,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+6,41,41,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+7,124,93,Ancestral,115.312395150577,0,Infection naive,AZD1222,1
+7,124,93,Alpha,69.1756913491035,0,Infection naive,AZD1222,1
+7,124,93,Delta,5,-1,Infection naive,AZD1222,1
+8,133,97,Ancestral,209.0939465,0,Previously infected (Pre-Omicron),AZD1222,3
+8,159,97,Ancestral,50.10396289,0,Previously infected (Pre-Omicron),AZD1222,3
+8,133,97,Alpha,5,-1,Previously infected (Pre-Omicron),AZD1222,3
+8,133,97,Delta,5,-1,Previously infected (Pre-Omicron),AZD1222,3
+8,159,97,Delta,5,-1,Previously infected (Pre-Omicron),AZD1222,3
+8,234,97,Delta,5,-1,Previously infected (Pre-Omicron),AZD1222,3
+9,4,-24,Ancestral,657.444254099999,0,Infection naive,BNT162b2,2
+9,25,-24,Ancestral,934.333704000001,0,Infection naive,BNT162b2,2
+9,67,-24,Ancestral,399.619148699999,0,Infection naive,BNT162b2,2
+9,4,-24,Alpha,396.131820300001,0,Infection naive,BNT162b2,2
+9,25,-24,Alpha,282.922704900001,0,Infection naive,BNT162b2,2
+9,4,-24,Delta,316.513164100001,0,Infection naive,BNT162b2,2
+9,25,-24,Delta,306.681909900001,0,Infection naive,BNT162b2,2
+9,67,-24,Delta,174.2468752,0,Infection naive,BNT162b2,2
+10,117,75,Ancestral,2232.92503000001,0,Previously infected (Pre-Omicron),AZD1222,2
+10,117,75,Alpha,607.57498998905,0,Previously infected (Pre-Omicron),AZD1222,2
+10,117,75,Delta,2560,1,Previously infected (Pre-Omicron),AZD1222,2
+11,80,54,Ancestral,913.282125200002,0,Infection naive,BNT162b2,2
+11,150,54,Ancestral,413.878182099999,0,Infection naive,BNT162b2,2
+11,237,54,Ancestral,165.610148600001,0,Infection naive,BNT162b2,2
+11,80,54,Alpha,462.6108909,0,Infection naive,BNT162b2,2
+11,150,54,Alpha,203.4890863,0,Infection naive,BNT162b2,2
+11,237,54,Alpha,198.555879680297,0,Infection naive,BNT162b2,2
+11,80,54,Delta,226.8519274,0,Infection naive,BNT162b2,2
+11,150,54,Delta,128.5515581,0,Infection naive,BNT162b2,2
+11,237,54,Delta,127.5414765,0,Infection naive,BNT162b2,2
+12,46,43,Ancestral,253.785292299999,0,Infection naive,BNT162b2,2
+12,46,43,Alpha,48.0397331146746,0,Infection naive,BNT162b2,2
+12,46,43,Delta,47.70405944,0,Infection naive,BNT162b2,2
+13,84,83,Ancestral,121.1135496,0,Previously infected (Pre-Omicron),BNT162b2,3
+13,84,83,Alpha,60.8130894204273,0,Previously infected (Pre-Omicron),BNT162b2,3
+13,84,83,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+14,27,-22,Ancestral,197.860967200001,0,Infection naive,BNT162b2,2
+14,27,-22,Alpha,172.7262873,0,Infection naive,BNT162b2,2
+14,48,-22,Alpha,132.0923549,0,Infection naive,BNT162b2,2
+14,27,-22,Delta,45.3395584000001,0,Infection naive,BNT162b2,2
+14,48,-22,Delta,45.41910771,0,Infection naive,BNT162b2,2
+15,38,28,Ancestral,1526.40370200001,0,Infection naive,BNT162b2,2
+15,77,28,Ancestral,662.070416499999,0,Infection naive,BNT162b2,2
+15,164,28,Ancestral,106.0995805,0,Infection naive,BNT162b2,2
+15,248,28,Ancestral,129.342704377527,0,Infection naive,BNT162b2,2
+15,38,28,Alpha,974.481292799999,0,Infection naive,BNT162b2,2
+15,77,28,Alpha,798.6648664,0,Infection naive,BNT162b2,2
+15,164,28,Alpha,51.5743457200001,0,Infection naive,BNT162b2,2
+15,248,28,Alpha,95.6745110753895,0,Infection naive,BNT162b2,2
+15,38,28,Delta,334.482275799999,0,Infection naive,BNT162b2,2
+15,77,28,Delta,311.013081500001,0,Infection naive,BNT162b2,2
+15,164,28,Delta,45.8591303399999,0,Infection naive,BNT162b2,2
+15,248,28,Delta,5,-1,Infection naive,BNT162b2,2
+16,80,53,Ancestral,2560,1,Infection naive,BNT162b2,2
+16,151,53,Ancestral,281.438731800001,0,Infection naive,BNT162b2,2
+16,80,53,Alpha,971.922280699998,0,Infection naive,BNT162b2,2
+16,151,53,Alpha,524.384287100001,0,Infection naive,BNT162b2,2
+16,80,53,Delta,467.092688800001,0,Infection naive,BNT162b2,2
+16,151,53,Delta,344.2982058,0,Infection naive,BNT162b2,2
+17,76,45,Ancestral,780.670057600001,0,Infection naive,BNT162b2,2
+17,150,45,Ancestral,224.478422,0,Infection naive,BNT162b2,2
+17,76,45,Alpha,1123.155242,0,Infection naive,BNT162b2,2
+17,150,45,Alpha,201.8901902,0,Infection naive,BNT162b2,2
+17,76,45,Delta,389.931141,0,Infection naive,BNT162b2,2
+17,150,45,Delta,161.1708918,0,Infection naive,BNT162b2,2
+18,42,31,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+18,67,31,Ancestral,944.2128099,0,Previously infected (Pre-Omicron),BNT162b2,3
+18,42,31,Alpha,617.236638700002,0,Previously infected (Pre-Omicron),BNT162b2,3
+18,67,31,Alpha,599.6392433,0,Previously infected (Pre-Omicron),BNT162b2,3
+18,109,31,Alpha,221.3523331,0,Previously infected (Pre-Omicron),BNT162b2,3
+18,193,31,Alpha,155.7546505,0,Previously infected (Pre-Omicron),BNT162b2,3
+18,42,31,Delta,369.630585900001,0,Previously infected (Pre-Omicron),BNT162b2,3
+18,67,31,Delta,199.078665199999,0,Previously infected (Pre-Omicron),BNT162b2,3
+18,109,31,Delta,76.04389667,0,Previously infected (Pre-Omicron),BNT162b2,3
+18,193,31,Delta,47.4954555099999,0,Previously infected (Pre-Omicron),BNT162b2,3
+19,69,28,Ancestral,2560,1,Infection naive,BNT162b2,2
+19,144,28,Ancestral,122.9316995,0,Infection naive,BNT162b2,2
+19,69,28,Alpha,186.9035213,0,Infection naive,BNT162b2,2
+19,144,28,Alpha,121.538915500001,0,Infection naive,BNT162b2,2
+19,69,28,Delta,155.7546505,0,Infection naive,BNT162b2,2
+19,144,28,Delta,86.3494333899999,0,Infection naive,BNT162b2,2
+20,77,39,Ancestral,791.001602599998,0,Infection naive,BNT162b2,2
+20,237,39,Ancestral,141.811295282677,0,Infection naive,BNT162b2,2
+20,263,39,Ancestral,130.8249164,0,Infection naive,BNT162b2,2
+20,77,39,Alpha,810.654379200002,0,Infection naive,BNT162b2,2
+20,237,39,Alpha,163.447057328495,0,Infection naive,BNT162b2,2
+20,263,39,Alpha,81.1396092100002,0,Infection naive,BNT162b2,2
+20,77,39,Delta,318.1820781,0,Infection naive,BNT162b2,2
+20,237,39,Delta,80.290662041196,0,Infection naive,BNT162b2,2
+20,263,39,Delta,45.8591303399999,0,Infection naive,BNT162b2,2
+21,80,56,Ancestral,713.279837599999,0,Infection naive,BNT162b2,2
+21,151,56,Ancestral,102.4442116,0,Infection naive,BNT162b2,2
+21,80,56,Alpha,447.8489687,0,Infection naive,BNT162b2,2
+21,151,56,Alpha,175.6268464,0,Infection naive,BNT162b2,2
+21,80,56,Delta,171.9709766,0,Infection naive,BNT162b2,2
+21,151,56,Delta,136.0880493,0,Infection naive,BNT162b2,2
+22,80,39,Ancestral,200.1283693,0,Previously infected (Pre-Omicron),AZD1222,2
+22,80,39,Alpha,67.0270167161586,0,Previously infected (Pre-Omicron),AZD1222,2
+22,80,39,Delta,5,-1,Previously infected (Pre-Omicron),AZD1222,2
+23,67,30,Ancestral,97.87985316,0,Infection naive,BNT162b2,2
+23,235,30,Ancestral,81.9256938794759,0,Infection naive,BNT162b2,2
+23,67,30,Alpha,270.7914815,0,Infection naive,BNT162b2,2
+23,235,30,Alpha,5,-1,Infection naive,BNT162b2,2
+23,67,30,Delta,74.3957217499998,0,Infection naive,BNT162b2,2
+23,235,30,Delta,5,-1,Infection naive,BNT162b2,2
+24,111,83,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+24,193,83,Ancestral,483.335457300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+24,111,83,Alpha,1971.609858,0,Previously infected (Pre-Omicron),BNT162b2,3
+24,193,83,Alpha,517.535122900002,0,Previously infected (Pre-Omicron),BNT162b2,3
+24,111,83,Delta,1613.06082,0,Previously infected (Pre-Omicron),BNT162b2,3
+24,193,83,Delta,421.197373199999,0,Previously infected (Pre-Omicron),BNT162b2,3
+25,3,-17,Ancestral,167.654854,0,Infection naive,BNT162b2,2
+25,24,-17,Ancestral,288.684117400001,0,Infection naive,BNT162b2,2
+25,67,-17,Ancestral,160.4661115,0,Infection naive,BNT162b2,2
+25,151,-17,Ancestral,157.677675,0,Infection naive,BNT162b2,2
+25,3,-17,Alpha,82.6469229800001,0,Infection naive,BNT162b2,2
+25,24,-17,Alpha,89.0394470600002,0,Infection naive,BNT162b2,2
+25,67,-17,Alpha,46.7930015600001,0,Infection naive,BNT162b2,2
+25,151,-17,Alpha,53.0878793300002,0,Infection naive,BNT162b2,2
+25,3,-17,Delta,49.4062145500001,0,Infection naive,BNT162b2,2
+25,24,-17,Delta,60.2823961099999,0,Infection naive,BNT162b2,2
+25,67,-17,Delta,54.4068706399999,0,Infection naive,BNT162b2,2
+25,151,-17,Delta,75.97727393,0,Infection naive,BNT162b2,2
+26,74,37,Ancestral,2560,1,Infection naive,BNT162b2,2
+26,74,37,Alpha,591.8071482,0,Infection naive,BNT162b2,2
+26,74,37,Delta,292.761111899999,0,Infection naive,BNT162b2,2
+27,80,44,Ancestral,205.1006451,0,Previously infected (Pre-Omicron),BNT162b2,3
+27,151,44,Ancestral,80.4315338800003,0,Previously infected (Pre-Omicron),BNT162b2,3
+27,242,44,Ancestral,81.7105549699998,0,Previously infected (Pre-Omicron),BNT162b2,3
+27,80,44,Alpha,153.9899911,0,Previously infected (Pre-Omicron),BNT162b2,3
+27,151,44,Alpha,103.4366963,0,Previously infected (Pre-Omicron),BNT162b2,3
+27,242,44,Alpha,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+27,80,44,Delta,86.3494333899999,0,Previously infected (Pre-Omicron),BNT162b2,3
+27,151,44,Delta,54.0267071200002,0,Previously infected (Pre-Omicron),BNT162b2,3
+27,242,44,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+28,4,-15,Ancestral,128.551558075558,0,Infection naive,BNT162b2,1
+28,26,-15,Ancestral,129.796972124846,0,Infection naive,BNT162b2,1
+28,4,-15,Alpha,209.828310596494,0,Infection naive,BNT162b2,1
+28,26,-15,Alpha,148.68468983509,0,Infection naive,BNT162b2,1
+28,4,-15,Delta,110.368004349061,0,Infection naive,BNT162b2,1
+28,26,-15,Delta,45.3395583998115,0,Infection naive,BNT162b2,1
+29,14,-17,Ancestral,375.837720899999,0,Infection naive,BNT162b2,2
+29,32,-17,Ancestral,306.950832300001,0,Infection naive,BNT162b2,2
+29,14,-17,Alpha,133.606076800001,0,Infection naive,BNT162b2,2
+29,32,-17,Alpha,233.1002888,0,Infection naive,BNT162b2,2
+29,73,-17,Alpha,105.7282497,0,Infection naive,BNT162b2,2
+29,14,-17,Delta,105.1736888,0,Infection naive,BNT162b2,2
+29,32,-17,Delta,162.162787600001,0,Infection naive,BNT162b2,2
+29,73,-17,Delta,94.0119650100003,0,Infection naive,BNT162b2,2
+30,5,-21,Ancestral,5,-1,Infection naive,BNT162b2,2
+30,26,-21,Ancestral,265.3871612,0,Infection naive,BNT162b2,2
+30,5,-21,Alpha,170.769343600001,0,Infection naive,BNT162b2,2
+30,26,-21,Alpha,169.5761069,0,Infection naive,BNT162b2,2
+30,70,-21,Alpha,80.3610670899999,0,Infection naive,BNT162b2,2
+30,5,-21,Delta,130.5957831,0,Infection naive,BNT162b2,2
+30,26,-21,Delta,65.8045786499999,0,Infection naive,BNT162b2,2
+30,70,-21,Delta,73.0388933099998,0,Infection naive,BNT162b2,2
+31,84,59,Ancestral,1103.638055,0,Previously infected (Pre-Omicron),BNT162b2,3
+31,168,59,Ancestral,529.464548799999,0,Previously infected (Pre-Omicron),BNT162b2,3
+31,307,59,Ancestral,237.6387421,0,Previously infected (Pre-Omicron),BNT162b2,3
+31,84,59,Alpha,485.458306200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+31,168,59,Alpha,294.304785699999,0,Previously infected (Pre-Omicron),BNT162b2,3
+31,307,59,Alpha,226.454607549813,0,Previously infected (Pre-Omicron),BNT162b2,3
+31,84,59,Delta,678.519842099999,0,Previously infected (Pre-Omicron),BNT162b2,3
+31,168,59,Delta,258.953353199999,0,Previously infected (Pre-Omicron),BNT162b2,3
+31,307,59,Delta,89.2738825000001,0,Previously infected (Pre-Omicron),BNT162b2,3
+32,20,-19,Ancestral,869.537303600003,0,Infection naive,BNT162b2,2
+32,20,-19,Alpha,228.2480448,0,Infection naive,BNT162b2,2
+32,62,-19,Alpha,102.4442116,0,Infection naive,BNT162b2,2
+32,20,-19,Delta,129.9107881,0,Infection naive,BNT162b2,2
+32,62,-19,Delta,46.2223177999999,0,Infection naive,BNT162b2,2
+32,104,-19,Delta,71.8956103600002,0,Infection naive,BNT162b2,2
+32,199,-19,Delta,42.7911527100001,0,Infection naive,BNT162b2,2
+33,88,42,Ancestral,667.8989231,0,Infection naive,BNT162b2,2
+33,160,42,Ancestral,305.340828000001,0,Infection naive,BNT162b2,2
+33,312,42,Ancestral,171.369106900001,0,Infection naive,BNT162b2,2
+33,88,42,Alpha,554.640601099999,0,Infection naive,BNT162b2,2
+33,160,42,Alpha,191.379403800001,0,Infection naive,BNT162b2,2
+33,312,42,Alpha,224.28175447665,0,Infection naive,BNT162b2,2
+33,88,42,Delta,454.173798000001,0,Infection naive,BNT162b2,2
+33,160,42,Delta,135.255644,0,Infection naive,BNT162b2,2
+33,312,42,Delta,92.6215356399999,0,Infection naive,BNT162b2,2
+34,19,-17,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+34,40,-17,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+34,19,-17,Alpha,2041.95996799999,0,Previously infected (Pre-Omicron),BNT162b2,3
+34,40,-17,Alpha,1606.007105,0,Previously infected (Pre-Omicron),BNT162b2,3
+34,19,-17,Delta,1262.022346,0,Previously infected (Pre-Omicron),BNT162b2,3
+34,40,-17,Delta,431.2840209,0,Previously infected (Pre-Omicron),BNT162b2,3
+35,80,68,Ancestral,232.692025200001,0,Infection naive,AZD1222,2
+35,150,68,Ancestral,258.953353199999,0,Infection naive,AZD1222,2
+35,80,68,Alpha,86.1981966500001,0,Infection naive,AZD1222,2
+35,80,68,Delta,51.8462874599999,0,Infection naive,AZD1222,2
+35,150,68,Delta,42.6413908199999,0,Infection naive,AZD1222,2
+36,53,36,Ancestral,1076.882446,0,Infection naive,BNT162b2,2
+36,81,36,Ancestral,572.922571000002,0,Infection naive,BNT162b2,2
+36,53,36,Alpha,804.284739699998,0,Infection naive,BNT162b2,2
+36,81,36,Alpha,419.355529400001,0,Infection naive,BNT162b2,2
+36,53,36,Delta,448.241677300001,0,Infection naive,BNT162b2,2
+36,81,36,Delta,168.096279000001,0,Infection naive,BNT162b2,2
+37,41,32,Ancestral,2560,1,Infection naive,BNT162b2,2
+37,68,32,Ancestral,2560,1,Infection naive,BNT162b2,2
+37,110,32,Ancestral,2560,1,Infection naive,BNT162b2,2
+37,194,32,Ancestral,186.7397735,0,Infection naive,BNT162b2,2
+37,41,32,Alpha,975.335793300001,0,Infection naive,BNT162b2,2
+37,68,32,Alpha,1182.765086,0,Infection naive,BNT162b2,2
+37,110,32,Alpha,388.907172100001,0,Infection naive,BNT162b2,2
+37,194,32,Alpha,295.856599099999,0,Infection naive,BNT162b2,2
+37,41,32,Delta,488.0180358,0,Infection naive,BNT162b2,2
+37,68,32,Delta,940.083884500002,0,Infection naive,BNT162b2,2
+37,110,32,Delta,288.684117400001,0,Infection naive,BNT162b2,2
+37,194,32,Delta,162.447306,0,Infection naive,BNT162b2,2
+38,76,55,Ancestral,1004.838967,0,Infection naive,BNT162b2,2
+38,179,55,Ancestral,192.726061299999,0,Infection naive,BNT162b2,2
+38,76,55,Alpha,441.612219099999,0,Infection naive,BNT162b2,2
+38,179,55,Alpha,117.5575229,0,Infection naive,BNT162b2,2
+38,76,55,Delta,403.490679399999,0,Infection naive,BNT162b2,2
+38,179,55,Delta,85.0723322500003,0,Infection naive,BNT162b2,2
+39,4,-17,Ancestral,2560,1,Infection naive,BNT162b2,2
+39,25,-17,Ancestral,2560,1,Infection naive,BNT162b2,2
+39,75,-17,Ancestral,1312.793954,0,Infection naive,BNT162b2,2
+39,4,-17,Alpha,2308.548869,0,Infection naive,BNT162b2,2
+39,25,-17,Alpha,1138.019305,0,Infection naive,BNT162b2,2
+39,75,-17,Alpha,1286.593871,0,Infection naive,BNT162b2,2
+39,4,-17,Delta,877.961425299999,0,Infection naive,BNT162b2,2
+39,25,-17,Delta,601.2180569,0,Infection naive,BNT162b2,2
+39,75,-17,Delta,890.360596700001,0,Infection naive,BNT162b2,2
+40,131,91,Ancestral,398.9192356,0,Infection naive,AZD1222,2
+40,159,91,Ancestral,116.5316419,0,Infection naive,AZD1222,2
+40,231,91,Ancestral,111.1446182,0,Infection naive,AZD1222,2
+40,131,91,Alpha,180.62252,0,Infection naive,AZD1222,2
+40,159,91,Alpha,116.3275425,0,Infection naive,AZD1222,2
+40,231,91,Alpha,110.8527497,0,Infection naive,AZD1222,2
+40,131,91,Delta,62.98299513,0,Infection naive,AZD1222,2
+40,159,91,Delta,45.93959126,0,Infection naive,AZD1222,2
+40,231,91,Delta,41.6076312399999,0,Infection naive,AZD1222,2
+41,80,44,Ancestral,2560,1,Infection naive,BNT162b2,2
+41,150,44,Ancestral,283.170793299999,0,Infection naive,BNT162b2,2
+41,80,44,Alpha,1754.663025,0,Infection naive,BNT162b2,2
+41,150,44,Alpha,166.629365,0,Infection naive,BNT162b2,2
+41,80,44,Delta,453.775892300001,0,Infection naive,BNT162b2,2
+41,150,44,Delta,125.3251748,0,Infection naive,BNT162b2,2
+42,119,69,Ancestral,254.899938100001,0,Previously infected (Pre-Omicron),AZD1222,3
+42,168,69,Ancestral,171.669778,0,Previously infected (Pre-Omicron),AZD1222,3
+42,119,69,Alpha,149.0761676,0,Previously infected (Pre-Omicron),AZD1222,3
+42,168,69,Alpha,118.3847264,0,Previously infected (Pre-Omicron),AZD1222,3
+42,119,69,Delta,44.20162747,0,Previously infected (Pre-Omicron),AZD1222,3
+42,168,69,Delta,60.8664150300001,0,Previously infected (Pre-Omicron),AZD1222,3
+43,84,53,Ancestral,483.759283100001,0,Infection naive,BNT162b2,2
+43,84,53,Alpha,148.9455606,0,Infection naive,BNT162b2,2
+43,84,53,Delta,109.3090131,0,Infection naive,BNT162b2,2
+44,131,91,Ancestral,130.2528353,0,Infection naive,AZD1222,2
+44,160,91,Ancestral,40.95634405,0,Infection naive,AZD1222,2
+44,131,91,Alpha,58.0018224500001,0,Infection naive,AZD1222,2
+44,160,91,Alpha,60.44111598,0,Infection naive,AZD1222,2
+44,131,91,Delta,5,-1,Infection naive,AZD1222,2
+45,77,62,Ancestral,2560,1,Infection naive,BNT162b2,2
+45,178,62,Ancestral,540.246517400001,0,Infection naive,BNT162b2,2
+45,263,62,Ancestral,651.706981500002,0,Infection naive,BNT162b2,2
+45,77,62,Alpha,2211.499906,0,Infection naive,BNT162b2,2
+45,178,62,Alpha,835.1760645,0,Infection naive,BNT162b2,2
+45,263,62,Alpha,416.790471097569,0,Infection naive,BNT162b2,2
+45,77,62,Delta,896.625694799998,0,Infection naive,BNT162b2,2
+45,178,62,Delta,394.399585100001,0,Infection naive,BNT162b2,2
+45,263,62,Delta,394.745425100001,0,Infection naive,BNT162b2,2
+46,46,46,Ancestral,144.572355573196,0,Infection naive,BNT162b2,2
+46,76,46,Ancestral,2270.422109,0,Infection naive,BNT162b2,2
+46,159,46,Ancestral,214.8531858,0,Infection naive,BNT162b2,2
+46,251,46,Ancestral,218.4611738,0,Infection naive,BNT162b2,2
+46,46,46,Alpha,66.8510021028247,0,Infection naive,BNT162b2,2
+46,76,46,Alpha,588.187260700001,0,Infection naive,BNT162b2,2
+46,159,46,Alpha,297.4165949,0,Infection naive,BNT162b2,2
+46,251,46,Alpha,185.272483477799,0,Infection naive,BNT162b2,2
+46,46,46,Delta,5,-1,Infection naive,BNT162b2,2
+46,76,46,Delta,315.4054209,0,Infection naive,BNT162b2,2
+46,159,46,Delta,130.0247039,0,Infection naive,BNT162b2,2
+46,251,46,Delta,97.7084214600002,0,Infection naive,BNT162b2,2
+47,81,50,Ancestral,1186.919105,0,Infection naive,BNT162b2,2
+47,151,50,Ancestral,501.899619800001,0,Infection naive,BNT162b2,2
+47,81,50,Alpha,1334.839449,0,Infection naive,BNT162b2,2
+47,151,50,Alpha,318.1820781,0,Infection naive,BNT162b2,2
+47,81,50,Delta,832.982871400002,0,Infection naive,BNT162b2,2
+47,151,50,Delta,405.618209199999,0,Infection naive,BNT162b2,2
+48,60,50,Ancestral,2560,1,Infection naive,BNT162b2,2
+48,102,50,Ancestral,571.919125600001,0,Infection naive,BNT162b2,2
+48,160,50,Ancestral,91.4117737899999,0,Infection naive,BNT162b2,2
+48,60,50,Alpha,397.1748113,0,Infection naive,BNT162b2,2
+48,102,50,Alpha,238.682470999999,0,Infection naive,BNT162b2,2
+48,160,50,Alpha,176.7077087,0,Infection naive,BNT162b2,2
+48,60,50,Delta,233.1002888,0,Infection naive,BNT162b2,2
+48,102,50,Delta,166.7754785,0,Infection naive,BNT162b2,2
+48,160,50,Delta,135.3742465,0,Infection naive,BNT162b2,2
+49,20,-24,Ancestral,2560,1,Infection naive,BNT162b2,2
+49,20,-24,Alpha,815.643398600001,0,Infection naive,BNT162b2,2
+49,20,-24,Delta,458.1720963,0,Infection naive,BNT162b2,2
+50,11,-10,Ancestral,110.464783536617,0,Previously infected (Pre-Omicron),BNT162b2,2
+50,32,-10,Ancestral,104.713777301928,0,Previously infected (Pre-Omicron),BNT162b2,2
+50,11,-10,Alpha,5,-1,Previously infected (Pre-Omicron),BNT162b2,2
+50,32,-10,Alpha,92.0550005127693,0,Previously infected (Pre-Omicron),BNT162b2,2
+50,11,-10,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,2
+50,32,-10,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,2
+51,69,60,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+51,111,60,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+51,193,60,Ancestral,331.854113199999,0,Previously infected (Pre-Omicron),BNT162b2,3
+51,69,60,Alpha,1494.629897,0,Previously infected (Pre-Omicron),BNT162b2,3
+51,111,60,Alpha,1527.74217,0,Previously infected (Pre-Omicron),BNT162b2,3
+51,193,60,Alpha,274.615783899999,0,Previously infected (Pre-Omicron),BNT162b2,3
+51,69,60,Delta,828.613748100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+51,111,60,Delta,922.938643800003,0,Previously infected (Pre-Omicron),BNT162b2,3
+51,193,60,Delta,200.6552951,0,Previously infected (Pre-Omicron),BNT162b2,3
+52,76,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+52,168,41,Ancestral,346.113625,0,Infection naive,BNT162b2,2
+52,238,41,Ancestral,306.950832311165,0,Infection naive,BNT162b2,2
+52,76,41,Alpha,859.6856735,0,Infection naive,BNT162b2,2
+52,168,41,Alpha,439.6811036,0,Infection naive,BNT162b2,2
+52,238,41,Alpha,359.72246663529,0,Infection naive,BNT162b2,2
+52,76,41,Delta,482.488919199999,0,Infection naive,BNT162b2,2
+52,168,41,Delta,249.375238500001,0,Infection naive,BNT162b2,2
+52,238,41,Delta,242.903429471149,0,Infection naive,BNT162b2,2
+53,95,53,Ancestral,600.165053300002,0,Infection naive,BNT162b2,2
+53,151,53,Ancestral,286.666961000001,0,Infection naive,BNT162b2,2
+53,251,53,Ancestral,128.8900265,0,Infection naive,BNT162b2,2
+53,95,53,Alpha,824.267541600003,0,Infection naive,BNT162b2,2
+53,151,53,Alpha,173.4849153,0,Infection naive,BNT162b2,2
+53,251,53,Alpha,107.503723789764,0,Infection naive,BNT162b2,2
+53,95,53,Delta,586.6426663,0,Infection naive,BNT162b2,2
+53,151,53,Delta,137.889066,0,Infection naive,BNT162b2,2
+53,251,53,Delta,58.15453771,0,Infection naive,BNT162b2,2
+54,87,44,Ancestral,1561.588019,0,Infection naive,BNT162b2,2
+54,87,44,Alpha,741.3252875,0,Infection naive,BNT162b2,2
+54,87,44,Delta,258.7264819,0,Infection naive,BNT162b2,2
+55,6,-24,Ancestral,148.68468983509,0,Infection naive,BNT162b2,1
+55,6,-24,Alpha,128.551558075558,0,Infection naive,BNT162b2,1
+55,6,-24,Delta,5,-1,Infection naive,BNT162b2,1
+56,62,44,Ancestral,2560,1,Infection naive,BNT162b2,2
+56,244,44,Ancestral,161.0296885,0,Infection naive,BNT162b2,2
+56,244,44,Ancestral,161.0296885,0,Infection naive,BNT162b2,2
+56,62,44,Alpha,916.489686199999,0,Infection naive,BNT162b2,2
+56,244,44,Alpha,204.5620457,0,Infection naive,BNT162b2,2
+56,244,44,Alpha,204.5620457,0,Infection naive,BNT162b2,2
+56,62,44,Delta,359.092430599999,0,Infection naive,BNT162b2,2
+56,244,44,Delta,86.3494333899999,0,Infection naive,BNT162b2,2
+56,244,44,Delta,86.3494333899999,0,Infection naive,BNT162b2,2
+57,31,31,Ancestral,1682.372782,0,Infection naive,BNT162b2,2
+57,54,31,Ancestral,1262.022346,0,Infection naive,BNT162b2,2
+57,31,31,Alpha,2169.2644141146,0,Infection naive,BNT162b2,2
+57,54,31,Alpha,977.047042700003,0,Infection naive,BNT162b2,2
+57,31,31,Delta,560.013987499999,0,Infection naive,BNT162b2,2
+57,54,31,Delta,1095.926476,0,Infection naive,BNT162b2,2
+58,41,41,Ancestral,112.615528487616,0,Infection naive,BNT162b2,2
+58,87,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+58,41,41,Alpha,89.5089351915363,0,Infection naive,BNT162b2,2
+58,87,41,Alpha,841.790351999999,0,Infection naive,BNT162b2,2
+58,41,41,Delta,40.5278261784787,0,Infection naive,BNT162b2,2
+58,87,41,Delta,513.018785499999,0,Infection naive,BNT162b2,2
+59,19,-17,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+59,40,-17,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+59,75,-17,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+59,19,-17,Alpha,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+59,40,-17,Alpha,1339.527572,0,Previously infected (Pre-Omicron),BNT162b2,3
+59,75,-17,Alpha,1030.707638,0,Previously infected (Pre-Omicron),BNT162b2,3
+59,19,-17,Delta,1421.792665,0,Previously infected (Pre-Omicron),BNT162b2,3
+59,40,-17,Delta,496.6483465,0,Previously infected (Pre-Omicron),BNT162b2,3
+59,75,-17,Delta,497.955991299999,0,Previously infected (Pre-Omicron),BNT162b2,3
+60,25,7,Ancestral,498.392637599999,0,Infection naive,BNT162b2,2
+60,46,7,Ancestral,385.851371,0,Infection naive,BNT162b2,2
+60,88,7,Ancestral,188.548917900001,0,Infection naive,BNT162b2,2
+60,173,7,Ancestral,147.3871736,0,Infection naive,BNT162b2,2
+60,25,7,Alpha,130.481367,0,Infection naive,BNT162b2,2
+60,46,7,Alpha,147.1290323,0,Infection naive,BNT162b2,2
+60,88,7,Alpha,67.7357217499998,0,Infection naive,BNT162b2,2
+60,173,7,Alpha,73.9406678700002,0,Infection naive,BNT162b2,2
+60,25,7,Delta,259.1804235,0,Infection naive,BNT162b2,2
+60,46,7,Delta,197.6876195,0,Infection naive,BNT162b2,2
+60,88,7,Delta,113.4079572,0,Infection naive,BNT162b2,2
+60,173,7,Delta,59.0793103299999,0,Infection naive,BNT162b2,2
+61,84,58,Ancestral,1893.698356,0,Previously infected (Pre-Omicron),BNT162b2,3
+61,168,58,Ancestral,119.2177506,0,Previously infected (Pre-Omicron),BNT162b2,3
+61,307,58,Ancestral,100.664027719392,0,Previously infected (Pre-Omicron),BNT162b2,3
+61,84,58,Alpha,562.966835099998,0,Previously infected (Pre-Omicron),BNT162b2,3
+61,168,58,Alpha,132.2081837,0,Previously infected (Pre-Omicron),BNT162b2,3
+61,307,58,Alpha,108.735670477585,0,Previously infected (Pre-Omicron),BNT162b2,3
+61,84,58,Delta,327.2327092,0,Previously infected (Pre-Omicron),BNT162b2,3
+61,168,58,Delta,112.8131151,0,Previously infected (Pre-Omicron),BNT162b2,3
+61,307,58,Delta,41.2084021348052,0,Previously infected (Pre-Omicron),BNT162b2,3
+62,76,46,Ancestral,2560,1,Infection naive,AZD1222,1
+62,76,46,Alpha,871.826742274675,0,Infection naive,AZD1222,1
+62,76,46,Delta,2560,1,Infection naive,AZD1222,1
+63,69,49,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+63,245,49,Ancestral,1589.203781,0,Previously infected (Pre-Omicron),BNT162b2,3
+63,69,49,Alpha,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+63,245,49,Alpha,1542.54301454384,0,Previously infected (Pre-Omicron),BNT162b2,3
+63,69,49,Delta,905.312250299999,0,Previously infected (Pre-Omicron),BNT162b2,3
+63,245,49,Delta,864.218633100003,0,Previously infected (Pre-Omicron),BNT162b2,3
+64,67,27,Ancestral,2560,1,Infection naive,BNT162b2,2
+64,151,27,Ancestral,174.2468752,0,Infection naive,BNT162b2,2
+64,67,27,Alpha,1401.992765,0,Infection naive,BNT162b2,2
+64,151,27,Alpha,153.0480855,0,Infection naive,BNT162b2,2
+64,67,27,Delta,525.304331599999,0,Infection naive,BNT162b2,2
+64,151,27,Delta,102.2647856,0,Infection naive,BNT162b2,2
+65,70,34,Ancestral,1087.315338,0,Infection naive,BNT162b2,2
+65,154,34,Ancestral,477.8593931,0,Infection naive,BNT162b2,2
+65,70,34,Alpha,892.704861899999,0,Infection naive,BNT162b2,2
+65,154,34,Alpha,374.194229200001,0,Infection naive,BNT162b2,2
+65,70,34,Delta,853.678690799998,0,Infection naive,BNT162b2,2
+65,154,34,Delta,333.603917,0,Infection naive,BNT162b2,2
+66,80,54,Ancestral,809.234558300001,0,Infection naive,BNT162b2,2
+66,150,54,Ancestral,227.6486598,0,Infection naive,BNT162b2,2
+66,242,54,Ancestral,127.9894181,0,Infection naive,BNT162b2,2
+66,80,54,Alpha,705.198563800002,0,Infection naive,BNT162b2,2
+66,150,54,Alpha,233.3046891,0,Infection naive,BNT162b2,2
+66,242,54,Alpha,242.053307993616,0,Infection naive,BNT162b2,2
+66,80,54,Delta,429.7745987,0,Infection naive,BNT162b2,2
+66,150,54,Delta,67.8545656499999,0,Infection naive,BNT162b2,2
+66,242,54,Delta,43.0545027799999,0,Infection naive,BNT162b2,2
+67,0,-24,Ancestral,1025.301418,0,Infection naive,BNT162b2,2
+67,21,-24,Ancestral,892.704861899999,0,Infection naive,BNT162b2,2
+67,76,-24,Ancestral,296.375686400001,0,Infection naive,BNT162b2,2
+67,160,-24,Ancestral,56.4965538399999,0,Infection naive,BNT162b2,2
+67,0,-24,Alpha,238.8917662,0,Infection naive,BNT162b2,2
+67,21,-24,Alpha,219.8056519,0,Infection naive,BNT162b2,2
+67,76,-24,Alpha,118.3847264,0,Infection naive,BNT162b2,2
+67,160,-24,Alpha,72.7195032999999,0,Infection naive,BNT162b2,2
+67,0,-24,Delta,104.6220366,0,Infection naive,BNT162b2,2
+67,21,-24,Delta,88.8834988900001,0,Infection naive,BNT162b2,2
+67,76,-24,Delta,69.2970617100001,0,Infection naive,BNT162b2,2
+67,160,-24,Delta,48.7181830699999,0,Infection naive,BNT162b2,2
+68,46,42,Ancestral,129.796972124846,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,81,42,Ancestral,963.4406748,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,159,42,Ancestral,143.0597245,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,46,42,Alpha,50.8561208104012,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,81,42,Alpha,804.284739699998,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,159,42,Alpha,178.7327035,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,237,42,Alpha,171.068962431355,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,46,42,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+68,81,42,Delta,270.3172037,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,159,42,Delta,168.8345717,0,Previously infected (Pre-Omicron),BNT162b2,3
+68,237,42,Delta,221.9351403,0,Previously infected (Pre-Omicron),BNT162b2,3
+69,52,40,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+69,52,40,Alpha,1587.811465,0,Previously infected (Pre-Omicron),BNT162b2,3
+69,52,40,Delta,679.710320999999,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,96,58,Ancestral,331.854113199999,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,151,58,Ancestral,139.5915131,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,245,58,Ancestral,118.4885353,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,96,58,Alpha,399.9695656,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,151,58,Alpha,194.422716300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,245,58,Alpha,194.422716341038,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,96,58,Delta,175.0121818,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,151,58,Delta,95.0059933199999,0,Previously infected (Pre-Omicron),BNT162b2,3
+70,245,58,Delta,47.95559391,0,Previously infected (Pre-Omicron),BNT162b2,3
+71,80,74,Ancestral,106.846159268181,0,Infection naive,AZD1222,1
+71,80,74,Alpha,5,-1,Infection naive,AZD1222,1
+71,80,74,Delta,5,-1,Infection naive,AZD1222,1
+72,0,-22,Ancestral,1353.690964,0,Infection naive,BNT162b2,2
+72,0,-22,Alpha,436.608868200001,0,Infection naive,BNT162b2,2
+72,0,-22,Delta,279.227353800001,0,Infection naive,BNT162b2,2
+73,5,-23,Ancestral,1007.484647,0,Previously infected (Pre-Omicron),BNT162b2,3
+73,5,-23,Alpha,414.604341,0,Previously infected (Pre-Omicron),BNT162b2,3
+73,28,-23,Alpha,321.546351899999,0,Previously infected (Pre-Omicron),BNT162b2,3
+73,5,-23,Delta,220.9646454,0,Previously infected (Pre-Omicron),BNT162b2,3
+73,28,-23,Delta,205.2804932,0,Previously infected (Pre-Omicron),BNT162b2,3
+74,73,45,Ancestral,2560,1,Infection naive,BNT162b2,2
+74,73,45,Alpha,1019.02999,0,Infection naive,BNT162b2,2
+74,73,45,Delta,607.57499,0,Infection naive,BNT162b2,2
+75,133,93,Ancestral,204.3828271,0,Infection naive,AZD1222,2
+75,236,93,Ancestral,129.456122,0,Infection naive,AZD1222,2
+75,133,93,Alpha,138.7376782,0,Infection naive,AZD1222,2
+75,236,93,Alpha,74.5262507817008,0,Infection naive,AZD1222,2
+75,133,93,Delta,45.0622313999999,0,Infection naive,AZD1222,2
+75,236,93,Delta,5,-1,Infection naive,AZD1222,2
+76,133,83,Ancestral,93.8473077200001,0,Infection naive,AZD1222,1
+76,133,83,Alpha,47.4538443170817,0,Infection naive,AZD1222,1
+76,133,83,Delta,41.53475753,0,Infection naive,AZD1222,1
+77,49,37,Ancestral,2560,1,Infection naive,BNT162b2,2
+77,250,37,Ancestral,135.255643954031,0,Infection naive,BNT162b2,2
+77,49,37,Alpha,598.064575800001,0,Infection naive,BNT162b2,2
+77,250,37,Alpha,85.1469302348619,0,Infection naive,BNT162b2,2
+77,49,37,Delta,423.047306599999,0,Infection naive,BNT162b2,2
+77,250,37,Delta,51.1242754956066,0,Infection naive,BNT162b2,2
+78,42,28,Ancestral,565.4394316,0,Infection naive,BNT162b2,2
+78,68,28,Ancestral,552.6994515,0,Infection naive,BNT162b2,2
+78,108,28,Ancestral,232.4881616,0,Infection naive,BNT162b2,2
+78,42,28,Alpha,682.695664400001,0,Infection naive,BNT162b2,2
+78,68,28,Alpha,387.206529300001,0,Infection naive,BNT162b2,2
+78,108,28,Alpha,224.478422,0,Infection naive,BNT162b2,2
+78,42,28,Delta,416.0604833,0,Infection naive,BNT162b2,2
+78,68,28,Delta,426.397685799999,0,Infection naive,BNT162b2,2
+78,108,28,Delta,265.8527891,0,Infection naive,BNT162b2,2
+79,80,47,Ancestral,1710.624543,0,Infection naive,BNT162b2,2
+79,151,47,Ancestral,205.1006451,0,Infection naive,BNT162b2,2
+79,80,47,Alpha,1377.630189,0,Infection naive,BNT162b2,2
+79,151,47,Alpha,257.143938,0,Infection naive,BNT162b2,2
+79,80,47,Delta,940.908222600001,0,Infection naive,BNT162b2,2
+79,151,47,Delta,205.1006451,0,Infection naive,BNT162b2,2
+80,96,53,Ancestral,2560,1,Infection naive,BNT162b2,2
+80,150,53,Ancestral,131.5147314,0,Infection naive,BNT162b2,2
+80,236,53,Ancestral,204.3828271,0,Infection naive,BNT162b2,2
+80,96,53,Alpha,1305.908147,0,Infection naive,BNT162b2,2
+80,150,53,Alpha,445.499932,0,Infection naive,BNT162b2,2
+80,236,53,Alpha,177.328328281948,0,Infection naive,BNT162b2,2
+80,96,53,Delta,624.857349700001,0,Infection naive,BNT162b2,2
+80,150,53,Delta,130.7102996,0,Infection naive,BNT162b2,2
+80,236,53,Delta,99.0883265799999,0,Infection naive,BNT162b2,2
+81,117,91,Ancestral,144.6991278,0,Infection naive,AZD1222,2
+81,160,91,Ancestral,75.8442035,0,Infection naive,AZD1222,2
+81,298,91,Ancestral,148.5544258,0,Infection naive,AZD1222,2
+81,117,91,Alpha,202.7769085,0,Infection naive,AZD1222,2
+81,160,91,Alpha,96.2633217999998,0,Infection naive,AZD1222,2
+81,298,91,Alpha,106.006625751991,0,Infection naive,AZD1222,2
+81,117,91,Delta,53.2276564800001,0,Infection naive,AZD1222,2
+81,160,91,Delta,60.7065783099999,0,Infection naive,AZD1222,2
+81,298,91,Delta,42.6413908199999,0,Infection naive,AZD1222,2
+82,74,54,Ancestral,2560,1,Infection naive,BNT162b2,2
+82,242,54,Ancestral,119.0089466,0,Infection naive,BNT162b2,2
+82,74,54,Alpha,380.478000600002,0,Infection naive,BNT162b2,2
+82,242,54,Alpha,130.481366955718,0,Infection naive,BNT162b2,2
+82,74,54,Delta,209.2772962,0,Infection naive,BNT162b2,2
+82,242,54,Delta,63.3150925200002,0,Infection naive,BNT162b2,2
+83,76,54,Ancestral,2560,1,Infection naive,BNT162b2,2
+83,159,54,Ancestral,255.123454000001,0,Infection naive,BNT162b2,2
+83,76,54,Alpha,1277.603903,0,Infection naive,BNT162b2,2
+83,159,54,Alpha,321.264642300001,0,Infection naive,BNT162b2,2
+83,76,54,Delta,560.013987499999,0,Infection naive,BNT162b2,2
+83,159,54,Delta,173.9416905,0,Infection naive,BNT162b2,2
+84,81,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+84,150,41,Ancestral,583.054368300002,0,Infection naive,BNT162b2,2
+84,81,41,Alpha,1018.137209,0,Infection naive,BNT162b2,2
+84,150,41,Alpha,339.801208099999,0,Infection naive,BNT162b2,2
+84,81,41,Delta,587.1570799,0,Infection naive,BNT162b2,2
+84,150,41,Delta,264.690247899999,0,Infection naive,BNT162b2,2
+85,81,61,Ancestral,996.943540999999,0,Previously infected (Pre-Omicron),AZD1222,3
+85,159,61,Ancestral,400.6713215,0,Previously infected (Pre-Omicron),AZD1222,3
+85,81,61,Alpha,759.0782163,0,Previously infected (Pre-Omicron),AZD1222,3
+85,159,61,Alpha,392.674924599999,0,Previously infected (Pre-Omicron),AZD1222,3
+85,81,61,Delta,457.369630600001,0,Previously infected (Pre-Omicron),AZD1222,3
+85,159,61,Delta,294.562854899999,0,Previously infected (Pre-Omicron),AZD1222,3
+86,5,-21,Ancestral,541.194392500001,0,Infection naive,BNT162b2,2
+86,5,-21,Alpha,301.6169153,0,Infection naive,BNT162b2,2
+86,5,-21,Delta,193.7422693,0,Infection naive,BNT162b2,2
+87,80,58,Ancestral,1113.353883,0,Previously infected (Pre-Omicron),BNT162b2,3
+87,150,58,Ancestral,213.5390003,0,Previously infected (Pre-Omicron),BNT162b2,3
+87,80,58,Alpha,643.1948116,0,Previously infected (Pre-Omicron),BNT162b2,3
+87,150,58,Alpha,463.828917200002,0,Previously infected (Pre-Omicron),BNT162b2,3
+87,244,58,Alpha,364.802713224805,0,Previously infected (Pre-Omicron),BNT162b2,3
+87,80,58,Delta,272.219313700001,0,Previously infected (Pre-Omicron),BNT162b2,3
+87,150,58,Delta,241.2061618,0,Previously infected (Pre-Omicron),BNT162b2,3
+87,244,58,Delta,333.019626300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+88,46,42,Ancestral,1124.14011170073,0,Previously infected (Pre-Omicron),BNT162b2,3
+88,46,42,Alpha,767.776927952915,0,Previously infected (Pre-Omicron),BNT162b2,3
+88,46,42,Delta,695.377960810212,0,Previously infected (Pre-Omicron),BNT162b2,3
+88,96,42,Delta,503.662354,0,Previously infected (Pre-Omicron),BNT162b2,3
+88,151,42,Delta,527.149266099999,0,Previously infected (Pre-Omicron),BNT162b2,3
+88,243,42,Delta,283.6676231,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,68,53,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+89,109,53,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+89,193,53,Ancestral,284.4145027,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,252,53,Ancestral,399.269038768964,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,271,53,Ancestral,506.318070100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,68,53,Alpha,1651.689684,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,109,53,Alpha,1240.092051,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,193,53,Alpha,421.9363738,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,252,53,Alpha,447.848968718045,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,68,53,Delta,848.457022200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,109,53,Delta,633.1268378,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,193,53,Delta,217.505870200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,252,53,Delta,326.659577338246,0,Previously infected (Pre-Omicron),BNT162b2,3
+89,271,53,Delta,559.033150799998,0,Previously infected (Pre-Omicron),BNT162b2,3
+90,80,42,Ancestral,2052.72683499999,0,Infection naive,BNT162b2,2
+90,160,42,Ancestral,220.7710563,0,Infection naive,BNT162b2,2
+90,80,42,Alpha,649.995582700002,0,Infection naive,BNT162b2,2
+90,160,42,Alpha,315.958807000001,0,Infection naive,BNT162b2,2
+90,80,42,Delta,350.694162500001,0,Infection naive,BNT162b2,2
+90,160,42,Delta,178.419662,0,Infection naive,BNT162b2,2
+91,133,85,Ancestral,126.317704098264,0,Infection naive,AZD1222,1
+91,133,85,Alpha,144.572355573196,0,Infection naive,AZD1222,1
+91,133,85,Delta,5,-1,Infection naive,AZD1222,1
+92,81,49,Ancestral,1644.46705,0,Previously infected (Pre-Omicron),BNT162b2,3
+92,150,49,Ancestral,117.0434584,0,Previously infected (Pre-Omicron),BNT162b2,3
+92,81,49,Alpha,574.934746699999,0,Previously infected (Pre-Omicron),BNT162b2,3
+92,150,49,Alpha,98.3097495,0,Previously infected (Pre-Omicron),BNT162b2,3
+92,81,49,Delta,241.2061618,0,Previously infected (Pre-Omicron),BNT162b2,3
+92,150,49,Delta,76.7806138099998,0,Previously infected (Pre-Omicron),BNT162b2,3
+93,48,35,Ancestral,2560,1,Infection naive,BNT162b2,2
+93,231,35,Ancestral,218.6527375,0,Infection naive,BNT162b2,2
+93,48,35,Alpha,837.375032099998,0,Infection naive,BNT162b2,2
+93,231,35,Alpha,224.675262,0,Infection naive,BNT162b2,2
+93,48,35,Delta,359.407310600001,0,Infection naive,BNT162b2,2
+93,231,35,Delta,219.4206732,0,Infection naive,BNT162b2,2
+94,3,-18,Ancestral,1494.629897,0,Infection naive,BNT162b2,2
+94,24,-18,Ancestral,1207.909069,0,Infection naive,BNT162b2,2
+94,67,-18,Ancestral,641.505766099999,0,Infection naive,BNT162b2,2
+94,3,-18,Alpha,685.694119700002,0,Infection naive,BNT162b2,2
+94,24,-18,Alpha,473.6892911,0,Infection naive,BNT162b2,2
+94,67,-18,Alpha,447.456604200001,0,Infection naive,BNT162b2,2
+94,3,-18,Delta,1103.638055,0,Infection naive,BNT162b2,2
+94,24,-18,Delta,1045.263996,0,Infection naive,BNT162b2,2
+94,67,-18,Delta,190.8768368,0,Infection naive,BNT162b2,2
+95,20,-9,Ancestral,146.485655279567,0,Infection naive,BNT162b2,1
+95,20,-9,Alpha,164.597166448315,0,Infection naive,BNT162b2,1
+95,20,-9,Delta,110.174700267007,0,Infection naive,BNT162b2,1
+96,68,34,Ancestral,732.926266099998,0,Infection naive,BNT162b2,2
+96,152,34,Ancestral,381.8142869,0,Infection naive,BNT162b2,2
+96,68,34,Alpha,1120.205809,0,Infection naive,BNT162b2,2
+96,152,34,Alpha,172.272703700001,0,Infection naive,BNT162b2,2
+96,68,34,Delta,651.706981500002,0,Infection naive,BNT162b2,2
+96,152,34,Delta,180.1482008,0,Infection naive,BNT162b2,2
+97,76,51,Ancestral,2435.337141,0,Previously infected (Pre-Omicron),BNT162b2,3
+97,76,51,Alpha,2152.219626,0,Previously infected (Pre-Omicron),BNT162b2,3
+97,76,51,Delta,406.329875899999,0,Previously infected (Pre-Omicron),BNT162b2,3
+98,76,52,Ancestral,290.2062941,0,Infection naive,BNT162b2,2
+98,159,52,Ancestral,82.3576725299998,0,Infection naive,BNT162b2,2
+98,76,52,Alpha,245.471750300001,0,Infection naive,BNT162b2,2
+98,159,52,Alpha,171.669778,0,Infection naive,BNT162b2,2
+98,76,52,Delta,96.4322180399998,0,Infection naive,BNT162b2,2
+98,159,52,Delta,53.7904550299999,0,Infection naive,BNT162b2,2
+99,52,40,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+99,235,40,Ancestral,134.310556301701,0,Previously infected (Pre-Omicron),BNT162b2,3
+99,52,40,Alpha,700.271046999999,0,Previously infected (Pre-Omicron),BNT162b2,3
+99,235,40,Alpha,87.9535289881869,0,Previously infected (Pre-Omicron),BNT162b2,3
+99,52,40,Delta,399.269038800001,0,Previously infected (Pre-Omicron),BNT162b2,3
+99,235,40,Delta,54.9339671726918,0,Previously infected (Pre-Omicron),BNT162b2,3
+100,38,38,Ancestral,95.1726835550794,0,Infection naive,BNT162b2,2
+100,74,38,Ancestral,2560,1,Infection naive,BNT162b2,2
+100,158,38,Ancestral,117.5575229,0,Infection naive,BNT162b2,2
+100,38,38,Alpha,5,-1,Infection naive,BNT162b2,2
+100,74,38,Alpha,201.8901902,0,Infection naive,BNT162b2,2
+100,158,38,Alpha,133.606076800001,0,Infection naive,BNT162b2,2
+100,38,38,Delta,5,-1,Infection naive,BNT162b2,2
+100,74,38,Delta,79.45059724,0,Infection naive,BNT162b2,2
+100,158,38,Delta,57.3446769799999,0,Infection naive,BNT162b2,2
+101,84,49,Ancestral,934.333704000001,0,Previously infected (Pre-Omicron),AZD1222,2
+101,84,49,Alpha,532.723038468038,0,Previously infected (Pre-Omicron),AZD1222,2
+101,84,49,Delta,649.995582700002,0,Previously infected (Pre-Omicron),AZD1222,2
+102,116,75,Ancestral,121.645490188642,0,Infection naive,"",1
+102,116,75,Alpha,122.608877763544,0,Infection naive,"",1
+102,116,75,Delta,154.260170083228,0,Infection naive,"",1
+103,69,28,Ancestral,182.8525756,0,Infection naive,BNT162b2,2
+103,69,28,Alpha,199.777854400001,0,Infection naive,BNT162b2,2
+103,69,28,Delta,120.583935,0,Infection naive,BNT162b2,2
+104,117,83,Ancestral,91.65245542,0,Infection naive,AZD1222,2
+104,151,83,Ancestral,5,-1,Infection naive,AZD1222,2
+104,117,83,Alpha,5,-1,Infection naive,AZD1222,2
+104,117,83,Delta,5,-1,Infection naive,AZD1222,2
+104,151,83,Delta,5,-1,Infection naive,AZD1222,2
+105,21,-21,Ancestral,266.319234099999,0,Infection naive,BNT162b2,2
+105,21,-21,Alpha,227.6486598,0,Infection naive,BNT162b2,2
+105,21,-21,Delta,155.4818539,0,Infection naive,BNT162b2,2
+106,76,26,Ancestral,380.478000600002,0,Infection naive,BNT162b2,2
+106,76,26,Alpha,304.538995399999,0,Infection naive,BNT162b2,2
+106,76,26,Delta,180.7809038,0,Infection naive,BNT162b2,2
+107,68,62,Ancestral,761.076822999998,0,Previously infected (Pre-Omicron),BNT162b2,3
+107,153,62,Ancestral,452.187752400001,0,Previously infected (Pre-Omicron),BNT162b2,3
+107,248,62,Ancestral,246.549882300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+107,68,62,Alpha,1171.41634518555,0,Previously infected (Pre-Omicron),BNT162b2,3
+107,153,62,Alpha,367.369678499999,0,Previously infected (Pre-Omicron),BNT162b2,3
+107,248,62,Alpha,349.160620479432,0,Previously infected (Pre-Omicron),BNT162b2,3
+107,68,62,Delta,786.8526775,0,Previously infected (Pre-Omicron),BNT162b2,3
+107,153,62,Delta,488.445967700001,0,Previously infected (Pre-Omicron),BNT162b2,3
+107,248,62,Delta,214.288976000001,0,Previously infected (Pre-Omicron),BNT162b2,3
+108,102,83,Ancestral,124.449475455526,0,Infection naive,AZD1222,1
+108,102,83,Alpha,5,-1,Infection naive,AZD1222,1
+108,102,83,Delta,5,-1,Infection naive,AZD1222,1
+109,77,40,Ancestral,458.573856899999,0,Infection naive,BNT162b2,2
+109,77,40,Alpha,350.3869162,0,Infection naive,BNT162b2,2
+109,77,40,Delta,148.164318200001,0,Infection naive,BNT162b2,2
+110,40,30,Ancestral,517.988937699999,0,Infection naive,BNT162b2,2
+110,61,30,Ancestral,2560,1,Infection naive,BNT162b2,2
+110,40,30,Alpha,544.525071300002,0,Infection naive,BNT162b2,2
+110,61,30,Alpha,201.3600216,0,Infection naive,BNT162b2,2
+110,40,30,Delta,214.288976000001,0,Infection naive,BNT162b2,2
+110,61,30,Delta,125.5450607,0,Infection naive,BNT162b2,2
+111,80,72,Ancestral,1211.089419,0,Infection naive,BNT162b2,2
+111,159,72,Ancestral,81.2107586800002,0,Infection naive,BNT162b2,2
+111,80,72,Alpha,527.149266099999,0,Infection naive,BNT162b2,2
+111,159,72,Alpha,209.6444781,0,Infection naive,BNT162b2,2
+111,80,72,Delta,254.676618,0,Infection naive,BNT162b2,2
+111,159,72,Delta,116.8384626,0,Infection naive,BNT162b2,2
+112,126,93,Ancestral,766.4322048,0,Infection naive,AZD1222,2
+112,150,93,Ancestral,73.6818878699998,0,Infection naive,AZD1222,2
+112,126,93,Alpha,45.6185921499999,0,Infection naive,AZD1222,2
+112,150,93,Alpha,40.1389579100002,0,Infection naive,AZD1222,2
+112,126,93,Delta,41.1001878499999,0,Infection naive,AZD1222,2
+112,150,93,Delta,5,-1,Infection naive,AZD1222,2
+113,52,28,Ancestral,2560,1,Infection naive,BNT162b2,2
+113,52,28,Alpha,378.8142175,0,Infection naive,BNT162b2,2
+113,52,28,Delta,142.8091625,0,Infection naive,BNT162b2,2
+114,61,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+114,103,41,Ancestral,374.194229200001,0,Infection naive,BNT162b2,2
+114,180,41,Ancestral,131.7454771,0,Infection naive,BNT162b2,2
+114,61,41,Alpha,361.936310700001,0,Infection naive,BNT162b2,2
+114,103,41,Alpha,368.0142372,0,Infection naive,BNT162b2,2
+114,180,41,Alpha,119.8463632,0,Infection naive,BNT162b2,2
+114,61,41,Delta,301.3526661,0,Infection naive,BNT162b2,2
+114,103,41,Delta,186.7397735,0,Infection naive,BNT162b2,2
+114,180,41,Delta,76.7133456300002,0,Infection naive,BNT162b2,2
+115,48,38,Ancestral,2560,1,Infection naive,BNT162b2,2
+115,48,38,Alpha,2256.534692,0,Infection naive,BNT162b2,2
+115,48,38,Delta,1176.561302,0,Infection naive,BNT162b2,2
+116,32,29,Ancestral,5,-1,Infection naive,AZD1222,1
+116,32,29,Alpha,5,-1,Infection naive,AZD1222,1
+116,81,29,Alpha,5,-1,Infection naive,AZD1222,1
+116,32,29,Delta,5,-1,Infection naive,AZD1222,1
+116,81,29,Delta,5,-1,Infection naive,AZD1222,1
+117,80,47,Ancestral,2036.59773000001,0,Infection naive,BNT162b2,2
+117,151,47,Ancestral,298.9848162,0,Infection naive,BNT162b2,2
+117,325,47,Ancestral,395.438015100001,0,Infection naive,BNT162b2,2
+117,80,47,Alpha,1022.608951,0,Infection naive,BNT162b2,2
+117,151,47,Alpha,910.0857901,0,Infection naive,BNT162b2,2
+117,325,47,Alpha,324.092880833301,0,Infection naive,BNT162b2,2
+117,80,47,Delta,538.8278166,0,Infection naive,BNT162b2,2
+117,151,47,Delta,446.672906199999,0,Infection naive,BNT162b2,2
+117,325,47,Delta,266.085909400001,0,Infection naive,BNT162b2,2
+118,133,97,Ancestral,145.589651248851,0,Previously infected (Pre-Omicron),mRNA1273,2
+118,133,97,Alpha,149.20688905334,0,Previously infected (Pre-Omicron),mRNA1273,2
+118,133,97,Delta,69.6624519845714,0,Previously infected (Pre-Omicron),mRNA1273,2
+119,4,-17,Ancestral,493.6105138,0,Infection naive,BNT162b2,2
+119,25,-17,Ancestral,367.369678499999,0,Infection naive,BNT162b2,2
+119,67,-17,Ancestral,184.9479879,0,Infection naive,BNT162b2,2
+119,4,-17,Alpha,238.0556849,0,Infection naive,BNT162b2,2
+119,25,-17,Alpha,118.2810085,0,Infection naive,BNT162b2,2
+119,67,-17,Alpha,114.7075639,0,Infection naive,BNT162b2,2
+119,4,-17,Delta,169.5761069,0,Infection naive,BNT162b2,2
+119,25,-17,Delta,138.9810967,0,Infection naive,BNT162b2,2
+119,67,-17,Delta,93.60086235,0,Infection naive,BNT162b2,2
+120,84,43,Ancestral,1041.605746,0,Infection naive,BNT162b2,2
+120,150,43,Ancestral,661.490370600001,0,Infection naive,BNT162b2,2
+120,84,43,Alpha,665.561388300001,0,Infection naive,BNT162b2,2
+120,150,43,Alpha,385.5133232,0,Infection naive,BNT162b2,2
+120,84,43,Delta,1132.050219,0,Infection naive,BNT162b2,2
+120,150,43,Delta,390.615284299999,0,Infection naive,BNT162b2,2
+121,10,-17,Ancestral,114.707563909016,0,Infection naive,BNT162b2,1
+121,31,-17,Ancestral,116.327542543632,0,Infection naive,BNT162b2,1
+121,10,-17,Alpha,59.3387915012427,0,Infection naive,BNT162b2,1
+121,31,-17,Alpha,5,-1,Infection naive,BNT162b2,1
+121,10,-17,Delta,5,-1,Infection naive,BNT162b2,1
+121,31,-17,Delta,5,-1,Infection naive,BNT162b2,1
+122,81,41,Ancestral,1847.789234,0,Infection naive,BNT162b2,2
+122,150,41,Ancestral,199.953035,0,Infection naive,BNT162b2,2
+122,244,41,Ancestral,163.0178413,0,Infection naive,BNT162b2,2
+122,81,41,Alpha,927.805124399998,0,Infection naive,BNT162b2,2
+122,150,41,Alpha,350.694162500001,0,Infection naive,BNT162b2,2
+122,244,41,Alpha,200.831245125291,0,Infection naive,BNT162b2,2
+122,81,41,Delta,775.21519,0,Infection naive,BNT162b2,2
+122,150,41,Delta,193.912157500001,0,Infection naive,BNT162b2,2
+122,244,41,Delta,95.7584058700001,0,Infection naive,BNT162b2,2
+123,119,73,Ancestral,185.1101646,0,Infection naive,AZD1222,2
+123,159,73,Ancestral,157.5395321,0,Infection naive,AZD1222,2
+123,119,73,Alpha,87.4921992100002,0,Infection naive,AZD1222,2
+123,159,73,Alpha,74.8535761800001,0,Infection naive,AZD1222,2
+123,119,73,Delta,70.2141530000002,0,Infection naive,AZD1222,2
+123,159,73,Delta,79.93956094,0,Infection naive,AZD1222,2
+124,124,81,Ancestral,141.3149794,0,Infection naive,AZD1222,1
+124,124,81,Alpha,56.1509832100001,0,Infection naive,AZD1222,1
+124,124,81,Delta,5,-1,Infection naive,AZD1222,1
+125,68,42,Ancestral,2560,1,Infection naive,BNT162b2,2
+125,152,42,Ancestral,115.1104312,0,Infection naive,BNT162b2,2
+125,68,42,Alpha,809.234558300001,0,Infection naive,BNT162b2,2
+125,152,42,Alpha,159.6244421,0,Infection naive,BNT162b2,2
+125,68,42,Delta,377.15771,0,Infection naive,BNT162b2,2
+125,152,42,Delta,116.6338259,0,Infection naive,BNT162b2,2
+126,131,90,Ancestral,186.739773455233,0,Infection naive,AZD1222,1
+126,131,90,Alpha,114.105905100308,0,Infection naive,AZD1222,1
+126,131,90,Delta,5,-1,Infection naive,AZD1222,1
+127,76,50,Ancestral,674.369561900001,0,Infection naive,BNT162b2,2
+127,159,50,Ancestral,99.7855700200003,0,Infection naive,BNT162b2,2
+127,76,50,Alpha,357.2089356,0,Infection naive,BNT162b2,2
+127,159,50,Alpha,204.741421500001,0,Infection naive,BNT162b2,2
+127,76,50,Delta,256.0194795,0,Infection naive,BNT162b2,2
+127,159,50,Delta,84.2560552900003,0,Infection naive,BNT162b2,2
+128,76,41,Ancestral,416.060483272753,0,Infection naive,BNT162b2,2
+128,159,41,Ancestral,243.116426,0,Infection naive,BNT162b2,2
+128,243,41,Ancestral,177.328328299999,0,Infection naive,BNT162b2,2
+128,76,41,Alpha,457.770687576985,0,Infection naive,BNT162b2,2
+128,159,41,Alpha,366.404956600001,0,Infection naive,BNT162b2,2
+128,243,41,Alpha,227.050848726935,0,Infection naive,BNT162b2,2
+128,76,41,Delta,306.950832311165,0,Infection naive,BNT162b2,2
+128,159,41,Delta,262.3803941,0,Infection naive,BNT162b2,2
+128,243,41,Delta,255.7951785,0,Infection naive,BNT162b2,2
+129,39,26,Ancestral,494.4765649,0,Previously infected (Pre-Omicron),BNT162b2,3
+129,88,26,Ancestral,278.982720200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+129,172,26,Ancestral,143.8140513,0,Previously infected (Pre-Omicron),BNT162b2,3
+129,39,26,Alpha,843.267292800003,0,Previously infected (Pre-Omicron),BNT162b2,3
+129,88,26,Alpha,168.2436788,0,Previously infected (Pre-Omicron),BNT162b2,3
+129,172,26,Alpha,155.8912282,0,Previously infected (Pre-Omicron),BNT162b2,3
+129,39,26,Delta,282.6748337,0,Previously infected (Pre-Omicron),BNT162b2,3
+129,88,26,Delta,155.0735547,0,Previously infected (Pre-Omicron),BNT162b2,3
+129,172,26,Delta,163.733829,0,Previously infected (Pre-Omicron),BNT162b2,3
+130,14,-16,Ancestral,166.483379566172,0,Infection naive,BNT162b2,1
+130,14,-16,Alpha,168.096279036151,0,Infection naive,BNT162b2,1
+130,14,-16,Delta,191.044212302065,0,Infection naive,BNT162b2,1
+131,47,28,Ancestral,2560,1,Infection naive,BNT162b2,2
+131,89,28,Ancestral,890.360596700001,0,Infection naive,BNT162b2,2
+131,173,28,Ancestral,418.621048999999,0,Infection naive,BNT162b2,2
+131,47,28,Alpha,1469.945388,0,Infection naive,BNT162b2,2
+131,89,28,Alpha,563.954573599998,0,Infection naive,BNT162b2,2
+131,47,28,Delta,996.943540999999,0,Infection naive,BNT162b2,2
+131,89,28,Delta,365.1226004,0,Infection naive,BNT162b2,2
+131,173,28,Delta,445.499932,0,Infection naive,BNT162b2,2
+132,133,84,Ancestral,1880.466295,0,Infection naive,AZD1222,2
+132,150,84,Ancestral,290.2062941,0,Infection naive,AZD1222,2
+132,236,84,Ancestral,570.91743762185,0,Infection naive,AZD1222,2
+132,325,84,Ancestral,780.670057600001,0,Infection naive,AZD1222,2
+132,133,84,Alpha,308.028882,0,Infection naive,AZD1222,2
+132,150,84,Alpha,510.327923100001,0,Infection naive,AZD1222,2
+132,236,84,Alpha,625.405272831979,0,Infection naive,AZD1222,2
+132,325,84,Alpha,473.274287620173,0,Infection naive,AZD1222,2
+132,133,84,Delta,328.958145200001,0,Infection naive,AZD1222,2
+132,150,84,Delta,274.134808000001,0,Infection naive,AZD1222,2
+132,236,84,Delta,435.080810005539,0,Infection naive,AZD1222,2
+132,325,84,Delta,745.887634099998,0,Infection naive,AZD1222,2
+133,76,51,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+133,159,51,Ancestral,332.1451085,0,Previously infected (Pre-Omicron),BNT162b2,3
+133,298,51,Ancestral,352.543306400001,0,Previously infected (Pre-Omicron),BNT162b2,3
+133,76,51,Alpha,1791.964782,0,Previously infected (Pre-Omicron),BNT162b2,3
+133,159,51,Alpha,528.537218,0,Previously infected (Pre-Omicron),BNT162b2,3
+133,298,51,Alpha,315.12909135797,0,Previously infected (Pre-Omicron),BNT162b2,3
+133,76,51,Delta,1244.447409,0,Previously infected (Pre-Omicron),BNT162b2,3
+133,159,51,Delta,293.531934100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+133,298,51,Delta,177.639455,0,Previously infected (Pre-Omicron),BNT162b2,3
+134,4,-26,Ancestral,136.9255775,0,Previously infected (Pre-Omicron),BNT162b2,2
+134,4,-26,Alpha,101.461249822687,0,Previously infected (Pre-Omicron),BNT162b2,2
+134,27,-26,Alpha,125.325174773812,0,Previously infected (Pre-Omicron),BNT162b2,2
+134,4,-26,Delta,47.1222645000002,0,Previously infected (Pre-Omicron),BNT162b2,2
+134,27,-26,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,2
+135,133,89,Ancestral,2065.35995499999,0,Previously infected (Pre-Omicron),AZD1222,3
+135,160,89,Ancestral,2560,1,Previously infected (Pre-Omicron),AZD1222,3
+135,234,89,Ancestral,1593.388057,0,Previously infected (Pre-Omicron),AZD1222,3
+135,133,89,Alpha,881.044935599999,0,Previously infected (Pre-Omicron),AZD1222,3
+135,160,89,Alpha,815.643398595694,0,Previously infected (Pre-Omicron),AZD1222,3
+135,234,89,Alpha,447.848968718045,0,Previously infected (Pre-Omicron),AZD1222,3
+135,133,89,Delta,1216.408623,0,Previously infected (Pre-Omicron),AZD1222,3
+135,160,89,Delta,854.427262200003,0,Previously infected (Pre-Omicron),AZD1222,3
+135,234,89,Delta,1009.252303,0,Previously infected (Pre-Omicron),AZD1222,3
+136,73,27,Ancestral,2560,1,Infection naive,BNT162b2,2
+136,157,27,Ancestral,196.650717500001,0,Infection naive,BNT162b2,2
+136,248,27,Ancestral,168.096279036151,0,Infection naive,BNT162b2,2
+136,73,27,Alpha,454.5720527,0,Infection naive,BNT162b2,2
+136,157,27,Alpha,166.0461901,0,Infection naive,BNT162b2,2
+136,248,27,Alpha,327.519652092377,0,Infection naive,BNT162b2,2
+136,73,27,Delta,180.9394264,0,Infection naive,BNT162b2,2
+136,157,27,Delta,111.8286368,0,Infection naive,BNT162b2,2
+136,248,27,Delta,148.164318226981,0,Infection naive,BNT162b2,2
+137,133,83,Ancestral,255.347166000001,0,Infection naive,AZD1222,2
+137,160,83,Ancestral,150.1251547,0,Infection naive,AZD1222,2
+137,231,83,Ancestral,156.4387377,0,Infection naive,AZD1222,2
+137,133,83,Alpha,162.7323236,0,Infection naive,AZD1222,2
+137,160,83,Alpha,94.8395950400003,0,Infection naive,AZD1222,2
+137,231,83,Alpha,5,-1,Infection naive,AZD1222,2
+137,133,83,Delta,65.74692666,0,Infection naive,AZD1222,2
+137,160,83,Delta,43.3574594500001,0,Infection naive,AZD1222,2
+137,231,83,Delta,5,-1,Infection naive,AZD1222,2
+138,41,41,Ancestral,101.639265952646,0,Infection naive,BNT162b2,2
+138,76,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+138,160,41,Ancestral,130.0247039,0,Infection naive,BNT162b2,2
+138,41,41,Alpha,5,-1,Infection naive,BNT162b2,2
+138,76,41,Alpha,741.975338799998,0,Infection naive,BNT162b2,2
+138,160,41,Alpha,177.951127500001,0,Infection naive,BNT162b2,2
+138,41,41,Delta,5,-1,Infection naive,BNT162b2,2
+138,76,41,Delta,468.733176700001,0,Infection naive,BNT162b2,2
+138,160,41,Delta,139.469215700001,0,Infection naive,BNT162b2,2
+139,69,31,Ancestral,2560,1,Infection naive,BNT162b2,2
+139,69,31,Alpha,1264.236594,0,Infection naive,BNT162b2,2
+139,69,31,Delta,707.055308599998,0,Infection naive,BNT162b2,2
+140,89,42,Ancestral,1079.717811,0,Infection naive,BNT162b2,2
+140,172,42,Ancestral,97.7940997500001,0,Infection naive,BNT162b2,2
+140,89,42,Alpha,482.912002799999,0,Infection naive,BNT162b2,2
+140,172,42,Alpha,181.2568889,0,Infection naive,BNT162b2,2
+140,243,42,Alpha,110.078175224005,0,Infection naive,BNT162b2,2
+140,89,42,Delta,238.4733591,0,Infection naive,BNT162b2,2
+140,172,42,Delta,75.8442035,0,Infection naive,BNT162b2,2
+140,243,42,Delta,70.5843789200002,0,Infection naive,BNT162b2,2
+141,6,-16,Ancestral,1038.870464,0,Infection naive,BNT162b2,3
+141,27,-16,Ancestral,2560,1,Infection naive,BNT162b2,3
+141,70,-16,Ancestral,348.8547177,0,Infection naive,BNT162b2,3
+141,6,-16,Alpha,452.981126300002,0,Infection naive,BNT162b2,3
+141,27,-16,Alpha,442.387037999999,0,Infection naive,BNT162b2,3
+141,70,-16,Alpha,408.4723763,0,Infection naive,BNT162b2,3
+141,6,-16,Delta,249.375238500001,0,Infection naive,BNT162b2,3
+141,27,-16,Delta,185.5975484,0,Infection naive,BNT162b2,3
+141,70,-16,Delta,97.6228182400002,0,Infection naive,BNT162b2,3
+142,84,70,Ancestral,429.7745987,0,Previously infected (Pre-Omicron),AZD1222,4
+142,160,70,Ancestral,129.9107881,0,Previously infected (Pre-Omicron),AZD1222,4
+142,84,70,Alpha,485.8839935,0,Previously infected (Pre-Omicron),AZD1222,4
+142,160,70,Alpha,286.164878000001,0,Previously infected (Pre-Omicron),AZD1222,4
+142,264,70,Alpha,254.899938100001,0,Previously infected (Pre-Omicron),AZD1222,4
+142,84,70,Delta,183.9779073,0,Previously infected (Pre-Omicron),AZD1222,4
+142,160,70,Delta,123.579895,0,Previously infected (Pre-Omicron),AZD1222,4
+142,264,70,Delta,144.4456944,0,Previously infected (Pre-Omicron),AZD1222,4
+143,19,-18,Ancestral,731.001583499999,0,Infection naive,BNT162b2,2
+143,40,-18,Ancestral,285.4134019,0,Infection naive,BNT162b2,2
+143,87,-18,Ancestral,222.9098976,0,Infection naive,BNT162b2,2
+143,171,-18,Ancestral,138.6161289,0,Infection naive,BNT162b2,2
+143,19,-18,Alpha,179.2032958,0,Infection naive,BNT162b2,2
+143,40,-18,Alpha,178.2633469,0,Infection naive,BNT162b2,2
+143,87,-18,Alpha,237.4305447,0,Infection naive,BNT162b2,2
+143,171,-18,Alpha,110.5616476,0,Infection naive,BNT162b2,2
+143,19,-18,Delta,320.140269600001,0,Infection naive,BNT162b2,2
+143,40,-18,Delta,167.9490084,0,Infection naive,BNT162b2,2
+143,87,-18,Delta,149.468676,0,Infection naive,BNT162b2,2
+143,171,-18,Delta,61.9971178600002,0,Infection naive,BNT162b2,2
+144,126,96,Ancestral,265.6198731,0,Infection naive,AZD1222,2
+144,126,96,Alpha,85.22159364,0,Infection naive,AZD1222,2
+144,126,96,Delta,160.3255257,0,Infection naive,AZD1222,2
+145,81,74,Ancestral,184.3007008,0,Infection naive,AZD1222,2
+145,160,74,Ancestral,56.3481924800002,0,Infection naive,AZD1222,2
+145,81,74,Alpha,145.9729799,0,Infection naive,AZD1222,2
+145,160,74,Alpha,96.1789846400002,0,Infection naive,AZD1222,2
+145,81,74,Delta,68.93358797,0,Infection naive,AZD1222,2
+145,160,74,Delta,125.8756132,0,Infection naive,AZD1222,2
+146,124,89,Ancestral,2560,1,Previously infected (Pre-Omicron),AZD1222,3
+146,168,89,Ancestral,264.2266561,0,Previously infected (Pre-Omicron),AZD1222,3
+146,234,89,Ancestral,231.674491839836,0,Previously infected (Pre-Omicron),AZD1222,3
+146,124,89,Alpha,492.745979499999,0,Previously infected (Pre-Omicron),AZD1222,3
+146,168,89,Alpha,245.2566903,0,Previously infected (Pre-Omicron),AZD1222,3
+146,124,89,Delta,342.192248199999,0,Previously infected (Pre-Omicron),AZD1222,3
+146,168,89,Delta,201.3600216,0,Previously infected (Pre-Omicron),AZD1222,3
+146,234,89,Delta,278.738300902528,0,Previously infected (Pre-Omicron),AZD1222,3
+147,41,41,Ancestral,141.4388953,0,Infection naive,BNT162b2,2
+147,80,41,Ancestral,479.537695000001,0,Infection naive,BNT162b2,2
+147,150,41,Ancestral,284.4145027,0,Infection naive,BNT162b2,2
+147,245,41,Ancestral,166.337522,0,Infection naive,BNT162b2,2
+147,41,41,Alpha,5,-1,Infection naive,BNT162b2,2
+147,80,41,Alpha,619.404450899999,0,Infection naive,BNT162b2,2
+147,150,41,Alpha,138.859334100001,0,Infection naive,BNT162b2,2
+147,245,41,Alpha,131.630053697801,0,Infection naive,BNT162b2,2
+147,41,41,Delta,5,-1,Infection naive,BNT162b2,2
+147,80,41,Delta,291.480903899999,0,Infection naive,BNT162b2,2
+147,150,41,Delta,193.4029393,0,Infection naive,BNT162b2,2
+147,245,41,Delta,58.40995721,0,Infection naive,BNT162b2,2
+148,117,90,Ancestral,289.9520417,0,Infection naive,AZD1222,2
+148,159,90,Ancestral,373.8663943,0,Infection naive,AZD1222,2
+148,117,90,Alpha,54.4068706399999,0,Infection naive,AZD1222,2
+148,159,90,Alpha,98.9147783000003,0,Infection naive,AZD1222,2
+148,117,90,Delta,72.2113817700003,0,Infection naive,AZD1222,2
+148,159,90,Delta,99.7855700200003,0,Infection naive,AZD1222,2
+149,14,-23,Ancestral,220.191306000001,0,Infection naive,BNT162b2,2
+149,14,-23,Alpha,164.021103800001,0,Infection naive,BNT162b2,2
+149,39,-23,Alpha,202.954718900001,0,Infection naive,BNT162b2,2
+149,74,-23,Alpha,116.6338259,0,Infection naive,BNT162b2,2
+149,158,-23,Alpha,48.8036602599998,0,Infection naive,BNT162b2,2
+149,14,-23,Delta,90.2178130599998,0,Infection naive,BNT162b2,2
+149,39,-23,Delta,94.2594927799998,0,Infection naive,BNT162b2,2
+149,74,-23,Delta,70.64627275,0,Infection naive,BNT162b2,2
+149,158,-23,Delta,41.5711784200001,0,Infection naive,BNT162b2,2
+150,42,26,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+150,62,26,Ancestral,1273.13250237821,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,104,26,Ancestral,1333.669984,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,188,26,Ancestral,607.57499,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,42,26,Alpha,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+150,62,26,Alpha,1143.01757944835,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,104,26,Alpha,1211.089419,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,188,26,Alpha,440.838757200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,42,26,Delta,877.961425299999,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,62,26,Delta,950.856843638419,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,104,26,Delta,1060.025929,0,Previously infected (Pre-Omicron),BNT162b2,3
+150,188,26,Delta,525.764959,0,Previously infected (Pre-Omicron),BNT162b2,3
+151,76,39,Ancestral,1182.765086,0,Infection naive,BNT162b2,2
+151,76,39,Alpha,1210.028373,0,Infection naive,BNT162b2,2
+151,76,39,Delta,782.725514299998,0,Infection naive,BNT162b2,2
+152,41,34,Ancestral,777.937842600003,0,Previously infected (Pre-Omicron),BNT162b2,3
+152,80,34,Ancestral,422.306360200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+152,160,34,Ancestral,161.0296885,0,Previously infected (Pre-Omicron),BNT162b2,3
+152,41,34,Alpha,398.9192356,0,Previously infected (Pre-Omicron),BNT162b2,3
+152,80,34,Alpha,560.996545100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+152,160,34,Alpha,262.8407466,0,Previously infected (Pre-Omicron),BNT162b2,3
+152,41,34,Delta,243.756536699999,0,Previously infected (Pre-Omicron),BNT162b2,3
+152,80,34,Delta,172.4237657,0,Previously infected (Pre-Omicron),BNT162b2,3
+152,160,34,Delta,127.9894181,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,81,52,Ancestral,739.378548899999,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,159,52,Ancestral,253.1188458,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,252,52,Ancestral,439.6811036,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,81,52,Alpha,598.589004999999,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,159,52,Alpha,420.091298400001,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,252,52,Alpha,409.906982324407,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,81,52,Delta,565.935252499999,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,159,52,Delta,288.1785015,0,Previously infected (Pre-Omicron),BNT162b2,3
+153,252,52,Delta,142.6840461,0,Previously infected (Pre-Omicron),BNT162b2,3
+154,68,27,Ancestral,160.888609,0,Infection naive,BNT162b2,2
+154,68,27,Alpha,321.8283086,0,Infection naive,BNT162b2,2
+154,68,27,Delta,170.6197311,0,Infection naive,BNT162b2,2
+155,70,52,Ancestral,1181.728855,0,Infection naive,BNT162b2,2
+155,238,52,Ancestral,279.227353800001,0,Infection naive,BNT162b2,2
+155,70,52,Alpha,1078.771861,0,Infection naive,BNT162b2,2
+155,238,52,Alpha,354.712967615556,0,Infection naive,BNT162b2,2
+155,70,52,Delta,1343.054466,0,Infection naive,BNT162b2,2
+155,238,52,Delta,266.552763300001,0,Infection naive,BNT162b2,2
+156,14,-3,Ancestral,185.9231836,0,Previously infected (Pre-Omicron),others,3
+156,76,-3,Ancestral,306.681909900001,0,Previously infected (Pre-Omicron),others,3
+156,150,-3,Ancestral,90.3761023199997,0,Previously infected (Pre-Omicron),others,3
+156,318,-3,Ancestral,139.469215684706,0,Previously infected (Pre-Omicron),others,3
+156,14,-3,Alpha,218.4611738,0,Previously infected (Pre-Omicron),others,3
+156,76,-3,Alpha,128.7771048,0,Previously infected (Pre-Omicron),others,3
+156,150,-3,Alpha,119.9514538,0,Previously infected (Pre-Omicron),others,3
+156,318,-3,Alpha,112.418287978578,0,Previously infected (Pre-Omicron),others,3
+156,14,-3,Delta,60.8130894199999,0,Previously infected (Pre-Omicron),others,3
+156,76,-3,Delta,91.4117737899999,0,Previously infected (Pre-Omicron),others,3
+156,150,-3,Delta,50.58937264,0,Previously infected (Pre-Omicron),others,3
+156,318,-3,Delta,97.1107715442805,0,Previously infected (Pre-Omicron),others,3
+157,33,28,Ancestral,154.260170083228,0,Infection naive,BNT162b2,2
+157,75,28,Ancestral,617.7778794,0,Infection naive,BNT162b2,2
+157,145,28,Ancestral,109.9817347,0,Infection naive,BNT162b2,2
+157,33,28,Alpha,125.105673950083,0,Infection naive,BNT162b2,2
+157,75,28,Alpha,161.1708918,0,Infection naive,BNT162b2,2
+157,145,28,Alpha,92.7840422799997,0,Infection naive,BNT162b2,2
+157,33,28,Delta,57.394961222384,0,Infection naive,BNT162b2,2
+157,75,28,Delta,102.4442116,0,Infection naive,BNT162b2,2
+157,145,28,Delta,46.6292338600001,0,Infection naive,BNT162b2,2
+158,76,56,Ancestral,140.943882757322,0,Infection naive,AZD1222,1
+158,76,56,Alpha,50.6781328723178,0,Infection naive,AZD1222,1
+158,76,56,Delta,5,-1,Infection naive,AZD1222,1
+159,35,32,Ancestral,97.9656817769744,0,Infection naive,BNT162b2,2
+159,35,32,Alpha,57.1439801799681,0,Infection naive,BNT162b2,2
+159,35,32,Delta,5,-1,Infection naive,BNT162b2,2
+160,33,26,Ancestral,1448.205014,0,Previously infected (Pre-Omicron),BNT162b2,3
+160,75,26,Ancestral,633.6820123,0,Previously infected (Pre-Omicron),BNT162b2,3
+160,33,26,Alpha,911.682556900002,0,Previously infected (Pre-Omicron),BNT162b2,3
+160,75,26,Alpha,362.5713364,0,Previously infected (Pre-Omicron),BNT162b2,3
+160,33,26,Delta,227.050848700001,0,Previously infected (Pre-Omicron),BNT162b2,3
+160,75,26,Delta,184.6240607,0,Previously infected (Pre-Omicron),BNT162b2,3
+161,117,70,Ancestral,499.704875025919,0,Previously infected (Pre-Omicron),AZD1222,2
+161,117,70,Alpha,769.798437800932,0,Previously infected (Pre-Omicron),AZD1222,2
+161,117,70,Delta,359.407310556111,0,Previously infected (Pre-Omicron),AZD1222,2
+162,80,59,Ancestral,1862.423045,0,Infection naive,BNT162b2,2
+162,150,59,Ancestral,228.2480448,0,Infection naive,BNT162b2,2
+162,80,59,Alpha,1116.285275,0,Infection naive,BNT162b2,2
+162,150,59,Alpha,352.543306400001,0,Infection naive,BNT162b2,2
+162,243,59,Alpha,225.464349655178,0,Infection naive,BNT162b2,2
+162,80,59,Delta,513.018785499999,0,Infection naive,BNT162b2,2
+162,150,59,Delta,190.8768368,0,Infection naive,BNT162b2,2
+162,243,59,Delta,282.6748337,0,Infection naive,BNT162b2,2
+163,14,-10,Ancestral,104.530376317928,0,Infection naive,BNT162b2,1
+163,14,-10,Alpha,46.1818220151127,0,Infection naive,BNT162b2,1
+163,14,-10,Delta,5,-1,Infection naive,BNT162b2,1
+164,84,54,Ancestral,355.335319799999,0,Previously infected (Pre-Omicron),BNT162b2,3
+164,150,54,Ancestral,70.64627275,0,Previously infected (Pre-Omicron),BNT162b2,3
+164,84,54,Alpha,316.513164100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+164,150,54,Alpha,154.5308232,0,Previously infected (Pre-Omicron),BNT162b2,3
+164,84,54,Delta,174.094216,0,Previously infected (Pre-Omicron),BNT162b2,3
+164,150,54,Delta,89.8233017599999,0,Previously infected (Pre-Omicron),BNT162b2,3
+165,95,53,Ancestral,168.2436788,0,Infection naive,BNT162b2,2
+165,95,53,Alpha,79.3114434600003,0,Infection naive,BNT162b2,2
+165,95,53,Delta,165.0305408,0,Infection naive,BNT162b2,2
+166,67,41,Ancestral,2376.29701499999,0,Infection naive,BNT162b2,2
+166,154,41,Ancestral,1585.030492,0,Infection naive,BNT162b2,2
+166,67,41,Alpha,1757.741623,0,Infection naive,BNT162b2,2
+166,154,41,Alpha,878.731289700001,0,Infection naive,BNT162b2,2
+166,67,41,Delta,1449.47491200001,0,Infection naive,BNT162b2,2
+166,154,41,Delta,1034.327612,0,Infection naive,BNT162b2,2
+167,116,88,Ancestral,322.110512499999,0,Infection naive,BNT162b2,3
+167,150,88,Ancestral,542.619324400001,0,Infection naive,BNT162b2,3
+167,234,88,Ancestral,192.726061299999,0,Infection naive,BNT162b2,3
+167,116,88,Alpha,360.669594000001,0,Infection naive,BNT162b2,3
+167,150,88,Alpha,433.558099799999,0,Infection naive,BNT162b2,3
+167,234,88,Alpha,175.934987838245,0,Infection naive,BNT162b2,3
+167,116,88,Delta,305.608574399999,0,Infection naive,BNT162b2,3
+167,150,88,Delta,277.276275700001,0,Infection naive,BNT162b2,3
+167,234,88,Delta,107.8812903,0,Infection naive,BNT162b2,3
+168,76,54,Ancestral,1478.991889,0,Infection naive,BNT162b2,2
+168,150,54,Ancestral,199.602827200001,0,Infection naive,BNT162b2,2
+168,76,54,Alpha,611.850243099998,0,Infection naive,BNT162b2,2
+168,150,54,Alpha,321.546351899999,0,Infection naive,BNT162b2,2
+168,76,54,Delta,343.695184599999,0,Infection naive,BNT162b2,2
+168,150,54,Delta,201.3600216,0,Infection naive,BNT162b2,2
+169,3,-8,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+169,27,-8,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+169,68,-8,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+169,3,-8,Alpha,2250.608976,0,Previously infected (Pre-Omicron),BNT162b2,3
+169,27,-8,Alpha,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+169,68,-8,Alpha,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+169,3,-8,Delta,1299.058458,0,Previously infected (Pre-Omicron),BNT162b2,3
+169,27,-8,Delta,997.817738100004,0,Previously infected (Pre-Omicron),BNT162b2,3
+169,68,-8,Delta,849.2010148,0,Previously infected (Pre-Omicron),BNT162b2,3
+170,117,91,Ancestral,2482.75305900001,0,Previously infected (Pre-Omicron),AZD1222,3
+170,160,91,Ancestral,301.6169153,0,Previously infected (Pre-Omicron),AZD1222,3
+170,307,91,Ancestral,353.7814825,0,Previously infected (Pre-Omicron),AZD1222,3
+170,117,91,Alpha,460.991830000001,0,Previously infected (Pre-Omicron),AZD1222,3
+170,160,91,Alpha,322.9586098,0,Previously infected (Pre-Omicron),AZD1222,3
+170,307,91,Alpha,161.31221889536,0,Previously infected (Pre-Omicron),AZD1222,3
+170,117,91,Delta,220.191306000001,0,Previously infected (Pre-Omicron),AZD1222,3
+170,160,91,Delta,255.5710741,0,Previously infected (Pre-Omicron),AZD1222,3
+170,307,91,Delta,183.0129149,0,Previously infected (Pre-Omicron),AZD1222,3
+171,76,49,Ancestral,659.753280500002,0,Infection naive,BNT162b2,2
+171,150,49,Ancestral,118.0738452,0,Infection naive,BNT162b2,2
+171,76,49,Alpha,350.694162500001,0,Infection naive,BNT162b2,2
+171,150,49,Alpha,171.2189689,0,Infection naive,BNT162b2,2
+171,76,49,Delta,192.3885111,0,Infection naive,BNT162b2,2
+171,150,49,Delta,82.7919289299998,0,Infection naive,BNT162b2,2
+172,32,27,Ancestral,161.453669903554,0,Infection naive,BNT162b2,2
+172,75,27,Ancestral,1194.223775,0,Infection naive,BNT162b2,2
+172,230,27,Ancestral,267.7234849,0,Infection naive,BNT162b2,2
+172,32,27,Alpha,182.372400207781,0,Infection naive,BNT162b2,2
+172,75,27,Alpha,648.857147700003,0,Infection naive,BNT162b2,2
+172,230,27,Alpha,133.606076800001,0,Infection naive,BNT162b2,2
+172,32,27,Delta,96.2633217966529,0,Infection naive,BNT162b2,2
+172,75,27,Delta,211.861138,0,Infection naive,BNT162b2,2
+172,230,27,Delta,164.741498,0,Infection naive,BNT162b2,2
+173,27,27,Ancestral,106.7525503898,0,Infection naive,BNT162b2,2
+173,67,27,Ancestral,2560,1,Infection naive,BNT162b2,2
+173,154,27,Ancestral,155.3456349,0,Infection naive,BNT162b2,2
+173,27,27,Alpha,5,-1,Infection naive,BNT162b2,2
+173,67,27,Alpha,983.922117299998,0,Infection naive,BNT162b2,2
+173,154,27,Alpha,167.06809,0,Infection naive,BNT162b2,2
+173,27,27,Delta,5,-1,Infection naive,BNT162b2,2
+173,67,27,Delta,307.759015099999,0,Infection naive,BNT162b2,2
+173,154,27,Delta,107.5037238,0,Infection naive,BNT162b2,2
+174,52,26,Ancestral,431.2840209,0,Infection naive,BNT162b2,2
+174,52,26,Alpha,200.4794992,0,Infection naive,BNT162b2,2
+174,52,26,Delta,84.2560552900003,0,Infection naive,BNT162b2,2
+175,0,-24,Ancestral,108.8310183,0,Infection naive,BNT162b2,2
+175,21,-24,Ancestral,118.6964262,0,Infection naive,BNT162b2,2
+175,67,-24,Ancestral,92.7840422799997,0,Infection naive,BNT162b2,2
+175,158,-24,Ancestral,56.1509832100001,0,Infection naive,BNT162b2,2
+175,0,-24,Alpha,88.6500886099999,0,Infection naive,BNT162b2,2
+175,21,-24,Alpha,50.2799342700001,0,Infection naive,BNT162b2,2
+175,67,-24,Alpha,46.4253300100001,0,Infection naive,BNT162b2,2
+175,158,-24,Alpha,5,-1,Infection naive,BNT162b2,2
+175,0,-24,Delta,44.47365804,0,Infection naive,BNT162b2,2
+175,21,-24,Delta,5,-1,Infection naive,BNT162b2,2
+175,67,-24,Delta,5,-1,Infection naive,BNT162b2,2
+175,158,-24,Delta,5,-1,Infection naive,BNT162b2,2
+176,76,76,Ancestral,198.034467000762,0,Infection naive,AZD1222,2
+176,76,76,Alpha,171.970976643965,0,Infection naive,AZD1222,2
+176,76,76,Delta,126.317704098264,0,Infection naive,AZD1222,2
+177,73,37,Ancestral,2560,1,Infection naive,BNT162b2,2
+177,150,37,Ancestral,181.5749083,0,Infection naive,BNT162b2,2
+177,73,37,Alpha,450.605170699999,0,Infection naive,BNT162b2,2
+177,150,37,Alpha,199.2532328,0,Infection naive,BNT162b2,2
+177,73,37,Delta,254.4534935,0,Infection naive,BNT162b2,2
+177,150,37,Delta,194.9346195,0,Infection naive,BNT162b2,2
+178,53,39,Ancestral,1632.97647200001,0,Infection naive,BNT162b2,2
+178,252,39,Ancestral,655.143308864813,0,Infection naive,BNT162b2,2
+178,53,39,Alpha,1040.693186,0,Infection naive,BNT162b2,2
+178,252,39,Alpha,905.312250251336,0,Infection naive,BNT162b2,2
+178,53,39,Delta,258.0470597,0,Infection naive,BNT162b2,2
+179,124,78,Ancestral,1002.200235,0,Previously infected (Pre-Omicron),AZD1222,4
+179,159,78,Ancestral,248.7203729,0,Previously infected (Pre-Omicron),AZD1222,4
+179,124,78,Alpha,509.434109100002,0,Previously infected (Pre-Omicron),AZD1222,4
+179,159,78,Alpha,206.3628983,0,Previously infected (Pre-Omicron),AZD1222,4
+179,124,78,Delta,181.4158289,0,Previously infected (Pre-Omicron),AZD1222,4
+179,159,78,Delta,161.1708918,0,Previously infected (Pre-Omicron),AZD1222,4
+180,80,59,Ancestral,2560,1,Infection naive,BNT162b2,2
+180,160,59,Ancestral,437.374908599999,0,Infection naive,BNT162b2,2
+180,80,59,Alpha,2122.24779199999,0,Infection naive,BNT162b2,2
+180,160,59,Alpha,744.581248899999,0,Infection naive,BNT162b2,2
+180,80,59,Delta,1028.902405,0,Infection naive,BNT162b2,2
+180,160,59,Delta,191.7151835,0,Infection naive,BNT162b2,2
+181,76,58,Ancestral,2205.69245200001,0,Infection naive,BNT162b2,2
+181,159,58,Ancestral,197.6876195,0,Infection naive,BNT162b2,2
+181,76,58,Alpha,1715.128513,0,Infection naive,BNT162b2,2
+181,159,58,Alpha,273.175381900001,0,Infection naive,BNT162b2,2
+181,76,58,Delta,771.825270199999,0,Infection naive,BNT162b2,2
+181,159,58,Delta,176.5528935,0,Infection naive,BNT162b2,2
+182,84,52,Ancestral,1099.775506,0,Infection naive,BNT162b2,2
+182,159,52,Ancestral,293.7893255,0,Infection naive,BNT162b2,2
+182,307,52,Ancestral,322.9586098,0,Infection naive,BNT162b2,2
+182,84,52,Alpha,1143.017579,0,Infection naive,BNT162b2,2
+182,159,52,Alpha,213.1649974,0,Infection naive,BNT162b2,2
+182,84,52,Delta,642.0682879,0,Infection naive,BNT162b2,2
+182,159,52,Delta,247.199033100001,0,Infection naive,BNT162b2,2
+182,307,52,Delta,160.6068206,0,Infection naive,BNT162b2,2
+183,80,43,Ancestral,808.5255807,0,Infection naive,BNT162b2,2
+183,160,43,Ancestral,262.3803941,0,Infection naive,BNT162b2,2
+183,80,43,Alpha,529.464548799999,0,Infection naive,BNT162b2,2
+183,160,43,Alpha,319.0198321,0,Infection naive,BNT162b2,2
+183,80,43,Delta,245.471750300001,0,Infection naive,BNT162b2,2
+183,160,43,Delta,148.164318200001,0,Infection naive,BNT162b2,2
+184,52,43,Ancestral,2560,1,Infection naive,BNT162b2,2
+184,236,43,Ancestral,296.375686400001,0,Infection naive,BNT162b2,2
+184,52,43,Alpha,1016.353992,0,Infection naive,BNT162b2,2
+184,236,43,Alpha,171.820311329011,0,Infection naive,BNT162b2,2
+184,52,43,Delta,505.8744803,0,Infection naive,BNT162b2,2
+184,236,43,Delta,130.1387196,0,Infection naive,BNT162b2,2
+185,76,59,Ancestral,2027.691941,0,Infection naive,BNT162b2,2
+185,150,59,Ancestral,176.089261200001,0,Infection naive,BNT162b2,2
+185,307,59,Ancestral,328.094293000001,0,Infection naive,BNT162b2,2
+185,76,59,Alpha,1184.840275,0,Infection naive,BNT162b2,2
+185,150,59,Alpha,436.608868200001,0,Infection naive,BNT162b2,2
+185,307,59,Alpha,193.912157451256,0,Infection naive,BNT162b2,2
+185,76,59,Delta,651.1360152,0,Infection naive,BNT162b2,2
+185,150,59,Delta,288.431198699999,0,Infection naive,BNT162b2,2
+185,307,59,Delta,245.2566903,0,Infection naive,BNT162b2,2
+186,80,59,Ancestral,513.918889000001,0,Infection naive,BNT162b2,2
+186,160,59,Ancestral,114.406339,0,Infection naive,BNT162b2,2
+186,80,59,Alpha,467.5022717,0,Infection naive,BNT162b2,2
+186,160,59,Alpha,155.2095352,0,Infection naive,BNT162b2,2
+186,80,59,Delta,148.0345101,0,Infection naive,BNT162b2,2
+186,160,59,Delta,80.9265345799999,0,Infection naive,BNT162b2,2
+186,509,59,Delta,116.8384626,0,Infection naive,BNT162b2,2
+186,509,59,Delta,116.8384626,0,Infection naive,BNT162b2,2
+187,26,-19,Ancestral,203.1326853,0,Infection naive,BNT162b2,2
+187,68,-19,Ancestral,82.5745152699999,0,Infection naive,BNT162b2,2
+187,110,-19,Ancestral,5,-1,Infection naive,BNT162b2,2
+187,26,-19,Alpha,46.3846563599999,0,Infection naive,BNT162b2,2
+187,68,-19,Alpha,5,-1,Infection naive,BNT162b2,2
+187,26,-19,Delta,5,-1,Infection naive,BNT162b2,2
+187,68,-19,Delta,5,-1,Infection naive,BNT162b2,2
+187,110,-19,Delta,5,-1,Infection naive,BNT162b2,2
+188,84,69,Ancestral,519.352771,0,Previously infected (Pre-Omicron),AZD1222,3
+188,151,69,Ancestral,151.0490716,0,Previously infected (Pre-Omicron),AZD1222,3
+188,252,69,Ancestral,124.8865576,0,Previously infected (Pre-Omicron),AZD1222,3
+188,84,69,Alpha,233.509268699999,0,Previously infected (Pre-Omicron),AZD1222,3
+188,151,69,Alpha,99.0883265799999,0,Previously infected (Pre-Omicron),AZD1222,3
+188,252,69,Alpha,89.5089351915363,0,Previously infected (Pre-Omicron),AZD1222,3
+188,84,69,Delta,166.337522,0,Previously infected (Pre-Omicron),AZD1222,3
+188,151,69,Delta,90.2969230099998,0,Previously infected (Pre-Omicron),AZD1222,3
+188,252,69,Delta,68.69233191,0,Previously infected (Pre-Omicron),AZD1222,3
+189,73,39,Ancestral,2560,1,Infection naive,BNT162b2,2
+189,73,39,Alpha,620.491210500002,0,Infection naive,BNT162b2,2
+189,73,39,Delta,358.463498,0,Infection naive,BNT162b2,2
+190,5,-19,Ancestral,682.097548600003,0,Infection naive,BNT162b2,2
+190,26,-19,Ancestral,364.483106299999,0,Infection naive,BNT162b2,2
+190,5,-19,Alpha,472.031457600001,0,Infection naive,BNT162b2,2
+190,26,-19,Alpha,1016.353992,0,Infection naive,BNT162b2,2
+190,68,-19,Alpha,1026.200481,0,Infection naive,BNT162b2,2
+190,153,-19,Alpha,179.675127100001,0,Infection naive,BNT162b2,2
+190,5,-19,Delta,361.302397200001,0,Infection naive,BNT162b2,2
+190,26,-19,Delta,423.047306599999,0,Infection naive,BNT162b2,2
+190,68,-19,Delta,404.1986132,0,Infection naive,BNT162b2,2
+190,153,-19,Delta,115.1104312,0,Infection naive,BNT162b2,2
+191,76,55,Ancestral,363.844732199999,0,Infection naive,BNT162b2,2
+191,76,55,Alpha,504.988466300001,0,Infection naive,BNT162b2,2
+191,76,55,Delta,349.160620500001,0,Infection naive,BNT162b2,2
+192,81,50,Ancestral,832.982871400002,0,Previously infected (Pre-Omicron),BNT162b2,3
+192,151,50,Ancestral,172.1217741,0,Previously infected (Pre-Omicron),BNT162b2,3
+192,81,50,Alpha,765.7607266,0,Previously infected (Pre-Omicron),BNT162b2,3
+192,151,50,Alpha,336.2459375,0,Previously infected (Pre-Omicron),BNT162b2,3
+192,81,50,Delta,591.8071482,0,Previously infected (Pre-Omicron),BNT162b2,3
+192,151,50,Delta,115.8188566,0,Previously infected (Pre-Omicron),BNT162b2,3
+193,73,32,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+193,161,32,Ancestral,526.687425899999,0,Previously infected (Pre-Omicron),BNT162b2,3
+193,73,32,Alpha,1170.390057,0,Previously infected (Pre-Omicron),BNT162b2,3
+193,161,32,Alpha,560.013987499999,0,Previously infected (Pre-Omicron),BNT162b2,3
+193,73,32,Delta,524.384287100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+193,161,32,Delta,506.318070100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+194,20,-19,Ancestral,670.8323899,0,Infection naive,BNT162b2,2
+194,42,-19,Ancestral,660.331803100001,0,Infection naive,BNT162b2,2
+194,89,-19,Ancestral,290.2062941,0,Infection naive,BNT162b2,2
+194,173,-19,Ancestral,156.164743,0,Infection naive,BNT162b2,2
+194,20,-19,Alpha,169.8736322,0,Infection naive,BNT162b2,2
+194,42,-19,Alpha,133.9578534,0,Infection naive,BNT162b2,2
+194,89,-19,Alpha,97.87985316,0,Infection naive,BNT162b2,2
+194,173,-19,Alpha,80.7847957700002,0,Infection naive,BNT162b2,2
+194,20,-19,Delta,190.042156000001,0,Infection naive,BNT162b2,2
+194,42,-19,Delta,193.4029393,0,Infection naive,BNT162b2,2
+194,89,-19,Delta,149.0761676,0,Infection naive,BNT162b2,2
+194,173,-19,Delta,80.50206246,0,Infection naive,BNT162b2,2
+195,5,-33,Ancestral,500.14305484178,0,Infection naive,BNT162b2,1
+195,5,-33,Alpha,988.243583847195,0,Infection naive,BNT162b2,1
+195,5,-33,Delta,249.156758622271,0,Infection naive,BNT162b2,1
+196,26,6,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+196,68,6,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+196,153,6,Ancestral,990.845569000003,0,Previously infected (Pre-Omicron),BNT162b2,3
+196,26,6,Alpha,1403.222141,0,Previously infected (Pre-Omicron),BNT162b2,3
+196,68,6,Alpha,2154.106858,0,Previously infected (Pre-Omicron),BNT162b2,3
+196,153,6,Alpha,1020.817902,0,Previously infected (Pre-Omicron),BNT162b2,3
+196,26,6,Delta,463.4225525,0,Previously infected (Pre-Omicron),BNT162b2,3
+197,84,49,Ancestral,430.151458299999,0,Infection naive,BNT162b2,2
+197,151,49,Ancestral,344.600113099999,0,Infection naive,BNT162b2,2
+197,84,49,Alpha,455.369609900001,0,Infection naive,BNT162b2,2
+197,151,49,Alpha,269.607344,0,Infection naive,BNT162b2,2
+197,84,49,Delta,274.375190600001,0,Infection naive,BNT162b2,2
+197,151,49,Delta,143.5621682,0,Infection naive,BNT162b2,2
+198,81,55,Ancestral,438.526490099999,0,Infection naive,BNT162b2,2
+198,159,55,Ancestral,220.191306000001,0,Infection naive,BNT162b2,2
+198,277,55,Ancestral,167.507970100001,0,Infection naive,BNT162b2,2
+198,81,55,Alpha,745.887634099998,0,Infection naive,BNT162b2,2
+198,159,55,Alpha,160.888609,0,Infection naive,BNT162b2,2
+198,277,55,Alpha,124.8865576,0,Infection naive,BNT162b2,2
+198,81,55,Delta,235.771518399999,0,Infection naive,BNT162b2,2
+198,159,55,Delta,136.5660075,0,Infection naive,BNT162b2,2
+198,277,55,Delta,51.3488175,0,Infection naive,BNT162b2,2
+199,46,33,Ancestral,2560,1,Infection naive,BNT162b2,2
+199,68,33,Ancestral,977.047042700003,0,Infection naive,BNT162b2,2
+199,110,33,Ancestral,1212.151396,0,Infection naive,BNT162b2,2
+199,194,33,Ancestral,5,-1,Infection naive,BNT162b2,2
+199,46,33,Alpha,432.7987443,0,Infection naive,BNT162b2,2
+199,68,33,Alpha,505.8744803,0,Infection naive,BNT162b2,2
+199,110,33,Alpha,241.41767,0,Infection naive,BNT162b2,2
+199,194,33,Alpha,76.3109723399998,0,Infection naive,BNT162b2,2
+199,46,33,Delta,263.763876200001,0,Infection naive,BNT162b2,2
+199,68,33,Delta,255.347166000001,0,Infection naive,BNT162b2,2
+199,110,33,Delta,106.4722155,0,Infection naive,BNT162b2,2
+199,194,33,Delta,40.7058277100001,0,Infection naive,BNT162b2,2
+200,76,44,Ancestral,1625.835669,0,Previously infected (Pre-Omicron),BNT162b2,4
+200,76,44,Alpha,647.720706600002,0,Previously infected (Pre-Omicron),BNT162b2,4
+200,76,44,Delta,217.3153114,0,Previously infected (Pre-Omicron),BNT162b2,4
+201,80,51,Ancestral,1212.151396,0,Previously infected (Pre-Omicron),BNT162b2,3
+201,151,51,Ancestral,738.083564100002,0,Previously infected (Pre-Omicron),BNT162b2,3
+201,80,51,Alpha,678.519842099999,0,Previously infected (Pre-Omicron),BNT162b2,3
+201,151,51,Alpha,550.282565399999,0,Previously infected (Pre-Omicron),BNT162b2,3
+201,80,51,Delta,1399.537244,0,Previously infected (Pre-Omicron),BNT162b2,3
+201,151,51,Delta,940.083884500002,0,Previously infected (Pre-Omicron),BNT162b2,3
+202,24,-24,Ancestral,177.328328281948,0,Infection naive,BNT162b2,2
+202,24,-24,Alpha,176.862659680467,0,Infection naive,BNT162b2,2
+202,45,-24,Alpha,93.1099114400002,0,Infection naive,BNT162b2,2
+202,87,-24,Alpha,132.7888529,0,Infection naive,BNT162b2,2
+202,171,-24,Alpha,63.2596215999999,0,Infection naive,BNT162b2,2
+202,24,-24,Delta,119.636458255127,0,Infection naive,BNT162b2,2
+202,45,-24,Delta,50.9900218800002,0,Infection naive,BNT162b2,2
+202,87,-24,Delta,69.9071152200002,0,Infection naive,BNT162b2,2
+202,171,-24,Delta,52.2111082799999,0,Infection naive,BNT162b2,2
+203,80,45,Ancestral,702.730486399999,0,Infection naive,BNT162b2,2
+203,151,45,Ancestral,278.494095800001,0,Infection naive,BNT162b2,2
+203,80,45,Alpha,844.746824900003,0,Infection naive,BNT162b2,2
+203,151,45,Alpha,304.538995399999,0,Infection naive,BNT162b2,2
+203,80,45,Delta,581.523253000001,0,Infection naive,BNT162b2,2
+203,151,45,Delta,158.5090795,0,Infection naive,BNT162b2,2
+204,28,27,Ancestral,139.8364296,0,Infection naive,BNT162b2,2
+204,70,27,Ancestral,267.0204364,0,Infection naive,BNT162b2,2
+204,154,27,Ancestral,268.428384500001,0,Infection naive,BNT162b2,2
+204,28,27,Alpha,5,-1,Infection naive,BNT162b2,2
+204,70,27,Alpha,511.2233054,0,Infection naive,BNT162b2,2
+204,154,27,Alpha,89.4305156099998,0,Infection naive,BNT162b2,2
+204,28,27,Delta,5,-1,Infection naive,BNT162b2,2
+204,70,27,Delta,324.0928808,0,Infection naive,BNT162b2,2
+204,154,27,Delta,186.2493902,0,Infection naive,BNT162b2,2
+205,81,60,Ancestral,753.113831499999,0,Infection naive,BNT162b2,2
+205,150,60,Ancestral,309.653059899999,0,Infection naive,BNT162b2,2
+205,81,60,Alpha,1009.252303,0,Infection naive,BNT162b2,2
+205,150,60,Alpha,280.4537432,0,Infection naive,BNT162b2,2
+205,81,60,Delta,455.768913199999,0,Infection naive,BNT162b2,2
+205,150,60,Delta,255.123454000001,0,Infection naive,BNT162b2,2
+206,4,-19,Ancestral,699.657533199999,0,Infection naive,BNT162b2,2
+206,24,-19,Ancestral,838.109307200003,0,Infection naive,BNT162b2,2
+206,368,-19,Ancestral,868.775494099999,0,Infection naive,BNT162b2,2
+206,559,-19,Ancestral,557.076628047233,0,Infection naive,BNT162b2,2
+206,4,-19,Alpha,545.958772599999,0,Infection naive,BNT162b2,2
+206,24,-19,Alpha,210.5652539,0,Infection naive,BNT162b2,2
+206,4,-19,Delta,162.8750199,0,Infection naive,BNT162b2,2
+206,24,-19,Delta,57.69759397,0,Infection naive,BNT162b2,2
+207,81,49,Ancestral,337.4268752,0,Infection naive,BNT162b2,2
+207,150,49,Ancestral,157.2636095,0,Infection naive,BNT162b2,2
+207,81,49,Alpha,531.324094499999,0,Infection naive,BNT162b2,2
+207,150,49,Alpha,135.1371453,0,Infection naive,BNT162b2,2
+207,81,49,Delta,315.958807000001,0,Infection naive,BNT162b2,2
+207,150,49,Delta,79.93956094,0,Infection naive,BNT162b2,2
+208,55,30,Ancestral,2560,1,Infection naive,BNT162b2,2
+208,237,30,Ancestral,160.606820581806,0,Infection naive,BNT162b2,2
+208,55,30,Alpha,1255.402845,0,Infection naive,BNT162b2,2
+208,237,30,Alpha,151.712491519182,0,Infection naive,BNT162b2,2
+208,55,30,Delta,388.226020499999,0,Infection naive,BNT162b2,2
+208,237,30,Delta,105.358218481155,0,Infection naive,BNT162b2,2
+209,0,-18,Ancestral,927.805124399998,0,Infection naive,BNT162b2,2
+209,21,-18,Ancestral,569.418194200001,0,Infection naive,BNT162b2,2
+209,67,-18,Ancestral,978.7612945,0,Infection naive,BNT162b2,2
+209,0,-18,Alpha,219.4206732,0,Infection naive,BNT162b2,2
+209,21,-18,Alpha,276.5481413,0,Infection naive,BNT162b2,2
+209,67,-18,Alpha,143.0597245,0,Infection naive,BNT162b2,2
+209,0,-18,Delta,213.726247800001,0,Infection naive,BNT162b2,2
+209,21,-18,Delta,192.3885111,0,Infection naive,BNT162b2,2
+209,67,-18,Delta,109.3090131,0,Infection naive,BNT162b2,2
+210,131,92,Ancestral,72.3380783200001,0,Infection naive,AZD1222,2
+210,131,92,Alpha,5,-1,Infection naive,AZD1222,2
+210,131,92,Delta,5,-1,Infection naive,AZD1222,2
+211,28,27,Ancestral,99.9606461299999,0,Previously infected (Pre-Omicron),BNT162b2,3
+211,70,27,Ancestral,595.971449500002,0,Previously infected (Pre-Omicron),BNT162b2,3
+211,154,27,Ancestral,290.2062941,0,Previously infected (Pre-Omicron),BNT162b2,3
+211,28,27,Alpha,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+211,70,27,Alpha,559.523354199999,0,Previously infected (Pre-Omicron),BNT162b2,3
+211,154,27,Alpha,172.272703700001,0,Previously infected (Pre-Omicron),BNT162b2,3
+211,28,27,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+211,70,27,Delta,371.254033700001,0,Previously infected (Pre-Omicron),BNT162b2,3
+211,154,27,Delta,123.9052733,0,Previously infected (Pre-Omicron),BNT162b2,3
+212,117,96,Ancestral,465.050150400001,0,Infection naive,AZD1222,2
+212,150,96,Ancestral,67.5578460500001,0,Infection naive,AZD1222,2
+212,117,96,Alpha,149.7309223,0,Infection naive,AZD1222,2
+212,150,96,Alpha,74.9192135799999,0,Infection naive,AZD1222,2
+212,117,96,Delta,46.8751009699999,0,Infection naive,AZD1222,2
+212,150,96,Delta,51.3938441100001,0,Infection naive,AZD1222,2
+213,62,38,Ancestral,2560,1,Infection naive,BNT162b2,2
+213,147,38,Ancestral,102.6239523,0,Infection naive,BNT162b2,2
+213,62,38,Alpha,469.55558,0,Infection naive,BNT162b2,2
+213,147,38,Alpha,152.9139987,0,Infection naive,BNT162b2,2
+213,62,38,Delta,202.7769085,0,Infection naive,BNT162b2,2
+213,147,38,Delta,78.7572612900001,0,Infection naive,BNT162b2,2
+214,0,-21,Ancestral,727.8050042,0,Infection naive,BNT162b2,2
+214,24,-21,Ancestral,980.478554,0,Infection naive,BNT162b2,2
+214,0,-21,Alpha,539.3003024,0,Infection naive,BNT162b2,2
+214,24,-21,Alpha,334.189232900001,0,Infection naive,BNT162b2,2
+214,75,-21,Alpha,203.8461127,0,Infection naive,BNT162b2,2
+214,0,-21,Delta,236.8070462,0,Infection naive,BNT162b2,2
+214,24,-21,Delta,184.139233300001,0,Infection naive,BNT162b2,2
+214,75,-21,Delta,151.3140907,0,Infection naive,BNT162b2,2
+215,119,87,Ancestral,181.7341272,0,Infection naive,AZD1222,1
+215,119,87,Alpha,5,-1,Infection naive,AZD1222,1
+215,119,87,Delta,5,-1,Infection naive,AZD1222,1
+216,3,-17,Ancestral,617.7778794,0,Infection naive,BNT162b2,2
+216,24,-17,Ancestral,477.440736200001,0,Infection naive,BNT162b2,2
+216,3,-17,Alpha,371.254033700001,0,Infection naive,BNT162b2,2
+216,24,-17,Alpha,232.284476699999,0,Infection naive,BNT162b2,2
+216,69,-17,Alpha,204.9209546,0,Infection naive,BNT162b2,2
+216,153,-17,Alpha,132.2081837,0,Infection naive,BNT162b2,2
+216,3,-17,Delta,229.0496805,0,Infection naive,BNT162b2,2
+216,24,-17,Delta,166.7754785,0,Infection naive,BNT162b2,2
+216,69,-17,Delta,97.4518367100002,0,Infection naive,BNT162b2,2
+216,153,-17,Delta,43.9697831399999,0,Infection naive,BNT162b2,2
+217,21,16,Ancestral,267.48893,0,Infection naive,BNT162b2,4
+217,68,16,Ancestral,219.4206732,0,Infection naive,BNT162b2,4
+217,152,16,Ancestral,377.819441999999,0,Infection naive,BNT162b2,4
+217,21,16,Alpha,103.7090388,0,Infection naive,BNT162b2,4
+217,21,16,Delta,76.9827724900003,0,Infection naive,BNT162b2,4
+217,68,16,Delta,85.5209025299999,0,Infection naive,BNT162b2,4
+217,152,16,Delta,123.9052733,0,Infection naive,BNT162b2,4
+218,27,-17,Ancestral,277.5194129,0,Previously infected (Pre-Omicron),BNT162b2,3
+218,27,-17,Alpha,186.7397735,0,Previously infected (Pre-Omicron),BNT162b2,3
+218,52,-17,Alpha,75.9107095599998,0,Previously infected (Pre-Omicron),BNT162b2,3
+218,108,-17,Alpha,45.0622313999999,0,Previously infected (Pre-Omicron),BNT162b2,3
+218,27,-17,Delta,106.5655786,0,Previously infected (Pre-Omicron),BNT162b2,3
+218,52,-17,Delta,82.5021709899999,0,Previously infected (Pre-Omicron),BNT162b2,3
+218,108,-17,Delta,41.24453684,0,Previously infected (Pre-Omicron),BNT162b2,3
+219,62,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+219,146,41,Ancestral,1354.877985,0,Infection naive,BNT162b2,2
+219,62,41,Alpha,1264.236594,0,Infection naive,BNT162b2,2
+219,146,41,Alpha,1240.092051,0,Infection naive,BNT162b2,2
+219,62,41,Delta,725.893770200002,0,Infection naive,BNT162b2,2
+219,146,41,Delta,892.704861899999,0,Infection naive,BNT162b2,2
+220,80,49,Ancestral,309.653059899999,0,Infection naive,BNT162b2,2
+220,160,49,Ancestral,208.1796046,0,Infection naive,BNT162b2,2
+220,291,49,Ancestral,116.0220635,0,Infection naive,BNT162b2,2
+220,80,49,Alpha,284.913514500001,0,Infection naive,BNT162b2,2
+220,160,49,Alpha,148.164318200001,0,Infection naive,BNT162b2,2
+220,291,49,Alpha,142.309354279994,0,Infection naive,BNT162b2,2
+220,80,49,Delta,187.0674127,0,Infection naive,BNT162b2,2
+220,160,49,Delta,175.0121818,0,Infection naive,BNT162b2,2
+220,291,49,Delta,40.7415217199999,0,Infection naive,BNT162b2,2
+221,60,39,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+221,60,39,Alpha,584.077350800001,0,Previously infected (Pre-Omicron),BNT162b2,3
+221,60,39,Delta,337.1312525,0,Previously infected (Pre-Omicron),BNT162b2,3
+222,95,52,Ancestral,160.4661115,0,Previously infected (Pre-Omicron),BNT162b2,3
+222,150,52,Ancestral,170.320899100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+222,95,52,Alpha,569.418194200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+222,150,52,Alpha,156.7132131,0,Previously infected (Pre-Omicron),BNT162b2,3
+222,95,52,Delta,110.27131,0,Previously infected (Pre-Omicron),BNT162b2,3
+222,150,52,Delta,46.46603932,0,Previously infected (Pre-Omicron),BNT162b2,3
+223,84,68,Ancestral,2560,1,Previously infected (Pre-Omicron),AZD1222,2
+223,84,68,Alpha,992.584030628349,0,Previously infected (Pre-Omicron),AZD1222,2
+223,84,68,Delta,2560,1,Previously infected (Pre-Omicron),AZD1222,2
+224,69,45,Ancestral,1433.052741,0,Infection naive,BNT162b2,2
+224,153,45,Ancestral,136.0880493,0,Infection naive,BNT162b2,2
+224,69,45,Alpha,699.657533199999,0,Infection naive,BNT162b2,2
+224,153,45,Alpha,109.69292,0,Infection naive,BNT162b2,2
+224,69,45,Delta,278.494095800001,0,Infection naive,BNT162b2,2
+224,153,45,Delta,46.2628491,0,Infection naive,BNT162b2,2
+225,46,34,Ancestral,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+225,81,34,Ancestral,984.784896199998,0,Previously infected (Pre-Omicron),BNT162b2,3
+225,159,34,Ancestral,145.7173155,0,Previously infected (Pre-Omicron),BNT162b2,3
+225,46,34,Alpha,40.67016497,0,Previously infected (Pre-Omicron),BNT162b2,3
+225,81,34,Alpha,558.543376799999,0,Previously infected (Pre-Omicron),BNT162b2,3
+225,159,34,Alpha,174.7056566,0,Previously infected (Pre-Omicron),BNT162b2,3
+225,46,34,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+225,81,34,Delta,347.3292193,0,Previously infected (Pre-Omicron),BNT162b2,3
+225,159,34,Delta,139.5915131,0,Previously infected (Pre-Omicron),BNT162b2,3
+226,38,33,Ancestral,1823.65462085467,0,Previously infected (Pre-Omicron),BNT162b2,3
+226,59,33,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+226,38,33,Alpha,944.212809897676,0,Previously infected (Pre-Omicron),BNT162b2,3
+226,59,33,Alpha,2450.32496399999,0,Previously infected (Pre-Omicron),BNT162b2,3
+226,38,33,Delta,1175.53050583235,0,Previously infected (Pre-Omicron),BNT162b2,3
+226,59,33,Delta,1220.680803,0,Previously infected (Pre-Omicron),BNT162b2,3
+227,76,54,Ancestral,1116.285275,0,Infection naive,BNT162b2,2
+227,150,54,Ancestral,565.4394316,0,Infection naive,BNT162b2,2
+227,76,54,Alpha,1164.251181,0,Infection naive,BNT162b2,2
+227,150,54,Alpha,270.7914815,0,Infection naive,BNT162b2,2
+227,76,54,Delta,504.104003999998,0,Infection naive,BNT162b2,2
+227,150,54,Delta,154.8019511,0,Infection naive,BNT162b2,2
+228,76,55,Ancestral,508.096322500001,0,Infection naive,BNT162b2,2
+228,256,55,Ancestral,175.6268464,0,Infection naive,BNT162b2,2
+228,76,55,Alpha,455.369609900001,0,Infection naive,BNT162b2,2
+228,256,55,Alpha,194.422716341038,0,Infection naive,BNT162b2,2
+228,76,55,Delta,205.2804932,0,Infection naive,BNT162b2,2
+228,256,55,Delta,130.1387196,0,Infection naive,BNT162b2,2
+229,75,75,Ancestral,529.000680191154,0,Previously infected (Pre-Omicron),BNT162b2,3
+229,75,75,Alpha,1644.46704994187,0,Previously infected (Pre-Omicron),BNT162b2,3
+229,75,75,Delta,331.854113211825,0,Previously infected (Pre-Omicron),BNT162b2,3
+230,5,-22,Ancestral,797.2660445,0,Infection naive,BNT162b2,2
+230,26,-22,Ancestral,646.586256,0,Infection naive,BNT162b2,2
+230,68,-22,Ancestral,473.274287600001,0,Infection naive,BNT162b2,2
+230,152,-22,Ancestral,381.479776,0,Infection naive,BNT162b2,2
+230,5,-22,Alpha,630.358252700001,0,Infection naive,BNT162b2,2
+230,26,-22,Alpha,474.9364861,0,Infection naive,BNT162b2,2
+230,68,-22,Alpha,254.899938100001,0,Infection naive,BNT162b2,2
+230,152,-22,Alpha,132.324114,0,Infection naive,BNT162b2,2
+230,5,-22,Delta,384.1640909,0,Infection naive,BNT162b2,2
+230,26,-22,Delta,358.463498,0,Infection naive,BNT162b2,2
+230,68,-22,Delta,225.6620542,0,Infection naive,BNT162b2,2
+230,152,-22,Delta,183.1733947,0,Infection naive,BNT162b2,2
+231,46,26,Ancestral,174.5525954,0,Infection naive,BNT162b2,2
+231,130,26,Ancestral,160.6068206,0,Infection naive,BNT162b2,2
+231,130,26,Ancestral,94.6734882000001,0,Infection naive,BNT162b2,2
+231,46,26,Alpha,122.501459,0,Infection naive,BNT162b2,2
+231,130,26,Alpha,185.4349447,0,Infection naive,BNT162b2,2
+231,130,26,Alpha,5,-1,Infection naive,BNT162b2,2
+231,46,26,Delta,124.7771433,0,Infection naive,BNT162b2,2
+231,130,26,Delta,227.6486598,0,Infection naive,BNT162b2,2
+231,130,26,Delta,5,-1,Infection naive,BNT162b2,2
+232,80,67,Ancestral,210.3807757,0,Previously infected (Pre-Omicron),AZD1222,2
+232,80,67,Alpha,5,-1,Previously infected (Pre-Omicron),AZD1222,2
+232,80,67,Delta,44.59075447,0,Previously infected (Pre-Omicron),AZD1222,2
+233,62,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+233,145,41,Ancestral,164.021103826873,0,Infection naive,BNT162b2,2
+233,62,41,Alpha,1139.017209,0,Infection naive,BNT162b2,2
+233,145,41,Alpha,282.922704859781,0,Infection naive,BNT162b2,2
+233,62,41,Delta,423.047306599999,0,Infection naive,BNT162b2,2
+233,145,41,Delta,170.769343633808,0,Infection naive,BNT162b2,2
+234,117,84,Ancestral,206.182101900001,0,Infection naive,AZD1222,2
+234,151,84,Ancestral,151.0490716,0,Infection naive,AZD1222,2
+234,231,84,Ancestral,115.5147134,0,Infection naive,AZD1222,2
+234,313,84,Ancestral,146.8713431,0,Infection naive,AZD1222,2
+234,117,84,Alpha,89.6659807099998,0,Infection naive,AZD1222,2
+234,151,84,Alpha,84.2560552900003,0,Infection naive,AZD1222,2
+234,231,84,Alpha,5,-1,Infection naive,AZD1222,2
+234,313,84,Alpha,5,-1,Infection naive,AZD1222,2
+234,117,84,Delta,56.74469133,0,Infection naive,AZD1222,2
+234,151,84,Delta,49.4495377399999,0,Infection naive,AZD1222,2
+234,231,84,Delta,5,-1,Infection naive,AZD1222,2
+234,313,84,Delta,5,-1,Infection naive,AZD1222,2
+235,81,53,Ancestral,474.9364861,0,Infection naive,BNT162b2,2
+235,151,53,Ancestral,213.726247800001,0,Infection naive,BNT162b2,2
+235,242,53,Ancestral,146.8713431,0,Infection naive,BNT162b2,2
+235,81,53,Alpha,488.445967700001,0,Infection naive,BNT162b2,2
+235,151,53,Alpha,170.470249599999,0,Infection naive,BNT162b2,2
+235,242,53,Alpha,196.82315603441,0,Infection naive,BNT162b2,2
+235,81,53,Delta,361.302397200001,0,Infection naive,BNT162b2,2
+235,151,53,Delta,139.2249423,0,Infection naive,BNT162b2,2
+235,242,53,Delta,74.78799629,0,Infection naive,BNT162b2,2
+236,80,54,Ancestral,864.218633100003,0,Infection naive,BNT162b2,2
+236,168,54,Ancestral,122.9316995,0,Infection naive,BNT162b2,2
+236,242,54,Ancestral,153.7202852,0,Infection naive,BNT162b2,2
+236,80,54,Alpha,401.726264699999,0,Infection naive,BNT162b2,2
+236,168,54,Alpha,213.726247800001,0,Infection naive,BNT162b2,2
+236,242,54,Alpha,153.855079039045,0,Infection naive,BNT162b2,2
+236,80,54,Delta,216.744635999999,0,Infection naive,BNT162b2,2
+236,168,54,Delta,124.5586024,0,Infection naive,BNT162b2,2
+236,242,54,Delta,59.28680425,0,Infection naive,BNT162b2,2
+237,84,69,Ancestral,110.7556306,0,Infection naive,AZD1222,1
+237,84,69,Alpha,5,-1,Infection naive,AZD1222,1
+237,84,69,Delta,5,-1,Infection naive,AZD1222,1
+238,7,-23,Ancestral,132.208183677306,0,Previously infected (Pre-Omicron),BNT162b2,2
+238,28,-23,Ancestral,146.614105212046,0,Previously infected (Pre-Omicron),BNT162b2,2
+238,7,-23,Alpha,127.54147645632,0,Previously infected (Pre-Omicron),BNT162b2,2
+238,28,-23,Alpha,54.1214982344394,0,Previously infected (Pre-Omicron),BNT162b2,2
+238,7,-23,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,2
+238,28,-23,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,2
+239,124,89,Ancestral,513.918889000001,0,Previously infected (Pre-Omicron),AZD1222,3
+239,159,89,Ancestral,178.419662,0,Previously infected (Pre-Omicron),AZD1222,3
+239,342,89,Ancestral,238.8917662,0,Previously infected (Pre-Omicron),AZD1222,3
+239,124,89,Alpha,381.479776,0,Previously infected (Pre-Omicron),AZD1222,3
+239,159,89,Alpha,179.2032958,0,Previously infected (Pre-Omicron),AZD1222,3
+239,124,89,Delta,193.2334973,0,Previously infected (Pre-Omicron),AZD1222,3
+239,159,89,Delta,191.8832941,0,Previously infected (Pre-Omicron),AZD1222,3
+239,342,89,Delta,205.2804932,0,Previously infected (Pre-Omicron),AZD1222,3
+240,54,34,Ancestral,443.551816099999,0,Infection naive,BNT162b2,2
+240,54,34,Alpha,405.2628435,0,Infection naive,BNT162b2,2
+240,54,34,Delta,421.566711600001,0,Infection naive,BNT162b2,2
+241,76,52,Ancestral,360.669594000001,0,Infection naive,BNT162b2,2
+241,151,52,Ancestral,210.7498937,0,Infection naive,BNT162b2,2
+241,76,52,Alpha,375.179459799999,0,Infection naive,BNT162b2,2
+241,151,52,Alpha,170.769343600001,0,Infection naive,BNT162b2,2
+241,76,52,Delta,134.4283302,0,Infection naive,BNT162b2,2
+241,151,52,Delta,51.8917502899999,0,Infection naive,BNT162b2,2
+242,84,50,Ancestral,1099.775506,0,Infection naive,BNT162b2,2
+242,159,50,Ancestral,355.646905200001,0,Infection naive,BNT162b2,2
+242,252,50,Ancestral,275.5802689,0,Infection naive,BNT162b2,2
+242,84,50,Alpha,1260.916677,0,Infection naive,BNT162b2,2
+242,159,50,Alpha,429.3980694,0,Infection naive,BNT162b2,2
+242,252,50,Alpha,413.515579682548,0,Infection naive,BNT162b2,2
+242,84,50,Delta,583.565635300001,0,Infection naive,BNT162b2,2
+242,159,50,Delta,178.107168800001,0,Infection naive,BNT162b2,2
+242,252,50,Delta,177.0177465,0,Infection naive,BNT162b2,2
+243,53,42,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+243,244,42,Ancestral,450.605170699999,0,Previously infected (Pre-Omicron),BNT162b2,3
+243,53,42,Alpha,806.402372399998,0,Previously infected (Pre-Omicron),BNT162b2,3
+243,244,42,Alpha,320.983179424583,0,Previously infected (Pre-Omicron),BNT162b2,3
+243,53,42,Delta,1561.588019,0,Previously infected (Pre-Omicron),BNT162b2,3
+243,244,42,Delta,179.0462942,0,Previously infected (Pre-Omicron),BNT162b2,3
+244,76,67,Ancestral,656.868261300003,0,Infection naive,BNT162b2,2
+244,76,67,Alpha,641.505766099999,0,Infection naive,BNT162b2,2
+244,76,67,Delta,453.775892300001,0,Infection naive,BNT162b2,2
+245,76,56,Ancestral,2560,1,Infection naive,BNT162b2,2
+245,160,56,Ancestral,190.2087997,0,Infection naive,BNT162b2,2
+245,76,56,Alpha,1035.23459,0,Infection naive,BNT162b2,2
+245,160,56,Alpha,293.2747681,0,Infection naive,BNT162b2,2
+245,76,56,Delta,920.514984000001,0,Infection naive,BNT162b2,2
+245,160,56,Delta,227.050848700001,0,Infection naive,BNT162b2,2
+246,42,28,Ancestral,2560,1,Infection naive,BNT162b2,2
+246,62,28,Ancestral,155.7546505,0,Infection naive,BNT162b2,2
+246,104,28,Ancestral,295.597396500001,0,Infection naive,BNT162b2,2
+246,199,28,Ancestral,92.2165131599998,0,Infection naive,BNT162b2,2
+246,42,28,Alpha,338.611960600001,0,Infection naive,BNT162b2,2
+246,62,28,Alpha,305.0733162,0,Infection naive,BNT162b2,2
+246,104,28,Alpha,125.5450607,0,Infection naive,BNT162b2,2
+246,199,28,Alpha,153.7202852,0,Infection naive,BNT162b2,2
+246,42,28,Delta,145.7173155,0,Infection naive,BNT162b2,2
+246,62,28,Delta,136.0880493,0,Infection naive,BNT162b2,2
+246,104,28,Delta,92.2165131599998,0,Infection naive,BNT162b2,2
+246,199,28,Delta,50.50076786,0,Infection naive,BNT162b2,2
+247,39,34,Ancestral,2036.59773000001,0,Previously infected (Pre-Omicron),BNT162b2,3
+247,62,34,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+247,39,34,Alpha,988.243583847195,0,Previously infected (Pre-Omicron),BNT162b2,3
+247,62,34,Alpha,1254.302975,0,Previously infected (Pre-Omicron),BNT162b2,3
+247,39,34,Delta,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+247,62,34,Delta,2551.13748200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+248,3,-18,Ancestral,2560,1,Infection naive,BNT162b2,2
+248,24,-18,Ancestral,2560,1,Infection naive,BNT162b2,2
+248,67,-18,Ancestral,2560,1,Infection naive,BNT162b2,2
+248,3,-18,Alpha,702.114817999998,0,Infection naive,BNT162b2,2
+248,24,-18,Alpha,712.030563400002,0,Infection naive,BNT162b2,2
+248,67,-18,Alpha,640.943737099998,0,Infection naive,BNT162b2,2
+248,3,-18,Delta,386.528356299999,0,Infection naive,BNT162b2,2
+248,24,-18,Delta,322.392963799999,0,Infection naive,BNT162b2,2
+248,67,-18,Delta,180.7809038,0,Infection naive,BNT162b2,2
+249,91,47,Ancestral,370.279111379964,0,Infection naive,BNT162b2,2
+249,91,47,Alpha,562.473614824264,0,Infection naive,BNT162b2,2
+249,91,47,Delta,278.250104602277,0,Infection naive,BNT162b2,2
+250,52,44,Ancestral,2560,1,Infection naive,BNT162b2,2
+250,52,44,Alpha,666.145003900002,0,Infection naive,BNT162b2,2
+250,52,44,Delta,482.0662063,0,Infection naive,BNT162b2,2
+251,117,91,Ancestral,335.362947300001,0,Infection naive,AZD1222,2
+251,150,91,Ancestral,409.189050599999,0,Infection naive,AZD1222,2
+251,228,91,Ancestral,171.9709766,0,Infection naive,AZD1222,2
+251,291,91,Ancestral,168.8345717,0,Infection naive,AZD1222,2
+251,117,91,Alpha,228.0480747,0,Infection naive,AZD1222,2
+251,150,91,Alpha,191.7151835,0,Infection naive,AZD1222,2
+251,228,91,Alpha,212.978241590407,0,Infection naive,AZD1222,2
+251,291,91,Alpha,80.997497209708,0,Infection naive,AZD1222,2
+251,117,91,Delta,243.5429794,0,Infection naive,AZD1222,2
+251,150,91,Delta,287.1699249,0,Infection naive,AZD1222,2
+251,228,91,Delta,74.78799629,0,Infection naive,AZD1222,2
+251,291,91,Delta,125.5450607,0,Infection naive,AZD1222,2
+252,21,-22,Ancestral,5,-1,Infection naive,BNT162b2,2
+252,21,-22,Alpha,209.0939465,0,Infection naive,BNT162b2,2
+252,42,-22,Alpha,139.3470255,0,Infection naive,BNT162b2,2
+252,90,-22,Alpha,153.855079,0,Infection naive,BNT162b2,2
+252,21,-22,Delta,5,-1,Infection naive,BNT162b2,2
+253,84,53,Ancestral,737.436922400002,0,Infection naive,BNT162b2,2
+253,168,53,Ancestral,114.3061066,0,Infection naive,BNT162b2,2
+253,84,53,Alpha,588.703028700001,0,Infection naive,BNT162b2,2
+253,168,53,Alpha,162.3049845,0,Infection naive,BNT162b2,2
+253,84,53,Delta,343.996563099999,0,Infection naive,BNT162b2,2
+253,168,53,Delta,76.6461363799998,0,Infection naive,BNT162b2,2
+254,84,41,Ancestral,305.340828000001,0,Previously infected (Pre-Omicron),BNT162b2,3
+254,150,41,Ancestral,126.3177041,0,Previously infected (Pre-Omicron),BNT162b2,3
+254,242,41,Ancestral,101.8175944,0,Previously infected (Pre-Omicron),BNT162b2,3
+254,84,41,Alpha,489.732016200002,0,Previously infected (Pre-Omicron),BNT162b2,3
+254,150,41,Alpha,112.0248427,0,Previously infected (Pre-Omicron),BNT162b2,3
+254,242,41,Alpha,79.3809898542299,0,Previously infected (Pre-Omicron),BNT162b2,3
+254,84,41,Delta,271.9808199,0,Previously infected (Pre-Omicron),BNT162b2,3
+254,150,41,Delta,65.6893251900002,0,Previously infected (Pre-Omicron),BNT162b2,3
+254,242,41,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+255,84,48,Ancestral,2560,1,Infection naive,BNT162b2,2
+255,150,48,Ancestral,370.279111400002,0,Infection naive,BNT162b2,2
+255,238,48,Ancestral,342.192248199999,0,Infection naive,BNT162b2,2
+255,84,48,Alpha,783.411868400002,0,Infection naive,BNT162b2,2
+255,150,48,Alpha,381.479776,0,Infection naive,BNT162b2,2
+255,238,48,Alpha,168.982618852693,0,Infection naive,BNT162b2,2
+255,84,48,Delta,477.8593931,0,Infection naive,BNT162b2,2
+255,150,48,Delta,182.2126221,0,Infection naive,BNT162b2,2
+255,238,48,Delta,102.7139409,0,Infection naive,BNT162b2,2
+256,74,33,Ancestral,1740.875928,0,Infection naive,BNT162b2,2
+256,74,33,Alpha,450.2103914,0,Infection naive,BNT162b2,2
+256,74,33,Delta,146.1009803,0,Infection naive,BNT162b2,2
+257,54,35,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+257,91,35,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+257,179,35,Ancestral,298.7228729,0,Previously infected (Pre-Omicron),BNT162b2,3
+257,54,35,Alpha,1098.811983,0,Previously infected (Pre-Omicron),BNT162b2,3
+257,91,35,Alpha,435.080810000002,0,Previously infected (Pre-Omicron),BNT162b2,3
+257,179,35,Alpha,272.219313700001,0,Previously infected (Pre-Omicron),BNT162b2,3
+257,54,35,Delta,605.4485789,0,Previously infected (Pre-Omicron),BNT162b2,3
+257,91,35,Delta,301.3526661,0,Previously infected (Pre-Omicron),BNT162b2,3
+257,179,35,Delta,166.0461901,0,Previously infected (Pre-Omicron),BNT162b2,3
+258,84,70,Ancestral,83.8141193200002,0,Infection naive,AZD1222,2
+258,159,70,Ancestral,5,-1,Infection naive,AZD1222,2
+258,84,70,Alpha,5,-1,Infection naive,AZD1222,2
+258,159,70,Alpha,5,-1,Infection naive,AZD1222,2
+258,307,70,Alpha,5,-1,Infection naive,AZD1222,2
+258,84,70,Delta,5,-1,Infection naive,AZD1222,2
+258,159,70,Delta,5,-1,Infection naive,AZD1222,2
+258,307,70,Delta,5,-1,Infection naive,AZD1222,2
+259,28,-18,Ancestral,455.768913199999,0,Previously infected (Pre-Omicron),BNT162b2,3
+259,54,-18,Ancestral,164.1649302,0,Previously infected (Pre-Omicron),BNT162b2,3
+259,28,-18,Alpha,154.5308232,0,Previously infected (Pre-Omicron),BNT162b2,3
+259,54,-18,Alpha,110.8527497,0,Previously infected (Pre-Omicron),BNT162b2,3
+259,28,-18,Delta,51.4389102,0,Previously infected (Pre-Omicron),BNT162b2,3
+259,54,-18,Delta,87.7994827499998,0,Previously infected (Pre-Omicron),BNT162b2,3
+260,3,-18,Ancestral,291.9923139,0,Infection naive,BNT162b2,2
+260,24,-18,Ancestral,338.9088817,0,Infection naive,BNT162b2,2
+260,74,-18,Ancestral,138.1309956,0,Infection naive,BNT162b2,2
+260,158,-18,Ancestral,151.7124915,0,Infection naive,BNT162b2,2
+260,3,-18,Alpha,190.8768368,0,Infection naive,BNT162b2,2
+260,24,-18,Alpha,130.3670511,0,Infection naive,BNT162b2,2
+260,74,-18,Alpha,103.7090388,0,Infection naive,BNT162b2,2
+260,158,-18,Alpha,65.9778380900002,0,Infection naive,BNT162b2,2
+260,3,-18,Delta,160.0447235,0,Infection naive,BNT162b2,2
+260,24,-18,Delta,159.7644131,0,Infection naive,BNT162b2,2
+260,74,-18,Delta,81.8539180400001,0,Infection naive,BNT162b2,2
+260,158,-18,Delta,98.9147783000003,0,Infection naive,BNT162b2,2
+261,80,60,Ancestral,1267.565252,0,Previously infected (Pre-Omicron),BNT162b2,3
+261,168,60,Ancestral,204.5620457,0,Previously infected (Pre-Omicron),BNT162b2,3
+261,277,60,Ancestral,236.8070462,0,Previously infected (Pre-Omicron),BNT162b2,3
+261,80,60,Alpha,449.421870300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+261,168,60,Alpha,244.3983328,0,Previously infected (Pre-Omicron),BNT162b2,3
+261,277,60,Alpha,291.480903887568,0,Previously infected (Pre-Omicron),BNT162b2,3
+261,80,60,Delta,867.253876999999,0,Previously infected (Pre-Omicron),BNT162b2,3
+261,168,60,Delta,242.4779962,0,Previously infected (Pre-Omicron),BNT162b2,3
+261,277,60,Delta,110.6585966,0,Previously infected (Pre-Omicron),BNT162b2,3
+262,62,48,Ancestral,2560,1,Infection naive,BNT162b2,2
+262,160,48,Ancestral,354.7129676,0,Infection naive,BNT162b2,2
+262,62,48,Alpha,1184.840275,0,Infection naive,BNT162b2,2
+262,160,48,Alpha,667.313770799999,0,Infection naive,BNT162b2,2
+262,62,48,Delta,557.565115799999,0,Infection naive,BNT162b2,2
+262,160,48,Delta,288.431198699999,0,Infection naive,BNT162b2,2
+263,76,44,Ancestral,494.4765649,0,Infection naive,BNT162b2,2
+263,76,44,Alpha,356.895981600001,0,Infection naive,BNT162b2,2
+263,76,44,Delta,458.573856899999,0,Infection naive,BNT162b2,2
+264,67,40,Ancestral,630.358252700001,0,Infection naive,BNT162b2,2
+264,67,40,Alpha,1529.08181300001,0,Infection naive,BNT162b2,2
+264,67,40,Delta,522.091219700001,0,Infection naive,BNT162b2,2
+265,26,-24,Ancestral,169.5761069,0,Infection naive,BNT162b2,2
+265,47,-24,Ancestral,136.5660075,0,Infection naive,BNT162b2,2
+265,26,-24,Alpha,112.6155285,0,Infection naive,BNT162b2,2
+265,47,-24,Alpha,90.3761023199997,0,Infection naive,BNT162b2,2
+265,89,-24,Alpha,127.0951026,0,Infection naive,BNT162b2,2
+265,173,-24,Alpha,129.1161671,0,Infection naive,BNT162b2,2
+265,26,-24,Delta,57.0939158300001,0,Infection naive,BNT162b2,2
+265,47,-24,Delta,42.15827502,0,Infection naive,BNT162b2,2
+265,89,-24,Delta,57.6470445899999,0,Infection naive,BNT162b2,2
+265,173,-24,Delta,91.1717242,0,Infection naive,BNT162b2,2
+266,76,48,Ancestral,1262.022346,0,Infection naive,BNT162b2,2
+266,151,48,Ancestral,324.0928808,0,Infection naive,BNT162b2,2
+266,76,48,Alpha,1497.25226,0,Infection naive,BNT162b2,2
+266,151,48,Alpha,369.306749200001,0,Infection naive,BNT162b2,2
+266,76,48,Delta,1020.817902,0,Infection naive,BNT162b2,2
+266,151,48,Delta,230.8636698,0,Infection naive,BNT162b2,2
+267,102,70,Ancestral,413.515579700001,0,Infection naive,BNT162b2,2
+267,151,70,Ancestral,317.0684939,0,Infection naive,BNT162b2,2
+267,307,70,Ancestral,129.7969721,0,Infection naive,BNT162b2,2
+267,102,70,Alpha,337.7227572,0,Infection naive,BNT162b2,2
+267,151,70,Alpha,190.042156000001,0,Infection naive,BNT162b2,2
+267,307,70,Alpha,71.6439877140535,0,Infection naive,BNT162b2,2
+267,102,70,Delta,251.570601999999,0,Infection naive,BNT162b2,2
+267,151,70,Delta,224.675262,0,Infection naive,BNT162b2,2
+267,307,70,Delta,53.1810232499998,0,Infection naive,BNT162b2,2
+268,81,75,Ancestral,163.590380327854,0,Infection naive,AZD1222,2
+268,150,75,Ancestral,107.2214163,0,Infection naive,AZD1222,2
+268,81,75,Alpha,163.3038598957,0,Infection naive,AZD1222,2
+268,150,75,Alpha,81.06852207,0,Infection naive,AZD1222,2
+268,81,75,Delta,81.6389676192483,0,Infection naive,AZD1222,2
+268,150,75,Delta,60.7065783099999,0,Infection naive,AZD1222,2
+269,84,48,Ancestral,711.406746999998,0,Infection naive,BNT162b2,2
+269,160,48,Ancestral,107.2214163,0,Infection naive,BNT162b2,2
+269,84,48,Alpha,235.152376499999,0,Infection naive,BNT162b2,2
+269,160,48,Alpha,112.1230748,0,Infection naive,BNT162b2,2
+269,84,48,Delta,89.7446067599999,0,Infection naive,BNT162b2,2
+269,160,48,Delta,56.7944494599999,0,Infection naive,BNT162b2,2
+270,131,82,Ancestral,221.740700900001,0,Infection naive,AZD1222,1
+270,131,82,Alpha,157.539532143869,0,Infection naive,AZD1222,1
+270,131,82,Delta,40.4568437,0,Infection naive,AZD1222,1
+271,20,-18,Ancestral,559.523354199999,0,Infection naive,BNT162b2,2
+271,41,-18,Ancestral,358.777826499999,0,Infection naive,BNT162b2,2
+271,75,-18,Ancestral,344.902285100001,0,Infection naive,BNT162b2,2
+271,154,-18,Ancestral,186.7397735,0,Infection naive,BNT162b2,2
+271,20,-18,Alpha,487.1632965,0,Infection naive,BNT162b2,2
+271,41,-18,Alpha,262.150520300001,0,Infection naive,BNT162b2,2
+271,75,-18,Alpha,187.889028099999,0,Infection naive,BNT162b2,2
+271,154,-18,Alpha,82.5021709899999,0,Infection naive,BNT162b2,2
+271,20,-18,Delta,190.042156000001,0,Infection naive,BNT162b2,2
+271,41,-18,Delta,246.7660763,0,Infection naive,BNT162b2,2
+271,75,-18,Delta,190.7096078,0,Infection naive,BNT162b2,2
+271,154,-18,Delta,85.89651734,0,Infection naive,BNT162b2,2
+272,96,53,Ancestral,2560,1,Infection naive,BNT162b2,2
+272,150,53,Ancestral,186.9035213,0,Infection naive,BNT162b2,2
+272,307,53,Ancestral,248.067227000001,0,Infection naive,BNT162b2,2
+272,96,53,Alpha,864.976446700001,0,Infection naive,BNT162b2,2
+272,150,53,Alpha,260.7755005,0,Infection naive,BNT162b2,2
+272,307,53,Alpha,156.850631321271,0,Infection naive,BNT162b2,2
+272,96,53,Delta,406.329875899999,0,Infection naive,BNT162b2,2
+272,150,53,Delta,141.3149794,0,Infection naive,BNT162b2,2
+272,307,53,Delta,95.5906897799999,0,Infection naive,BNT162b2,2
+273,39,39,Ancestral,397.5230848,0,Previously infected (Pre-Omicron),BNT162b2,3
+273,88,39,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+273,172,39,Ancestral,1047.097936,0,Previously infected (Pre-Omicron),BNT162b2,3
+273,39,39,Alpha,200.303857279495,0,Previously infected (Pre-Omicron),BNT162b2,3
+273,88,39,Alpha,1137.022277,0,Previously infected (Pre-Omicron),BNT162b2,3
+273,172,39,Alpha,416.790471097569,0,Previously infected (Pre-Omicron),BNT162b2,3
+273,39,39,Delta,123.4716256,0,Previously infected (Pre-Omicron),BNT162b2,3
+273,88,39,Delta,2324.793169,0,Previously infected (Pre-Omicron),BNT162b2,3
+273,172,39,Delta,638.700541000001,0,Previously infected (Pre-Omicron),BNT162b2,3
+274,28,26,Ancestral,124.886557571153,0,Infection naive,BNT162b2,2
+274,70,26,Ancestral,2560,1,Infection naive,BNT162b2,2
+274,154,26,Ancestral,198.729988805792,0,Infection naive,BNT162b2,2
+274,28,26,Alpha,123.147385999295,0,Infection naive,BNT162b2,2
+274,70,26,Alpha,354.091705500001,0,Infection naive,BNT162b2,2
+274,154,26,Alpha,287.926025764238,0,Infection naive,BNT162b2,2
+274,28,26,Delta,52.348576940565,0,Infection naive,BNT162b2,2
+274,70,26,Delta,221.740700900001,0,Infection naive,BNT162b2,2
+274,154,26,Delta,170.619731080311,0,Infection naive,BNT162b2,2
+275,81,67,Ancestral,329.824271999999,0,Infection naive,BNT162b2,2
+275,159,67,Ancestral,356.895981600001,0,Infection naive,BNT162b2,2
+275,81,67,Alpha,162.8750199,0,Infection naive,BNT162b2,2
+275,159,67,Alpha,214.1012355,0,Infection naive,BNT162b2,2
+275,81,67,Delta,160.4661115,0,Infection naive,BNT162b2,2
+275,159,67,Delta,72.02175288,0,Infection naive,BNT162b2,2
+276,76,59,Ancestral,370.928774700001,0,Infection naive,BNT162b2,2
+276,168,59,Ancestral,215.041585700001,0,Infection naive,BNT162b2,2
+276,270,59,Ancestral,311.83196,0,Infection naive,BNT162b2,2
+276,76,59,Alpha,273.8946361,0,Infection naive,BNT162b2,2
+276,168,59,Alpha,145.9729799,0,Infection naive,BNT162b2,2
+276,270,59,Alpha,166.629365,0,Infection naive,BNT162b2,2
+276,76,59,Delta,190.8768368,0,Infection naive,BNT162b2,2
+276,168,59,Delta,162.8750199,0,Infection naive,BNT162b2,2
+276,270,59,Delta,105.6356202,0,Infection naive,BNT162b2,2
+277,3,-18,Ancestral,598.589004999999,0,Infection naive,BNT162b2,2
+277,27,-18,Ancestral,76.3109723399998,0,Infection naive,BNT162b2,2
+277,3,-18,Alpha,474.104658399999,0,Infection naive,BNT162b2,2
+277,27,-18,Alpha,5,-1,Infection naive,BNT162b2,2
+277,3,-18,Delta,255.7951785,0,Infection naive,BNT162b2,2
+277,27,-18,Delta,5,-1,Infection naive,BNT162b2,2
+278,76,58,Ancestral,195.105553200001,0,Infection naive,BNT162b2,2
+278,151,58,Ancestral,124.5586024,0,Infection naive,BNT162b2,2
+278,76,58,Alpha,472.445371200002,0,Infection naive,BNT162b2,2
+278,151,58,Alpha,89.98089884,0,Infection naive,BNT162b2,2
+278,76,58,Delta,168.096279000001,0,Infection naive,BNT162b2,2
+278,151,58,Delta,82.0694344200001,0,Infection naive,BNT162b2,2
+279,0,-20,Ancestral,514.369532699999,0,Infection naive,BNT162b2,2
+279,21,-20,Ancestral,351.001678200001,0,Infection naive,BNT162b2,2
+279,75,-20,Ancestral,293.531934100001,0,Infection naive,BNT162b2,2
+279,0,-20,Alpha,436.608868200001,0,Infection naive,BNT162b2,2
+279,21,-20,Alpha,305.8765556,0,Infection naive,BNT162b2,2
+279,75,-20,Alpha,118.8005084,0,Infection naive,BNT162b2,2
+279,0,-20,Delta,222.129750100001,0,Infection naive,BNT162b2,2
+279,21,-20,Delta,127.0951026,0,Infection naive,BNT162b2,2
+279,75,-20,Delta,62.37866742,0,Infection naive,BNT162b2,2
+280,80,54,Ancestral,652.850416600002,0,Infection naive,BNT162b2,2
+280,159,54,Ancestral,99.4363371700003,0,Infection naive,BNT162b2,2
+280,80,54,Alpha,368.983196300001,0,Infection naive,BNT162b2,2
+280,159,54,Alpha,125.4350696,0,Infection naive,BNT162b2,2
+280,80,54,Delta,209.0939465,0,Infection naive,BNT162b2,2
+280,159,54,Delta,100.3996815,0,Infection naive,BNT162b2,2
+281,42,41,Ancestral,107.127478692248,0,Infection naive,BNT162b2,2
+281,74,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+281,119,41,Ancestral,2560,1,Infection naive,BNT162b2,2
+281,210,41,Ancestral,156.0279256,0,Infection naive,BNT162b2,2
+281,42,41,Alpha,5,-1,Infection naive,BNT162b2,2
+281,74,41,Alpha,480.379055100002,0,Infection naive,BNT162b2,2
+281,119,41,Alpha,279.227353800001,0,Infection naive,BNT162b2,2
+281,210,41,Alpha,211.6755245,0,Infection naive,BNT162b2,2
+281,42,41,Delta,5,-1,Infection naive,BNT162b2,2
+281,74,41,Delta,255.123454000001,0,Infection naive,BNT162b2,2
+281,119,41,Delta,343.695184599999,0,Infection naive,BNT162b2,2
+281,210,41,Delta,131.3995102,0,Infection naive,BNT162b2,2
+282,7,-19,Ancestral,571.418062100002,0,Infection naive,BNT162b2,2
+282,28,-19,Ancestral,553.184101099999,0,Infection naive,BNT162b2,2
+282,73,-19,Ancestral,404.1986132,0,Infection naive,BNT162b2,2
+282,157,-19,Ancestral,296.375686400001,0,Infection naive,BNT162b2,2
+282,7,-19,Alpha,427.145810499999,0,Infection naive,BNT162b2,2
+282,28,-19,Alpha,653.4228862,0,Infection naive,BNT162b2,2
+282,73,-19,Alpha,192.5572123,0,Infection naive,BNT162b2,2
+282,157,-19,Alpha,102.5340426,0,Infection naive,BNT162b2,2
+282,7,-19,Delta,208.1796046,0,Infection naive,BNT162b2,2
+282,28,-19,Delta,245.686998900001,0,Infection naive,BNT162b2,2
+282,73,-19,Delta,173.789298600001,0,Infection naive,BNT162b2,2
+282,157,-19,Delta,102.8040085,0,Infection naive,BNT162b2,2
+283,80,47,Ancestral,1075.938979,0,Previously infected (Pre-Omicron),BNT162b2,3
+283,150,47,Ancestral,495.7784916,0,Previously infected (Pre-Omicron),BNT162b2,3
+283,80,47,Alpha,775.21519,0,Previously infected (Pre-Omicron),BNT162b2,3
+283,150,47,Alpha,283.419099300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+283,80,47,Delta,1055.390567,0,Previously infected (Pre-Omicron),BNT162b2,3
+283,150,47,Delta,251.7911985,0,Previously infected (Pre-Omicron),BNT162b2,3
+284,20,-18,Ancestral,581.523253000001,0,Previously infected (Pre-Omicron),BNT162b2,3
+284,54,-18,Ancestral,183.1733947,0,Previously infected (Pre-Omicron),BNT162b2,3
+284,20,-18,Alpha,224.085259200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+284,54,-18,Alpha,48.8036602599998,0,Previously infected (Pre-Omicron),BNT162b2,3
+284,20,-18,Delta,98.4822362500002,0,Previously infected (Pre-Omicron),BNT162b2,3
+284,54,-18,Delta,42.7911527100001,0,Previously infected (Pre-Omicron),BNT162b2,3
+285,102,89,Ancestral,458.1720963,0,Previously infected (Pre-Omicron),AZD1222,4
+285,160,89,Ancestral,252.2329721,0,Previously infected (Pre-Omicron),AZD1222,4
+285,307,89,Ancestral,178.2633469,0,Previously infected (Pre-Omicron),AZD1222,4
+285,102,89,Alpha,235.771518399999,0,Previously infected (Pre-Omicron),AZD1222,4
+285,160,89,Alpha,119.5316437,0,Previously infected (Pre-Omicron),AZD1222,4
+285,307,89,Alpha,91.3316871172036,0,Previously infected (Pre-Omicron),AZD1222,4
+285,102,89,Delta,249.375238500001,0,Previously infected (Pre-Omicron),AZD1222,4
+285,160,89,Delta,159.7644131,0,Previously infected (Pre-Omicron),AZD1222,4
+285,307,89,Delta,45.7387031300002,0,Previously infected (Pre-Omicron),AZD1222,4
+286,124,91,Ancestral,202.067223099999,0,Infection naive,AZD1222,1
+286,124,91,Alpha,5,-1,Infection naive,AZD1222,1
+286,124,91,Delta,5,-1,Infection naive,AZD1222,1
+287,119,97,Ancestral,267.0204364,0,Previously infected (Pre-Omicron),AZD1222,3
+287,119,97,Alpha,384.1640909,0,Previously infected (Pre-Omicron),AZD1222,3
+287,119,97,Delta,315.4054209,0,Previously infected (Pre-Omicron),AZD1222,3
+288,133,98,Ancestral,93.3550641612179,0,Previously infected (Pre-Omicron),AZD1222,2
+288,133,98,Alpha,5,-1,Previously infected (Pre-Omicron),AZD1222,2
+288,133,98,Delta,5,-1,Previously infected (Pre-Omicron),AZD1222,2
+289,81,54,Ancestral,2560,1,Infection naive,BNT162b2,2
+289,150,54,Ancestral,1136.026121,0,Infection naive,BNT162b2,2
+289,81,54,Alpha,1023.505653,0,Infection naive,BNT162b2,2
+289,150,54,Alpha,965.131054,0,Infection naive,BNT162b2,2
+289,81,54,Delta,1324.351075,0,Infection naive,BNT162b2,2
+289,150,54,Delta,965.131054,0,Infection naive,BNT162b2,2
+290,73,26,Ancestral,2560,1,Infection naive,BNT162b2,2
+290,150,26,Ancestral,80.9265345799999,0,Infection naive,BNT162b2,2
+290,73,26,Alpha,347.0249211,0,Infection naive,BNT162b2,2
+290,150,26,Alpha,137.889066,0,Infection naive,BNT162b2,2
+290,73,26,Delta,175.0121818,0,Infection naive,BNT162b2,2
+290,150,26,Delta,82.5021709899999,0,Infection naive,BNT162b2,2
+291,20,-9,Ancestral,979.619547991975,0,Previously infected (Pre-Omicron),BNT162b2,2
+291,20,-9,Alpha,930.247978689868,0,Previously infected (Pre-Omicron),BNT162b2,2
+291,20,-9,Delta,677.331448270097,0,Previously infected (Pre-Omicron),BNT162b2,2
+292,33,26,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+292,54,26,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+292,103,26,Ancestral,1905.352765,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,187,26,Ancestral,776.575323100002,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,33,26,Alpha,1743.930335,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,54,26,Alpha,1439.346826,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,103,26,Alpha,1046.180564,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,187,26,Alpha,447.8489687,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,33,26,Delta,1327.838011,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,54,26,Delta,1676.48475799999,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,103,26,Delta,973.627541000001,0,Previously infected (Pre-Omicron),BNT162b2,3
+292,187,26,Delta,448.241677300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+293,3,-18,Ancestral,171.369106900001,0,Infection naive,BNT162b2,2
+293,24,-18,Ancestral,159.6244421,0,Infection naive,BNT162b2,2
+293,67,-18,Ancestral,207.8149884,0,Infection naive,BNT162b2,2
+293,150,-18,Ancestral,47.95559391,0,Infection naive,BNT162b2,2
+293,3,-18,Alpha,301.6169153,0,Infection naive,BNT162b2,2
+293,24,-18,Alpha,152.111941300001,0,Infection naive,BNT162b2,2
+293,67,-18,Alpha,149.3377252,0,Infection naive,BNT162b2,2
+293,150,-18,Alpha,91.0120414500003,0,Infection naive,BNT162b2,2
+293,3,-18,Delta,211.861138,0,Infection naive,BNT162b2,2
+293,24,-18,Delta,121.0074409,0,Infection naive,BNT162b2,2
+293,67,-18,Delta,94.1769112,0,Infection naive,BNT162b2,2
+293,150,-18,Delta,5,-1,Infection naive,BNT162b2,2
+294,81,69,Ancestral,225.06946,0,Infection naive,AZD1222,2
+294,150,69,Ancestral,72.6557930900001,0,Infection naive,AZD1222,2
+294,81,69,Alpha,164.021103800001,0,Infection naive,AZD1222,2
+294,150,69,Alpha,97.5372900100001,0,Infection naive,AZD1222,2
+294,81,69,Delta,67.2624239800003,0,Infection naive,AZD1222,2
+294,150,69,Delta,46.3846563599999,0,Infection naive,AZD1222,2
+295,39,39,Ancestral,111.9266968,0,Infection naive,BNT162b2,2
+295,61,39,Ancestral,1050.775475,0,Infection naive,BNT162b2,2
+295,103,39,Ancestral,629.805990200002,0,Infection naive,BNT162b2,2
+295,180,39,Ancestral,316.235864099999,0,Infection naive,BNT162b2,2
+295,39,39,Alpha,57.7988257483812,0,Infection naive,BNT162b2,2
+295,61,39,Alpha,586.128703399999,0,Infection naive,BNT162b2,2
+295,103,39,Alpha,399.9695656,0,Infection naive,BNT162b2,2
+295,180,39,Alpha,247.632749599999,0,Infection naive,BNT162b2,2
+295,39,39,Delta,5,-1,Infection naive,BNT162b2,2
+295,61,39,Delta,579.4880186,0,Infection naive,BNT162b2,2
+295,103,39,Delta,339.503505299999,0,Infection naive,BNT162b2,2
+295,180,39,Delta,172.1217741,0,Infection naive,BNT162b2,2
+296,131,90,Ancestral,255.795178527938,0,Previously infected (Pre-Omicron),AZD1222,2
+296,131,90,Alpha,787.542650715989,0,Previously infected (Pre-Omicron),AZD1222,2
+296,131,90,Delta,321.264642258916,0,Previously infected (Pre-Omicron),AZD1222,2
+297,133,91,Ancestral,197.6876195,0,Infection naive,AZD1222,2
+297,133,91,Alpha,64.0968121900002,0,Infection naive,AZD1222,2
+297,133,91,Delta,5,-1,Infection naive,AZD1222,2
+298,133,95,Ancestral,388.907172099179,0,Infection naive,AZD1222,2
+298,168,95,Ancestral,379.146391096023,0,Infection naive,AZD1222,2
+298,231,95,Ancestral,165.465056107443,0,Infection naive,AZD1222,2
+298,133,95,Alpha,601.218056900837,0,Infection naive,AZD1222,2
+298,168,95,Alpha,315.12909135797,0,Infection naive,AZD1222,2
+298,231,95,Alpha,180.148200793166,0,Infection naive,AZD1222,2
+298,133,95,Delta,355.335319792884,0,Infection naive,AZD1222,2
+298,168,95,Delta,321.828308569038,0,Infection naive,AZD1222,2
+298,231,95,Delta,127.429736224945,0,Infection naive,AZD1222,2
+299,46,41,Ancestral,143.185170342123,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,84,41,Ancestral,888.801174300003,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,159,41,Ancestral,72.7195032999999,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,46,41,Alpha,320.701963182361,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,84,41,Alpha,747.8515108,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,159,41,Alpha,84.7003214900002,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,238,41,Alpha,146.485655279567,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,46,41,Delta,118.384726415322,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,84,41,Delta,192.5572123,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,159,41,Delta,82.8645272899999,0,Previously infected (Pre-Omicron),BNT162b2,3
+299,238,41,Delta,101.5502189,0,Previously infected (Pre-Omicron),BNT162b2,3
+300,59,29,Ancestral,2560,1,Infection naive,BNT162b2,2
+300,59,29,Alpha,830.795437600003,0,Infection naive,BNT162b2,2
+300,59,29,Delta,297.677392700001,0,Infection naive,BNT162b2,2
+301,76,45,Ancestral,1521.061544,0,Infection naive,BNT162b2,2
+301,76,45,Alpha,1395.862025,0,Infection naive,BNT162b2,2
+301,76,45,Delta,523.924869300001,0,Infection naive,BNT162b2,2
+302,80,48,Ancestral,813.501498699998,0,Infection naive,BNT162b2,2
+302,151,48,Ancestral,297.1560255,0,Infection naive,BNT162b2,2
+302,238,48,Ancestral,275.5802689,0,Infection naive,BNT162b2,2
+302,80,48,Alpha,391.643750499999,0,Infection naive,BNT162b2,2
+302,151,48,Alpha,472.445371200002,0,Infection naive,BNT162b2,2
+302,238,48,Alpha,199.777854367301,0,Infection naive,BNT162b2,2
+302,80,48,Delta,236.185184999999,0,Infection naive,BNT162b2,2
+302,151,48,Delta,183.8167226,0,Infection naive,BNT162b2,2
+302,238,48,Delta,120.1619114,0,Infection naive,BNT162b2,2
+303,32,32,Ancestral,134.310556300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+303,32,32,Alpha,64.4347825330459,0,Previously infected (Pre-Omicron),BNT162b2,3
+303,32,32,Delta,5,-1,Previously infected (Pre-Omicron),BNT162b2,3
+304,0,-18,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+304,48,-18,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+304,90,-18,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+304,174,-18,Ancestral,626.502560999998,0,Previously infected (Pre-Omicron),BNT162b2,3
+304,0,-18,Alpha,2094.528381,0,Previously infected (Pre-Omicron),BNT162b2,3
+304,48,-18,Alpha,1015.463555,0,Previously infected (Pre-Omicron),BNT162b2,3
+304,90,-18,Alpha,1237.920091,0,Previously infected (Pre-Omicron),BNT162b2,3
+304,174,-18,Alpha,1664.770459,0,Previously infected (Pre-Omicron),BNT162b2,3
+304,0,-18,Delta,895.055299400003,0,Previously infected (Pre-Omicron),BNT162b2,3
+304,48,-18,Delta,540.246517400001,0,Previously infected (Pre-Omicron),BNT162b2,3
+304,90,-18,Delta,468.733176700001,0,Previously infected (Pre-Omicron),BNT162b2,3
+304,174,-18,Delta,813.501498699998,0,Previously infected (Pre-Omicron),BNT162b2,3
+305,46,46,Ancestral,130.36705105991,0,Infection naive,AZD1222,1
+305,102,46,Ancestral,111.828636774095,0,Infection naive,AZD1222,1
+305,46,46,Alpha,5,-1,Infection naive,AZD1222,1
+305,102,46,Alpha,5,-1,Infection naive,AZD1222,1
+305,46,46,Delta,5,-1,Infection naive,AZD1222,1
+305,102,46,Delta,5,-1,Infection naive,AZD1222,1
+306,4,-18,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+306,25,-18,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+306,70,-18,Ancestral,2011.75954500001,0,Previously infected (Pre-Omicron),BNT162b2,3
+306,4,-18,Alpha,2146.567843,0,Previously infected (Pre-Omicron),BNT162b2,3
+306,25,-18,Alpha,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+306,70,-18,Alpha,1990.710915,0,Previously infected (Pre-Omicron),BNT162b2,3
+306,4,-18,Delta,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+306,25,-18,Delta,2308.548869,0,Previously infected (Pre-Omicron),BNT162b2,3
+306,70,-18,Delta,884.139275500002,0,Previously infected (Pre-Omicron),BNT162b2,3
+307,53,53,Ancestral,161.8787676,0,Infection naive,BNT162b2,2
+307,53,53,Alpha,90.6935144891519,0,Infection naive,BNT162b2,2
+307,53,53,Delta,40.5989332000001,0,Infection naive,BNT162b2,2
+308,84,53,Ancestral,977.903792999997,0,Infection naive,BNT162b2,2
+308,159,53,Ancestral,145.2073292,0,Infection naive,BNT162b2,2
+308,84,53,Alpha,465.050150400001,0,Infection naive,BNT162b2,2
+308,159,53,Alpha,156.5759152,0,Infection naive,BNT162b2,2
+308,84,53,Delta,355.0240073,0,Infection naive,BNT162b2,2
+308,159,53,Delta,99.8730697099998,0,Infection naive,BNT162b2,2
+309,52,44,Ancestral,2560,1,Infection naive,BNT162b2,2
+309,52,44,Alpha,532.256315000001,0,Infection naive,BNT162b2,2
+309,52,44,Delta,649.426115799998,0,Infection naive,BNT162b2,2
+310,81,48,Ancestral,2560,1,Infection naive,BNT162b2,2
+310,151,48,Ancestral,1058.169346,0,Infection naive,BNT162b2,2
+310,319,48,Ancestral,695.377960810212,0,Infection naive,BNT162b2,2
+310,353,48,Ancestral,607.57498998905,0,Infection naive,BNT162b2,2
+310,531,48,Ancestral,936.793747699999,0,Infection naive,BNT162b2,2
+310,81,48,Alpha,1353.690964,0,Infection naive,BNT162b2,2
+310,151,48,Alpha,725.257808200001,0,Infection naive,BNT162b2,2
+310,319,48,Alpha,1007.4846472003,0,Infection naive,BNT162b2,2
+310,353,48,Alpha,941.733283569616,0,Infection naive,BNT162b2,2
+310,531,48,Alpha,695.377960799999,0,Infection naive,BNT162b2,2
+310,81,48,Delta,602.272908000001,0,Infection naive,BNT162b2,2
+310,151,48,Delta,456.9689249,0,Infection naive,BNT162b2,2
+310,319,48,Delta,371.905407571902,0,Infection naive,BNT162b2,2
+310,353,48,Delta,416.060483272753,0,Infection naive,BNT162b2,2
+311,88,62,Ancestral,357.522163954259,0,Infection naive,AZD1222,3
+311,88,62,Alpha,515.272006078912,0,Infection naive,AZD1222,3
+311,88,62,Delta,301.616915337642,0,Infection naive,AZD1222,3
+312,84,53,Ancestral,888.801174300003,0,Infection naive,BNT162b2,2
+312,168,53,Ancestral,67.2034947699999,0,Infection naive,BNT162b2,2
+312,84,53,Alpha,291.225534900001,0,Infection naive,BNT162b2,2
+312,168,53,Alpha,114.8081484,0,Infection naive,BNT162b2,2
+312,238,53,Alpha,109.500798270708,0,Infection naive,BNT162b2,2
+312,84,53,Delta,124.8865576,0,Infection naive,BNT162b2,2
+312,168,53,Delta,44.3957646400001,0,Infection naive,BNT162b2,2
+312,238,53,Delta,47.1222645000002,0,Infection naive,BNT162b2,2
+313,45,39,Ancestral,2560,1,Infection naive,BNT162b2,2
+313,67,39,Ancestral,1347.771441,0,Infection naive,BNT162b2,2
+313,109,39,Ancestral,775.894958500002,0,Infection naive,BNT162b2,2
+313,193,39,Ancestral,339.801208099999,0,Infection naive,BNT162b2,2
+313,45,39,Alpha,1001.32219871309,0,Infection naive,BNT162b2,2
+313,67,39,Alpha,2433.20351999999,0,Infection naive,BNT162b2,2
+313,109,39,Alpha,2560,1,Infection naive,BNT162b2,2
+313,193,39,Alpha,199.953035,0,Infection naive,BNT162b2,2
+313,45,39,Delta,2560,1,Infection naive,BNT162b2,2
+313,67,39,Delta,812.076691199999,0,Infection naive,BNT162b2,2
+313,109,39,Delta,516.628685899999,0,Infection naive,BNT162b2,2
+313,193,39,Delta,184.4623099,0,Infection naive,BNT162b2,2
+314,124,90,Ancestral,203.667521299999,0,Infection naive,AZD1222,2
+314,124,90,Alpha,40.4568437,0,Infection naive,AZD1222,2
+314,124,90,Delta,61.4560919600002,0,Infection naive,AZD1222,2
+315,80,47,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+315,151,47,Ancestral,2223.160726,0,Previously infected (Pre-Omicron),BNT162b2,3
+315,305,47,Ancestral,2286.398127,0,Previously infected (Pre-Omicron),BNT162b2,3
+315,80,47,Alpha,2098.20327900001,0,Previously infected (Pre-Omicron),BNT162b2,3
+315,151,47,Alpha,1820.46058,0,Previously infected (Pre-Omicron),BNT162b2,3
+315,305,47,Alpha,983.060094309901,0,Previously infected (Pre-Omicron),BNT162b2,3
+315,80,47,Delta,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+315,151,47,Delta,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+315,305,47,Delta,1148.037806,0,Previously infected (Pre-Omicron),BNT162b2,3
+316,84,42,Ancestral,460.5879509,0,Infection naive,BNT162b2,2
+316,151,42,Ancestral,191.0442123,0,Infection naive,BNT162b2,2
+316,84,42,Alpha,298.199674599999,0,Infection naive,BNT162b2,2
+316,151,42,Alpha,210.3807757,0,Infection naive,BNT162b2,2
+316,84,42,Delta,389.248195900001,0,Infection naive,BNT162b2,2
+316,151,42,Delta,164.5971664,0,Infection naive,BNT162b2,2
+317,17,-31,Ancestral,109.213246450387,0,Infection naive,"",1
+317,17,-31,Alpha,5,-1,Infection naive,"",1
+317,17,-31,Delta,5,-1,Infection naive,"",1
+318,84,53,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+318,151,53,Ancestral,382.484188999999,0,Previously infected (Pre-Omicron),BNT162b2,3
+318,84,53,Alpha,508.541860499999,0,Previously infected (Pre-Omicron),BNT162b2,3
+318,151,53,Alpha,357.522164,0,Previously infected (Pre-Omicron),BNT162b2,3
+318,84,53,Delta,351.925844300001,0,Previously infected (Pre-Omicron),BNT162b2,3
+318,151,53,Delta,218.269778,0,Previously infected (Pre-Omicron),BNT162b2,3
+319,35,31,Ancestral,501.89961977487,0,Previously infected (Pre-Omicron),BNT162b2,3
+319,77,31,Ancestral,1047.097936,0,Previously infected (Pre-Omicron),BNT162b2,3
+319,35,31,Alpha,403.137177574692,0,Previously infected (Pre-Omicron),BNT162b2,3
+319,77,31,Alpha,677.331448299999,0,Previously infected (Pre-Omicron),BNT162b2,3
+319,35,31,Delta,190.542525447934,0,Previously infected (Pre-Omicron),BNT162b2,3
+319,77,31,Delta,374.194229200001,0,Previously infected (Pre-Omicron),BNT162b2,3
+320,21,-18,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+320,42,-18,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+320,105,-18,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+320,21,-18,Alpha,792.389433300002,0,Previously infected (Pre-Omicron),BNT162b2,3
+320,42,-18,Alpha,937.615200800003,0,Previously infected (Pre-Omicron),BNT162b2,3
+320,105,-18,Alpha,1127.099904,0,Previously infected (Pre-Omicron),BNT162b2,3
+320,21,-18,Delta,557.565115799999,0,Previously infected (Pre-Omicron),BNT162b2,3
+320,42,-18,Delta,681.4999568,0,Previously infected (Pre-Omicron),BNT162b2,3
+320,105,-18,Delta,651.706981500002,0,Previously infected (Pre-Omicron),BNT162b2,3
+321,80,54,Ancestral,430.528648299999,0,Infection naive,BNT162b2,2
+321,160,54,Ancestral,288.937258,0,Infection naive,BNT162b2,2
+321,243,54,Ancestral,229.854131600001,0,Infection naive,BNT162b2,2
+321,80,54,Alpha,311.2858018,0,Infection naive,BNT162b2,2
+321,160,54,Alpha,130.9396338,0,Infection naive,BNT162b2,2
+321,243,54,Alpha,145.334658200302,0,Infection naive,BNT162b2,2
+321,80,54,Delta,215.230150699999,0,Infection naive,BNT162b2,2
+321,160,54,Delta,170.320899100001,0,Infection naive,BNT162b2,2
+321,243,54,Delta,70.7082208599999,0,Infection naive,BNT162b2,2
+322,81,50,Ancestral,1167.316583,0,Infection naive,BNT162b2,2
+322,151,50,Ancestral,174.3996683,0,Infection naive,BNT162b2,2
+322,307,50,Ancestral,110.5616476,0,Infection naive,BNT162b2,2
+322,81,50,Alpha,1489.398942,0,Infection naive,BNT162b2,2
+322,151,50,Alpha,417.887855000001,0,Infection naive,BNT162b2,2
+322,307,50,Alpha,128.101649069628,0,Infection naive,BNT162b2,2
+322,81,50,Delta,1059.09723,0,Infection naive,BNT162b2,2
+322,151,50,Delta,292.761111899999,0,Infection naive,BNT162b2,2
+322,307,50,Delta,71.2057652699998,0,Infection naive,BNT162b2,2
+323,4,-33,Ancestral,114.4063389926,0,Infection naive,BNT162b2,1
+323,25,-33,Ancestral,138.737678205393,0,Infection naive,BNT162b2,1
+323,4,-33,Alpha,107.033623347396,0,Infection naive,BNT162b2,1
+323,25,-33,Alpha,60.0187886685244,0,Infection naive,BNT162b2,1
+323,4,-33,Delta,5,-1,Infection naive,BNT162b2,1
+323,25,-33,Delta,5,-1,Infection naive,BNT162b2,1
+324,131,97,Ancestral,461.800650900001,0,Previously infected (Pre-Omicron),AZD1222,3
+324,168,97,Ancestral,388.907172100001,0,Previously infected (Pre-Omicron),AZD1222,3
+324,131,97,Alpha,817.074464,0,Previously infected (Pre-Omicron),AZD1222,3
+324,168,97,Alpha,261.6913767,0,Previously infected (Pre-Omicron),AZD1222,3
+324,131,97,Delta,325.5163233,0,Previously infected (Pre-Omicron),AZD1222,3
+324,168,97,Delta,229.0496805,0,Previously infected (Pre-Omicron),AZD1222,3
+325,80,59,Ancestral,2560,1,Previously infected (Pre-Omicron),BNT162b2,3
+325,150,59,Ancestral,303.4731597,0,Previously infected (Pre-Omicron),BNT162b2,3
+325,80,59,Alpha,1672.082267,0,Previously infected (Pre-Omicron),BNT162b2,3
+325,150,59,Alpha,812.788782800003,0,Previously infected (Pre-Omicron),BNT162b2,3
+325,80,59,Delta,1011.023059,0,Previously infected (Pre-Omicron),BNT162b2,3
+325,150,59,Delta,651.1360152,0,Previously infected (Pre-Omicron),BNT162b2,3
+326,96,48,Ancestral,804.284739699998,0,Infection naive,BNT162b2,2
+326,160,48,Ancestral,487.1632965,0,Infection naive,BNT162b2,2
+326,96,48,Alpha,553.184101099999,0,Infection naive,BNT162b2,2
+326,160,48,Alpha,465.050150400001,0,Infection naive,BNT162b2,2
+326,96,48,Delta,380.144660400001,0,Infection naive,BNT162b2,2
+326,160,48,Delta,245.686998900001,0,Infection naive,BNT162b2,2
+327,133,97,Ancestral,278.250104599999,0,Infection naive,AZD1222,2
+327,160,97,Ancestral,220.7710563,0,Infection naive,AZD1222,2
+327,133,97,Alpha,206.182101900001,0,Infection naive,AZD1222,2
+327,160,97,Alpha,155.6181924,0,Infection naive,AZD1222,2
+327,133,97,Delta,41.4256862299999,0,Infection naive,AZD1222,2
+327,160,97,Delta,68.9940342600001,0,Infection naive,AZD1222,2
+328,76,53,Ancestral,633.1268378,0,Infection naive,BNT162b2,2
+328,150,53,Ancestral,128.5515581,0,Infection naive,BNT162b2,2
+328,76,53,Alpha,719.559164000002,0,Infection naive,BNT162b2,2
+328,150,53,Alpha,280.2080351,0,Infection naive,BNT162b2,2
+328,242,53,Alpha,212.605220770371,0,Infection naive,BNT162b2,2
+328,76,53,Delta,348.243716,0,Infection naive,BNT162b2,2
+328,150,53,Delta,155.8912282,0,Infection naive,BNT162b2,2
+328,242,53,Delta,193.7422693,0,Infection naive,BNT162b2,2
+329,67,38,Ancestral,494.043349599999,0,Previously infected (Pre-Omicron),BNT162b2,3
+329,151,38,Ancestral,388.226020499999,0,Previously infected (Pre-Omicron),BNT162b2,3
+329,67,38,Alpha,527.149266099999,0,Previously infected (Pre-Omicron),BNT162b2,3
+329,151,38,Alpha,155.0735547,0,Previously infected (Pre-Omicron),BNT162b2,3
+329,67,38,Delta,324.3770705,0,Previously infected (Pre-Omicron),BNT162b2,3
+329,151,38,Delta,190.3755894,0,Previously infected (Pre-Omicron),BNT162b2,3
+330,80,53,Ancestral,604.388165800002,0,Infection naive,BNT162b2,2
+330,151,53,Ancestral,320.420993300001,0,Infection naive,BNT162b2,2
+330,80,53,Alpha,878.731289700001,0,Infection naive,BNT162b2,2
+330,151,53,Alpha,246.982459799999,0,Infection naive,BNT162b2,2
+330,80,53,Delta,597.540606,0,Infection naive,BNT162b2,2
+330,151,53,Delta,212.6052208,0,Infection naive,BNT162b2,2
+331,131,81,Ancestral,183.6556791,0,Infection naive,AZD1222,2
+331,131,81,Alpha,45.7387031300002,0,Infection naive,AZD1222,2
+331,131,81,Delta,40.3152515,0,Infection naive,AZD1222,2
+332,7,-13,Ancestral,165.61014864394,0,Infection naive,BNT162b2,1
+332,28,-13,Ancestral,154.260170083228,0,Infection naive,BNT162b2,1
+332,7,-13,Alpha,176.243669879066,0,Infection naive,BNT162b2,1
+332,28,-13,Alpha,155.891228179604,0,Infection naive,BNT162b2,1
+332,7,-13,Delta,111.047243401498,0,Infection naive,BNT162b2,1
+332,28,-13,Delta,68.3919488710283,0,Infection naive,BNT162b2,1
+333,84,54,Ancestral,438.1422931,0,Infection naive,BNT162b2,2
+333,151,54,Ancestral,163.733829,0,Infection naive,BNT162b2,2
+333,236,54,Ancestral,103.5273976,0,Infection naive,BNT162b2,2
+333,84,54,Alpha,580.5047439,0,Infection naive,BNT162b2,2
+333,151,54,Alpha,165.900715500001,0,Infection naive,BNT162b2,2
+333,236,54,Alpha,151.181523110332,0,Infection naive,BNT162b2,2
+333,84,54,Delta,171.2189689,0,Infection naive,BNT162b2,2
+333,151,54,Delta,84.9233322799998,0,Infection naive,BNT162b2,2
+333,236,54,Delta,44.4346942700001,0,Infection naive,BNT162b2,2
+334,74,74,Ancestral,88.1851052684112,0,Infection naive,AZD1222,2
+334,168,74,Ancestral,5,-1,Infection naive,AZD1222,2
+334,74,74,Alpha,5,-1,Infection naive,AZD1222,2
+334,74,74,Delta,5,-1,Infection naive,AZD1222,2
+335,131,96,Ancestral,136.805615775511,0,Infection naive,AZD1222,1
+335,151,96,Ancestral,120.689672339818,0,Infection naive,AZD1222,1
+335,131,96,Alpha,70.0297688893001,0,Infection naive,AZD1222,1
+335,151,96,Alpha,50.9007153836499,0,Infection naive,AZD1222,1
+335,131,96,Delta,5,-1,Infection naive,AZD1222,1
+335,151,96,Delta,5,-1,Infection naive,AZD1222,1
