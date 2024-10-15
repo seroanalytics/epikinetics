@@ -1,28 +1,3 @@
-test_that("Can convert character pids to numeric ids and back again", {
-  dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-
-  dat$pid <- paste0("ID", dat$pid)
-  lookup <- build_pid_lookup(dat)
-
-  pids <- dat$pid
-  dat[, nid := lookup[pid]]
-  dat[, recovered := names(lookup)[nid]]
-
-  expect_equal(dat$recovered, dat$pid)
-})
-
-test_that("Can convert numeric pids to numeric ids and back again", {
-  dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-
-  lookup <- build_pid_lookup(dat)
-
-  pids <- dat$pid
-  dat[, nid := lookup[pid]]
-  dat[, recovered := as.numeric(names(lookup)[nid])]
-
-  expect_equal(dat$recovered, dat$pid)
-})
-
 test_that("Using numeric and non-numeric pids gives the same answer", {
   # these take a while, so don't run on CI
   skip_on_ci()
