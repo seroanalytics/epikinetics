@@ -75,11 +75,14 @@ a few minutes.
 
 ## Testing
 
-Most tests are run with
+To run all tests locally:
 
 ```{r}
 devtools::test()
 ```
+
+Some tests are skipped on CI to avoid exorbitantly long build times, but this means 
+it is important to run all tests locally at least once before merging a pull request.
 
 For snapshot testing of stan model outputs, we need the outputs to be exactly 
 reproducible. As well as setting a seed, this requires the machine environment 
@@ -90,6 +93,8 @@ to be exactly the same, so on CI we run these inside a Docker container, via a b
 ```
 
 This involves recompiling the model, so takes a while to run.
+
+Note that 
 
 ## Docker
 To build a Docker image, run `docker/build`. 

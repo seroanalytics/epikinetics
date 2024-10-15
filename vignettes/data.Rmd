@@ -16,16 +16,17 @@ knitr::opts_chunk$set(
 
 # Input data
 
-The model requires a data table containing the following columns:
+The model requires time series data about individual titre readings, along with last exposure times. Times can be relative (e.g. day of study) or absolute (i.e. precise calendar dates).
+The full list of required columns is as follows:
 
-| name         | type            | description                                                                                                     | required |
-|--------------|-----------------|-----------------------------------------------------------------------------------------------------------------| -------- |
-| pid          | numeric         | Unique number to identify a person across observations                                                          | T|
-| day          | integer or date | The day of the observation. Can be a date or an integer representing a relative day of study                    | T|
-| last_exp_day | integer or date | The most recent day on which the person was exposed. Must be of the same type as the 'day' column               | T|
-| titre_type   | character       | Name of the titre or biomarker                                                                                  | T|
-| value        | numeric         | Titre value                                                                                                     | T|
-| censored     | -1, 0 or 1      | Optional column. Whether this observation should be treated as censored: -1 for lower, 1 for upper, 0 for none. | F|
+| name         | type                 | description                                                                                                     | required |
+|--------------|----------------------|-----------------------------------------------------------------------------------------------------------------| -------- |
+| pid          | numeric or character | Unique identifier to identify a person across observations                                                      | T|
+| day          | integer or date      | The day of the observation. Can be a date or an integer representing a relative day of study                    | T|
+| last_exp_day | integer or date      | The most recent day on which the person was exposed. Must be of the same type as the 'day' column               | T|
+| titre_type   | character            | Name of the titre or biomarker                                                                                  | T|
+| value        | numeric              | Titre value                                                                                                     | T|
+| censored     | -1, 0 or 1           | Optional column. Whether this observation should be treated as censored: -1 for lower, 1 for upper, 0 for none. | F|
 
 It can also contain further columns for any covariates to be included in the model. The data files installed with this package have additional columns infection_history, last_vax_type, and exp_num.
 
@@ -57,41 +58,43 @@ guidance on the correct interpretation of each column in the returned tables. (I
 See the documentation for this function [here](../reference/biokinetics.html#method-simulate-population-trajectories).
 There are 2 different output formats depending on whether the provided `summarise` argument is `TRUE` or `FALSE`.
 
-* `summarise = TRUE`
-    Returned columns are
+### summarise = TRUE
 
-    | name                | type       | description                                                                                   |
-    |---------------------|------------|-----------------------------------------------------------------------------------------------|
-    | time_since_last_exp | integer    | Number of days since last exposure                                                            |
-    | me                  | numeric    | Median titre value                                                                            |
-    | lo                  | numeric    | Titre value at the 0.025 quantile                                                             |
-    | hi                  | numeric    | Titre value at the 0.975 quantile                                                             |
-    | titre_type          | character  | Name of the titre or biomarker                                                                |
-    | censored            | -1, 0 or 1 | Whether this observation should be treated as censored: -1 for lower, 1 for upper, 0 for none |
+Returned columns are
+
+| name                | type       | description                                                                                   |
+|---------------------|------------|-----------------------------------------------------------------------------------------------|
+| time_since_last_exp | integer    | Number of days since last exposure                                                            |
+| me                  | numeric    | Median titre value                                                                            |
+| lo                  | numeric    | Titre value at the 0.025 quantile                                                             |
+| hi                  | numeric    | Titre value at the 0.975 quantile                                                             |
+| titre_type          | character  | Name of the titre or biomarker                                                                |
+| censored            | -1, 0 or 1 | Whether this observation should be treated as censored: -1 for lower, 1 for upper, 0 for none |
 
 There will also be a column for each covariate in the regression model.
 
-* `summarise = FALSE`
-    Returned columns are
+### summarise = FALSE
 
-    | name                | type    | description                        |
-    |---------------------|---------|------------------------------------|
-    | time_since_last_exp | integer | Number of days since last exposure |
-    | t0_pop              | numeric |                                    |
-    | tp_pop              | numeric |                                    |
-    | ts_pop              | numeric |                                    |
-    | m1_pop              | numeric |                                    |
-    | m2_pop              | numeric |                                    |
-    | m3_pop              | numeric |                                    |
-    | beta_t0             | numeric |                                    |
-    | beta_tp             | numeric |                                    |
-    | beta_ts             | numeric |                                    |
-    | beta_m1             | numeric |                                    |
-    | beta_m2             | numeric |                                    |
-    | beta_t3             | numeric |                                    |
-    | mu                  | numeric | Titre value                        |
-    | .draw               | integer | Draw number                        |
-    | titre_type          | numeric | Name of the titre or biomarker     |
+Returned columns are
+
+| name                | type    | description                        |
+|---------------------|---------|------------------------------------|
+| time_since_last_exp | integer | Number of days since last exposure |
+| t0_pop              | numeric |                                    |
+| tp_pop              | numeric |                                    |
+| ts_pop              | numeric |                                    |
+| m1_pop              | numeric |                                    |
+| m2_pop              | numeric |                                    |
+| m3_pop              | numeric |                                    |
+| beta_t0             | numeric |                                    |
+| beta_tp             | numeric |                                    |
+| beta_ts             | numeric |                                    |
+| beta_m1             | numeric |                                    |
+| beta_m2             | numeric |                                    |
+| beta_t3             | numeric |                                    |
+| mu                  | numeric | Titre value                        |
+| .draw               | integer | Draw number                        |
+| titre_type          | numeric | Name of the titre or biomarker     |
 
 There will also be column for each covariate in the hierarchical model.
 
@@ -100,31 +103,33 @@ There will also be column for each covariate in the hierarchical model.
 See the documentation for this function [here](../reference/biokinetics.html#method-simulate-individual-trajectories).
 There are 2 different output formats depending on whether the provided `summarise` argument is `TRUE` or `FALSE`.
 
-* `summarise = FALSE`
-    Returned columns are
+### summarise = FALSE
 
-    | name                | type                 | description                                                                                 |
-    |---------------------|----------------------|---------------------------------------------------------------------------------------------|
-    | pid                 | character or numeric | Unique person identifier as provided in input data                                          |
-    | draw                | integer              | Which draw from the fits this is                                                            |
-    | time_since_last_exp | integer              | Number of days since last exposure                                                          |
-    | mu                  | numeric              | Titre value                                                                                 |
-    | titre_type          | character            | Name of the titre or biomarker                                                              |
-    | exposure_day        | integer              | Day of this person's last exposure                                                          |
-    | calendar_day        | integer              | Day of this titre value                                                                     |
-    | time_shift          | integer              | The number of days these exposures have been adjusted by, as provided in function arguments |
+Returned columns are
 
-    There will also be a column for each covariate in the regression model.
+| name                | type                 | description                                                                                 |
+|---------------------|----------------------|---------------------------------------------------------------------------------------------|
+| pid                 | character or numeric | Unique person identifier as provided in input data                                          |
+| draw                | integer              | Which draw from the fits this is                                                            |
+| time_since_last_exp | integer              | Number of days since last exposure                                                          |
+| mu                  | numeric              | Titre value                                                                                 |
+| titre_type          | character            | Name of the titre or biomarker                                                              |
+| exposure_day        | integer              | Day of this person's last exposure                                                          |
+| calendar_day        | integer              | Day of this titre value                                                                     |
+| time_shift          | integer              | The number of days these exposures have been adjusted by, as provided in function arguments |
 
-  * `summarise = TRUE`
-      Returned columns are
+There will also be a column for each covariate in the regression model.
 
-   | name         | type      | description                                                                          |
-   |--------------|-----------|--------------------------------------------------------------------------------------|
-   | me           | numeric   | Median titre value                                                                   |
-   | lo           | numeric   | Titre value at the 0.025 quantile                                                    |
-   | hi           | numeric   | Titre value at the 0.075 quantile                                                    |
-   | titre_type   | character | Name of the titre or biomarker                                                       |
-   | calendar_day | integer   | Day of this titre value                                                              |
-   | time_shift   | integer   | The number of days the exposures were adjusted by, as provided in function arguments |
+### summarise = TRUE
+
+Returned columns are
+
+| name         | type      | description                                                                          |
+|--------------|-----------|--------------------------------------------------------------------------------------|
+| me           | numeric   | Median titre value                                                                   |
+| lo           | numeric   | Titre value at the 0.025 quantile                                                    |
+| hi           | numeric   | Titre value at the 0.075 quantile                                                    |
+| titre_type   | character | Name of the titre or biomarker                                                       |
+| calendar_day | integer   | Day of this titre value                                                              |
+| time_shift   | integer   | The number of days the exposures were adjusted by, as provided in function arguments |
 

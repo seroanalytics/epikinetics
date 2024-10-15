@@ -26,4 +26,9 @@ test_that("Using relative and absolute dates gives the same answer", {
   trajectories_relative$calendar_day <- min_date + trajectories_relative$calendar_day
 
   expect_equal(trajectories_relative, trajectories_absolute)
+
+  population_trajectories_absolute <- mod_absolute$simulate_population_trajectories()
+  population_trajectories_relative <- mod_relative$simulate_population_trajectories()
+
+  expect_equal(population_trajectories_absolute, population_trajectories_relative)
 })
