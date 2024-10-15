@@ -86,37 +86,65 @@
 <div class="section level2">
 <h2 id="input-data">Input data<a class="anchor" aria-label="anchor" href="#input-data"></a>
 </h2>
-<p>The model requires a data table containing the following columns:</p>
-<div class="section level4">
-<h4 id="pid">pid<a class="anchor" aria-label="anchor" href="#pid"></a>
-</h4>
-<p>A unique numeric id to identify a person across observations</p>
-</div>
-<div class="section level4">
-<h4 id="date">date<a class="anchor" aria-label="anchor" href="#date"></a>
-</h4>
-<p>The date of the observation</p>
-</div>
-<div class="section level4">
-<h4 id="last_exp_date">last_exp_date<a class="anchor" aria-label="anchor" href="#last_exp_date"></a>
-</h4>
-<p>The last date on which the person was exposed</p>
-</div>
-<div class="section level4">
-<h4 id="titre_type">titre_type<a class="anchor" aria-label="anchor" href="#titre_type"></a>
-</h4>
-<p>The name of the titre</p>
-</div>
-<div class="section level4">
-<h4 id="value">value<a class="anchor" aria-label="anchor" href="#value"></a>
-</h4>
-<p>The value of the titre</p>
-</div>
-<div class="section level4">
-<h4 id="censored">censored<a class="anchor" aria-label="anchor" href="#censored"></a>
-</h4>
-<p>Whether this observation should be censored: -1 for lower, 1 for
-upper, 0 for none</p>
+<p>The model requires time series data about individual titre readings,
+along with last exposure times. Times can be relative (e.g. day of
+study) or absolute (i.e. precise calendar dates). The full list of
+required columns is as follows:</p>
+<table class="table">
+<colgroup>
+<col width="8%">
+<col width="14%">
+<col width="71%">
+<col width="5%">
+</colgroup>
+<thead><tr class="header">
+<th>name</th>
+<th>type</th>
+<th>description</th>
+<th>required</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>pid</td>
+<td>numeric or character</td>
+<td>Unique identifier to identify a person across observations</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>day</td>
+<td>integer or date</td>
+<td>The day of the observation. Can be a date or an integer representing
+a relative day of study</td>
+<td>T</td>
+</tr>
+<tr class="odd">
+<td>last_exp_day</td>
+<td>integer or date</td>
+<td>The most recent day on which the person was exposed. Must be of the
+same type as the ‘day’ column</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>titre_type</td>
+<td>character</td>
+<td>Name of the titre or biomarker</td>
+<td>T</td>
+</tr>
+<tr class="odd">
+<td>value</td>
+<td>numeric</td>
+<td>Titre value</td>
+<td>T</td>
+</tr>
+<tr class="even">
+<td>censored</td>
+<td>-1, 0 or 1</td>
+<td>Optional column. Whether this observation should be treated as
+censored: -1 for lower, 1 for upper, 0 for none.</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
 <p>It can also contain further columns for any covariates to be included
 in the model. The data files installed with this package have additional
 columns infection_history, last_vax_type, and exp_num.</p>
@@ -125,6 +153,28 @@ model. The variables in the formula must correspond to column names in
 the dataset. Note that all variables will be treated as
 <strong>categorical variables</strong>; that is, converted to factors
 regardless of their input type.</p>
+<div class="section level3">
+<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h3>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"delta_full.rds"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      pid        day last_exp_day titre_type    value censored infection_history</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;     &lt;IDat&gt;       &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;    &lt;int&gt;            &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:     1 2021-03-10   2021-03-08  Ancestral 175.9350        0   Infection naive</span></span>
+<span><span class="co">#&gt; 2:     1 2021-04-15   2021-03-08  Ancestral 607.5750        0   Infection naive</span></span>
+<span><span class="co">#&gt; 3:     1 2021-07-08   2021-03-08  Ancestral 179.0463        0   Infection naive</span></span>
+<span><span class="co">#&gt; 4:     1 2021-03-10   2021-03-08      Alpha   5.0000       -1   Infection naive</span></span>
+<span><span class="co">#&gt; 5:     1 2021-04-15   2021-03-08      Alpha 416.7905        0   Infection naive</span></span>
+<span><span class="co">#&gt; 6:     1 2021-07-08   2021-03-08      Alpha 103.5274        0   Infection naive</span></span>
+<span><span class="co">#&gt;    last_vax_type exp_num</span></span>
+<span><span class="co">#&gt;           &lt;char&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:      BNT162b2       2</span></span>
+<span><span class="co">#&gt; 2:      BNT162b2       2</span></span>
+<span><span class="co">#&gt; 3:      BNT162b2       2</span></span>
+<span><span class="co">#&gt; 4:      BNT162b2       2</span></span>
+<span><span class="co">#&gt; 5:      BNT162b2       2</span></span>
+<span><span class="co">#&gt; 6:      BNT162b2       2</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -154,26 +204,274 @@ original scale).</p>
 There are 2 different output formats depending on whether the provided
 <code>summarise</code> argument is <code>TRUE</code> or
 <code>FALSE</code>.</p>
-<ul>
-<li>
-<p><code>summarise = TRUE</code> Returned columns are:</p>
-<ul>
-<li>t:</li>
-<li>p:</li>
-<li>k:</li>
-<li>me:</li>
-<li>lo</li>
-<li>hi</li>
-<li>titre_type</li>
-</ul>
-<p>There will also be a column for each covariate in the hierarchical
+<div class="section level4">
+<h4 id="summarise-true">summarise = TRUE<a class="anchor" aria-label="anchor" href="#summarise-true"></a>
+</h4>
+<p>Returned columns are</p>
+<table class="table">
+<colgroup>
+<col width="16%">
+<col width="9%">
+<col width="74%">
+</colgroup>
+<thead><tr class="header">
+<th>name</th>
+<th>type</th>
+<th>description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>time_since_last_exp</td>
+<td>integer</td>
+<td>Number of days since last exposure</td>
+</tr>
+<tr class="even">
+<td>me</td>
+<td>numeric</td>
+<td>Median titre value</td>
+</tr>
+<tr class="odd">
+<td>lo</td>
+<td>numeric</td>
+<td>Titre value at the 0.025 quantile</td>
+</tr>
+<tr class="even">
+<td>hi</td>
+<td>numeric</td>
+<td>Titre value at the 0.975 quantile</td>
+</tr>
+<tr class="odd">
+<td>titre_type</td>
+<td>character</td>
+<td>Name of the titre or biomarker</td>
+</tr>
+<tr class="even">
+<td>censored</td>
+<td>-1, 0 or 1</td>
+<td>Whether this observation should be treated as censored: -1 for
+lower, 1 for upper, 0 for none</td>
+</tr>
+</tbody>
+</table>
+<p>There will also be a column for each covariate in the regression
 model.</p>
-</li>
-<li><p><code>summarise = FALSE</code> Returned columns are t, p, k,
-t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp,
-beta_ts, beta_m1, beta_m2, beta_m3, mu .draw, titre_type and a column
-for each covariate in the hierarchical model.</p></li>
-</ul>
+</div>
+<div class="section level4">
+<h4 id="summarise-false">summarise = FALSE<a class="anchor" aria-label="anchor" href="#summarise-false"></a>
+</h4>
+<p>Returned columns are</p>
+<table class="table">
+<thead><tr class="header">
+<th>name</th>
+<th>type</th>
+<th>description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>time_since_last_exp</td>
+<td>integer</td>
+<td>Number of days since last exposure</td>
+</tr>
+<tr class="even">
+<td>t0_pop</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>tp_pop</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>ts_pop</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>m1_pop</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>m2_pop</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>m3_pop</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>beta_t0</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>beta_tp</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>beta_ts</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>beta_m1</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>beta_m2</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>beta_t3</td>
+<td>numeric</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>mu</td>
+<td>numeric</td>
+<td>Titre value</td>
+</tr>
+<tr class="odd">
+<td>.draw</td>
+<td>integer</td>
+<td>Draw number</td>
+</tr>
+<tr class="even">
+<td>titre_type</td>
+<td>numeric</td>
+<td>Name of the titre or biomarker</td>
+</tr>
+</tbody>
+</table>
+<p>There will also be column for each covariate in the hierarchical
+model.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="simulate_individual_trajectories">simulate_individual_trajectories<a class="anchor" aria-label="anchor" href="#simulate_individual_trajectories"></a>
+</h3>
+<p>See the documentation for this function <a href="../reference/biokinetics.html#method-simulate-individual-trajectories">here</a>.
+There are 2 different output formats depending on whether the provided
+<code>summarise</code> argument is <code>TRUE</code> or
+<code>FALSE</code>.</p>
+<div class="section level4">
+<h4 id="summarise-false-1">summarise = FALSE<a class="anchor" aria-label="anchor" href="#summarise-false-1"></a>
+</h4>
+<p>Returned columns are</p>
+<table class="table">
+<colgroup>
+<col width="15%">
+<col width="16%">
+<col width="68%">
+</colgroup>
+<thead><tr class="header">
+<th>name</th>
+<th>type</th>
+<th>description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>pid</td>
+<td>character or numeric</td>
+<td>Unique person identifier as provided in input data</td>
+</tr>
+<tr class="even">
+<td>draw</td>
+<td>integer</td>
+<td>Which draw from the fits this is</td>
+</tr>
+<tr class="odd">
+<td>time_since_last_exp</td>
+<td>integer</td>
+<td>Number of days since last exposure</td>
+</tr>
+<tr class="even">
+<td>mu</td>
+<td>numeric</td>
+<td>Titre value</td>
+</tr>
+<tr class="odd">
+<td>titre_type</td>
+<td>character</td>
+<td>Name of the titre or biomarker</td>
+</tr>
+<tr class="even">
+<td>exposure_day</td>
+<td>integer</td>
+<td>Day of this person’s last exposure</td>
+</tr>
+<tr class="odd">
+<td>calendar_day</td>
+<td>integer</td>
+<td>Day of this titre value</td>
+</tr>
+<tr class="even">
+<td>time_shift</td>
+<td>integer</td>
+<td>The number of days these exposures have been adjusted by, as
+provided in function arguments</td>
+</tr>
+</tbody>
+</table>
+<p>There will also be a column for each covariate in the regression
+model.</p>
+</div>
+<div class="section level4">
+<h4 id="summarise-true-1">summarise = TRUE<a class="anchor" aria-label="anchor" href="#summarise-true-1"></a>
+</h4>
+<p>Returned columns are</p>
+<table class="table">
+<colgroup>
+<col width="12%">
+<col width="9%">
+<col width="77%">
+</colgroup>
+<thead><tr class="header">
+<th>name</th>
+<th>type</th>
+<th>description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>me</td>
+<td>numeric</td>
+<td>Median titre value</td>
+</tr>
+<tr class="even">
+<td>lo</td>
+<td>numeric</td>
+<td>Titre value at the 0.025 quantile</td>
+</tr>
+<tr class="odd">
+<td>hi</td>
+<td>numeric</td>
+<td>Titre value at the 0.075 quantile</td>
+</tr>
+<tr class="even">
+<td>titre_type</td>
+<td>character</td>
+<td>Name of the titre or biomarker</td>
+</tr>
+<tr class="odd">
+<td>calendar_day</td>
+<td>integer</td>
+<td>Day of this titre value</td>
+</tr>
+<tr class="even">
+<td>time_shift</td>
+<td>integer</td>
+<td>The number of days the exposures were adjusted by, as provided in
+function arguments</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
   </div>

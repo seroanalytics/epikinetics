@@ -85,8 +85,7 @@ fit it to a dataset.</p>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  file_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  covariate_formula <span class="op">=</span> <span class="op">~</span><span class="fl">0</span>,</span>
-<span>  preds_sd <span class="op">=</span> <span class="fl">0.25</span>,</span>
-<span>  time_type <span class="op">=</span> <span class="st">"relative"</span></span>
+<span>  preds_sd <span class="op">=</span> <span class="fl">0.25</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -112,10 +111,6 @@ will be treated as categorical variables. Default ~0.</p></dd>
 
 <dt><code>preds_sd</code></dt>
 <dd><p>Standard deviation of predictor coefficients. Default 0.25.</p></dd>
-
-
-<dt><code>time_type</code></dt>
-<dd><p>One of 'relative' or 'absolute'. Default 'relative'.</p></dd>
 
 
 </dl><p></p></div>
@@ -222,7 +217,6 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 <p>Process the model results into a data table of titre values over time.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">simulate_population_trajectories</span><span class="op">(</span></span>
-<span>  time_type <span class="op">=</span> <span class="st">"relative"</span>,</span>
 <span>  t_max <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  summarise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_draws <span class="op">=</span> <span class="fl">2500</span></span>
@@ -231,11 +225,7 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>time_type</code></dt>
-<dd><p>One of 'relative' or 'absolute'. Default 'relative'.</p></dd>
-
-
-<dt><code>t_max</code></dt>
+<p></p><div class="arguments"><dl><dt><code>t_max</code></dt>
 <dd><p>Integer. Maximum number of time points to include.</p></dd>
 
 
@@ -253,9 +243,9 @@ draws from posterior parameter distributions.</p></dd>
 </div>
 <div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
-<p>A data.table containing titre values at time points. If summarise = TRUE, columns are t, me, lo, hi,
-titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are t, .draw
-t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
+<p>A data.table containing titre values at time points. If summarise = TRUE, columns are time_since_last_exp,
+me, lo, hi, titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are
+time_since_last_exp, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
 titre_type and a column for each covariate in the hierarchical model. See the data vignette for details:
 <code><a href="../articles/data.html">vignette("data", package = "epikinetics")</a></code></p>
 </div>
@@ -307,7 +297,7 @@ Default TRUE.</p></dd>
 
 
 <dt><code>time_shift</code></dt>
-<dd><p>Integer. Number of days to adjust the exposure date by. Default 0.</p></dd>
+<dd><p>Integer. Number of days to adjust the exposure day by. Default 0.</p></dd>
 
 
 </dl><p></p></div>
@@ -315,8 +305,8 @@ Default TRUE.</p></dd>
 <div class="section">
 <h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
-If summarise = FALSE, columns are pid, draw, t, mu, titre_type, exposure_date, calendar_date, time_shift
-and a column for each covariate in the hierarchical model. See the data vignette for details:
+If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
+and a column for each covariate in the regression model. See the data vignette for details:
 <code><a href="../articles/data.html">vignette("data", package = "epikinetics")</a></code>.</p>
 </div>
 
