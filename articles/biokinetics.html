@@ -123,12 +123,12 @@ population trajectories using the fitted population parameters.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    time_since_last_exp       me        lo       hi titre_type infection_history</span></span>
 <span><span class="co">#&gt;                  &lt;int&gt;    &lt;num&gt;     &lt;num&gt;    &lt;num&gt;     &lt;char&gt;            &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:                   0 122.4521  94.33718 159.6148      Alpha   Infection naive</span></span>
-<span><span class="co">#&gt; 2:                   1 153.0463 120.28414 192.0631      Alpha   Infection naive</span></span>
-<span><span class="co">#&gt; 3:                   2 190.3371 154.97114 235.0330      Alpha   Infection naive</span></span>
-<span><span class="co">#&gt; 4:                   3 236.9884 195.79415 286.8267      Alpha   Infection naive</span></span>
-<span><span class="co">#&gt; 5:                   4 294.8035 246.31186 355.2880      Alpha   Infection naive</span></span>
-<span><span class="co">#&gt; 6:                   5 367.0770 307.58535 442.0933      Alpha   Infection naive</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:                   0 120.2530  85.15613 154.0472  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 2:                   1 149.3001 110.73969 187.5559  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 3:                   2 186.2505 142.92775 228.2648  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 4:                   3 233.1541 183.01946 279.9274  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 5:                   4 291.1429 236.52809 348.3158  Ancestral   Infection naive</span></span>
+<span><span class="co">#&gt; 6:                   5 363.2659 300.31515 433.2755  Ancestral   Infection naive</span></span></code></pre></div>
 <p>See <a href="data.html">data</a> for the definition of the returned
 columns.</p>
 <p>Using <code>ggplot2</code>:</p>
@@ -191,12 +191,12 @@ simulate estimates for these from the fitted model:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    infection_history titre_type     mu_p     mu_s rel_drop_me  mu_p_me  mu_s_me</span></span>
 <span><span class="co">#&gt;               &lt;char&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;       &lt;num&gt;    &lt;num&gt;    &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:   Infection naive      Alpha 1258.690 258.2081   0.1948519 1231.681 238.9652</span></span>
-<span><span class="co">#&gt; 2:   Infection naive      Alpha 1345.815 258.1007   0.1948519 1231.681 238.9652</span></span>
-<span><span class="co">#&gt; 3:   Infection naive      Alpha 1208.841 277.9311   0.1948519 1231.681 238.9652</span></span>
-<span><span class="co">#&gt; 4:   Infection naive      Alpha 1160.909 244.2667   0.1948519 1231.681 238.9652</span></span>
-<span><span class="co">#&gt; 5:   Infection naive      Alpha 1219.513 244.6807   0.1948519 1231.681 238.9652</span></span>
-<span><span class="co">#&gt; 6:   Infection naive      Alpha 1115.654 276.2072   0.1948519 1231.681 238.9652</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:   Infection naive  Ancestral 1242.783 273.2506    0.189827 1227.795 229.0288</span></span>
+<span><span class="co">#&gt; 2:   Infection naive  Ancestral 1227.432 249.1784    0.189827 1227.795 229.0288</span></span>
+<span><span class="co">#&gt; 3:   Infection naive  Ancestral 1156.975 258.2754    0.189827 1227.795 229.0288</span></span>
+<span><span class="co">#&gt; 4:   Infection naive  Ancestral 1133.219 253.3188    0.189827 1227.795 229.0288</span></span>
+<span><span class="co">#&gt; 5:   Infection naive  Ancestral 1150.578 240.4378    0.189827 1227.795 229.0288</span></span>
+<span><span class="co">#&gt; 6:   Infection naive  Ancestral 1214.544 244.0054    0.189827 1227.795 229.0288</span></span></code></pre></div>
 <p>The values we’re going to plot are the mean peak titre values
 (<code>mu_p</code>) and mean set point titre values (<code>mu_s</code>),
 for different titre types and infection histories. See <a href="data.html">data</a> for a full definition of all the returned
@@ -259,12 +259,12 @@ maximum number of draws to just 250 for speed.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    calendar_day titre_type       me       lo       hi time_shift</span></span>
 <span><span class="co">#&gt;          &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:   2021-03-08      Alpha 1159.083 882.2681 1626.342          0</span></span>
-<span><span class="co">#&gt; 2:   2021-03-09      Alpha 1149.733 904.7969 1455.563          0</span></span>
-<span><span class="co">#&gt; 3:   2021-03-10      Alpha 1183.414 923.2380 1553.093          0</span></span>
-<span><span class="co">#&gt; 4:   2021-03-11      Alpha 1159.733 918.8463 1537.259          0</span></span>
-<span><span class="co">#&gt; 5:   2021-03-12      Alpha 1152.698 901.3702 1592.818          0</span></span>
-<span><span class="co">#&gt; 6:   2021-03-13      Alpha 1194.493 912.0854 1596.470          0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:   2021-03-08  Ancestral 1139.289 850.1878 1530.986          0</span></span>
+<span><span class="co">#&gt; 2:   2021-03-09  Ancestral 1131.811 887.2028 1522.606          0</span></span>
+<span><span class="co">#&gt; 3:   2021-03-10  Ancestral 1170.492 891.3162 1533.867          0</span></span>
+<span><span class="co">#&gt; 4:   2021-03-11  Ancestral 1134.420 904.7027 1453.014          0</span></span>
+<span><span class="co">#&gt; 5:   2021-03-12  Ancestral 1151.549 873.5584 1494.535          0</span></span>
+<span><span class="co">#&gt; 6:   2021-03-13  Ancestral 1190.612 909.6962 1536.645          0</span></span></code></pre></div>
 <p>See <a href="data.html">data</a> for a definition of all the returned
 columns. Figure 5 A plots the derived population trajectories. Here we
 replicate a portion of the graph from the paper, from the minimum date
