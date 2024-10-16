@@ -19,6 +19,7 @@ biokinetics <- R6::R6Class(
     design_matrix = NULL,
     covariate_lookup_table = NULL,
     pid_lookup = NULL,
+    titre_type_lookup = NULL,
     check_fitted = function() {
       if (is.null(private$fitted)) {
         stop("Model has not been fitted yet. Call 'fit' before calling this function.")
@@ -74,19 +75,11 @@ biokinetics <- R6::R6Class(
     build_pid_lookup = function() {
       private$pid_lookup <- build_pid_lookup(private$data)
     },
+    build_titre_type_lookup = function() {
+      private$titre_type_lookup <- build_titre_type_lookup(private$data)
+    },
     recover_covariate_names = function(dt) {
-      # Declare variables to suppress notes when compiling package
-      # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-      titre_type <- NULL
-
-      titre_types <- as.factor(unique(private$data$titre_type))
-
-      dt_titre_lookup <- data.table(
-        k = as.numeric(titre_types),
-        titre_type = levels(titre_types)
-      )
-
-      dt_out <- dt[dt_titre_lookup, on = "k"][, `:=`(k = NULL)]
+      dt_out <- dt[, titre_type := names(private$titre_type_lookup)[k]][, `:=`(k = NULL)]
       if ("p" %in% colnames(dt)) {
         dt_out <- dt_out[private$covariate_lookup_table, on = "p", nomatch = NULL][, `:=`(p = NULL)]
       }
@@ -162,14 +155,14 @@ biokinetics <- R6::R6Class(
       dt_out
     },
     prepare_stan_data = function() {
-      pid <- value <- censored <- titre_type_num <- titre_type <- obs_id <- t_since_last_exp <- NULL
+      pid <- value <- censored <- titre_type <- obs_id <- t_since_last_exp <- NULL
       stan_data <- list(
         N = private$data[, .N],
         N_events = private$data[, data.table::uniqueN(pid)],
         id = private$data[, private$pid_lookup[pid]],
         value = private$data[, value],
         censored = private$data[, censored],
-        titre_type = private$data[, titre_type_num],
+        titre_type = private$data[, private$titre_type_lookup[titre_type]],
         preds_sd = private$preds_sd,
         K = private$data[, data.table::uniqueN(titre_type)],
         N_uncens = private$data[censored == 0, .N],
@@ -249,8 +242,7 @@ biokinetics <- R6::R6Class(
       validate_formula_vars(private$all_formula_vars, private$data)
       logger::log_info("Preparing data for stan")
       private$data <- convert_log_scale(private$data, "value")
-      private$data[, `:=`(titre_type_num = as.numeric(as.factor(titre_type)),
-                          obs_id = seq_len(.N),
+      private$data[, `:=`(obs_id = seq_len(.N),
                           t_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
       if (!("censored" %in% colnames(private$data))) {
         private$data$censored <- 0
@@ -258,6 +250,7 @@ biokinetics <- R6::R6Class(
       private$construct_design_matrix()
       private$build_covariate_lookup_table()
       private$build_pid_lookup()
+      private$build_titre_type_lookup()
       private$prepare_stan_data()
       logger::log_info("Retrieving compiled model")
       private$model <- instantiate::stan_package_model(

@@ -97,3 +97,11 @@ build_pid_lookup <- function(data) {
   names(pid_lookup) <- pids
   pid_lookup
 }
+
+build_titre_type_lookup <- function(data) {
+  titre_types <- unique(data$titre_type)
+  titre_type_nums <- seq_along(titre_types)
+  titre_type_lookup <- titre_type_nums
+  names(titre_type_lookup) <- titre_types
+  titre_type_lookup
+}
