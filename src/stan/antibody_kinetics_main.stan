@@ -32,7 +32,7 @@ data {
   array[N] int<lower=1, upper=K> titre_type; // Titre type for each observation
   vector[N] t; // Time for each observation
   vector[N] value; // Observed titre values
-  array[N] int<lower=-2, upper=1> censored; // Censoring indicator: -2 for lo, -1 for me 1 for upper, 0 for none
+  array[N] int<lower=-1, upper=1> censored; // Censoring indicator: -1 for lo, 1 for upper, 0 for none
   
   // Indices for different censoring scenarios
   int N_uncens; // number of uncensored observations

@@ -19,18 +19,21 @@ knitr::opts_chunk$set(
 The model requires time series data about individual titre readings, along with last exposure times. Times can be relative (e.g. day of study) or absolute (i.e. precise calendar dates).
 The full list of required columns is as follows:
 
-| name         | type                 | description                                                                                                     | required |
-|--------------|----------------------|-----------------------------------------------------------------------------------------------------------------| -------- |
-| pid          | numeric or character | Unique identifier to identify a person across observations                                                      | T|
-| day          | integer or date      | The day of the observation. Can be a date or an integer representing a relative day of study                    | T|
-| last_exp_day | integer or date      | The most recent day on which the person was exposed. Must be of the same type as the 'day' column               | T|
-| titre_type   | character            | Name of the titre or biomarker                                                                                  | T|
-| value        | numeric              | Titre value                                                                                                     | T|
+| name         | type                 | description                                                                                | required |
+|--------------|----------------------|--------------------------------------------------------------------------------------------| -------- |
+| pid          | numeric or character | Unique identifier to identify a person across observations                                 | T|
+| day          | integer or date      | The day of the observation. Can be a date or an integer representing a relative day of study | T|
+| last_exp_day | integer or date      | The most recent day on which the person was exposed. Must be of the same type as the 'day' column | T|
+| titre_type   | character            | Name of the titre or biomarker                                                             | T|
+| value        | numeric              | Titre value                                                                                | T|
 | censored     | -1, 0 or 1           | Optional column. Whether this observation should be treated as censored: -1 for lower, 1 for upper, 0 for none. | F|
 
 It can also contain further columns for any covariates to be included in the model. The data files installed with this package have additional columns infection_history, last_vax_type, and exp_num.
 
 The model also accepts a covariate formula to define the regression model. The variables in the formula must correspond to column names in the dataset. Note that all variables will be treated as **categorical variables**; that is, converted to factors regardless of their input type.
+
+Note also that the `value` column is assumed to be on a natural scale by default, and will be converted to a log scale for model fitting. If your data
+is already on a log scale, you must pass the `log=TRUE` argument when initialising the biokinetics class. See [biokinetics](../reference/biokinetics.html).
 
 ## Example
 
@@ -45,7 +48,7 @@ After fitting a model, a [CmdStanMCMC](https://mc-stan.org/cmdstanr/reference/Cm
 that users who are already familiar with `cmdstanr` are free to do what they want with the fitted model.
 
 **Important!**
-**The data provided to `biokinetics$new` is converted to a base2 log scale before inference is performed. This means that if working
+**If you provide data on a natural scale, it will be converted to a base2 log scale before inference is performed. This means that if working
 directly with the fitted `CmdStanMCMC` all values will be on this scale. The package provides a helper function for converting
 back to the original scale: [convert_log_scale_inverse](../reference/convert_log_scale_inverse.html).**
 
