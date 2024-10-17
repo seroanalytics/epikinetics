@@ -56,7 +56,7 @@ biokinetics <- R6::R6Class(
     },
     construct_design_matrix = function() {
       var <- pid <- NULL
-      dt_design_matrix <- as.character(private$data[, .SD, .SDcols = private$all_formula_vars, by = pid]) |>
+      dt_design_matrix <- private$data[, .SD, .SDcols = private$all_formula_vars, by = pid] |>
         unique()
 
       # Build the full design matrix using model.matrix
