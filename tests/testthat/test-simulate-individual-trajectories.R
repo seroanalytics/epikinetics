@@ -81,3 +81,19 @@ test_that("Exposure dates are brought forward by time_shift days", {
   expect_equal(trajectories$mu, trajectories_shifted$mu)
   expect_true(all(as.numeric(difftime(trajectories$exposure_date, trajectories_shifted$exposure_date, units = "days")) == 75))
 })
+
+test_that("Natural scale data is returned on natural scale", {
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history, scale = "natural")
+  mod$fit()
+  trajectories <- mod$simulate_individual_trajectories(summarise = TRUE, n_draws = 10)
+  expect_false(all(trajectories$me < 10))
+})
+
+test_that("Log scale data is returned on log scale", {
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history, scale = "log")
+  mod$fit()
+  trajectories <- mod$simulate_individual_trajectories(summarise = TRUE, n_draws = 10)
+  expect_true(all(trajectories$me < 10))
+})

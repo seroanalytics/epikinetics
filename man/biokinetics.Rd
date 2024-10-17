@@ -50,6 +50,8 @@ for required columns: \code{vignette("data", package = "epikinetics")}.}
 \item{\code{covariate_formula}}{Formula specifying linear regression model. Note all variables in the formula
 will be treated as categorical variables. Default ~0.}
 
+\item{\code{preds_sd}}{Standard deviation of predictor coefficients. Default 0.25.}
+
 \item{\code{scale}}{One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
 will be converted to a log scale for model fitting.}
 }
@@ -76,10 +78,14 @@ A list of arguments that will be passed to the stan model.
 \if{html}{\out{<a id="method-biokinetics-get_covariate_lookup_table"></a>}}
 \if{latex}{\out{\hypertarget{method-biokinetics-get_covariate_lookup_table}{}}}
 \subsection{Method \code{get_covariate_lookup_table()}}{
+View the mapping of human readable covariate names to the model variable p.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{biokinetics$get_covariate_lookup_table()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A data.table mapping the model variable p to human readable covariates.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-biokinetics-fit"></a>}}

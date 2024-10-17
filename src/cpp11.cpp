@@ -6,10 +6,10 @@
 #include <R_ext/Visibility.h>
 
 // convert_log_scale_inverse.cpp
-cpp11::data_frame convert_log_scale_inverse_cpp(cpp11::writable::list dt, cpp11::strings vars_to_transform);
-extern "C" SEXP _epikinetics_convert_log_scale_inverse_cpp(SEXP dt, SEXP vars_to_transform) {
+cpp11::data_frame convert_log2_scale_inverse_cpp(cpp11::writable::list dt, cpp11::strings vars_to_transform);
+extern "C" SEXP _epikinetics_convert_log2_scale_inverse_cpp(SEXP dt, SEXP vars_to_transform) {
   BEGIN_CPP11
-    return cpp11::as_sexp(convert_log_scale_inverse_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::writable::list>>(dt), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(vars_to_transform)));
+    return cpp11::as_sexp(convert_log2_scale_inverse_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::writable::list>>(dt), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(vars_to_transform)));
   END_CPP11
 }
 // simulate_trajectories.cpp
@@ -22,8 +22,8 @@ extern "C" SEXP _epikinetics_simulate_trajectories_cpp(SEXP person_params) {
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_epikinetics_convert_log_scale_inverse_cpp", (DL_FUNC) &_epikinetics_convert_log_scale_inverse_cpp, 2},
-    {"_epikinetics_simulate_trajectories_cpp",     (DL_FUNC) &_epikinetics_simulate_trajectories_cpp,     1},
+    {"_epikinetics_convert_log2_scale_inverse_cpp", (DL_FUNC) &_epikinetics_convert_log2_scale_inverse_cpp, 2},
+    {"_epikinetics_simulate_trajectories_cpp",      (DL_FUNC) &_epikinetics_simulate_trajectories_cpp,      1},
     {NULL, NULL, 0}
 };
 }

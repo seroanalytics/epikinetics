@@ -212,6 +212,7 @@ biokinetics <- R6::R6Class(
     #' @param priors Object of type \link[epikinetics]{biokinetics_priors}. Default biokinetics_priors().
     #' @param covariate_formula Formula specifying linear regression model. Note all variables in the formula
     #' will be treated as categorical variables. Default ~0.
+    #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param scale One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
     #' will be converted to a log scale for model fitting.
     initialize = function(priors = biokinetics_priors(),
@@ -246,7 +247,7 @@ biokinetics <- R6::R6Class(
       validate_formula_vars(private$all_formula_vars, private$data)
       logger::log_info("Preparing data for stan")
       if (scale == "natural") {
-        private$data <- convert_log_scale(private$data, "value")
+        private$data <- convert_log2_scale(private$data, "value")
       }
       private$data[, `:=`(obs_id = seq_len(.N),
                           t_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
@@ -269,6 +270,8 @@ biokinetics <- R6::R6Class(
     get_stan_data = function() {
       private$stan_input_data
     },
+    #' @description View the mapping of human readable covariate names to the model variable p.
+    #' @return A data.table mapping the model variable p to human readable covariates.
     get_covariate_lookup_table = function() {
       private$covariate_lookup_table
     },
@@ -390,10 +393,10 @@ biokinetics <- R6::R6Class(
       }
 
       if (summarise) {
-        dt_out <- convert_log_scale_inverse(
+        dt_out <- convert_log2_scale_inverse(
           dt_out, vars_to_transform = c("me", "lo", "hi"))
       } else {
-        dt_out <- convert_log_scale_inverse(
+        dt_out <- convert_log2_scale_inverse(
           dt_out, vars_to_transform = "mu")
       }
       dt_out
@@ -430,7 +433,7 @@ biokinetics <- R6::R6Class(
       dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
 
       if (private$scale == "natural") {
-        dt_peak_switch <- convert_log_scale_inverse(
+        dt_peak_switch <- convert_log2_scale_inverse(
           dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
       }
 
@@ -491,11 +494,11 @@ biokinetics <- R6::R6Class(
       # Running the C++ code to simulate trajectories for each parameter sample
       # for each individual
       logger::log_info("Simulating individual trajectories")
-      dt_params_ind_traj <- data.table::setDT(biokinetics_simulate_trajectories(dt_params_ind))
+      dt_params_ind_traj <- biokinetics_simulate_trajectories(dt_params_ind)
 
       if (private$scale == "natural") {
-        dt_params_ind_traj <- convert_log_scale_inverse_cpp(
-          dt_params_ind_traj, vars_to_transform = "mu")
+        dt_params_ind_traj <- data.table::setDT(convert_log2_scale_inverse_cpp(
+          dt_params_ind_traj, vars_to_transform = "mu"))
       }
 
       # convert numeric pid to original pid
