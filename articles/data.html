@@ -92,9 +92,9 @@ study) or absolute (i.e. precise calendar dates). The full list of
 required columns is as follows:</p>
 <table class="table">
 <colgroup>
-<col width="8%">
-<col width="14%">
-<col width="71%">
+<col width="10%">
+<col width="16%">
+<col width="67%">
 <col width="5%">
 </colgroup>
 <thead><tr class="header">
@@ -153,6 +153,11 @@ model. The variables in the formula must correspond to column names in
 the dataset. Note that all variables will be treated as
 <strong>categorical variables</strong>; that is, converted to factors
 regardless of their input type.</p>
+<p>Note also that the <code>value</code> column is assumed to be on a
+natural scale by default, and will be converted to a log scale for model
+fitting. If your data is already on a log scale, you must pass the
+<code>log=TRUE</code> argument when initialising the biokinetics class.
+See <a href="../reference/biokinetics.html">biokinetics</a>.</p>
 <div class="section level3">
 <h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h3>
@@ -184,12 +189,11 @@ regardless of their input type.</p>
 object is returned. This means that users who are already familiar with
 <code>cmdstanr</code> are free to do what they want with the fitted
 model.</p>
-<p><strong>Important!</strong> <strong>The data provided to
-<code>biokinetics$new</code> is converted to a base2 log scale before
-inference is performed. This means that if working directly with the
-fitted <code>CmdStanMCMC</code> all values will be on this scale. The
-package provides a helper function for converting back to the original
-scale: <a href="../reference/convert_log_scale_inverse.html">convert_log_scale_inverse</a>.</strong></p>
+<p><strong>Important!</strong> <strong>If you provide data on a natural
+scale, it will be converted to a base2 log scale before inference is
+performed. This means that if working directly with the fitted
+<code>CmdStanMCMC</code> all values will be on this scale. The package
+provides a helper function for converting back to the original scale: <a href="../reference/convert_log_scale_inverse.html">convert_log_scale_inverse</a>.</strong></p>
 <p>Three further functions provide model outputs that we think are
 particularly useful in <a href="https://cran.r-project.org/web/packages/data.table/" class="external-link">data.table</a>
 format. <a href="../reference/biokinetics.html">biokinetics</a> contains
