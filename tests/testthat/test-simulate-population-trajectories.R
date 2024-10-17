@@ -45,3 +45,19 @@ test_that("Only times up to t_max are returned", {
   trajectories <- mod$simulate_population_trajectories(summarise = TRUE, t_max = 10)
   expect_true(all(trajectories$t <= 10))
 })
+
+test_that("Natural scale data is returned on natural scale", {
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history, scale = "natural")
+  mod$fit()
+  trajectories <- mod$simulate_population_trajectories(summarise = TRUE, t_max = 10)
+  expect_false(all(trajectories$me < 10))
+})
+
+test_that("Log scale data is returned on log scale", {
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history, scale = "log")
+  mod$fit()
+  trajectories <- mod$simulate_population_trajectories(summarise = TRUE, t_max = 10)
+  expect_true(all(trajectories$me < 10))
+})

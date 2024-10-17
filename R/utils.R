@@ -1,4 +1,4 @@
-convert_log_scale <- function(
+convert_log2_scale <- function(
   dt_in, vars_to_transform = "titre",
   simplify_limits = TRUE) {
 
@@ -14,14 +14,14 @@ convert_log_scale <- function(
 
 #' @title Invert base 2 log scale conversion
 #'
-#' @description User provided data is converted to a base 2 log scale before model fitting. This
-#' function reverses that transformation. This function does not modify the provided data.table in-place,
-#' but returns a transformed copy.
+#' @description Natural scale data is converted to a base 2 log scale before model fitting. This
+#' function reverses that transformation and may be useful if working directly with fitted parameters.
+#' This function does not modify the provided data.table in-place, but returns a transformed copy.
 #' @return A data.table, identical to the input data but with specified columns transformed.
 #' @param dt_in data.table containing data to be transformed from base 2 log to natural scale.
 #' @param vars_to_transform Names of columns to apply the transformation to.
 #' @export
-convert_log_scale_inverse <- function(dt_in, vars_to_transform) {
+convert_log2_scale_inverse <- function(dt_in, vars_to_transform) {
   dt_out <- data.table::copy(dt_in)
   for (var in vars_to_transform) {
     # Reverse the log2 transformation and multiplication by 5.

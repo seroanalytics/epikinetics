@@ -12,6 +12,7 @@ fit it to a dataset.
 \itemize{
 \item \href{#method-biokinetics-new}{\code{biokinetics$new()}}
 \item \href{#method-biokinetics-get_stan_data}{\code{biokinetics$get_stan_data()}}
+\item \href{#method-biokinetics-get_covariate_lookup_table}{\code{biokinetics$get_covariate_lookup_table()}}
 \item \href{#method-biokinetics-fit}{\code{biokinetics$fit()}}
 \item \href{#method-biokinetics-extract_population_parameters}{\code{biokinetics$extract_population_parameters()}}
 \item \href{#method-biokinetics-extract_individual_parameters}{\code{biokinetics$extract_individual_parameters()}}
@@ -31,7 +32,8 @@ Initialise the kinetics model.
   data = NULL,
   file_path = NULL,
   covariate_formula = ~0,
-  preds_sd = 0.25
+  preds_sd = 0.25,
+  scale = "natural"
 )}\if{html}{\out{</div>}}
 }
 
@@ -49,6 +51,9 @@ for required columns: \code{vignette("data", package = "epikinetics")}.}
 will be treated as categorical variables. Default ~0.}
 
 \item{\code{preds_sd}}{Standard deviation of predictor coefficients. Default 0.25.}
+
+\item{\code{scale}}{One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
+will be converted to a log scale for model fitting.}
 }
 \if{html}{\out{</div>}}
 }
@@ -67,6 +72,19 @@ View the data that is passed to the stan model, for debugging purposes.
 
 \subsection{Returns}{
 A list of arguments that will be passed to the stan model.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-biokinetics-get_covariate_lookup_table"></a>}}
+\if{latex}{\out{\hypertarget{method-biokinetics-get_covariate_lookup_table}{}}}
+\subsection{Method \code{get_covariate_lookup_table()}}{
+View the mapping of human readable covariate names to the model variable p.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$get_covariate_lookup_table()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A data.table mapping the model variable p to human readable covariates.
 }
 }
 \if{html}{\out{<hr>}}
