@@ -1,8 +1,8 @@
 ---
-title: "Model"
+title: "Summary of the Stan Model"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Model}
+  %\VignetteIndexEntry{A guide to model input and output data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,6 +14,170 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(epikinetics)
-```
+# Introduction
+
+This document provides a summary of a hierarchical statistical model of antibody kinetics, implemented in Stan. The model is designed to analyse longitudinal titre data, accounting for boosting and waning effects over time. It incorporates individual-level random effects and covariate influences on key model parameters. A full description of the model can be found in the supplementary material in the published paper using the methods described here:
+[Russell TW et al. Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study. Lancet Infect Dis. 2024 Sep 11:S1473-3099(24)00484-5](https://doi.org/10.1016/s1473-3099(24)00484-5).
+
+# Usage Notes
+
+This model is suitable for analysing longitudinal titre data with either lower, upper, both (or no) censoring and incorporates both individual-level variability and arbitrary regression structure to adjust for covariates. Users can adapt the model by specifying appropriate covariates via a R style linear model formula, priors, and data inputs relevant to their study.
+
+# Model Specification
+
+## Overview
+
+The model describes the expected log-transformed titre value $\mu_{n}$ for individual $n$ at time $t_n$ and titre type $k$, using a piecewise linear function to capture boosting and waning phases:
+
+- **Boosting Phase**: For $t_n < t_{p,n}$, the titre increases at rate $m_{1,n}$.
+- **Plateau Phase**: For $t_{p,n} \leq t_n \leq t_{s,n}$, the titre remains elevated.
+- **Waning Phase**: For $t_n > t_{s,n}$, the titre decreases at rate $m_{3,n}$.
+
+## Mathematical Formulation
+
+### Expected Titre Value
+
+The expected log-transformed titre value $\mu_{n}$ is given by:
+
+\[
+\mu_{n} = t_{0,n} + \begin{cases}
+m_{1,n} \cdot t_n, & \text{if } t_n < t_{p,n} \\
+m_{1,n} \cdot t_{p,n} + m_{2,n} \cdot (t_n - t_{p,n}), & \text{if } t_{p,n} \leq t_n \leq t_{s,n} \\
+m_{1,n} \cdot t_{p,n} + m_{2,n} \cdot (t_{s,n} - t_{p,n}) + m_{3,n} \cdot (t_n - t_{s,n}), & \text{if } t_n > t_{s,n}
+\end{cases}
+\]
+
+where:
+
+- $t_{0,n}$: Baseline titre level for individual $n$ and titre type $k$.
+- $t_{p,n}$: Time to peak titre for individual $n$ and titre type $k$.
+- $t_{s,n}$: Time to start of waning for individual $n$ and titre type $k$.
+- $m_{1,n}$: Boosting rate for individual $n$ and titre type $k$.
+- $m_{2,n}$: Plateau rate (assumed to be zero in this model).
+- $m_{3,n}$: Waning rate for individual $n$ and titre type $k$.
+- $t_n$: Observation time for individual $n$.
+- $\mu_{n} \geq 0$: Ensured by taking the maximum with zero.
+
+### Observation Model
+
+The observed log-transformed titre values $y_n$ are modeled as:
+
+\[
+y_n \sim \text{Normal}(\mu_{n}, \sigma)
+\]
+
+where $\sigma$ is the measurement error standard deviation.
+
+### Censoring
+
+The model accounts for left-censoring and right-censoring:
+
+- **Left-Censoring**: For observations below detection limit $L$, the likelihood contribution is:
+
+  \[
+  P(y_n \leq L) = \Phi\left(\dfrac{L - \mu_{n}}{\sigma}\right)
+  \]
+
+- **Right-Censoring**: For observations above detection limit $U$, the likelihood contribution is:
+
+  \[
+  P(y_n \geq U) = 1 - \Phi\left(\dfrac{U - \mu_{n}}{\sigma}\right)
+  \]
+
+where $\Phi(\cdot)$ is the cumulative distribution function of the standard normal distribution.
+
+## Hierarchical Structure
+
+### Individual-Level Parameters
+
+For each individual $n$ and titre type $k$, the parameters are modeled as:
+
+\[
+\begin{aligned}
+t_{0,n} &= t_{0,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{t_0} + \sigma_{t_0,k} \cdot z_{t_0,n} \\
+t_{p,n} &= t_{p,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{t_p} + \sigma_{t_p,k} \cdot z_{t_p,n} \\
+t_{s,n} &= t_{p,n} + \Delta t_{s,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{t_s} + \sigma_{t_s,k} \cdot z_{t_s,n} \\
+m_{1,n} &= m_{1,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{m_1} + \sigma_{m_1,k} \cdot z_{m_1,n} \\
+m_{2,n} &= m_{2,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{m_2} + \sigma_{m_2,k} \cdot z_{m_2,n} \\
+m_{3,n} &= m_{3,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{m_3} + \sigma_{m_3,k} \cdot z_{m_3,n}
+\end{aligned}
+\]
+
+where:
+
+- $\mathbf{x}_n$: Covariate vector for individual $n$.
+- $\boldsymbol{\beta}_{\cdot}$: Regression coefficients for the corresponding parameter.
+- $\sigma_{\cdot,k}$: Standard deviation of individual-level random effects for titre type $k$.
+- $z_{\cdot,n} \sim \text{Normal}(0, 1)$: Standard normal random variables.
+
+### Population-Level Parameters
+
+The population-level parameters for each titre type $k$ have the following priors:
+
+\[
+\begin{aligned}
+T_0^{p,k} &\sim \text{Normal}(\mu_{t_0}, \sigma_{t_0}) \\
+t_p^{p,k} &\sim \text{Normal}(\mu_{t_p}, \sigma_{t_p}) \\
+\Delta t_{p,k} &\sim \text{Normal}(\mu_{t_s} - \mu_{t_p}, \sigma_{t_s}) \\
+m_1^{p,k} &\sim \text{Normal}(\mu_{m_1}, \sigma_{m_1}) \\
+m_2^{p,k} &\sim \text{Normal}(\mu_{m_2}, \sigma_{m_2}) \\
+m_3^{p,k} &\sim \text{Normal}(\mu_{m_3}, \sigma_{m_3})
+\end{aligned}
+\]
+
+The standard deviations of the individual-level random effects have priors:
+
+\[
+\sigma_{k} \sim \text{Normal}(0, \sigma_{p})
+\]
+
+### Regression Coefficients
+
+The regression coefficients have the following priors:
+
+\[
+\boldsymbol{\beta}_{\cdot} \sim \text{Normal}(\mathbf{0}, \sigma_{\beta_{\cdot}})
+\]
+
+with appropriate constraints for parameters that must be positive or negative.
+
+# Data and Parameters
+
+## Data Inputs
+
+- $N$: Total number of observations.
+- $K$: Number of titre types.
+- $t_n$: Observation times.
+- $y_n$: Observed log-transformed titre values.
+- $\mathbf{x}_n$: Covariate vector for each individual.
+- Censoring indicators for left and right censoring.
+
+## Parameters to Estimate
+
+- Population-level parameters: $t_{0,k}$, $t_{p,k}$, $\Delta t_{s,k}$, $m_{1,k}$, $m_{2,k}$, $m_{3,k}$.
+- Individual-level random effects: $z_{\cdot,n}$.
+- Regression coefficients: $\boldsymbol{\beta}_{\cdot}$.
+- Measurement error standard deviation: $\sigma$.
+
+# Priors
+
+The prior distributions are specified based on previous studies and domain knowledge:
+
+- **Population Means**: Specified using normal distributions with means $\mu_{\cdot}$ and standard deviations $\sigma_{\cdot}$.
+- **Random Effect Standard Deviations**: Weakly informative normal priors centered at zero.
+- **Regression Coefficients**: Weakly informative normal priors centered at zero.
+- **Measurement Error**: $\sigma \sim \text{Normal}(0, 2)$, constrained to be positive.
+
+# Likelihood
+
+The likelihood function combines the observation model with the censoring mechanisms:
+
+\[
+\begin{aligned}
+&\text{For uncensored observations:} \quad y_n \sim \text{Normal}(\mu_{n}, \sigma) \\
+&\text{For left-censored observations:} \quad P(y_n \leq L) = \Phi\left(\dfrac{L - \mu_{n}}{\sigma}\right) \\
+&\text{For right-censored observations:} \quad P(y_n \geq U) = 1 - \Phi\left(\dfrac{U - \mu_{n}}{\sigma}\right)
+\end{aligned}
+\]
+
+
