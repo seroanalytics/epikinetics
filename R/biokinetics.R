@@ -265,6 +265,17 @@ biokinetics <- R6::R6Class(
         package = "epikinetics"
       )
     },
+    #' @description Plot the kinetics trajectory predicted by the model priors.
+    #' @return A ggplot2 object.
+    #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
+    #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
+    plot_prior_predictive = function(tmax = 150,
+                                     n_draws = 2000) {
+      plot_prior_predictive(private$priors,
+                            tmax = tmax,
+                            n_draws = n_draws,
+                            data = private$data)
+    },
     #' @description View the data that is passed to the stan model, for debugging purposes.
     #' @return A list of arguments that will be passed to the stan model.
     get_stan_data = function() {
