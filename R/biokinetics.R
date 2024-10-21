@@ -276,6 +276,11 @@ biokinetics <- R6::R6Class(
                             n_draws = n_draws,
                             data = private$data)
     },
+    #' @description Plot model input data with a smoothing function.
+    #' @return A ggplot2 object.
+    plot_data = function() {
+      plot_data(private$data)
+    },
     #' @description View the data that is passed to the stan model, for debugging purposes.
     #' @return A list of arguments that will be passed to the stan model.
     get_stan_data = function() {

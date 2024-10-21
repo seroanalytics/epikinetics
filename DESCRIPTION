@@ -13,6 +13,7 @@ Imports:
     data.table,
     forcats,
     fs,
+    ggplot2,
     instantiate,
     logger,
     mosaic,
@@ -26,11 +27,11 @@ Additional_repositories:
 SystemRequirements: CmdStan (https://mc-stan.org/users/interfaces/cmdstan)
 Suggests:
     dplyr,
-    ggplot2,
     knitr,
     lubridate,
     rmarkdown,
     testthat
+    vdiffr
 VignetteBuilder: knitr
 LinkingTo: 
     cpp11

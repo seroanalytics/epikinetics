@@ -11,6 +11,7 @@
 #' @importFrom data.table .NGRP
 #' @importFrom data.table .SD
 #' @importFrom data.table data.table
+#' @importFrom ggplot2 aes facet_wrap geom_point geom_ribbon geom_line geom_smooth ggplot guides guide_legend
 #' @useDynLib epikinetics, .registration = TRUE
 ## usethis namespace: end
 

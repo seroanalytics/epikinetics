@@ -12,6 +12,7 @@ fit it to a dataset.
 \itemize{
 \item \href{#method-biokinetics-new}{\code{biokinetics$new()}}
 \item \href{#method-biokinetics-plot_prior_predictive}{\code{biokinetics$plot_prior_predictive()}}
+\item \href{#method-biokinetics-plot_data}{\code{biokinetics$plot_data()}}
 \item \href{#method-biokinetics-get_stan_data}{\code{biokinetics$get_stan_data()}}
 \item \href{#method-biokinetics-get_covariate_lookup_table}{\code{biokinetics$get_covariate_lookup_table()}}
 \item \href{#method-biokinetics-fit}{\code{biokinetics$fit()}}
@@ -80,6 +81,19 @@ Plot the kinetics trajectory predicted by the model priors.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A ggplot2 object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-biokinetics-plot_data"></a>}}
+\if{latex}{\out{\hypertarget{method-biokinetics-plot_data}{}}}
+\subsection{Method \code{plot_data()}}{
+Plot model input data with a smoothing function.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_data()}\if{html}{\out{</div>}}
+}
+
 \subsection{Returns}{
 A ggplot2 object.
 }

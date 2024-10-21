@@ -31,11 +31,9 @@ plot_prior_predictive <- function(priors,
   params_and_times[, mu := biokinetics_simulate_trajectory(t, t0, tp, ts, m1, m2, m3),
                      by = c("t", "t0", "tp", "ts", "m1", "m2", "m3")]
 
-  summary <- params_and_times %>%
-    group_by(t) %>%
-    summarise(me = quantile(mu, 0.5, names = FALSE),
-              lo = quantile(mu, 0.025, names = FALSE),
-              hi = quantile(mu, 0.975, names = FALSE))
+  summary <- params_and_times[, .(me = stats::quantile(mu, 0.5, names = FALSE),
+                                  lo = stats::quantile(mu, 0.025, names = FALSE),
+                                  hi = stats::quantile(mu, 0.975, names = FALSE)), by = t]
 
   plot <- ggplot(summary) +
     geom_line(aes(x = t, y = me)) +
@@ -45,4 +43,13 @@ plot_prior_predictive <- function(priors,
     plot <- plot + geom_point(data = data, aes(x = t_since_last_exp, y = value))
   }
   plot
+}
+
+plot_data <- function(data) {
+  validate_required_cols(data, c("t_since_last_exp", "value", "titre_type"))
+  ggplot(data) +
+    geom_point(aes(x = t_since_last_exp, y = value, colour = titre_type)) +
+    geom_smooth(aes(x = t_since_last_exp, y = value, colour = titre_type)) +
+    facet_wrap(~titre_type) +
+    guides(colour = guide_legend(title = "Titre type"))
 }

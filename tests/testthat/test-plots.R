@@ -39,3 +39,11 @@ test_that("Prior predictions from model are the same", {
   plot <- mod$plot_prior_predictive(tmax = 400, n_draws = 500)
   vdiffr::expect_doppelganger("priorpredictive", plot)
 })
+
+test_that("Plotted data is are the same", {
+  skip_on_ci()
+  data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(data = data)
+  plot <- mod$plot_data()
+  vdiffr::expect_doppelganger("inputdata", plot)
+})
