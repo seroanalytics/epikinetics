@@ -14,7 +14,7 @@ plot_prior_predictive(priors, tmax = 150, n_draws = 2000, data = NULL)
 
 \item{n_draws}{Integer. The number of trajectories to simulate. Default 2000.}
 
-\item{data}{Optional data.frame with columns t_since_last_exp and value. The raw data to compare to.}
+\item{data}{Optional data.frame with columns time_since_last_exp and value. The raw data to compare to.}
 }
 \value{
 A ggplot2 object.

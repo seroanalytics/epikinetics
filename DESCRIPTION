@@ -30,7 +30,7 @@ Suggests:
     knitr,
     lubridate,
     rmarkdown,
-    testthat
+    testthat,
     vdiffr
 VignetteBuilder: knitr
 LinkingTo: 

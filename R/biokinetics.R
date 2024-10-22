@@ -142,6 +142,11 @@ biokinetics <- R6::R6Class(
 
       dt_out[, t_id := NULL]
 
+      if (private$scale == "natural") {
+          dt_out <- convert_log2_scale_inverse(
+            dt_out, vars_to_transform = "mu")
+      }
+
       if (summarise == TRUE) {
         logger::log_info("Summarising into quantiles")
         dt_out <- summarise_draws(
@@ -266,6 +271,8 @@ biokinetics <- R6::R6Class(
       )
     },
     #' @description Plot the kinetics trajectory predicted by the model priors.
+    #' Note that this is on a log scale, regardless of whether the data was provided
+    #' on a log or a natural scale.
     #' @return A ggplot2 object.
     #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
     #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
@@ -276,10 +283,12 @@ biokinetics <- R6::R6Class(
                             n_draws = n_draws,
                             data = private$data)
     },
-    #' @description Plot model input data with a smoothing function.
+    #' @description Plot model input data with a smoothing function. Note that
+    #' this plot is on a log scale, regardless of whether data was provided on a
+    #' log or a natural scale.
     #' @return A ggplot2 object.
-    plot_data = function() {
-      plot_data(private$data)
+    plot_model_inputs = function() {
+      plot_data(private$data, private$all_formula_vars)
     },
     #' @description View the data that is passed to the stan model, for debugging purposes.
     #' @return A list of arguments that will be passed to the stan model.
@@ -388,6 +397,7 @@ biokinetics <- R6::R6Class(
       t_max = 150,
       summarise = TRUE,
       n_draws = 2500) {
+
       private$check_fitted()
       validate_numeric(t_max)
       validate_logical(summarise)
@@ -404,17 +414,9 @@ biokinetics <- R6::R6Class(
       dt_out <- dt_out[
         , lapply(.SD, function(x) if (is.factor(x)) forcats::fct_drop(x) else x)]
 
-      if (private$scale == "log") {
-        return(dt_out)
-      }
-
-      if (summarise) {
-        dt_out <- convert_log2_scale_inverse(
-          dt_out, vars_to_transform = c("me", "lo", "hi"))
-      } else {
-        dt_out <- convert_log2_scale_inverse(
-          dt_out, vars_to_transform = "mu")
-      }
+      class(dt_out) <- append("biokinetics_population_trajectories", class(dt_out))
+      attr(dt_out, "summarised") <- summarise
+      attr(dt_out, "covariates") <- private$all_formula_vars
       dt_out
     },
     #' @description Process the stan model results into a data.table.
@@ -550,7 +552,10 @@ biokinetics <- R6::R6Class(
           by = c("calendar_day", "titre_type"))
       }
 
-      dt_out[, time_shift := time_shift]
+      dt_out <- dt_out[, time_shift := time_shift]
+      class(dt_out) <- append("biokinetics_individual_trajectories", class(dt_out))
+      attr(dt_out, "summarised") <- summarise
+      dt_out
     }
   )
 )
