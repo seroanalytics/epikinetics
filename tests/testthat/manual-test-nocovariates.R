@@ -1,8 +1,7 @@
 library(ggplot2)
 library(epikinetics)
 
-mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                 priors = scova_priors())
+mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"))
 
 mod$fit(chains = 4,
         parallel_chains = 4,
@@ -21,7 +20,7 @@ ggplot(data = dat) +
                 colour = titre_type)) +
   geom_ribbon(aes(x = t,
                   ymin = lo,
-                  ymax  = hi,
+                  ymax = hi,
                   fill = titre_type), alpha = 0.65) +
   coord_cartesian(clip = "off") +
   labs(x = "Time since last exposure (days)",
@@ -85,13 +84,14 @@ plot_data[, titre_type := forcats::fct_relevel(
   titre_type,
   c("Ancestral", "Alpha", "Delta"))]
 
-ggplot() + geom_line(
-  data = plot_data,
-  aes(x = calendar_date,
-      y = me,
-      group = interaction(titre_type, wave),
-      colour = titre_type),
-  alpha = 0.2) +
+ggplot() +
+  geom_line(
+    data = plot_data,
+    aes(x = calendar_date,
+        y = me,
+        group = interaction(titre_type, wave),
+        colour = titre_type),
+    alpha = 0.2) +
   geom_ribbon(
     data = plot_data,
     aes(x = calendar_date,

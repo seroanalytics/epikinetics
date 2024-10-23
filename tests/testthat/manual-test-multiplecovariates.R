@@ -1,9 +1,8 @@
 library(ggplot2)
 library(epikinetics)
 
-mod <- scova$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
-                 priors = scova_priors(),
-                 covariate_formula = ~0 + infection_history:last_vax_type)
+mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                       covariate_formula = ~0 + infection_history:last_vax_type)
 
 mod$fit(chains = 4,
         parallel_chains = 4,
@@ -86,13 +85,14 @@ plot_data[, titre_type := forcats::fct_relevel(
   titre_type,
   c("Ancestral", "Alpha", "Delta"))]
 
-ggplot() + geom_line(
-  data = plot_data,
-  aes(x = calendar_date,
-      y = me,
-      group = interaction(titre_type, wave),
-      colour = titre_type),
-  alpha = 0.2) +
+ggplot() +
+  geom_line(
+    data = plot_data,
+    aes(x = calendar_date,
+        y = me,
+        group = interaction(titre_type, wave),
+        colour = titre_type),
+    alpha = 0.2) +
   geom_ribbon(
     data = plot_data,
     aes(x = calendar_date,

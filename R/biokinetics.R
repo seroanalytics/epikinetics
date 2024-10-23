@@ -156,7 +156,7 @@ biokinetics <- R6::R6Class(
       dt_out
     },
     prepare_stan_data = function() {
-      pid <- value <- censored <- titre_type <- obs_id <- t_since_last_exp <- NULL
+      pid <- value <- censored <- titre_type <- obs_id <- time_since_last_exp <- NULL
       stan_data <- list(
         N = private$data[, .N],
         N_events = private$data[, data.table::uniqueN(pid)],
@@ -173,7 +173,7 @@ biokinetics <- R6::R6Class(
         cens_lo_idx = private$data[censored == -2, obs_id],
         cens_hi_idx = private$data[censored == 1, obs_id])
 
-      stan_data$t <- private$data[, t_since_last_exp]
+      stan_data$t <- private$data[, time_since_last_exp]
       stan_data$X <- private$design_matrix
       stan_data$P <- ncol(private$design_matrix)
 
@@ -250,7 +250,7 @@ biokinetics <- R6::R6Class(
         private$data <- convert_log2_scale(private$data, "value")
       }
       private$data[, `:=`(obs_id = seq_len(.N),
-                          t_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
+                          time_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
       if (!("censored" %in% colnames(private$data))) {
         private$data$censored <- 0
       }
@@ -477,7 +477,7 @@ biokinetics <- R6::R6Class(
       # Calculating the maximum time each individual has data for after the
       # exposure of interest
       dt_max_dates <- private$data[
-        , .(t_max = max(t_since_last_exp)), by = "pid"]
+        , .(t_max = max(time_since_last_exp)), by = "pid"]
 
       # A very small number of individuals have bleeds on the same day or a few days
       # after their recorded exposure dates, resulting in very short trajectories.

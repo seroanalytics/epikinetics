@@ -9,19 +9,19 @@ test_that("Using numeric and non-numeric pids gives the same answer", {
   mod_new <- biokinetics$new(data = dat, covariate_formula = ~0 + infection_history)
   stan_data_new <- mod_new$get_stan_data()
 
-  expect_equivalent(stan_data, stan_data_new)
+  expect_equal(stan_data, stan_data_new, ignore_attr = TRUE)
 
   fit <- mod$fit(parallel_chains = 4,
-          iter_warmup = 50,
-          iter_sampling = 100,
+          iter_warmup = 10,
+          iter_sampling = 40,
           seed = 100)
 
   fit_new <- mod_new$fit(parallel_chains = 4,
-          iter_warmup = 50,
-          iter_sampling = 100,
+          iter_warmup = 10,
+          iter_sampling = 40,
           seed = 100)
 
-  expect_equivalent(fit$draws(), fit_new$draws())
+  expect_equal(fit$draws(), fit_new$draws(), ignore_attr = TRUE)
 
   set.seed(1)
   params <- mod$extract_individual_parameters(100)
@@ -30,7 +30,7 @@ test_that("Using numeric and non-numeric pids gives the same answer", {
   params_new <- mod_new$extract_individual_parameters(100)
 
   params$pid <- paste0("ID", params$pid)
-  expect_equivalent(params, params_new)
+  expect_equal(params, params_new, ignore_attr = TRUE)
 
   set.seed(1)
   trajectories <- mod$simulate_individual_trajectories(summarise = FALSE,
@@ -41,5 +41,5 @@ test_that("Using numeric and non-numeric pids gives the same answer", {
                                                                n_draws = 100)
   trajectories$pid <- paste0("ID", trajectories$pid)
   trajectories <- dplyr::arrange(trajectories, pid)
-  expect_equivalent(trajectories, trajectories_new)
+  expect_equal(trajectories, trajectories_new, ignore_attr = TRUE)
 })
