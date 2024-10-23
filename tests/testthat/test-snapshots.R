@@ -14,8 +14,6 @@ delta <- mod$fit(parallel_chains = 4,
                  iter_sampling = 100,
                  seed = 100)
 
-local_edition(3)
-
 test_that("Model fits are the same", {
   skip_on_ci()
   expect_snapshot(delta)

@@ -26,7 +26,7 @@ test_that("Can construct stan data", {
   expect_equal(stan_data$N_events, 335)
   expect_equal(stan_data$mu_t0, priors$mu_t0)
   expect_equal(stan_data$sigma_t0, priors$sigma_t0)
-  expect_equivalent(stan_data$id, dat$pid)
+  expect_equal(stan_data$id, dat$pid, ignore_attr = TRUE)
 })
 
 test_that("All data is assumed uncensored if no censored column provided", {
@@ -45,19 +45,19 @@ test_that("Can handle non-numeric pids", {
   dat$pid <- paste0("ID-", dat$pid)
   mod <- biokinetics$new(data = dat)
   stan_data <- mod$get_stan_data()
-  expect_equivalent(stan_data$id, ids)
+  expect_equal(stan_data$id, ids, ignore_attr = TRUE)
 })
 
 test_that("Natural scale data is converted to log scale for stan", {
   dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
   mod <- biokinetics$new(data = dat)
   stan_data <- mod$get_stan_data()
-  expect_equivalent(stan_data$value, convert_log2_scale(dat, "value")$value)
+  expect_equal(stan_data$value, convert_log2_scale(dat, "value")$value, ignore_attr = TRUE)
 })
 
 test_that("Log scale data is passed directly to stan", {
   dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
   mod <- biokinetics$new(data = dat, scale = "log")
   stan_data <- mod$get_stan_data()
-  expect_equivalent(stan_data$value, dat$value)
+  expect_equal(stan_data$value, dat$value, ignore_attr = TRUE)
 })
