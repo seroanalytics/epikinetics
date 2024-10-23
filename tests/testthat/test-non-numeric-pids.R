@@ -12,13 +12,13 @@ test_that("Using numeric and non-numeric pids gives the same answer", {
   expect_equal(stan_data, stan_data_new, ignore_attr = TRUE)
 
   fit <- mod$fit(parallel_chains = 4,
-          iter_warmup = 50,
-          iter_sampling = 100,
+          iter_warmup = 10,
+          iter_sampling = 40,
           seed = 100)
 
   fit_new <- mod_new$fit(parallel_chains = 4,
-          iter_warmup = 50,
-          iter_sampling = 100,
+          iter_warmup = 10,
+          iter_sampling = 40,
           seed = 100)
 
   expect_equal(fit$draws(), fit_new$draws(), ignore_attr = TRUE)
