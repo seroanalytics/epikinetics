@@ -73,10 +73,13 @@ plot_data <- function(data, covariates) {
 #' a data.table containing raw data as provided to the biokinetics model.
 #' @export
 plot.biokinetics_population_trajectories <- function(x, ...) {
+  covariates <- attr(x, "covariates")
   if (!attr(x, "summarised")) {
     by <- setdiff(colnames(x), c("t0_pop", "tp_pop", "ts_pop",
-                                            "m1_pop", "m2_pop", "m3_pop",
-                                            ".draw", "mu"))
+                                 "m1_pop", "m2_pop", "m3_pop",
+                                 "beta_t0", "beta_tp", "beta_ts",
+                                 "beta_m1", "beta_m2", "beta_m3",
+                                 ".draw", "mu"))
     x <- summarise_draws(
       x, column_name = "mu", by = by)
   }
@@ -101,8 +104,9 @@ plot.biokinetics_population_trajectories <- function(x, ...) {
                  aes(x = as.integer(day - last_exp_day, units = "days"),
                      y = value), size = 0.5, alpha = 0.5)
   }
-  plot + scale_y_continuous(trans = "log2") +
-    facet_wrap(eval(parse(text = facet_formula(attr(x, "covariates"))))) +
+  plot +
+    scale_y_continuous(trans = "log2") +
+    facet_wrap(eval(parse(text = facet_formula(covariates)))) +
     guides(fill = guide_legend(title = "Titre type"), colour = "none")
 }
 

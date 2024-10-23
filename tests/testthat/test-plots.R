@@ -54,6 +54,10 @@ mock_model <- function(name, package) {
   list(sample = function(x, ...)  readRDS(test_path("testdata", "testdraws.rds")))
 }
 
+mock_model_multiple_covariates <- function(name, package) {
+  list(sample = function(x, ...)  readRDS(test_path("testdata", "testdraws_multiplecovariates.rds")))
+}
+
 test_that("Summarised and un-summarised population trajectories give same plots", {
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good
@@ -67,6 +71,21 @@ test_that("Summarised and un-summarised population trajectories give same plots"
   unsummarised_trajectories <- mod$simulate_population_trajectories(summarise = FALSE)
   vdiffr::expect_doppelganger("populationtrajectories", plot(trajectories))
   vdiffr::expect_doppelganger("populationtrajectories", plot(unsummarised_trajectories))
+})
+
+test_that("Summarised and un-summarised population trajectories give same plots for multiple covariats", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model_multiple_covariates, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history + last_vax_type)
+  mod$fit()
+  trajectories <- mod$simulate_population_trajectories(summarise = TRUE)
+  unsummarised_trajectories <- mod$simulate_population_trajectories(summarise = FALSE)
+  vdiffr::expect_doppelganger("multiplecovariates", plot(trajectories))
+  vdiffr::expect_doppelganger("multiplecovariates", plot(unsummarised_trajectories))
 })
 
 test_that("Can plot population trajectories with data", {
