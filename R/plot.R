@@ -4,15 +4,16 @@
 #' @description Simulate trajectories by drawing random samples from the given
 #' priors for each parameter in the biokinetics model.
 #' @return A ggplot2 object.
-#' @param priors A named list of type 'biokinetics_priors'.
+#' @param x A named list of type 'biokinetics_priors'.
+#' @param \dots Further arguments passed to the method.
 #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
 #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
 #' @param data Optional data.frame with columns time_since_last_exp and value. The raw data to compare to.
-plot_prior_predictive <- function(priors,
-                                  tmax = 150,
-                                  n_draws = 2000,
-                                  data = NULL) {
-  validate_priors(priors)
+plot.biokinetics_priors <- function(x,
+                                    ...,
+                                    tmax = 150,
+                                    n_draws = 2000,
+                                    data = NULL) {
 
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
@@ -23,12 +24,12 @@ plot_prior_predictive <- function(priors,
     validate_required_cols(data, c("time_since_last_exp", "value"))
   }
   params <- data.table(
-    t0 = stats::rnorm(n_draws, priors$mu_t0, priors$sigma_t0), # titre value at t0
-    tp = stats::rnorm(n_draws, priors$mu_tp, priors$sigma_tp), # time of peak
-    ts = stats::rnorm(n_draws, priors$mu_ts, priors$sigma_ts), # time of set point
-    m1 = stats::rnorm(n_draws, priors$mu_m1, priors$sigma_m1), # gradient 1
-    m2 = stats::rnorm(n_draws, priors$mu_m2, priors$sigma_m2), # gradient 2
-    m3 = stats::rnorm(n_draws, priors$mu_m3, priors$sigma_m3) # gradient 3
+    t0 = stats::rnorm(n_draws, x$mu_t0, x$sigma_t0), # titre value at t0
+    tp = stats::rnorm(n_draws, x$mu_tp, x$sigma_tp), # time of peak
+    ts = stats::rnorm(n_draws, x$mu_ts, x$sigma_ts), # time of set point
+    m1 = stats::rnorm(n_draws, x$mu_m1, x$sigma_m1), # gradient 1
+    m2 = stats::rnorm(n_draws, x$mu_m2, x$sigma_m2), # gradient 2
+    m3 = stats::rnorm(n_draws, x$mu_m3, x$sigma_m3) # gradient 3
   )
 
   times <- data.table(t = 1:tmax)

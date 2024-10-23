@@ -278,10 +278,10 @@ biokinetics <- R6::R6Class(
     #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
     plot_prior_predictive = function(tmax = 150,
                                      n_draws = 2000) {
-      plot_prior_predictive(private$priors,
-                            tmax = tmax,
-                            n_draws = n_draws,
-                            data = private$data)
+      plot(private$priors,
+           tmax = tmax,
+           n_draws = n_draws,
+           data = private$data)
     },
     #' @description Plot model input data with a smoothing function. Note that
     #' this plot is on a log scale, regardless of whether data was provided on a

@@ -1,6 +1,6 @@
 test_that("Can plot prior prediction up to tmax", {
   priors <- biokinetics_priors()
-  plot <- plot_prior_predictive(priors, tmax = 100, n_draws = 500)
+  plot <- plot(priors, tmax = 100, n_draws = 500)
   expect_equal(nrow(plot$data), 100)
   expect_equal(length(plot$layers), 2)
 })
@@ -8,9 +8,9 @@ test_that("Can plot prior prediction up to tmax", {
 test_that("Can plot prior prediction with data points", {
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
   priors <- biokinetics_priors()
-  expect_error(plot_prior_predictive(priors, data = data), "Missing required columns: time_since_last_exp")
+  expect_error(plot(priors, data = data), "Missing required columns: time_since_last_exp")
   data[, `:=`(time_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
-  plot <- plot_prior_predictive(priors, data = data, n_draws = 500)
+  plot <- plot(priors, data = data, n_draws = 500)
   expect_equal(length(plot$layers), 3)
 })
 
