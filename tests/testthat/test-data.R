@@ -52,7 +52,9 @@ test_that("Natural scale data is converted to log scale for stan", {
   dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
   mod <- biokinetics$new(data = dat)
   stan_data <- mod$get_stan_data()
-  expect_equal(stan_data$value, convert_log2_scale(dat, "value")$value, ignore_attr = TRUE)
+  expect_equal(stan_data$value,
+               convert_log2_scale(dat, "value")$value,
+               ignore_attr = TRUE)
 })
 
 test_that("Log scale data is passed directly to stan", {

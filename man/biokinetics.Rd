@@ -11,6 +11,8 @@ fit it to a dataset.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-biokinetics-new}{\code{biokinetics$new()}}
+\item \href{#method-biokinetics-plot_prior_predictive}{\code{biokinetics$plot_prior_predictive()}}
+\item \href{#method-biokinetics-plot_model_inputs}{\code{biokinetics$plot_model_inputs()}}
 \item \href{#method-biokinetics-get_stan_data}{\code{biokinetics$get_stan_data()}}
 \item \href{#method-biokinetics-get_covariate_lookup_table}{\code{biokinetics$get_covariate_lookup_table()}}
 \item \href{#method-biokinetics-fit}{\code{biokinetics$fit()}}
@@ -59,6 +61,45 @@ will be converted to a log scale for model fitting.}
 }
 \subsection{Returns}{
 An epikinetics::biokinetics object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-biokinetics-plot_prior_predictive"></a>}}
+\if{latex}{\out{\hypertarget{method-biokinetics-plot_prior_predictive}{}}}
+\subsection{Method \code{plot_prior_predictive()}}{
+Plot the kinetics trajectory predicted by the model priors.
+Note that this is on a log scale, regardless of whether the data was provided
+on a log or a natural scale.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_prior_predictive(tmax = 150, n_draws = 2000)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tmax}}{Integer. The number of time points in each simulated trajectory. Default 150.}
+
+\item{\code{n_draws}}{Integer. The number of trajectories to simulate. Default 2000.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A ggplot2 object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-biokinetics-plot_model_inputs"></a>}}
+\if{latex}{\out{\hypertarget{method-biokinetics-plot_model_inputs}{}}}
+\subsection{Method \code{plot_model_inputs()}}{
+Plot model input data with a smoothing function. Note that
+this plot is on a log scale, regardless of whether data was provided on a
+log or a natural scale.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_model_inputs()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A ggplot2 object.
 }
 }
 \if{html}{\out{<hr>}}

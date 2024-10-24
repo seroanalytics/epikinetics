@@ -6,7 +6,7 @@
 \alias{epikinetics-package}
 \title{epikinetics: Biomarker Kinetics Modelling}
 \description{
-Fit kinetic curves to biomarker data, using a Bayesian hierarchical model
+Fit kinetic curves to biomarker data, using a Bayesian hierarchical model.
 }
 \author{
 \strong{Maintainer}: Alex Hill \email{alex.hill@gmail.com}
