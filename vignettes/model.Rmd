@@ -2,7 +2,7 @@
 title: "Summary of the Stan Model"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A guide to model input and output data}
+  %\VignetteIndexEntry{Summary of the Stan model}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
