@@ -1,8 +1,8 @@
 ---
-title: "A guide to model input and output data"
+title: "A guide to biokinetics input and output data"
 output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{A guide to model input and output data}
+    %\VignetteIndexEntry{A guide to biokinetics input and output data}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
 ---
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 # Input data
 
 The model requires time series data about individual titre readings, along with last exposure times. Times can be relative (e.g. day of study) or absolute (i.e. precise calendar dates).
-The full list of required columns is as follows:
+This is provided via the `data` argument when initialising an object of class [biokinetics](../reference/biokinetics.html), which must be a [data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html) containing the following columns:
 
 | name         | type                 | description                                                                                | required |
 |--------------|----------------------|--------------------------------------------------------------------------------------------| -------- |
@@ -50,11 +50,11 @@ that users who are already familiar with `cmdstanr` are free to do what they wan
 **Important!**
 **If you provide data on a natural scale, it will be converted to a base2 log scale before inference is performed. This means that if working
 directly with the fitted `CmdStanMCMC` all values will be on this scale. The package provides a helper function for converting
-back to the original scale: [convert_log_scale_inverse](../reference/convert_log_scale_inverse.html).**
+back to the original scale: [convert_log2_scale_inverse](../reference/convert_log2_scale_inverse.html).**
 
-Three further functions provide model outputs that we think are particularly useful in [data.table](https://cran.r-project.org/web/packages/data.table/) format.
-[biokinetics](../reference/biokinetics.html) contains documentation on each of these functions so please read that first; this Vignette provides
-guidance on the correct interpretation of each column in the returned tables. (In these functions data is returned on the original scale).
+Three further functions provide model outputs that we think are particularly useful in [data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html) format.
+[biokinetics](../reference/biokinetics.html) contains documentation on each of these functions so please read that first; this vignette provides
+guidance on the correct interpretation of each column in the returned tables (in these functions data is returned on the original scale).
 
 ## simulate_population_trajectories
 
@@ -72,7 +72,6 @@ Returned columns are
 | lo                  | numeric    | Titre value at the 0.025 quantile                                                             |
 | hi                  | numeric    | Titre value at the 0.975 quantile                                                             |
 | titre_type          | character  | Name of the titre or biomarker                                                                |
-| censored            | -1, 0 or 1 | Whether this observation should be treated as censored: -1 for lower, 1 for upper, 0 for none |
 
 There will also be a column for each covariate in the regression model.
 
@@ -83,23 +82,26 @@ Returned columns are
 | name                | type    | description                        |
 |---------------------|---------|------------------------------------|
 | time_since_last_exp | integer | Number of days since last exposure |
-| t0_pop              | numeric |                                    |
-| tp_pop              | numeric |                                    |
-| ts_pop              | numeric |                                    |
-| m1_pop              | numeric |                                    |
-| m2_pop              | numeric |                                    |
-| m3_pop              | numeric |                                    |
-| beta_t0             | numeric |                                    |
-| beta_tp             | numeric |                                    |
-| beta_ts             | numeric |                                    |
-| beta_m1             | numeric |                                    |
-| beta_m2             | numeric |                                    |
-| beta_t3             | numeric |                                    |
+| t0_pop              | numeric | Titre value at time 0              |
+| tp_pop              | numeric | Time at peak titre                 |
+| ts_pop              | numeric | Time at start of waning            |
+| m1_pop              | numeric | Boosting rate                      |
+| m2_pop              | numeric | Plateau rate                       |
+| m3_pop              | numeric | Waning rate                        |
+| beta_t0             | numeric | Coefficient to adjust t0 by        |
+| beta_tp             | numeric | Coefficient to adjust tp by        |
+| beta_ts             | numeric | Coefficient to adjust ts by        |
+| beta_m1             | numeric | Coefficient to adjust m1 by        |
+| beta_m2             | numeric | Coefficient to adjust m2 by        |
+| beta_m3             | numeric | Coefficient to adjust m3 by        |
 | mu                  | numeric | Titre value                        |
 | .draw               | integer | Draw number                        |
 | titre_type          | numeric | Name of the titre or biomarker     |
 
 There will also be column for each covariate in the hierarchical model.
+
+See the [model vignette](../article/model.html) for more detail about the model
+parameters.
 
 ## simulate_individual_trajectories
 
