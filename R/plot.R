@@ -75,26 +75,23 @@ plot_data <- function(data, covariates) {
 #' @export
 plot.biokinetics_population_trajectories <- function(x, ..., data = NULL) {
   covariates <- attr(x, "covariates")
-  if (!attr(x, "summarised")) {
-    by <- setdiff(colnames(x), c("t0_pop", "tp_pop", "ts_pop",
-                                 "m1_pop", "m2_pop", "m3_pop",
-                                 "beta_t0", "beta_tp", "beta_ts",
-                                 "beta_m1", "beta_m2", "beta_m3",
-                                 ".draw", "mu"))
-    x <- summarise_draws(
-      x, column_name = "mu", by = by)
-  }
+
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   time_since_last_exp <- value <- me <- titre_type <- lo <- hi <- NULL
   day <- last_exp_day <- NULL
 
-  plot <- ggplot(x) +
-    geom_line(aes(x = time_since_last_exp, y = me, colour = titre_type)) +
-    geom_ribbon(aes(x = time_since_last_exp,
-                    ymin = lo,
-                    ymax = hi,
-                    fill = titre_type), alpha = 0.5)
+  if (attr(x, "summarised")) {
+    plot <- ggplot(x) +
+      geom_line(aes(x = time_since_last_exp, y = me, colour = titre_type)) +
+      geom_ribbon(aes(x = time_since_last_exp,
+                      ymin = lo,
+                      ymax = hi,
+                      fill = titre_type), alpha = 0.5)
+  } else {
+    plot <- ggplot(x) +
+      geom_line(aes(x = time_since_last_exp, y = mu, colour = titre_type), alpha = 0.5)
+  }
 
   if (!is.null(data)) {
     validate_required_cols(data)

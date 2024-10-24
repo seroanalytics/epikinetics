@@ -142,11 +142,6 @@ biokinetics <- R6::R6Class(
 
       dt_out[, t_id := NULL]
 
-      if (private$scale == "natural") {
-          dt_out <- convert_log2_scale_inverse(
-            dt_out, vars_to_transform = "mu")
-      }
-
       if (summarise == TRUE) {
         logger::log_info("Summarising into quantiles")
         dt_out <- summarise_draws(
@@ -413,6 +408,16 @@ biokinetics <- R6::R6Class(
 
       dt_out <- dt_out[
         , lapply(.SD, function(x) if (is.factor(x)) forcats::fct_drop(x) else x)]
+
+      if (private$scale == "natural") {
+        if (summarise) {
+          dt_out <- convert_log2_scale_inverse(
+            dt_out, vars_to_transform = c("me", "lo", "hi"))
+        } else {
+          dt_out <- convert_log2_scale_inverse(
+            dt_out, vars_to_transform = "mu")
+        }
+      }
 
       class(dt_out) <- append("biokinetics_population_trajectories", class(dt_out))
       attr(dt_out, "summarised") <- summarise
