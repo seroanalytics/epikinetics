@@ -12,6 +12,7 @@
 #' @importFrom data.table .SD
 #' @importFrom data.table data.table
 #' @importFrom ggplot2 aes facet_wrap geom_point geom_ribbon geom_line geom_smooth ggplot guides guide_legend scale_y_continuous geom_hline annotate
+#' @importFrom shiny column fluidRow div numericInput
 #' @useDynLib epikinetics, .registration = TRUE
 ## usethis namespace: end
 

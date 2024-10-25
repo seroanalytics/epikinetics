@@ -69,11 +69,13 @@ plot.biokinetics_priors <- function(x,
 #' @return A ggplot2 object.
 #' @param data A data.table with required columns time_since_last_exp, value and titre_type.
 #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
+#' @param ncol Integer. Optional number of columns to display facets in.
 #' @param covariates Optional vector of covariate names to facet by (these must correspond to columns in the data.table)
 #' @param upper_censoring_limit Optional upper detection limit.
 #' @param lower_censoring_limit Optional lower detection limit.
 plot_sero_data <- function(data,
                            tmax = 150,
+                           ncol = NULL,
                            covariates = character(0),
                            upper_censoring_limit = NULL,
                            lower_censoring_limit = NULL) {
@@ -87,7 +89,7 @@ plot_sero_data <- function(data,
     geom_point(aes(x = time_since_last_exp, y = value, colour = titre_type),
                size = 0.5, alpha = 0.5) +
     geom_smooth(aes(x = time_since_last_exp, y = value, colour = titre_type)) +
-    facet_wrap(eval(parse(text = facet_formula(covariates)))) +
+    facet_wrap(eval(parse(text = facet_formula(covariates))), ncol = ncol) +
     guides(colour = guide_legend(title = "Titre type"))
 
   add_limits(plot, upper_censoring_limit, lower_censoring_limit)
