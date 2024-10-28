@@ -347,7 +347,7 @@ biokinetics <- R6::R6Class(
     #' this plot is of the data as provided to the Stan model so is on a log scale,
     #' regardless of whether data was provided on a log or a natural scale.
     #' @param tmax Integer. Maximum time since last exposure to include. Default 150.
-    #' @vparam ncol Optional number of cols to display facets in.
+    #' @param ncol Optional number of cols to display facets in.
     #' @return A ggplot2 object.
     plot_model_inputs = function(tmax = 150, ncol = NULL) {
       plot_sero_data(private$data,
@@ -357,8 +357,7 @@ biokinetics <- R6::R6Class(
                      upper_censoring_limit = private$stan_input_data$upper_censoring_limit,
                      lower_censoring_limit = private$stan_input_data$lower_censoring_limit)
     },
-    #' @description View the data that is passed to the stan model, for debugging purposes.
-    #' @return A list of arguments that will be passed to the stan model.
+    #' @description Opens an RShiny app to help with model diagnostics.
     inspect = function() {
       inspect_model(self, private)
     },
