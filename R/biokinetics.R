@@ -283,7 +283,7 @@ biokinetics <- R6::R6Class(
     #' log or a natural scale.
     #' @return A ggplot2 object.
     plot_model_inputs = function() {
-      plot_data(private$data, private$all_formula_vars)
+      plot_sero_data(private$data, private$all_formula_vars)
     },
     #' @description View the data that is passed to the stan model, for debugging purposes.
     #' @return A list of arguments that will be passed to the stan model.
