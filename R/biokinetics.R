@@ -191,7 +191,7 @@ biokinetics <- R6::R6Class(
 
       return(dt)
     },
-    extract_parameters = function(params, n_draws = 2500) {
+    extract_parameters = function(params, n_draws) {
       private$check_fitted()
       params_proc <- rlang::parse_exprs(params)
 
@@ -306,9 +306,9 @@ biokinetics <- R6::R6Class(
     },
     #' @description Extract fitted population parameters
     #' @return A data.table
-    #' @param n_draws Numeric
+    #' @param n_draws Integer. Default 2000.
     #' @param human_readable_covariates Logical. Default TRUE.
-    extract_population_parameters = function(n_draws = 2500,
+    extract_population_parameters = function(n_draws = 2000,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
       has_covariates <- length(private$all_formula_vars) > 0
@@ -342,10 +342,10 @@ biokinetics <- R6::R6Class(
     },
     #' @description Extract fitted individual parameters
     #' @return A data.table
-    #' @param n_draws Numeric
+    #' @param n_draws Integer. Default 2000.
     #' @param include_variation_params Logical
     #' @param human_readable_covariates Logical. Default TRUE.
-    extract_individual_parameters = function(n_draws = 2500,
+    extract_individual_parameters = function(n_draws = 2000,
                                              include_variation_params = TRUE,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
@@ -387,11 +387,11 @@ biokinetics <- R6::R6Class(
     #' @param summarise Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
     #' return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
     #' draws from posterior parameter distributions.
-    #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
+    #' @param n_draws Integer. Maximum number of samples to include. Default 2000.
     simulate_population_trajectories = function(
       t_max = 150,
       summarise = TRUE,
-      n_draws = 2500) {
+      n_draws = 2000) {
 
       private$check_fitted()
       validate_numeric(t_max)
@@ -428,8 +428,8 @@ biokinetics <- R6::R6Class(
     #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
     #' mu_s_me, and a column for each covariate. See the data vignette for details:
     #' \code{vignette("data", package = "epikinetics")}
-    #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
-    population_stationary_points = function(n_draws = 2500) {
+    #' @param n_draws Integer. Maximum number of samples to include. Default 2000.
+    population_stationary_points = function(n_draws = 2000) {
       private$check_fitted()
       validate_numeric(n_draws)
 
@@ -481,11 +481,11 @@ biokinetics <- R6::R6Class(
     #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
     #' hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
     #' Default TRUE.
-    #' @param n_draws Integer. Maximum number of samples to draw. Default 2500.
+    #' @param n_draws Integer. Maximum number of samples to draw. Default 2000.
     #' @param time_shift Integer. Number of days to adjust the exposure day by. Default 0.
     simulate_individual_trajectories = function(
       summarise = TRUE,
-      n_draws = 2500,
+      n_draws = 2000,
       time_shift = 0) {
       private$check_fitted()
       validate_logical(summarise)
