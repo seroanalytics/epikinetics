@@ -156,7 +156,7 @@ A CmdStanMCMC fitted model object: \url{https://mc-stan.org/cmdstanr/reference/C
 Extract fitted population parameters
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{biokinetics$extract_population_parameters(
-  n_draws = 2500,
+  n_draws = 2000,
   human_readable_covariates = TRUE
 )}\if{html}{\out{</div>}}
 }
@@ -164,7 +164,7 @@ Extract fitted population parameters
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n_draws}}{Numeric}
+\item{\code{n_draws}}{Integer. Default 2000.}
 
 \item{\code{human_readable_covariates}}{Logical. Default TRUE.}
 }
@@ -181,7 +181,7 @@ A data.table
 Extract fitted individual parameters
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{biokinetics$extract_individual_parameters(
-  n_draws = 2500,
+  n_draws = 2000,
   include_variation_params = TRUE,
   human_readable_covariates = TRUE
 )}\if{html}{\out{</div>}}
@@ -190,7 +190,7 @@ Extract fitted individual parameters
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n_draws}}{Numeric}
+\item{\code{n_draws}}{Integer. Default 2000.}
 
 \item{\code{include_variation_params}}{Logical}
 
@@ -211,7 +211,7 @@ Process the model results into a data table of titre values over time.
 \if{html}{\out{<div class="r">}}\preformatted{biokinetics$simulate_population_trajectories(
   t_max = 150,
   summarise = TRUE,
-  n_draws = 2500
+  n_draws = 2000
 )}\if{html}{\out{</div>}}
 }
 
@@ -224,7 +224,7 @@ Process the model results into a data table of titre values over time.
 return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
 draws from posterior parameter distributions.}
 
-\item{\code{n_draws}}{Integer. Maximum number of samples to include. Default 2500.}
+\item{\code{n_draws}}{Integer. Maximum number of samples to include. Default 2000.}
 }
 \if{html}{\out{</div>}}
 }
@@ -242,13 +242,13 @@ titre_type and a column for each covariate in the hierarchical model. See the da
 \subsection{Method \code{population_stationary_points()}}{
 Process the stan model results into a data.table.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{biokinetics$population_stationary_points(n_draws = 2500)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$population_stationary_points(n_draws = 2000)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n_draws}}{Integer. Maximum number of samples to include. Default 2500.}
+\item{\code{n_draws}}{Integer. Maximum number of samples to include. Default 2000.}
 }
 \if{html}{\out{</div>}}
 }
@@ -267,7 +267,7 @@ computationally expensive and may take a while to run if n_draws is large.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{biokinetics$simulate_individual_trajectories(
   summarise = TRUE,
-  n_draws = 2500,
+  n_draws = 2000,
   time_shift = 0
 )}\if{html}{\out{</div>}}
 }
@@ -279,7 +279,7 @@ computationally expensive and may take a while to run if n_draws is large.
 hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
 Default TRUE.}
 
-\item{\code{n_draws}}{Integer. Maximum number of samples to draw. Default 2500.}
+\item{\code{n_draws}}{Integer. Maximum number of samples to draw. Default 2000.}
 
 \item{\code{time_shift}}{Integer. Number of days to adjust the exposure day by. Default 0.}
 }
