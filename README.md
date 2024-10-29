@@ -81,6 +81,12 @@ To run all tests locally:
 devtools::test()
 ```
 
+To run tests in a single file:
+
+```{r}
+devtools::test(filter="filename")
+```
+
 Some tests are skipped on CI to avoid exorbitantly long build times, but this means 
 it is important to run all tests locally at least once before merging a pull request.
 

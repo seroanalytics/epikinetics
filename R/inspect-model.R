@@ -135,7 +135,7 @@ inspect_model <- function(mod, private) {
       if (is.null(selected) || selected == "None") {
         selected <- character(0)
       }
-      plot_data(data(), ncol = cols(), covariates = selected) +
+      plot_sero_data(data(), ncol = cols(), covariates = selected) +
         theme(plot.margin = unit(c(1, 0, 0, 0), "cm"))
     })
 

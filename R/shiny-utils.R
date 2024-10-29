@@ -9,7 +9,7 @@ raw_numeric_input <- function(inputId, value, min = NA, max = NA, step = NA) {
 
 raw_text_input <- function(inputId, value = "", placeholder = NULL) {
   value <- shiny::restoreInput(id = inputId, default = value)
-  tags$input(id = inputId, type = "text", class = "shiny-input-text form-control", value = value, placeholder = placeholder)
+  shiny::tags$input(id = inputId, type = "text", class = "shiny-input-text form-control", value = value, placeholder = placeholder)
 }
 
 raw_select_input <- function(inputId, choices, selected = NULL, multiple = FALSE) {
@@ -18,7 +18,7 @@ raw_select_input <- function(inputId, choices, selected = NULL, multiple = FALSE
   if (is.null(selected)) {
     if (!multiple) selected <- shiny:::firstChoice(choices)
   } else selected <- as.character(selected)
-  tags$select(id = inputId, class = "shiny-input-select", class = "form-control", shiny:::selectOptions(choices, selected, inputId))
+  shiny::tags$select(id = inputId, class = "shiny-input-select", class = "form-control", shiny:::selectOptions(choices, selected, inputId))
 }
 
 
