@@ -47,7 +47,18 @@ plot.biokinetics_priors <- function(x,
     geom_ribbon(aes(x = t, ymin = lo, ymax = hi), alpha = 0.5)
 
   if (!is.null(data)) {
-    plot <- plot + geom_point(data = data, aes(x = time_since_last_exp, y = value))
+    if (!("censored" %in% colnames(data))) {
+      data$censored <- FALSE
+    } else {
+      data$censored <- data$censored != 0
+    }
+    dat <- data[time_since_last_exp <= tmax,]
+    plot <- plot +
+      geom_point(data = dat, size = 0.5,
+                 aes(x = time_since_last_exp,
+                     y = value,
+                     shape = censored)) +
+      guides(shape = guide_legend(title = "Censored"))
   }
   plot
 }
@@ -93,18 +104,26 @@ plot.biokinetics_population_trajectories <- function(x, ..., data = NULL) {
       geom_line(aes(x = time_since_last_exp, y = mu,
                     colour = titre_type, group = .draw), alpha = 0.1, linewidth = 0.1)
   }
-
   if (!is.null(data)) {
     validate_required_cols(data)
+    if (!("censored" %in% colnames(data))) {
+      data$censored <- FALSE
+    } else {
+      data$censored <- data$censored != 0
+    }
     plot <- plot +
       geom_point(data = data,
                  aes(x = as.integer(day - last_exp_day, units = "days"),
-                     y = value), size = 0.5, alpha = 0.5)
+                     y = value, shape = censored), size = 0.5, alpha = 0.5)
+  }
+  if (attr(x, "scale") == "natural") {
+    plot <- plot + scale_y_continuous(trans = "log2")
   }
   plot +
-    scale_y_continuous(trans = "log2") +
     facet_wrap(eval(parse(text = facet_formula(covariates)))) +
-    guides(fill = guide_legend(title = "Titre type"), colour = "none")
+    guides(fill = guide_legend(title = "Titre type"),
+           colour = "none",
+           shape = guide_legend(title = "Censored"))
 }
 
 facet_formula <- function(covariates) {

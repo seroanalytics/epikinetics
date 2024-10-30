@@ -421,6 +421,7 @@ biokinetics <- R6::R6Class(
 
       class(dt_out) <- append("biokinetics_population_trajectories", class(dt_out))
       attr(dt_out, "summarised") <- summarise
+      attr(dt_out, "scale") <- private$scale
       attr(dt_out, "covariates") <- private$all_formula_vars
       dt_out
     },

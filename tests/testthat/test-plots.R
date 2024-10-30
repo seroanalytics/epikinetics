@@ -100,5 +100,25 @@ test_that("Can plot population trajectories with data", {
   mod <- biokinetics$new(data = data, covariate_formula = ~0 + infection_history)
   fit <- mod$fit()
   trajectories <- mod$simulate_population_trajectories()
-  vdiffr::expect_doppelganger("populationtrajectories_data", plot(trajectories, data = data))
+  plot <- plot(trajectories, data = data)
+  expect_equal(length(plot$scales$scales), 1)
+  vdiffr::expect_doppelganger("populationtrajectories_data", plot)
+})
+
+test_that("Can plot population trajectories with log scale input data", {
+  local_mocked_bindings(
+    stan_package_model = mock_model, .package = "instantiate"
+  )
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  data <- convert_log2_scale(data)
+  mod <- biokinetics$new(data = data,
+                         covariate_formula = ~0 + infection_history,
+                         scale = "log")
+  fit <- mod$fit()
+  trajectories <- mod$simulate_population_trajectories()
+  plot <- plot(trajectories, data = data)
+  expect_equal(length(plot$scales$scales), 0)
+  vdiffr::expect_doppelganger("populationtrajectories_logscale", plot)
 })
