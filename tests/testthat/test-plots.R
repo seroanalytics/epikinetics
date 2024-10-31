@@ -58,7 +58,7 @@ mock_model_multiple_covariates <- function(name, package) {
   list(sample = function(x, ...)  readRDS(test_path("testdata", "testdraws_multiplecovariates.rds")))
 }
 
-test_that("Cna plot summarised and un-summarised population trajectories", {
+test_that("Can plot summarised and un-summarised population trajectories", {
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good
   local_mocked_bindings(

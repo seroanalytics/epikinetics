@@ -47,11 +47,7 @@ plot.biokinetics_priors <- function(x,
     geom_ribbon(aes(x = t, ymin = lo, ymax = hi), alpha = 0.5)
 
   if (!is.null(data)) {
-    if (!("censored" %in% colnames(data))) {
-      data$censored <- FALSE
-    } else {
-      data$censored <- data$censored != 0
-    }
+    add_censored_indicator(data)
     dat <- data[time_since_last_exp <= tmax,]
     plot <- plot +
       geom_point(data = dat, size = 0.5,
@@ -106,11 +102,7 @@ plot.biokinetics_population_trajectories <- function(x, ..., data = NULL) {
   }
   if (!is.null(data)) {
     validate_required_cols(data)
-    if (!("censored" %in% colnames(data))) {
-      data$censored <- FALSE
-    } else {
-      data$censored <- data$censored != 0
-    }
+    add_censored_indicator(data)
     plot <- plot +
       geom_point(data = data,
                  aes(x = as.integer(day - last_exp_day, units = "days"),
@@ -128,4 +120,14 @@ plot.biokinetics_population_trajectories <- function(x, ..., data = NULL) {
 
 facet_formula <- function(covariates) {
   paste("~", paste(c("titre_type", covariates), collapse = "+"))
+}
+
+add_censored_indicator <- function(data) {
+  if (!("censored" %in% colnames(data))) {
+    # censored is an optional column in input data
+    # if not present, treat all points as uncensored
+    data[, censored:= FALSE]
+  } else {
+    data[, censored:= censored != 0]
+  }
 }
