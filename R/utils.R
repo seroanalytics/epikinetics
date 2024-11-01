@@ -1,8 +1,10 @@
 convert_log2_scale <- function(
-  dt_in, vars_to_transform = "value") {
+  dt_in,
+  lower_limit,
+  vars_to_transform = "value") {
   dt_out <- data.table::copy(dt_in)
   for (var in vars_to_transform) {
-    dt_out[, (var) := log2(get(var))]
+    dt_out[, (var) := log2(get(var) / lower_limit)]
   }
   return(dt_out)
 }
@@ -16,11 +18,10 @@ convert_log2_scale <- function(
 #' @param dt_in data.table containing data to be transformed from base 2 log to natural scale.
 #' @param vars_to_transform Names of columns to apply the transformation to.
 #' @export
-convert_log2_scale_inverse <- function(dt_in, vars_to_transform) {
+convert_log2_scale_inverse <- function(dt_in, vars_to_transform, lower_limit) {
   dt_out <- data.table::copy(dt_in)
   for (var in vars_to_transform) {
-    # Reverse the log2 transformation
-    dt_out[, (var) := 2^(get(var))]
+    dt_out[, (var) := lower_limit * 2^(get(var))]
   }
   dt_out
 }

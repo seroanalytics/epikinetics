@@ -112,7 +112,7 @@ test_that("Can plot population trajectories with log scale input data", {
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-  data <- convert_log2_scale(data)
+  data <- convert_log2_scale(data, lower_limit = min(data$value))
   mod <- biokinetics$new(data = data,
                          covariate_formula = ~0 + infection_history,
                          scale = "log")

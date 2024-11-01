@@ -11,6 +11,8 @@ biokinetics <- R6::R6Class(
     scale = NULL,
     priors = NULL,
     preds_sd = NULL,
+    upper_limit = NULL,
+    lower_limit = NULL,
     data = NULL,
     covariate_formula = NULL,
     fitted = NULL,
@@ -28,25 +30,27 @@ biokinetics <- R6::R6Class(
     },
     get_upper_detection_limit = function(upper_limit) {
       if (is.null(upper_limit)) {
-        return(max(private$data$value))
+        private$upper_limit <- max(private$data$value)
+      } else {
+        max_value <- max(private$data$value)
+        if (max_value > upper_limit) {
+          warning(sprintf("Data contains a value of %s which is greater than the upper detection limit %s",
+                          max_value, upper_limit))
+        }
+        private$upper_limit <- upper_limit
       }
-      max_value <- max(private$data$value)
-      if (max_value > upper_limit) {
-        warning(sprintf("Data contains a value of %s which is greater than the upper detection limit %s",
-                        max_value, upper_limit))
-      }
-      return(upper_limit)
     },
     get_lower_detection_limit = function(lower_limit) {
       if (is.null(lower_limit)) {
-        return(min(private$data$value))
+        private$lower_limit <- min(private$data$value)
+      } else {
+        min_value <- min(private$data$value)
+        if (max_value > upper_limit) {
+          warning(sprintf("Data contains a value of %s which is smaller than the lower detection limit %s",
+                          min_value, lower_limit))
+        }
+         private$lower_limit <- lower_limit
       }
-      min_value <- min(private$data$value)
-      if (max_value > upper_limit) {
-        warning(sprintf("Data contains a value of %s which is smaller than the lower detection limit %s",
-                        min_value, lower_limit))
-      }
-      return(lower_limit)
     },
     model_matrix_with_dummy = function(data) {
 
@@ -177,7 +181,7 @@ biokinetics <- R6::R6Class(
       }
       dt_out
     },
-    prepare_stan_data = function(upper, lower) {
+    prepare_stan_data = function() {
       pid <- value <- censored <- titre_type <- obs_id <- time_since_last_exp <- NULL
       stan_data <- list(
         N = private$data[, .N],
@@ -198,9 +202,14 @@ biokinetics <- R6::R6Class(
       stan_data$t <- private$data[, time_since_last_exp]
       stan_data$X <- private$design_matrix
       stan_data$P <- ncol(private$design_matrix)
-      stan_data$upper_limit <- log2(upper)
-      stan_data$lower_limit <- log2(lower)
-
+      if (private$scale == "natural") {
+        # do the same transformation as used on the data
+        stan_data$upper_limit <- log2(private$upper_limit / private$lower_limit)
+        stan_data$lower_limit <- log2(private$lower_limit / private$lower_limit)
+      } else {
+        stan_data$upper_limit <- private$upper_limit
+        stan_data$lower_limit <- private$lower_limit
+      }
       private$stan_input_data <- c(stan_data, private$priors)
     },
     adjust_parameters = function(dt) {
@@ -278,9 +287,6 @@ biokinetics <- R6::R6Class(
       validate_required_cols(private$data)
       validate_formula_vars(private$all_formula_vars, private$data)
       logger::log_info("Preparing data for stan")
-      if (scale == "natural") {
-        private$data <- convert_log2_scale(private$data, "value")
-      }
       private$data[, `:=`(obs_id = seq_len(.N),
                           time_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
       if (!("censored" %in% colnames(private$data))) {
@@ -290,9 +296,14 @@ biokinetics <- R6::R6Class(
       private$build_covariate_lookup_table()
       private$build_pid_lookup()
       private$build_titre_type_lookup()
-      upper <- private$get_upper_detection_limit(upper_detection_limit)
-      lower <- private$get_lower_detection_limit(lower_detection_limit)
-      private$prepare_stan_data(upper, lower)
+      private$get_upper_detection_limit(upper_detection_limit)
+      private$get_lower_detection_limit(lower_detection_limit)
+      if (scale == "natural") {
+        private$data <- convert_log2_scale(private$data,
+                                           lower_limit = private$lower_limit,
+                                           vars_to_transform = "value")
+      }
+      private$prepare_stan_data()
       logger::log_info("Retrieving compiled model")
       private$model <- instantiate::stan_package_model(
         name = "antibody_kinetics_main",
@@ -446,10 +457,14 @@ biokinetics <- R6::R6Class(
       if (private$scale == "natural") {
         if (summarise) {
           dt_out <- convert_log2_scale_inverse(
-            dt_out, vars_to_transform = c("me", "lo", "hi"))
+            dt_out,
+            vars_to_transform = c("me", "lo", "hi"),
+            lower_limit = private$lower_limit)
         } else {
           dt_out <- convert_log2_scale_inverse(
-            dt_out, vars_to_transform = "mu")
+            dt_out,
+            vars_to_transform = "mu",
+            lower_limit = private$lower_limit)
         }
       }
 
@@ -492,7 +507,9 @@ biokinetics <- R6::R6Class(
 
       if (private$scale == "natural") {
         dt_peak_switch <- convert_log2_scale_inverse(
-          dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
+          dt_peak_switch,
+          vars_to_transform = c("mu_0", "mu_p", "mu_s"),
+          lower_limit = private$lower_limit)
       }
 
       logger::log_info("Calculating medians")
@@ -556,7 +573,9 @@ biokinetics <- R6::R6Class(
 
       if (private$scale == "natural") {
         dt_params_ind_traj <- data.table::setDT(convert_log2_scale_inverse_cpp(
-          dt_params_ind_traj, vars_to_transform = "mu"))
+          dt_params_ind_traj,
+          vars_to_transform = "mu",
+          lower_limit = private$lower_limit))
       }
 
       # convert numeric pid to original pid

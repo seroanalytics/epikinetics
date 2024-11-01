@@ -61,14 +61,18 @@ plot.biokinetics_priors <- function(x,
 
 plot_sero_data <- function(data, covariates = character(0)) {
   validate_required_cols(data, c("time_since_last_exp", "value", "titre_type"))
+  add_censored_indicator(data)
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   time_since_last_exp <- value <- titre_type <- NULL
 
   ggplot(data) +
-    geom_point(aes(x = time_since_last_exp, y = value, colour = titre_type)) +
-    geom_smooth(aes(x = time_since_last_exp, y = value, colour = titre_type)) +
+    geom_point(aes(x = time_since_last_exp, y = value, colour = titre_type, shape = censored),
+               size = 0.5, alpha = 0.5) +
+    geom_smooth(data = subset(data, !censored),
+                mapping = aes(x = time_since_last_exp, y = value, colour = titre_type)) +
     facet_wrap(eval(parse(text = facet_formula(covariates)))) +
+    guides(shape = guide_legend(title = "Censored")) +
     guides(colour = guide_legend(title = "Titre type"))
 }
 
