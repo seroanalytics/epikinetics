@@ -150,7 +150,7 @@ inspect_model <- function(mod, private) {
       }
     })
 
-    output$data_plot <- renderUI({
+    output$data_plot <- shiny::renderUI({
       if (nrow(data()) > 0) {
         plotly::plotlyOutput("data")
       } else {
