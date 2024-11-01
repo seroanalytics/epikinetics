@@ -149,7 +149,7 @@ model {
   // Likelihood for observations at lower limit: log2(value/5) = 0
   target += normal_lcdf(0 | mu[cens_lo_idx], sigma);
 
-  // Censoring at log2(value/5) = 7, originally value = 2560
+  // Censoring at log2(value/5) = 9, originally value = 2560
   target += normal_lccdf(9 | mu[cens_hi_idx], sigma); 
   
   // Covariate-level mean priors, parameterised from previous studies

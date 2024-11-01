@@ -1,7 +1,6 @@
 convert_log2_scale <- function(
-  dt_in, vars_to_transform = "titre",
+  dt_in, vars_to_transform = "value",
   simplify_limits = TRUE) {
-
   dt_out <- data.table::copy(dt_in)
   for (var in vars_to_transform) {
     if (simplify_limits == TRUE) {

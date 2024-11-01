@@ -191,7 +191,7 @@ biokinetics <- R6::R6Class(
 
       return(dt)
     },
-    extract_parameters = function(params, n_draws = 2500) {
+    extract_parameters = function(params, n_draws) {
       private$check_fitted()
       params_proc <- rlang::parse_exprs(params)
 
@@ -265,6 +265,26 @@ biokinetics <- R6::R6Class(
         package = "epikinetics"
       )
     },
+    #' @description Plot the kinetics trajectory predicted by the model priors.
+    #' Note that this is on a log scale, regardless of whether the data was provided
+    #' on a log or a natural scale.
+    #' @return A ggplot2 object.
+    #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
+    #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
+    plot_prior_predictive = function(tmax = 150,
+                                     n_draws = 2000) {
+      plot(private$priors,
+           tmax = tmax,
+           n_draws = n_draws,
+           data = private$data)
+    },
+    #' @description Plot model input data with a smoothing function. Note that
+    #' this plot is on a log scale, regardless of whether data was provided on a
+    #' log or a natural scale.
+    #' @return A ggplot2 object.
+    plot_model_inputs = function() {
+      plot_sero_data(private$data, private$all_formula_vars)
+    },
     #' @description View the data that is passed to the stan model, for debugging purposes.
     #' @return A list of arguments that will be passed to the stan model.
     get_stan_data = function() {
@@ -286,9 +306,9 @@ biokinetics <- R6::R6Class(
     },
     #' @description Extract fitted population parameters
     #' @return A data.table
-    #' @param n_draws Numeric
+    #' @param n_draws Integer. Default 2000.
     #' @param human_readable_covariates Logical. Default TRUE.
-    extract_population_parameters = function(n_draws = 2500,
+    extract_population_parameters = function(n_draws = 2000,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
       has_covariates <- length(private$all_formula_vars) > 0
@@ -322,10 +342,10 @@ biokinetics <- R6::R6Class(
     },
     #' @description Extract fitted individual parameters
     #' @return A data.table
-    #' @param n_draws Numeric
+    #' @param n_draws Integer. Default 2000.
     #' @param include_variation_params Logical
     #' @param human_readable_covariates Logical. Default TRUE.
-    extract_individual_parameters = function(n_draws = 2500,
+    extract_individual_parameters = function(n_draws = 2000,
                                              include_variation_params = TRUE,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
@@ -367,11 +387,12 @@ biokinetics <- R6::R6Class(
     #' @param summarise Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
     #' return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
     #' draws from posterior parameter distributions.
-    #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
+    #' @param n_draws Integer. Maximum number of samples to include. Default 2000.
     simulate_population_trajectories = function(
       t_max = 150,
       summarise = TRUE,
-      n_draws = 2500) {
+      n_draws = 2000) {
+
       private$check_fitted()
       validate_numeric(t_max)
       validate_logical(summarise)
@@ -388,25 +409,28 @@ biokinetics <- R6::R6Class(
       dt_out <- dt_out[
         , lapply(.SD, function(x) if (is.factor(x)) forcats::fct_drop(x) else x)]
 
-      if (private$scale == "log") {
-        return(dt_out)
+      if (private$scale == "natural") {
+        if (summarise) {
+          dt_out <- convert_log2_scale_inverse(
+            dt_out, vars_to_transform = c("me", "lo", "hi"))
+        } else {
+          dt_out <- convert_log2_scale_inverse(
+            dt_out, vars_to_transform = "mu")
+        }
       }
 
-      if (summarise) {
-        dt_out <- convert_log2_scale_inverse(
-          dt_out, vars_to_transform = c("me", "lo", "hi"))
-      } else {
-        dt_out <- convert_log2_scale_inverse(
-          dt_out, vars_to_transform = "mu")
-      }
+      class(dt_out) <- append("biokinetics_population_trajectories", class(dt_out))
+      attr(dt_out, "summarised") <- summarise
+      attr(dt_out, "scale") <- private$scale
+      attr(dt_out, "covariates") <- private$all_formula_vars
       dt_out
     },
     #' @description Process the stan model results into a data.table.
     #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
     #' mu_s_me, and a column for each covariate. See the data vignette for details:
     #' \code{vignette("data", package = "epikinetics")}
-    #' @param n_draws Integer. Maximum number of samples to include. Default 2500.
-    population_stationary_points = function(n_draws = 2500) {
+    #' @param n_draws Integer. Maximum number of samples to include. Default 2000.
+    population_stationary_points = function(n_draws = 2000) {
       private$check_fitted()
       validate_numeric(n_draws)
 
@@ -458,11 +482,11 @@ biokinetics <- R6::R6Class(
     #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
     #' hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
     #' Default TRUE.
-    #' @param n_draws Integer. Maximum number of samples to draw. Default 2500.
+    #' @param n_draws Integer. Maximum number of samples to draw. Default 2000.
     #' @param time_shift Integer. Number of days to adjust the exposure day by. Default 0.
     simulate_individual_trajectories = function(
       summarise = TRUE,
-      n_draws = 2500,
+      n_draws = 2000,
       time_shift = 0) {
       private$check_fitted()
       validate_logical(summarise)
@@ -534,7 +558,10 @@ biokinetics <- R6::R6Class(
           by = c("calendar_day", "titre_type"))
       }
 
-      dt_out[, time_shift := time_shift]
+      dt_out <- dt_out[, time_shift := time_shift]
+      class(dt_out) <- append("biokinetics_individual_trajectories", class(dt_out))
+      attr(dt_out, "summarised") <- summarise
+      dt_out
     }
   )
 )

@@ -3,16 +3,17 @@ Title: Biomarker Kinetics Modelling
 Version: 0.0.0.9000
 Authors@R: c(person("Timothy", "Russell", email = "timothy.russell@lshtm.ac.uk", role = c("aut")),
     person("Alex", "Hill", email = "alex.hill@gmail.com", role = c("aut", "cre")))
-Description: Fit kinetic curves to biomarker data, using a Bayesian hierarchical model
+Description: Fit kinetic curves to biomarker data, using a Bayesian hierarchical model.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports:
     cmdstanr,
     data.table,
     forcats,
     fs,
+    ggplot2,
     instantiate,
     logger,
     mosaic,
@@ -26,11 +27,11 @@ Additional_repositories:
 SystemRequirements: CmdStan (https://mc-stan.org/users/interfaces/cmdstan)
 Suggests:
     dplyr,
-    ggplot2,
     knitr,
     lubridate,
     rmarkdown,
-    testthat
+    testthat,
+    vdiffr
 VignetteBuilder: knitr
 LinkingTo: 
     cpp11
