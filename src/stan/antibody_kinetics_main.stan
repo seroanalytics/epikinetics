@@ -29,6 +29,8 @@ data {
   int N; // Number of observations
   int N_events; // Number of exposure events
   int K; // Number of titre types
+  real upper_limit; // Upper detection limit
+  real lower_limit; // Lower detection limit
   array[N] int<lower=1, upper=K> titre_type; // Titre type for each observation
   vector[N] t; // Time for each observation
   vector[N] value; // Observed titre values
@@ -143,14 +145,14 @@ model {
   mu = boost_wane_ind(
     t, t0_ind, tp_ind, ts_ind, m1_ind, m2_ind, m3_ind, titre_type, id);
   
-  // Likelihood for observations in the range 1 < log2(value/5) <= 7
+  // Likelihood for uncensored observations
   value[uncens_idx] ~ normal(mu[uncens_idx], sigma);
 
-  // Likelihood for observations at lower limit: log2(value/5) = 0
-  target += normal_lcdf(0 | mu[cens_lo_idx], sigma);
+  // Likelihood for observations at lower limit
+  target += normal_lcdf(lower_limit | mu[cens_lo_idx], sigma);
 
-  // Censoring at log2(value/5) = 9, originally value = 2560
-  target += normal_lccdf(9 | mu[cens_hi_idx], sigma); 
+  // Censoring at upper limit
+  target += normal_lccdf(upper_limit | mu[cens_hi_idx], sigma);
   
   // Covariate-level mean priors, parameterised from previous studies
   t0_pop ~ normal(mu_t0, sigma_t0);

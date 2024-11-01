@@ -26,6 +26,28 @@ biokinetics <- R6::R6Class(
         stop("Model has not been fitted yet. Call 'fit' before calling this function.")
       }
     },
+    get_upper_detection_limit = function(upper_limit) {
+      if (is.null(upper_limit)) {
+        return(max(private$data$value))
+      }
+      max_value <- max(private$data$value)
+      if (max_value > upper_limit) {
+        warning(sprintf("Data contains a value of %s which is greater than the upper detection limit %s",
+                        max_value, upper_limit))
+      }
+      return(upper_limit)
+    },
+    get_lower_detection_limit = function(lower_limit) {
+      if (is.null(lower_limit)) {
+        return(min(private$data$value))
+      }
+      min_value <- min(private$data$value)
+      if (max_value > upper_limit) {
+        warning(sprintf("Data contains a value of %s which is smaller than the lower detection limit %s",
+                        min_value, lower_limit))
+      }
+      return(lower_limit)
+    },
     model_matrix_with_dummy = function(data) {
 
       # Identify columns that are factors with one level
@@ -155,7 +177,7 @@ biokinetics <- R6::R6Class(
       }
       dt_out
     },
-    prepare_stan_data = function() {
+    prepare_stan_data = function(upper, lower) {
       pid <- value <- censored <- titre_type <- obs_id <- time_since_last_exp <- NULL
       stan_data <- list(
         N = private$data[, .N],
@@ -176,6 +198,8 @@ biokinetics <- R6::R6Class(
       stan_data$t <- private$data[, time_since_last_exp]
       stan_data$X <- private$design_matrix
       stan_data$P <- ncol(private$design_matrix)
+      stan_data$upper_limit <- log2(upper)
+      stan_data$lower_limit <- log2(lower)
 
       private$stan_input_data <- c(stan_data, private$priors)
     },
@@ -215,12 +239,20 @@ biokinetics <- R6::R6Class(
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param scale One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
     #' will be converted to a log scale for model fitting.
+    #' @param upper_detection_limit Optional upper detection limit of the titre used. This is needed to construct a likelihood for upper censored
+    #' values, so only needs to be provided if you have such values in the dataset. If not provided and you have censored values, the model will default
+    #' to using the largest value in the dataset as the upper detection limit.
+    #' @param lower_detection_limit Optional lower detection limit of the titre used. This is needed to construct a likelihood for lower censored
+    #' values, so only needs to be provided if you have such values in the dataset. If not provided and you have censored values, the model will default
+    #' to using the smallest value in the dataset as the lower detection limit.
     initialize = function(priors = biokinetics_priors(),
                           data = NULL,
                           file_path = NULL,
                           covariate_formula = ~0,
                           preds_sd = 0.25,
-                          scale = "natural") {
+                          scale = "natural",
+                          upper_detection_limit = NULL,
+                          lower_detection_limit = NULL) {
       validate_priors(priors)
       private$priors <- priors
       validate_numeric(preds_sd)
@@ -258,7 +290,9 @@ biokinetics <- R6::R6Class(
       private$build_covariate_lookup_table()
       private$build_pid_lookup()
       private$build_titre_type_lookup()
-      private$prepare_stan_data()
+      upper <- private$get_upper_detection_limit(upper_detection_limit)
+      lower <- private$get_lower_detection_limit(lower_detection_limit)
+      private$prepare_stan_data(upper, lower)
       logger::log_info("Retrieving compiled model")
       private$model <- instantiate::stan_package_model(
         name = "antibody_kinetics_main",

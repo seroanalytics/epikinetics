@@ -1,12 +1,8 @@
 convert_log2_scale <- function(
-  dt_in, vars_to_transform = "value",
-  simplify_limits = TRUE) {
+  dt_in, vars_to_transform = "value") {
   dt_out <- data.table::copy(dt_in)
   for (var in vars_to_transform) {
-    if (simplify_limits == TRUE) {
-      dt_out[get(var) > 2560, (var) := 2560]
-    }
-    dt_out[, (var) := log2(get(var) / 5)]
+    dt_out[, (var) := log2(get(var))]
   }
   return(dt_out)
 }
@@ -23,8 +19,8 @@ convert_log2_scale <- function(
 convert_log2_scale_inverse <- function(dt_in, vars_to_transform) {
   dt_out <- data.table::copy(dt_in)
   for (var in vars_to_transform) {
-    # Reverse the log2 transformation and multiplication by 5.
-    dt_out[, (var) := 5 * 2^(get(var))]
+    # Reverse the log2 transformation
+    dt_out[, (var) := 2^(get(var))]
   }
   dt_out
 }
