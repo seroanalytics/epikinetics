@@ -4,7 +4,7 @@
 \alias{convert_log2_scale_inverse}
 \title{Invert base 2 log scale conversion}
 \usage{
-convert_log2_scale_inverse(dt_in, vars_to_transform)
+convert_log2_scale_inverse(dt_in, vars_to_transform, lower_limit)
 }
 \arguments{
 \item{dt_in}{data.table containing data to be transformed from base 2 log to natural scale.}
