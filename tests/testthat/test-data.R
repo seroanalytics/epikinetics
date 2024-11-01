@@ -19,7 +19,7 @@ test_that("Can construct stan data", {
   expect_equal(names(stan_data), c("N", "N_events", "id", "value", "censored",
                                    "titre_type", "preds_sd", "K", "N_uncens", "N_lo",
                                    "N_hi", "uncens_idx", "cens_lo_idx",
-                                   "cens_hi_idx", "t", "X", "P", "mu_t0",
+                                   "cens_hi_idx", "t", "X", "P", "upper_limit", "lower_limit", "mu_t0",
                                    "mu_tp", "mu_ts", "mu_m1", "mu_m2", "mu_m3",
                                    "sigma_t0", "sigma_tp", "sigma_ts", "sigma_m1", "sigma_m2",
                                    "sigma_m3"))
@@ -53,7 +53,9 @@ test_that("Natural scale data is converted to log scale for stan", {
   mod <- biokinetics$new(data = dat)
   stan_data <- mod$get_stan_data()
   expect_equal(stan_data$value,
-               convert_log2_scale(dat, "value")$value,
+               convert_log2_scale(dat,
+                                  lower_limit = 5,
+                                  vars_to_transform = "value")$value,
                ignore_attr = TRUE)
 })
 
