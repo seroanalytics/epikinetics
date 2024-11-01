@@ -17,7 +17,7 @@ plot.biokinetics_priors <- function(x,
 
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-  t0 <- tp <- ts <- m1 <- m2 <- m3 <- NULL
+  t0 <- tp <- ts <- m1 <- m2 <- m3 <- censored <- NULL
   time_since_last_exp <- me <- lo <- hi <- value <- mu <- NULL
 
   if (!is.null(data)) {
@@ -64,7 +64,7 @@ plot_sero_data <- function(data, covariates = character(0)) {
   add_censored_indicator(data)
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-  time_since_last_exp <- value <- titre_type <- NULL
+  time_since_last_exp <- value <- titre_type <- censored <- NULL
 
   ggplot(data) +
     geom_point(aes(x = time_since_last_exp, y = value, colour = titre_type, shape = censored),
@@ -90,7 +90,7 @@ plot.biokinetics_population_trajectories <- function(x, ..., data = NULL) {
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   time_since_last_exp <- value <- me <- titre_type <- lo <- hi <- NULL
-  day <- last_exp_day <- NULL
+  day <- last_exp_day <- censored <- mu <- .draw <- NULL
 
   if (attr(x, "summarised")) {
     plot <- ggplot(x) +
@@ -127,6 +127,9 @@ facet_formula <- function(covariates) {
 }
 
 add_censored_indicator <- function(data) {
+  # Declare variables to suppress notes when compiling package
+  # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
+  censored <- NULL
   if (!("censored" %in% colnames(data))) {
     # censored is an optional column in input data
     # if not present, treat all points as uncensored

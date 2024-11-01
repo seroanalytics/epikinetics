@@ -17,6 +17,7 @@ convert_log2_scale <- function(
 #' @return A data.table, identical to the input data but with specified columns transformed.
 #' @param dt_in data.table containing data to be transformed from base 2 log to natural scale.
 #' @param vars_to_transform Names of columns to apply the transformation to.
+#' @param lower_limit The lowest value in the original dataset.
 #' @export
 convert_log2_scale_inverse <- function(dt_in, vars_to_transform, lower_limit) {
   dt_out <- data.table::copy(dt_in)

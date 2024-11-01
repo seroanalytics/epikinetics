@@ -10,6 +10,8 @@ convert_log2_scale_inverse(dt_in, vars_to_transform, lower_limit)
 \item{dt_in}{data.table containing data to be transformed from base 2 log to natural scale.}
 
 \item{vars_to_transform}{Names of columns to apply the transformation to.}
+
+\item{lower_limit}{The lowest value in the original dataset.}
 }
 \value{
 A data.table, identical to the input data but with specified columns transformed.
