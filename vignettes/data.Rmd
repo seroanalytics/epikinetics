@@ -42,7 +42,7 @@ dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
 head(dat)
 ```
 
-# Ouput data
+# Output data
 
 After fitting a model, a [CmdStanMCMC](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html) object is returned. This means
 that users who are already familiar with `cmdstanr` are free to do what they want with the fitted model.

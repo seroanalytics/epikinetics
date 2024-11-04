@@ -323,7 +323,8 @@ biokinetics <- R6::R6Class(
            n_draws = n_draws,
            data = private$data)
     },
-    #' @description Plot model input data with a smoothing function. Note that
+    #' @description Plot model input data with a smoothing function. Censored points
+    #' will be plotted, but omitted from the  smoothing function. Note that
     #' this plot is on a log scale, regardless of whether data was provided on a
     #' log or a natural scale.
     #' @return A ggplot2 object.

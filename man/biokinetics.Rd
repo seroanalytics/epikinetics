@@ -101,7 +101,8 @@ A ggplot2 object.
 \if{html}{\out{<a id="method-biokinetics-plot_model_inputs"></a>}}
 \if{latex}{\out{\hypertarget{method-biokinetics-plot_model_inputs}{}}}
 \subsection{Method \code{plot_model_inputs()}}{
-Plot model input data with a smoothing function. Note that
+Plot model input data with a smoothing function. Censored points
+will be plotted, but omitted from the  smoothing function. Note that
 this plot is on a log scale, regardless of whether data was provided on a
 log or a natural scale.
 \subsection{Usage}{
