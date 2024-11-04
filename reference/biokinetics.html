@@ -69,6 +69,8 @@ fit it to a dataset.</p>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-biokinetics-new"><code>biokinetics$new()</code></a></p></li>
+<li><p><a href="#method-biokinetics-plot_prior_predictive"><code>biokinetics$plot_prior_predictive()</code></a></p></li>
+<li><p><a href="#method-biokinetics-plot_model_inputs"><code>biokinetics$plot_model_inputs()</code></a></p></li>
 <li><p><a href="#method-biokinetics-get_stan_data"><code>biokinetics$get_stan_data()</code></a></p></li>
 <li><p><a href="#method-biokinetics-get_covariate_lookup_table"><code>biokinetics$get_covariate_lookup_table()</code></a></p></li>
 <li><p><a href="#method-biokinetics-fit"><code>biokinetics$fit()</code></a></p></li>
@@ -127,39 +129,79 @@ will be converted to a log scale for model fitting.</p></dd>
 <p>An epikinetics::biokinetics object.</p>
 </div>
 
+</div><p></p><hr><a id="method-biokinetics-plot_prior_predictive"></a><div class="section">
+<h3 id="method-plot-prior-predictive-">Method <code>plot_prior_predictive()</code><a class="anchor" aria-label="anchor" href="#method-plot-prior-predictive-"></a></h3>
+<p>Plot the kinetics trajectory predicted by the model priors.
+Note that this is on a log scale, regardless of whether the data was provided
+on a log or a natural scale.</p><div class="section">
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">plot_prior_predictive</span><span class="op">(</span>tmax <span class="op">=</span> <span class="fl">150</span>, n_draws <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>tmax</code></dt>
+<dd><p>Integer. The number of time points in each simulated trajectory. Default 150.</p></dd>
+
+
+<dt><code>n_draws</code></dt>
+<dd><p>Integer. The number of trajectories to simulate. Default 2000.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>A ggplot2 object.</p>
+</div>
+
+</div><p></p><hr><a id="method-biokinetics-plot_model_inputs"></a><div class="section">
+<h3 id="method-plot-model-inputs-">Method <code>plot_model_inputs()</code><a class="anchor" aria-label="anchor" href="#method-plot-model-inputs-"></a></h3>
+<p>Plot model input data with a smoothing function. Note that
+this plot is on a log scale, regardless of whether data was provided on a
+log or a natural scale.</p><div class="section">
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">plot_model_inputs</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p>A ggplot2 object.</p>
+</div>
+
 </div><p></p><hr><a id="method-biokinetics-get_stan_data"></a><div class="section">
 <h3 id="method-get-stan-data-">Method <code>get_stan_data()</code><a class="anchor" aria-label="anchor" href="#method-get-stan-data-"></a></h3>
 <p>View the data that is passed to the stan model, for debugging purposes.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">get_stan_data</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>A list of arguments that will be passed to the stan model.</p>
 </div>
 
 </div><p></p><hr><a id="method-biokinetics-get_covariate_lookup_table"></a><div class="section">
 <h3 id="method-get-covariate-lookup-table-">Method <code>get_covariate_lookup_table()</code><a class="anchor" aria-label="anchor" href="#method-get-covariate-lookup-table-"></a></h3>
 <p>View the mapping of human readable covariate names to the model variable p.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">get_covariate_lookup_table</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>A data.table mapping the model variable p to human readable covariates.</p>
 </div>
 
 </div><p></p><hr><a id="method-biokinetics-fit"></a><div class="section">
 <h3 id="method-fit-">Method <code>fit()</code><a class="anchor" aria-label="anchor" href="#method-fit-"></a></h3>
 <p>Fit the model and return CmdStanMCMC fitted model object.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Named arguments to the <code><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample()</a></code> method of CmdStan model.
 objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.html" class="external-link">https://mc-stan.org/cmdstanr/reference/model-method-sample.html</a></p></dd>
@@ -168,24 +210,24 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>A CmdStanMCMC fitted model object: <a href="https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html" class="external-link">https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html</a></p>
 </div>
 
 </div><p></p><hr><a id="method-biokinetics-extract_population_parameters"></a><div class="section">
 <h3 id="method-extract-population-parameters-">Method <code>extract_population_parameters()</code><a class="anchor" aria-label="anchor" href="#method-extract-population-parameters-"></a></h3>
 <p>Extract fitted population parameters</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">extract_population_parameters</span><span class="op">(</span></span>
-<span>  n_draws <span class="op">=</span> <span class="fl">2500</span>,</span>
+<span>  n_draws <span class="op">=</span> <span class="fl">2000</span>,</span>
 <span>  human_readable_covariates <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
-<dd><p>Numeric</p></dd>
+<dd><p>Integer. Default 2000.</p></dd>
 
 
 <dt><code>human_readable_covariates</code></dt>
@@ -195,25 +237,25 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>A data.table</p>
 </div>
 
 </div><p></p><hr><a id="method-biokinetics-extract_individual_parameters"></a><div class="section">
 <h3 id="method-extract-individual-parameters-">Method <code>extract_individual_parameters()</code><a class="anchor" aria-label="anchor" href="#method-extract-individual-parameters-"></a></h3>
 <p>Extract fitted individual parameters</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">extract_individual_parameters</span><span class="op">(</span></span>
-<span>  n_draws <span class="op">=</span> <span class="fl">2500</span>,</span>
+<span>  n_draws <span class="op">=</span> <span class="fl">2000</span>,</span>
 <span>  include_variation_params <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  human_readable_covariates <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
-<dd><p>Numeric</p></dd>
+<dd><p>Integer. Default 2000.</p></dd>
 
 
 <dt><code>include_variation_params</code></dt>
@@ -227,23 +269,23 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>A data.table</p>
 </div>
 
 </div><p></p><hr><a id="method-biokinetics-simulate_population_trajectories"></a><div class="section">
 <h3 id="method-simulate-population-trajectories-">Method <code>simulate_population_trajectories()</code><a class="anchor" aria-label="anchor" href="#method-simulate-population-trajectories-"></a></h3>
 <p>Process the model results into a data table of titre values over time.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">simulate_population_trajectories</span><span class="op">(</span></span>
 <span>  t_max <span class="op">=</span> <span class="fl">150</span>,</span>
 <span>  summarise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  n_draws <span class="op">=</span> <span class="fl">2500</span></span>
+<span>  n_draws <span class="op">=</span> <span class="fl">2000</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>t_max</code></dt>
 <dd><p>Integer. Maximum number of time points to include.</p></dd>
 
@@ -255,13 +297,13 @@ draws from posterior parameter distributions.</p></dd>
 
 
 <dt><code>n_draws</code></dt>
-<dd><p>Integer. Maximum number of samples to include. Default 2500.</p></dd>
+<dd><p>Integer. Maximum number of samples to include. Default 2000.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p>A data.table containing titre values at time points. If summarise = TRUE, columns are time_since_last_exp,
 me, lo, hi, titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are
 time_since_last_exp, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
@@ -272,20 +314,20 @@ titre_type and a column for each covariate in the hierarchical model. See the da
 </div><p></p><hr><a id="method-biokinetics-population_stationary_points"></a><div class="section">
 <h3 id="method-population-stationary-points-">Method <code>population_stationary_points()</code><a class="anchor" aria-label="anchor" href="#method-population-stationary-points-"></a></h3>
 <p>Process the stan model results into a data.table.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">population_stationary_points</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">2500</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">population_stationary_points</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
-<dd><p>Integer. Maximum number of samples to include. Default 2500.</p></dd>
+<dd><p>Integer. Maximum number of samples to include. Default 2000.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p>A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
 mu_s_me, and a column for each covariate. See the data vignette for details:
 <code><a href="../articles/data.html">vignette("data", package = "epikinetics")</a></code></p>
@@ -295,16 +337,16 @@ mu_s_me, and a column for each covariate. See the data vignette for details:
 <h3 id="method-simulate-individual-trajectories-">Method <code>simulate_individual_trajectories()</code><a class="anchor" aria-label="anchor" href="#method-simulate-individual-trajectories-"></a></h3>
 <p>Simulate individual trajectories from the model. This is
 computationally expensive and may take a while to run if n_draws is large.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span></span>
 <span>  summarise <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  n_draws <span class="op">=</span> <span class="fl">2500</span>,</span>
+<span>  n_draws <span class="op">=</span> <span class="fl">2000</span>,</span>
 <span>  time_shift <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>summarise</code></dt>
 <dd><p>Boolean. If TRUE, average the individual trajectories to get lo, me and
 hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
@@ -312,7 +354,7 @@ Default TRUE.</p></dd>
 
 
 <dt><code>n_draws</code></dt>
-<dd><p>Integer. Maximum number of samples to draw. Default 2500.</p></dd>
+<dd><p>Integer. Maximum number of samples to draw. Default 2000.</p></dd>
 
 
 <dt><code>time_shift</code></dt>
@@ -322,7 +364,7 @@ Default TRUE.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
 If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
 and a column for each covariate in the regression model. See the data vignette for details:
