@@ -65,3 +65,39 @@ test_that("Log scale data is passed directly to stan", {
   stan_data <- mod$get_stan_data()
   expect_equal(stan_data$value, dat$value, ignore_attr = TRUE)
 })
+
+test_that("Highest value is used as default upper limit", {
+  dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(data = dat, lower_detection_limit = 2)
+  stan_data <- mod$get_stan_data()
+  expect_equal(stan_data$upper_limit, log2(max(dat$value)/2))
+  expect_equal(stan_data$lower_limit, 0)
+})
+
+test_that("Warns if data contains values above the upper limit", {
+  dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  expect_warning({mod <- biokinetics$new(data = dat, upper_detection_limit = 10)},
+                 "Data contains a value of 2560 which is greater than the upper detection limit 10")
+  stan_data <- mod$get_stan_data()
+  expect_equal(stan_data$upper_limit, log2(10/5))
+  expect_equal(stan_data$lower_limit, 0)
+})
+
+test_that("Smallest value is used as default lower limit", {
+  dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  mod <- biokinetics$new(data = dat, upper_detection_limit = 3000)
+  stan_data <- mod$get_stan_data()
+  expect_equal(stan_data$upper_limit, log2(3000/min(dat$value)))
+  expect_equal(stan_data$lower_limit, 0)
+})
+
+test_that("Warns if data contains values below the lower limit", {
+  dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  expect_warning({mod <- biokinetics$new(data = dat,
+                                         upper_detection_limit = 2560,
+                                         lower_detection_limit = 10)},
+                 "Data contains a value of 5 which is smaller than the lower detection limit 10")
+  stan_data <- mod$get_stan_data()
+  expect_equal(stan_data$upper_limit, log2(2560/10))
+  expect_equal(stan_data$lower_limit, 0)
+})

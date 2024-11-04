@@ -45,7 +45,7 @@ biokinetics <- R6::R6Class(
         private$lower_limit <- min(private$data$value)
       } else {
         min_value <- min(private$data$value)
-        if (max_value > upper_limit) {
+        if (min_value < lower_limit) {
           warning(sprintf("Data contains a value of %s which is smaller than the lower detection limit %s",
                           min_value, lower_limit))
         }
