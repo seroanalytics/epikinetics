@@ -323,13 +323,17 @@ biokinetics <- R6::R6Class(
            n_draws = n_draws,
            data = private$data)
     },
-    #' @description Plot model input data with a smoothing function. Censored points
-    #' will be plotted, but omitted from the  smoothing function. Note that
-    #' this plot is on a log scale, regardless of whether data was provided on a
-    #' log or a natural scale.
+    #' @description Plot model input data with a smoothing function. Note that
+    #' this plot is of the data as provided to the Stan model so is on a log scale,
+    #' regardless of whether data was provided on a log or a natural scale.
+    #' @param tmax Integer. Maximum time since last exposure to include. Default 150.
     #' @return A ggplot2 object.
-    plot_model_inputs = function() {
-      plot_sero_data(private$data, private$all_formula_vars)
+    plot_model_inputs = function(tmax = 150) {
+      plot_sero_data(private$data,
+                     tmax = tmax,
+                     covariates = private$all_formula_vars,
+                     upper_detection_limit = private$stan_input_data$upper_limit,
+                     lower_detection_limit = private$stan_input_data$lower_limit)
     },
     #' @description View the data that is passed to the stan model, for debugging purposes.
     #' @return A list of arguments that will be passed to the stan model.

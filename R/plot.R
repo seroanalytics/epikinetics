@@ -59,21 +59,59 @@ plot.biokinetics_priors <- function(x,
   plot
 }
 
-plot_sero_data <- function(data, covariates = character(0)) {
+#' @title Plot serological data
+#' @export
+#' @description Plot serological data in the format provided to the biokinetics
+#' model, with a smoothing function fitted.
+#' @return A ggplot2 object.
+#' @param data A data.table with required columns time_since_last_exp, value and titre_type.
+#' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
+#' @param covariates Optional vector of covariate names to facet by (these must correspond to columns in the data.table)
+#' @param upper_detection_limit Optional upper detection limit. If provided, will be represented as a dashed line.
+#' @param lower_detection_limit Optional lower detection limit. If provided, will be represented as a dashed line.
+plot_sero_data <- function(data,
+                           tmax = 150,
+                           covariates = character(0),
+                           upper_detection_limit = NULL,
+                           lower_detection_limit = NULL) {
   validate_required_cols(data, c("time_since_last_exp", "value", "titre_type"))
   add_censored_indicator(data)
+  data <- data[time_since_last_exp <= tmax, ]
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   time_since_last_exp <- value <- titre_type <- censored <- NULL
 
-  ggplot(data) +
+  plot <- ggplot(data) +
     geom_point(aes(x = time_since_last_exp, y = value, colour = titre_type, shape = censored),
                size = 0.5, alpha = 0.5) +
-    geom_smooth(data = subset(data, !censored),
-                mapping = aes(x = time_since_last_exp, y = value, colour = titre_type)) +
+    geom_smooth(aes(x = time_since_last_exp, y = value, colour = titre_type)) +
     facet_wrap(eval(parse(text = facet_formula(covariates)))) +
-    guides(shape = guide_legend(title = "Censored")) +
-    guides(colour = guide_legend(title = "Titre type"))
+    guides(shape = guide_legend(title = "Censored"),
+           colour = guide_legend(title = "Titre type"))
+
+  if (!is.null(lower_detection_limit)) {
+    plot <- plot +
+      geom_hline(yintercept = lower_detection_limit,
+                 linetype = 'dotted') +
+      annotate("text", x = 1,
+               y = lower_detection_limit,
+               label = "Lower detection limit",
+               vjust = -0.5,
+               hjust = 0,
+               size = 3)
+  }
+  if (!is.null(upper_detection_limit)) {
+    plot <- plot +
+      geom_hline(yintercept = upper_detection_limit,
+                 linetype = 'dotted') +
+      annotate("text", x = 1,
+               y = upper_detection_limit,
+               label = "Upper detection limit",
+               vjust = -0.5,
+               hjust = 0,
+               size = 3)
+  }
+  plot
 }
 
 #' Plot method for "biokinetics_population_trajectories" class
@@ -133,8 +171,8 @@ add_censored_indicator <- function(data) {
   if (!("censored" %in% colnames(data))) {
     # censored is an optional column in input data
     # if not present, treat all points as uncensored
-    data[, censored:= FALSE]
+    data[, censored := FALSE]
   } else {
-    data[, censored:= censored != 0]
+    data[, censored := censored != 0]
   }
 }

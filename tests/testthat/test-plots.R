@@ -50,6 +50,12 @@ test_that("Can plot input data", {
   vdiffr::expect_doppelganger("inputdata_covariates", plot)
 })
 
+test_that("Can plot input data without detection limits", {
+  data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  data[, time_since_last_exp := as.integer(day - last_exp_day, units = "days")]
+  vdiffr::expect_doppelganger("inputdatanolimits", plot_sero_data(data))
+})
+
 mock_model <- function(name, package) {
   list(sample = function(x, ...)  readRDS(test_path("testdata", "testdraws.rds")))
 }

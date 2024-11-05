@@ -101,14 +101,20 @@ A ggplot2 object.
 \if{html}{\out{<a id="method-biokinetics-plot_model_inputs"></a>}}
 \if{latex}{\out{\hypertarget{method-biokinetics-plot_model_inputs}{}}}
 \subsection{Method \code{plot_model_inputs()}}{
-Plot model input data with a smoothing function. Censored points
-will be plotted, but omitted from the  smoothing function. Note that
-this plot is on a log scale, regardless of whether data was provided on a
-log or a natural scale.
+Plot model input data with a smoothing function. Note that
+this plot is of the data as provided to the Stan model so is on a log scale,
+regardless of whether data was provided on a log or a natural scale.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_model_inputs()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_model_inputs(tmax = 150)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tmax}}{Integer. Maximum time since last exposure to include. Default 150.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 A ggplot2 object.
 }
