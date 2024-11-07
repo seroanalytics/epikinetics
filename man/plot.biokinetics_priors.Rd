@@ -5,7 +5,15 @@
 \title{Simulate biomarker kinetics predicted by the given biokinetics priors
 and optionally compare to a dataset.}
 \usage{
-\method{plot}{biokinetics_priors}(x, ..., tmax = 150, n_draws = 2000, data = NULL)
+\method{plot}{biokinetics_priors}(
+  x,
+  ...,
+  tmax = 150,
+  n_draws = 2000,
+  data = NULL,
+  upper_detection_limit = NULL,
+  lower_detection_limit = NULL
+)
 }
 \arguments{
 \item{x}{A named list of type 'biokinetics_priors'.}
@@ -17,6 +25,10 @@ and optionally compare to a dataset.}
 \item{n_draws}{Integer. The number of trajectories to simulate. Default 2000.}
 
 \item{data}{Optional data.frame with columns time_since_last_exp and value. The raw data to compare to.}
+
+\item{upper_detection_limit}{Optional upper detection limit.}
+
+\item{lower_detection_limit}{Optional lower detection limit.}
 }
 \value{
 A ggplot2 object.

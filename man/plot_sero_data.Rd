@@ -19,9 +19,9 @@ plot_sero_data(
 
 \item{covariates}{Optional vector of covariate names to facet by (these must correspond to columns in the data.table)}
 
-\item{upper_detection_limit}{Optional upper detection limit. If provided, will be represented as a dashed line.}
+\item{upper_detection_limit}{Optional upper detection limit.}
 
-\item{lower_detection_limit}{Optional lower detection limit. If provided, will be represented as a dashed line.}
+\item{lower_detection_limit}{Optional lower detection limit.}
 }
 \value{
 A ggplot2 object.

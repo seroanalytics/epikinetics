@@ -60,11 +60,11 @@ will be treated as categorical variables. Default ~0.}
 will be converted to a log scale for model fitting.}
 
 \item{\code{upper_detection_limit}}{Optional upper detection limit of the titre used. This is needed to construct a likelihood for upper censored
-values, so only needs to be provided if you have such values in the dataset. If not provided and you have censored values, the model will default
+values, so only needs to be provided if you have such values in the dataset. If not provided, the model will default
 to using the largest value in the dataset as the upper detection limit.}
 
 \item{\code{lower_detection_limit}}{Optional lower detection limit of the titre used. This is needed to construct a likelihood for lower censored
-values, so only needs to be provided if you have such values in the dataset. If not provided and you have censored values, the model will default
+values, so only needs to be provided if you have such values in the dataset. If not provided, the model will default
 to using the smallest value in the dataset as the lower detection limit.}
 }
 \if{html}{\out{</div>}}
