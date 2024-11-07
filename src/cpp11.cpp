@@ -6,10 +6,10 @@
 #include <R_ext/Visibility.h>
 
 // convert_log_scale_inverse.cpp
-cpp11::data_frame convert_log2_scale_inverse_cpp(cpp11::writable::list dt, cpp11::strings vars_to_transform, double lower_limit);
-extern "C" SEXP _epikinetics_convert_log2_scale_inverse_cpp(SEXP dt, SEXP vars_to_transform, SEXP lower_limit) {
+cpp11::data_frame convert_log2_scale_inverse_cpp(cpp11::writable::list dt, cpp11::strings vars_to_transform, double smallest_value);
+extern "C" SEXP _epikinetics_convert_log2_scale_inverse_cpp(SEXP dt, SEXP vars_to_transform, SEXP smallest_value) {
   BEGIN_CPP11
-    return cpp11::as_sexp(convert_log2_scale_inverse_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::writable::list>>(dt), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(vars_to_transform), cpp11::as_cpp<cpp11::decay_t<double>>(lower_limit)));
+    return cpp11::as_sexp(convert_log2_scale_inverse_cpp(cpp11::as_cpp<cpp11::decay_t<cpp11::writable::list>>(dt), cpp11::as_cpp<cpp11::decay_t<cpp11::strings>>(vars_to_transform), cpp11::as_cpp<cpp11::decay_t<double>>(smallest_value)));
   END_CPP11
 }
 // simulate_trajectories.cpp

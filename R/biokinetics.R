@@ -11,8 +11,9 @@ biokinetics <- R6::R6Class(
     scale = NULL,
     priors = NULL,
     preds_sd = NULL,
-    upper_limit = NULL,
-    lower_limit = NULL,
+    upper_detection_limit = NULL,
+    lower_detection_limit = NULL,
+    smallest_value = NULL,
     data = NULL,
     covariate_formula = NULL,
     fitted = NULL,
@@ -28,28 +29,28 @@ biokinetics <- R6::R6Class(
         stop("Model has not been fitted yet. Call 'fit' before calling this function.")
       }
     },
-    get_upper_detection_limit = function(upper_limit) {
-      if (is.null(upper_limit)) {
-        private$upper_limit <- max(private$data$value)
+    get_upper_detection_limit = function(upper_detection_limit) {
+      if (is.null(upper_detection_limit)) {
+        private$upper_detection_limit <- max(private$data$value)
       } else {
         max_value <- max(private$data$value)
-        if (max_value > upper_limit) {
-          warning(sprintf("Data contains a value of %s which is greater than the upper detection limit %s",
-                          max_value, upper_limit))
+        if (max_value >= upper_detection_limit) {
+          warning(sprintf("Data contains values >= the upper detection limit %s. These will be censored.",
+                          upper_detection_limit))
         }
-        private$upper_limit <- upper_limit
+        private$upper_detection_limit <- upper_detection_limit
       }
     },
-    get_lower_detection_limit = function(lower_limit) {
-      if (is.null(lower_limit)) {
-        private$lower_limit <- min(private$data$value)
+    get_lower_detection_limit = function(lower_detection_limit) {
+      if (is.null(lower_detection_limit)) {
+        private$lower_detection_limit <- min(private$data$value)
       } else {
         min_value <- min(private$data$value)
-        if (min_value < lower_limit) {
-          warning(sprintf("Data contains a value of %s which is smaller than the lower detection limit %s",
-                          min_value, lower_limit))
+        if (min_value <= lower_detection_limit) {
+          warning(sprintf("Data contains values <= the lower detection limit %s. These will be censored.",
+                          lower_detection_limit))
         }
-         private$lower_limit <- lower_limit
+        private$lower_detection_limit <- lower_detection_limit
       }
     },
     model_matrix_with_dummy = function(data) {
@@ -110,7 +111,7 @@ biokinetics <- R6::R6Class(
       if ("p" %in% colnames(dt)) {
         dt_out <- dt_out[private$covariate_lookup_table, on = "p", nomatch = NULL][, `:=`(p = NULL)]
       }
-      data.table::setnames(dt_out, "t", "time_since_last_exp", skip_absent=TRUE)
+      data.table::setnames(dt_out, "t", "time_since_last_exp", skip_absent = TRUE)
       dt_out
     },
     summarise_pop_fit = function(time_range,
@@ -177,38 +178,37 @@ biokinetics <- R6::R6Class(
       data.table::setcolorder(dt_out, c("t", "p", "k"))
 
       if (!has_covariates) {
-        dt_out[, p:= NULL]
+        dt_out[, p := NULL]
       }
       dt_out
     },
     prepare_stan_data = function() {
-      pid <- value <- censored <- titre_type <- obs_id <- time_since_last_exp <- NULL
+      pid <- value <- censored_lo <- censored_hi <- titre_type <- obs_id <- time_since_last_exp <- NULL
       stan_data <- list(
         N = private$data[, .N],
         N_events = private$data[, data.table::uniqueN(pid)],
         id = private$data[, private$pid_lookup[pid]],
         value = private$data[, value],
-        censored = private$data[, censored],
         titre_type = private$data[, private$titre_type_lookup[titre_type]],
         preds_sd = private$preds_sd,
         K = private$data[, data.table::uniqueN(titre_type)],
-        N_uncens = private$data[censored == 0, .N],
-        N_lo = private$data[censored == -1, .N],
-        N_hi = private$data[censored == 1, .N],
-        uncens_idx = private$data[censored == 0, obs_id],
-        cens_lo_idx = private$data[censored == -1, obs_id],
-        cens_hi_idx = private$data[censored == 1, obs_id])
+        N_uncens = private$data[!censored_lo & !censored_hi, .N],
+        N_lo = private$data[censored_lo == TRUE, .N],
+        N_hi = private$data[censored_hi == TRUE, .N],
+        uncens_idx = private$data[censored_lo == FALSE & censored_hi == FALSE, obs_id],
+        cens_lo_idx = private$data[censored_lo == TRUE, obs_id],
+        cens_hi_idx = private$data[censored_hi == TRUE, obs_id])
 
       stan_data$t <- private$data[, time_since_last_exp]
       stan_data$X <- private$design_matrix
       stan_data$P <- ncol(private$design_matrix)
       if (private$scale == "natural") {
         # do the same transformation as used on the data
-        stan_data$upper_limit <- log2(private$upper_limit / private$lower_limit)
-        stan_data$lower_limit <- log2(private$lower_limit / private$lower_limit)
+        stan_data$upper_detection_limit <- log2(private$upper_detection_limit / private$smallest_value)
+        stan_data$lower_detection_limit <- log2(private$lower_detection_limit / private$smallest_value)
       } else {
-        stan_data$upper_limit <- private$upper_limit
-        stan_data$lower_limit <- private$lower_limit
+        stan_data$upper_detection_limit <- private$upper_detection_limit
+        stan_data$lower_detection_limit <- private$lower_detection_limit
       }
       private$stan_input_data <- c(stan_data, private$priors)
     },
@@ -237,23 +237,23 @@ biokinetics <- R6::R6Class(
     }
   ),
   public = list(
-    #' @description Initialise the kinetics model.
-    #' @return An epikinetics::biokinetics object.
-    #' @param data Optional data table of model inputs. One of data or file must be provided. See the data vignette
-    #' for required columns: \code{vignette("data", package = "epikinetics")}.
-    #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
-    #' @param priors Object of type \link[epikinetics]{biokinetics_priors}. Default biokinetics_priors().
-    #' @param covariate_formula Formula specifying linear regression model. Note all variables in the formula
-    #' will be treated as categorical variables. Default ~0.
-    #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
-    #' @param scale One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
-    #' will be converted to a log scale for model fitting.
-    #' @param upper_detection_limit Optional upper detection limit of the titre used. This is needed to construct a likelihood for upper censored
-    #' values, so only needs to be provided if you have such values in the dataset. If not provided and you have censored values, the model will default
-    #' to using the largest value in the dataset as the upper detection limit.
-    #' @param lower_detection_limit Optional lower detection limit of the titre used. This is needed to construct a likelihood for lower censored
-    #' values, so only needs to be provided if you have such values in the dataset. If not provided and you have censored values, the model will default
-    #' to using the smallest value in the dataset as the lower detection limit.
+        #' @description Initialise the kinetics model.
+        #' @return An epikinetics::biokinetics object.
+        #' @param data Optional data table of model inputs. One of data or file must be provided. See the data vignette
+        #' for required columns: \code{vignette("data", package = "epikinetics")}.
+        #' @param file_path Optional file path to model inputs in CSV format. One of data or file must be provided.
+        #' @param priors Object of type \link[epikinetics]{biokinetics_priors}. Default biokinetics_priors().
+        #' @param covariate_formula Formula specifying linear regression model. Note all variables in the formula
+        #' will be treated as categorical variables. Default ~0.
+        #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
+        #' @param scale One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
+        #' will be converted to a log scale for model fitting.
+        #' @param upper_detection_limit Optional upper detection limit of the titre used. This is needed to construct a likelihood for upper censored
+        #' values, so only needs to be provided if you have such values in the dataset. If not provided, the model will default
+        #' to using the largest value in the dataset as the upper detection limit.
+        #' @param lower_detection_limit Optional lower detection limit of the titre used. This is needed to construct a likelihood for lower censored
+        #' values, so only needs to be provided if you have such values in the dataset. If not provided, the model will default
+        #' to using the smallest value in the dataset as the lower detection limit.
     initialize = function(priors = biokinetics_priors(),
                           data = NULL,
                           file_path = NULL,
@@ -287,20 +287,21 @@ biokinetics <- R6::R6Class(
       validate_required_cols(private$data)
       validate_formula_vars(private$all_formula_vars, private$data)
       logger::log_info("Preparing data for stan")
+      # this is used to scale the data if natural scale data is provided
+      private$smallest_value <- min(private$data$value)
+      private$get_upper_detection_limit(upper_detection_limit)
+      private$get_lower_detection_limit(lower_detection_limit)
       private$data[, `:=`(obs_id = seq_len(.N),
-                          time_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
-      if (!("censored" %in% colnames(private$data))) {
-        private$data$censored <- 0
-      }
+                          time_since_last_exp = as.integer(day - last_exp_day, units = "days"),
+                          censored_lo = value <= private$lower_detection_limit,
+                          censored_hi = value >= private$upper_detection_limit)]
       private$construct_design_matrix()
       private$build_covariate_lookup_table()
       private$build_pid_lookup()
       private$build_titre_type_lookup()
-      private$get_upper_detection_limit(upper_detection_limit)
-      private$get_lower_detection_limit(lower_detection_limit)
       if (scale == "natural") {
         private$data <- convert_log2_scale(private$data,
-                                           lower_limit = private$lower_limit,
+                                           smallest_value = private$smallest_value,
                                            vars_to_transform = "value")
       }
       private$prepare_stan_data()
@@ -310,54 +311,56 @@ biokinetics <- R6::R6Class(
         package = "epikinetics"
       )
     },
-    #' @description Plot the kinetics trajectory predicted by the model priors.
-    #' Note that this is on a log scale, regardless of whether the data was provided
-    #' on a log or a natural scale.
-    #' @return A ggplot2 object.
-    #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
-    #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
+        #' @description Plot the kinetics trajectory predicted by the model priors.
+        #' Note that this is on a log scale, regardless of whether the data was provided
+        #' on a log or a natural scale.
+        #' @return A ggplot2 object.
+        #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
+        #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
     plot_prior_predictive = function(tmax = 150,
                                      n_draws = 2000) {
       plot(private$priors,
            tmax = tmax,
            n_draws = n_draws,
-           data = private$data)
+           data = private$data,
+           upper_detection_limit = private$stan_input_data$upper_detection_limit,
+           lower_detection_limit = private$stan_input_data$lower_detection_limit)
     },
-    #' @description Plot model input data with a smoothing function. Note that
-    #' this plot is of the data as provided to the Stan model so is on a log scale,
-    #' regardless of whether data was provided on a log or a natural scale.
-    #' @param tmax Integer. Maximum time since last exposure to include. Default 150.
-    #' @return A ggplot2 object.
+        #' @description Plot model input data with a smoothing function. Note that
+        #' this plot is of the data as provided to the Stan model so is on a log scale,
+        #' regardless of whether data was provided on a log or a natural scale.
+        #' @param tmax Integer. Maximum time since last exposure to include. Default 150.
+        #' @return A ggplot2 object.
     plot_model_inputs = function(tmax = 150) {
       plot_sero_data(private$data,
                      tmax = tmax,
                      covariates = private$all_formula_vars,
-                     upper_detection_limit = private$stan_input_data$upper_limit,
-                     lower_detection_limit = private$stan_input_data$lower_limit)
+                     upper_detection_limit = private$stan_input_data$upper_detection_limit,
+                     lower_detection_limit = private$stan_input_data$lower_detection_limit)
     },
-    #' @description View the data that is passed to the stan model, for debugging purposes.
-    #' @return A list of arguments that will be passed to the stan model.
+        #' @description View the data that is passed to the stan model, for debugging purposes.
+        #' @return A list of arguments that will be passed to the stan model.
     get_stan_data = function() {
       private$stan_input_data
     },
-    #' @description View the mapping of human readable covariate names to the model variable p.
-    #' @return A data.table mapping the model variable p to human readable covariates.
+        #' @description View the mapping of human readable covariate names to the model variable p.
+        #' @return A data.table mapping the model variable p to human readable covariates.
     get_covariate_lookup_table = function() {
       private$covariate_lookup_table
     },
-    #' @description Fit the model and return CmdStanMCMC fitted model object.
-    #' @return A CmdStanMCMC fitted model object: <https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html>
-    #' @param ... Named arguments to the `sample()` method of CmdStan model.
-    #'   objects: <https://mc-stan.org/cmdstanr/reference/model-method-sample.html>
+        #' @description Fit the model and return CmdStanMCMC fitted model object.
+        #' @return A CmdStanMCMC fitted model object: <https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html>
+        #' @param ... Named arguments to the `sample()` method of CmdStan model.
+        #'   objects: <https://mc-stan.org/cmdstanr/reference/model-method-sample.html>
     fit = function(...) {
       logger::log_info("Fitting model")
       private$fitted <- private$model$sample(private$stan_input_data, ...)
       private$fitted
     },
-    #' @description Extract fitted population parameters
-    #' @return A data.table
-    #' @param n_draws Integer. Default 2000.
-    #' @param human_readable_covariates Logical. Default TRUE.
+        #' @description Extract fitted population parameters
+        #' @return A data.table
+        #' @param n_draws Integer. Default 2000.
+        #' @param human_readable_covariates Logical. Default TRUE.
     extract_population_parameters = function(n_draws = 2000,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
@@ -372,7 +375,7 @@ biokinetics <- R6::R6Class(
       logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
-      if (has_covariates){
+      if (has_covariates) {
         data.table::setcolorder(dt_out, c("p", "k", ".draw"))
       } else {
         data.table::setcolorder(dt_out, c("k", ".draw"))
@@ -390,11 +393,11 @@ biokinetics <- R6::R6Class(
       }
       dt_out
     },
-    #' @description Extract fitted individual parameters
-    #' @return A data.table
-    #' @param n_draws Integer. Default 2000.
-    #' @param include_variation_params Logical
-    #' @param human_readable_covariates Logical. Default TRUE.
+        #' @description Extract fitted individual parameters
+        #' @return A data.table
+        #' @param n_draws Integer. Default 2000.
+        #' @param include_variation_params Logical
+        #' @param human_readable_covariates Logical. Default TRUE.
     extract_individual_parameters = function(n_draws = 2000,
                                              include_variation_params = TRUE,
                                              human_readable_covariates = TRUE) {
@@ -427,17 +430,17 @@ biokinetics <- R6::R6Class(
       }
       dt_out
     },
-    #' @description Process the model results into a data table of titre values over time.
-    #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are time_since_last_exp,
-    #' me, lo, hi, titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are
-    #' time_since_last_exp, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
-    #' titre_type and a column for each covariate in the hierarchical model. See the data vignette for details:
-    #' \code{vignette("data", package = "epikinetics")}
-    #' @param t_max Integer. Maximum number of time points to include.
-    #' @param summarise Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
-    #' return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
-    #' draws from posterior parameter distributions.
-    #' @param n_draws Integer. Maximum number of samples to include. Default 2000.
+        #' @description Process the model results into a data table of titre values over time.
+        #' @return A data.table containing titre values at time points. If summarise = TRUE, columns are time_since_last_exp,
+        #' me, lo, hi, titre_type, and a column for each covariate in the hierarchical model. If summarise = FALSE, columns are
+        #' time_since_last_exp, .draw, t0_pop, tp_pop, ts_pop, m1_pop, m2_pop, m3_pop, beta_t0, beta_tp, beta_ts, beta_m1, beta_m2, beta_m3, mu
+        #' titre_type and a column for each covariate in the hierarchical model. See the data vignette for details:
+        #' \code{vignette("data", package = "epikinetics")}
+        #' @param t_max Integer. Maximum number of time points to include.
+        #' @param summarise Boolean. Default TRUE. If TRUE, summarises over draws from posterior parameter distributions to
+        #' return 0.025, 0.5 and 0.975 quantiles, labelled lo, me and hi, respectively. If FALSE returns values for individual
+        #' draws from posterior parameter distributions.
+        #' @param n_draws Integer. Maximum number of samples to include. Default 2000.
     simulate_population_trajectories = function(
       t_max = 150,
       summarise = TRUE,
@@ -464,12 +467,12 @@ biokinetics <- R6::R6Class(
           dt_out <- convert_log2_scale_inverse(
             dt_out,
             vars_to_transform = c("me", "lo", "hi"),
-            lower_limit = private$lower_limit)
+            smallest_value = private$smallest_value)
         } else {
           dt_out <- convert_log2_scale_inverse(
             dt_out,
             vars_to_transform = "mu",
-            lower_limit = private$lower_limit)
+            smallest_value = private$smallest_value)
         }
       }
 
@@ -477,13 +480,16 @@ biokinetics <- R6::R6Class(
       attr(dt_out, "summarised") <- summarise
       attr(dt_out, "scale") <- private$scale
       attr(dt_out, "covariates") <- private$all_formula_vars
+      attr(dt_out, "upper_detection_limit") <- private$upper_detection_limit
+      attr(dt_out, "lower_detection_limit") <- private$lower_detection_limit
+
       dt_out
     },
-    #' @description Process the stan model results into a data.table.
-    #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
-    #' mu_s_me, and a column for each covariate. See the data vignette for details:
-    #' \code{vignette("data", package = "epikinetics")}
-    #' @param n_draws Integer. Maximum number of samples to include. Default 2000.
+        #' @description Process the stan model results into a data.table.
+        #' @return A data.table of peak and set titre values. Columns are tire_type, mu_p, mu_s, rel_drop_me, mu_p_me,
+        #' mu_s_me, and a column for each covariate. See the data vignette for details:
+        #' \code{vignette("data", package = "epikinetics")}
+        #' @param n_draws Integer. Maximum number of samples to include. Default 2000.
     population_stationary_points = function(n_draws = 2000) {
       private$check_fitted()
       validate_numeric(n_draws)
@@ -514,7 +520,7 @@ biokinetics <- R6::R6Class(
         dt_peak_switch <- convert_log2_scale_inverse(
           dt_peak_switch,
           vars_to_transform = c("mu_0", "mu_p", "mu_s"),
-          lower_limit = private$lower_limit)
+          smallest_value = private$smallest_value)
       }
 
       logger::log_info("Calculating medians")
@@ -529,17 +535,17 @@ biokinetics <- R6::R6Class(
         mu_s_me = quantile(mu_s, 0.5)),
           by = c(private$all_formula_vars, "titre_type")]
     },
-    #' @description Simulate individual trajectories from the model. This is
-    #' computationally expensive and may take a while to run if n_draws is large.
-    #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
-    #' If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
-    #' and a column for each covariate in the regression model. See the data vignette for details:
-    #' \code{vignette("data", package = "epikinetics")}.
-    #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
-    #' hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
-    #' Default TRUE.
-    #' @param n_draws Integer. Maximum number of samples to draw. Default 2000.
-    #' @param time_shift Integer. Number of days to adjust the exposure day by. Default 0.
+        #' @description Simulate individual trajectories from the model. This is
+        #' computationally expensive and may take a while to run if n_draws is large.
+        #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
+        #' If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
+        #' and a column for each covariate in the regression model. See the data vignette for details:
+        #' \code{vignette("data", package = "epikinetics")}.
+        #' @param summarise Boolean. If TRUE, average the individual trajectories to get lo, me and
+        #' hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.
+        #' Default TRUE.
+        #' @param n_draws Integer. Maximum number of samples to draw. Default 2000.
+        #' @param time_shift Integer. Number of days to adjust the exposure day by. Default 0.
     simulate_individual_trajectories = function(
       summarise = TRUE,
       n_draws = 2000,
@@ -580,7 +586,7 @@ biokinetics <- R6::R6Class(
         dt_params_ind_traj <- data.table::setDT(convert_log2_scale_inverse_cpp(
           dt_params_ind_traj,
           vars_to_transform = "mu",
-          lower_limit = private$lower_limit))
+          smallest_value = private$smallest_value))
       }
 
       # convert numeric pid to original pid

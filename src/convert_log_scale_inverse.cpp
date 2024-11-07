@@ -5,7 +5,7 @@ using namespace cpp11;
 [[cpp11::register]]
 cpp11::data_frame convert_log2_scale_inverse_cpp(cpp11::writable::list dt,
                                                  cpp11::strings vars_to_transform,
-                                                 double lower_limit) {
+                                                 double smallest_value) {
 
   for (int i = 0; i < vars_to_transform.size(); i++) {
     std::string var = vars_to_transform[i];
@@ -14,7 +14,7 @@ cpp11::data_frame convert_log2_scale_inverse_cpp(cpp11::writable::list dt,
     
     // Apply the inverse transformation
     for (int j = 0; j < col.size(); j++) {
-      col[j] = lower_limit * pow(2, col[j]);
+      col[j] = smallest_value * pow(2, col[j]);
     }
     
     // Replace the column

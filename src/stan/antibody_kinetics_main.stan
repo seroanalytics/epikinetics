@@ -29,12 +29,11 @@ data {
   int N; // Number of observations
   int N_events; // Number of exposure events
   int K; // Number of titre types
-  real upper_limit; // Upper detection limit
-  real lower_limit; // Lower detection limit
+  real upper_detection_limit; // Upper detection limit
+  real lower_detection_limit; // Lower detection limit
   array[N] int<lower=1, upper=K> titre_type; // Titre type for each observation
   vector[N] t; // Time for each observation
   vector[N] value; // Observed titre values
-  array[N] int<lower=-1, upper=1> censored; // Censoring indicator: -1 for lo, 1 for upper, 0 for none
   
   // Indices for different censoring scenarios
   int N_uncens; // number of uncensored observations
@@ -149,10 +148,10 @@ model {
   value[uncens_idx] ~ normal(mu[uncens_idx], sigma);
 
   // Likelihood for observations at lower limit
-  target += normal_lcdf(lower_limit | mu[cens_lo_idx], sigma);
+  target += normal_lcdf(lower_detection_limit | mu[cens_lo_idx], sigma);
 
   // Censoring at upper limit
-  target += normal_lccdf(upper_limit | mu[cens_hi_idx], sigma);
+  target += normal_lccdf(upper_detection_limit | mu[cens_hi_idx], sigma);
   
   // Covariate-level mean priors, parameterised from previous studies
   t0_pop ~ normal(mu_t0, sigma_t0);

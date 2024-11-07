@@ -1,10 +1,20 @@
+#' @title Base 2 log scale conversion
+#'
+#' @description Natural scale data is converted to a base 2 log scale before model fitting.
+#' This function does not modify the provided data.table in-place, but returns a transformed copy.
+#' @return A data.table, identical to the input data but with specified columns transformed.
+#' @param dt_in data.table containing data to be transformed to base 2 log scale.
+#' @param vars_to_transform Names of columns to apply the transformation to.
+#' @param smallest_value The lowest value in the original dataset. Used to get the data onto
+#' a scale that starts at zero.
+#' @export
 convert_log2_scale <- function(
   dt_in,
-  lower_limit,
+  smallest_value,
   vars_to_transform = "value") {
   dt_out <- data.table::copy(dt_in)
   for (var in vars_to_transform) {
-    dt_out[, (var) := log2(get(var) / lower_limit)]
+    dt_out[, (var) := log2(get(var) / smallest_value)]
   }
   return(dt_out)
 }
@@ -17,12 +27,12 @@ convert_log2_scale <- function(
 #' @return A data.table, identical to the input data but with specified columns transformed.
 #' @param dt_in data.table containing data to be transformed from base 2 log to natural scale.
 #' @param vars_to_transform Names of columns to apply the transformation to.
-#' @param lower_limit The lowest value in the original dataset.
+#' @param smallest_value The lowest value in the original dataset.
 #' @export
-convert_log2_scale_inverse <- function(dt_in, vars_to_transform, lower_limit) {
+convert_log2_scale_inverse <- function(dt_in, vars_to_transform, smallest_value) {
   dt_out <- data.table::copy(dt_in)
   for (var in vars_to_transform) {
-    dt_out[, (var) := lower_limit * 2^(get(var))]
+    dt_out[, (var) := smallest_value * 2^(get(var))]
   }
   dt_out
 }
