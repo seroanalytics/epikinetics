@@ -24,7 +24,7 @@ test_that("Can plot prior predictions from model", {
   set.seed(1)
   plot <- mod$plot_prior_predictive(tmax = 400, n_draws = 500)
   expect_equal(nrow(plot$data), 400)
-  expect_equal(length(plot$layers), 3)
+  expect_equal(length(plot$layers), 7) # includes detection limits
 })
 
 test_that("Prior predictions from model are the same", {

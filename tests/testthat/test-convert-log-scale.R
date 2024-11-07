@@ -1,7 +1,7 @@
 test_that("Can convert to and from log scale in R", {
   inputs <- data.table::fread(test_path("testdata", "testdata.csv"))
-  log_inputs <- convert_log2_scale(inputs, "me", lower_detection_limit = 2)
-  unlog_inputs <- convert_log2_scale_inverse(log_inputs, "me", lower_detection_limit = 2)
+  log_inputs <- convert_log2_scale(inputs, "me", smallest_value = 2)
+  unlog_inputs <- convert_log2_scale_inverse(log_inputs, "me", smallest_value = 2)
 
   expect_equal(inputs, unlog_inputs)
 })
@@ -11,7 +11,7 @@ test_that("Can convert from log scale in R", {
   res <- convert_log2_scale_inverse(
     inputs,
     vars_to_transform = c("me", "lo"),
-    lower_detection_limit = 5)
+    smallest_value = 5)
 
   expect_equal(res$me, 5 * 2^inputs$me)
   expect_equal(res$lo, 5 * 2^inputs$lo)
@@ -22,7 +22,7 @@ test_that("Can convert from log scale in R", {
   res <- convert_log2_scale_inverse(
     inputs,
     vars_to_transform = "me",
-    lower_detection_limit = 10)
+    smallest_value = 10)
 
   expect_equal(res$me, 10 * 2^inputs$me)
 })
@@ -32,7 +32,7 @@ test_that("Can convert from log scale in Cpp", {
   rescpp <- convert_log2_scale_inverse_cpp(
     inputs,
     vars_to_transform = c("me", "lo"),
-    lower_detection_limit = 5)
+    smallest_value = 5)
 
   expect_equal(rescpp$me, 5 * 2^(inputs$me))
   expect_equal(rescpp$lo, 5 * 2^(inputs$lo))
@@ -43,7 +43,7 @@ test_that("Can convert from log scale in Cpp", {
   res <- convert_log2_scale_inverse_cpp(
     inputs,
     vars_to_transform = "me",
-    lower_detection_limit = 10)
+    smallest_value = 10)
 
   expect_equal(res$me, 10 * 2^inputs$me)
 })
