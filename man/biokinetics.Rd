@@ -37,7 +37,9 @@ Initialise the kinetics model.
   preds_sd = 0.25,
   scale = "natural",
   upper_detection_limit = NULL,
-  lower_detection_limit = NULL
+  lower_detection_limit = NULL,
+  truncate_upper = TRUE,
+  truncate_lower = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -66,6 +68,10 @@ to using the largest value in the dataset as the upper detection limit.}
 \item{\code{lower_detection_limit}}{Optional lower detection limit of the titre used. This is needed to construct a likelihood for lower censored
 values, so only needs to be provided if you have such values in the dataset. If not provided, the model will default
 to using the smallest value in the dataset as the lower detection limit.}
+
+\item{\code{truncate_upper}}{Logical. Whether values greater than the upper detection limit should be truncated, i.e. set to the same value as the limit. Default TRUE.}
+
+\item{\code{truncate_lower}}{Logical. Whether values smaller than the lower detection limit should be truncated, i.e. set to the same value as the limit. Default TRUE.}
 }
 \if{html}{\out{</div>}}
 }

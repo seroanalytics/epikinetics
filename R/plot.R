@@ -21,7 +21,7 @@ plot.biokinetics_priors <- function(x,
 
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-  t0 <- tp <- ts <- m1 <- m2 <- m3 <- censored <- NULL
+  t0 <- tp <- ts <- m1 <- m2 <- m3 <- NULL
   time_since_last_exp <- me <- lo <- hi <- value <- mu <- NULL
 
   if (!is.null(data)) {
@@ -81,7 +81,7 @@ plot_sero_data <- function(data,
   data <- data[time_since_last_exp <= tmax,]
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
-  time_since_last_exp <- value <- titre_type <- censored <- NULL
+  time_since_last_exp <- value <- titre_type <- NULL
 
   plot <- ggplot(data) +
     geom_point(aes(x = time_since_last_exp, y = value, colour = titre_type),

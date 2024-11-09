@@ -41,13 +41,16 @@ test_that("Prior predictions from model are the same", {
 
 test_that("Can plot input data", {
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-  mod <- biokinetics$new(data = data, lower_detection_limit = 40)
+  mod <- biokinetics$new(data = data,
+                         lower_detection_limit = 40,
+                         truncate_lower = FALSE)
   suppressWarnings({plot <- mod$plot_model_inputs()})
   vdiffr::expect_doppelganger("inputdata", plot)
 
   mod <- biokinetics$new(data = data,
                          lower_detection_limit = 40,
-                         covariate_formula = ~0 + infection_history)
+                         covariate_formula = ~0 + infection_history,
+                         truncate_lower = FALSE)
   suppressWarnings({plot <- mod$plot_model_inputs()})
   vdiffr::expect_doppelganger("inputdata_covariates", plot)
 })
