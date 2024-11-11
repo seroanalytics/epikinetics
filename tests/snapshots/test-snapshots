@@ -2,4 +2,4 @@
 set -ex
 
 docker build . -f snapshot-tests.Dockerfile -t epikinetics-test
-docker run epikinetics-test Rscript -e "devtools::test(filter='snapshot')"
+docker run epikinetics-test Rscript -e "res=devtools::test(filter='snapshot');df=as.data.frame(res);if(sum(df\$failed) > 0 || any(df\$error)) {q(status=1)}"

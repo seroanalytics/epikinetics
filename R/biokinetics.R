@@ -167,10 +167,10 @@ biokinetics <- R6::R6Class(
         preds_sd = private$preds_sd,
         K = private$data[, data.table::uniqueN(titre_type)],
         N_uncens = private$data[censored == 0, .N],
-        N_lo = private$data[censored == -2, .N],
+        N_lo = private$data[censored == -1, .N],
         N_hi = private$data[censored == 1, .N],
         uncens_idx = private$data[censored == 0, obs_id],
-        cens_lo_idx = private$data[censored == -2, obs_id],
+        cens_lo_idx = private$data[censored == -1, obs_id],
         cens_hi_idx = private$data[censored == 1, obs_id])
 
       stan_data$t <- private$data[, time_since_last_exp]
