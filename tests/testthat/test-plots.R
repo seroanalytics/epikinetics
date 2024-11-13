@@ -16,8 +16,8 @@ test_that("Can plot prior prediction with data points", {
 
 test_that("Can plot prior predictions from model", {
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-  priors <- biokinetics_priors(mu_values = c(4.1, 11, 65, 0.2, -0.01, 0.01),
-                               sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.001))
+  priors <- biokinetics_priors(4.1, 11, 65, 0.2, -0.01, 0.01,
+                              2.0, 2.0, 3.0, 0.01, 0.01, 0.001)
 
   mod <- biokinetics$new(priors = priors,
                          data = data)
@@ -29,8 +29,8 @@ test_that("Can plot prior predictions from model", {
 
 test_that("Prior predictions from model are the same", {
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-  priors <- biokinetics_priors(mu_values = c(4.1, 11, 65, 0.2, -0.01, 0.01),
-                               sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.001))
+  priors <- biokinetics_priors(4.1, 11, 65, 0.2, -0.01, 0.01,
+                               2.0, 2.0, 3.0, 0.01, 0.01, 0.001)
 
   mod <- biokinetics$new(priors = priors,
                          data = data)

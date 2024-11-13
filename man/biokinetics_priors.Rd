@@ -5,14 +5,44 @@
 \title{Construct priors for the biomarker model.}
 \usage{
 biokinetics_priors(
-  mu_values = c(4, 10, 60, 0.25, -0.02, 0),
-  sigma_values = c(2, 2, 3, 0.01, 0.01, 0.01)
+  mu_t0 = 4,
+  mu_tp = 10,
+  mu_ts = 60,
+  mu_m1 = 0.25,
+  mu_m2 = -0.02,
+  mu_m3 = 0,
+  sigma_t0 = 2,
+  sigma_tp = 2,
+  sigma_ts = 3,
+  sigma_m1 = 0.01,
+  sigma_m2 = 0.01,
+  sigma_m3 = 0.01
 )
 }
 \arguments{
-\item{mu_values}{Mean of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.}
+\item{mu_t0}{Numeric. Mean for t0, baseline titre value. Default 4.0.}
 
-\item{sigma_values}{Standard deviation of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.}
+\item{mu_tp}{Numeric. Mean for tp, time at peak titre. Default 10.}
+
+\item{mu_ts}{Numeric. Mean for ts, time at start of warning. Default 60.}
+
+\item{mu_m1}{Numeric. Mean for m1, boosting rate. Default 0.25.}
+
+\item{mu_m2}{Numeric. Mean for m2, plateau rate. Default 0.25.}
+
+\item{mu_m3}{Numeric. Mean for m3, waning rate. Default -0.02.}
+
+\item{sigma_t0}{Numeric. Standard deviation for t0, baseline titre value. Default 2.0.}
+
+\item{sigma_tp}{Numeric. Standard deviation for tp, time at peak titre. Default 2.0.}
+
+\item{sigma_ts}{Numeric. Standard deviation for ts, time at start of warning. Default 3.0.}
+
+\item{sigma_m1}{Numeric. Standard deviation for m1, boosting rate. Default 0.01.}
+
+\item{sigma_m2}{Numeric. Standard deviation for m2, plateau rate. Default 0.01.}
+
+\item{sigma_m3}{Numeric. Standard deviation for m3, waning rate. Default 0.01.}
 }
 \value{
 A named list of type 'biokinetics_priors'.
@@ -24,6 +54,5 @@ parameters has a Gaussian prior, and these can be specified by the user. This fu
 deviations for each prior and constructs an object of type 'biokinetics_priors' to be passed to the model.
 }
 \examples{
-priors <- biokinetics_priors(mu_values = c(4.0, 10, 60, 0.25, -0.02, 0),
-sigma_values = c(2.0, 2.0, 3.0, 0.01, 0.01, 0.01))
+priors <- biokinetics_priors(mu_t0 = 5.0, mu_ts = 61)
 }
