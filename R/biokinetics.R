@@ -554,7 +554,7 @@ biokinetics <- R6::R6Class(
     },
     #' @description Simulate individual trajectories from the model. This is
     #' computationally expensive and may take a while to run if n_draws is large.
-    #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
+    #' @return A data.table. If summarise = TRUE columns are calendar_day, titre_type, me, lo, hi, time_shift.
     #' If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
     #' and a column for each covariate in the regression model. See the data vignette for details:
     #' \code{vignette("data", package = "epikinetics")}.

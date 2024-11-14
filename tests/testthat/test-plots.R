@@ -134,3 +134,19 @@ test_that("Can plot population trajectories with log scale input data", {
   expect_equal(length(plot$scales$scales), 0)
   vdiffr::expect_doppelganger("populationtrajectories_logscale", plot)
 })
+
+test_that("Can plot summarised individual trajectories", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),)
+  mod$fit()
+  trajectories <- mod$simulate_individual_trajectories(n_draws = 250,
+                                                       summarise = TRUE)
+  # because these fits are so bad there are some v high upper values, so just
+  # create these articially
+  trajectories[, hi := me + 100]
+  vdiffr::expect_doppelganger("individualtrajectories", plot(trajectories))
+})
