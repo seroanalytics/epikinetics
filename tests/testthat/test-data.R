@@ -11,8 +11,8 @@ test_that("Can provide data directly", {
 
 test_that("Can construct stan data", {
   dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-  priors <- biokinetics_priors(mu_values = c(1, 2, 3, 4, 5, 6),
-                               sigma_values = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6))
+  priors <- biokinetics_priors(1, 2, 3, 4, 5, 6,
+                               0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
   mod <- biokinetics$new(data = dat, priors = priors)
   stan_data <- mod$get_stan_data()
   expect_true(is.list(stan_data))
