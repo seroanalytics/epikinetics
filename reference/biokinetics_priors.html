@@ -67,8 +67,18 @@ deviations for each prior and constructs an object of type 'biokinetics_priors' 
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">biokinetics_priors</span><span class="op">(</span></span>
-<span>  mu_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">0.25</span>, <span class="op">-</span><span class="fl">0.02</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  sigma_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span></span>
+<span>  mu_t0 <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  mu_tp <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  mu_ts <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  mu_m1 <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  mu_m2 <span class="op">=</span> <span class="op">-</span><span class="fl">0.02</span>,</span>
+<span>  mu_m3 <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  sigma_t0 <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  sigma_tp <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  sigma_ts <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  sigma_m1 <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  sigma_m2 <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  sigma_m3 <span class="op">=</span> <span class="fl">0.01</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -76,12 +86,52 @@ deviations for each prior and constructs an object of type 'biokinetics_priors' 
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-mu-values">mu_values<a class="anchor" aria-label="anchor" href="#arg-mu-values"></a></dt>
-<dd><p>Mean of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.</p></dd>
+<dl><dt id="arg-mu-t-">mu_t0<a class="anchor" aria-label="anchor" href="#arg-mu-t-"></a></dt>
+<dd><p>Numeric. Mean for t0, baseline titre value. Default 4.0.</p></dd>
 
 
-<dt id="arg-sigma-values">sigma_values<a class="anchor" aria-label="anchor" href="#arg-sigma-values"></a></dt>
-<dd><p>Standard deviation of Gaussian prior for each of t0, tp, ts, m1, m2, m3, in order.</p></dd>
+<dt id="arg-mu-tp">mu_tp<a class="anchor" aria-label="anchor" href="#arg-mu-tp"></a></dt>
+<dd><p>Numeric. Mean for tp, time at peak titre. Default 10.</p></dd>
+
+
+<dt id="arg-mu-ts">mu_ts<a class="anchor" aria-label="anchor" href="#arg-mu-ts"></a></dt>
+<dd><p>Numeric. Mean for ts, time at start of warning. Default 60.</p></dd>
+
+
+<dt id="arg-mu-m-">mu_m1<a class="anchor" aria-label="anchor" href="#arg-mu-m-"></a></dt>
+<dd><p>Numeric. Mean for m1, boosting rate. Default 0.25.</p></dd>
+
+
+<dt id="arg-mu-m-">mu_m2<a class="anchor" aria-label="anchor" href="#arg-mu-m-"></a></dt>
+<dd><p>Numeric. Mean for m2, plateau rate. Default 0.25.</p></dd>
+
+
+<dt id="arg-mu-m-">mu_m3<a class="anchor" aria-label="anchor" href="#arg-mu-m-"></a></dt>
+<dd><p>Numeric. Mean for m3, waning rate. Default -0.02.</p></dd>
+
+
+<dt id="arg-sigma-t-">sigma_t0<a class="anchor" aria-label="anchor" href="#arg-sigma-t-"></a></dt>
+<dd><p>Numeric. Standard deviation for t0, baseline titre value. Default 2.0.</p></dd>
+
+
+<dt id="arg-sigma-tp">sigma_tp<a class="anchor" aria-label="anchor" href="#arg-sigma-tp"></a></dt>
+<dd><p>Numeric. Standard deviation for tp, time at peak titre. Default 2.0.</p></dd>
+
+
+<dt id="arg-sigma-ts">sigma_ts<a class="anchor" aria-label="anchor" href="#arg-sigma-ts"></a></dt>
+<dd><p>Numeric. Standard deviation for ts, time at start of warning. Default 3.0.</p></dd>
+
+
+<dt id="arg-sigma-m-">sigma_m1<a class="anchor" aria-label="anchor" href="#arg-sigma-m-"></a></dt>
+<dd><p>Numeric. Standard deviation for m1, boosting rate. Default 0.01.</p></dd>
+
+
+<dt id="arg-sigma-m-">sigma_m2<a class="anchor" aria-label="anchor" href="#arg-sigma-m-"></a></dt>
+<dd><p>Numeric. Standard deviation for m2, plateau rate. Default 0.01.</p></dd>
+
+
+<dt id="arg-sigma-m-">sigma_m3<a class="anchor" aria-label="anchor" href="#arg-sigma-m-"></a></dt>
+<dd><p>Numeric. Standard deviation for m3, waning rate. Default 0.01.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -91,8 +141,7 @@ deviations for each prior and constructs an object of type 'biokinetics_priors' 
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu">biokinetics_priors</span><span class="op">(</span>mu_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">0.25</span>, <span class="op">-</span><span class="fl">0.02</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>sigma_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu">biokinetics_priors</span><span class="op">(</span>mu_t0 <span class="op">=</span> <span class="fl">5.0</span>, mu_ts <span class="op">=</span> <span class="fl">61</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
