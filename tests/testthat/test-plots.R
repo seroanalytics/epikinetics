@@ -155,6 +155,22 @@ test_that("Can plot summarised individual trajectories", {
   vdiffr::expect_doppelganger("individualtrajectories", plot(trajectories))
 })
 
+test_that("Can plot un-summarised individual trajectories", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),)
+  mod$fit()
+  trajectories <- mod$simulate_individual_trajectories(n_draws = 250,
+                                                       summarise = FALSE)
+  # because these fits are so bad there are some v high upper values, so just
+  # trunbcate these
+  trajectories[, mu:= ifelse(mu > 2000, 2000, mu)]
+  vdiffr::expect_doppelganger("individualtrajectories-unsum", plot(trajectories))
+})
+
 test_that("Can plot stationary points", {
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good

@@ -408,7 +408,6 @@ biokinetics <- R6::R6Class(
         logger::log_info("Recovering covariate names")
         dt_out <- private$recover_covariate_names(dt_out)
       }
-      class(dt_out) <- append("biokinetics_population_parameters", class(dt_out))
       dt_out
     },
     #' @description Extract fitted individual parameters
@@ -446,7 +445,7 @@ biokinetics <- R6::R6Class(
         logger::log_info("Recovering covariate names")
         dt_out <- private$recover_covariate_names(dt_out)
       }
-      class(dt_out) <- append("biokinetics_individual_parameters", class(dt_out))
+
       dt_out
     },
     #' @description Process the model results into a data table of titre values over time.
@@ -533,17 +532,17 @@ biokinetics <- R6::R6Class(
                        by = by]
 
       logger::log_info("Recovering covariate names")
-      dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
+      dt_out <- private$recover_covariate_names(dt_peak_switch)
 
       if (private$scale == "natural") {
-        dt_peak_switch <- convert_log2_scale_inverse(
-          dt_peak_switch,
+        dt_out <- convert_log2_scale_inverse(
+          dt_out,
           vars_to_transform = c("mu_0", "mu_p", "mu_s"),
           smallest_value = private$smallest_value)
       }
 
       logger::log_info("Calculating medians")
-      dt_out <- dt_peak_switch[
+      dt_out <- dt_out[
         , rel_drop := mu_s / mu_p,
           by = c(private$all_formula_vars, "titre_type")][
         , .(
@@ -554,8 +553,8 @@ biokinetics <- R6::R6Class(
         mu_s_me = quantile(mu_s, 0.5)),
           by = c(private$all_formula_vars, "titre_type")]
       class(dt_out) <- append("biokinetics_population_stationary_points", class(dt_out))
-      setattr(dt_out, "covariates", private$all_formula_vars)
-      setattr(dt_out, "scale", private$scale)
+      attr(dt_out, "covariates") <- private$all_formula_vars
+      attr(dt_out, "scale") <- private$scale
       dt_out
     },
     #' @description Simulate individual trajectories from the model. This is
