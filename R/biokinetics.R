@@ -408,6 +408,7 @@ biokinetics <- R6::R6Class(
         logger::log_info("Recovering covariate names")
         dt_out <- private$recover_covariate_names(dt_out)
       }
+      class(dt_out) <- append("biokinetics_population_parameters", class(dt_out))
       dt_out
     },
     #' @description Extract fitted individual parameters
@@ -445,6 +446,7 @@ biokinetics <- R6::R6Class(
         logger::log_info("Recovering covariate names")
         dt_out <- private$recover_covariate_names(dt_out)
       }
+      class(dt_out) <- append("biokinetics_individual_parameters", class(dt_out))
       dt_out
     },
     #' @description Process the model results into a data table of titre values over time.
@@ -541,7 +543,7 @@ biokinetics <- R6::R6Class(
       }
 
       logger::log_info("Calculating medians")
-      dt_peak_switch[
+      dt_out <- dt_peak_switch[
         , rel_drop := mu_s / mu_p,
           by = c(private$all_formula_vars, "titre_type")][
         , .(
@@ -551,6 +553,10 @@ biokinetics <- R6::R6Class(
         mu_p_me = quantile(mu_p, 0.5),
         mu_s_me = quantile(mu_s, 0.5)),
           by = c(private$all_formula_vars, "titre_type")]
+      class(dt_out) <- append("biokinetics_population_stationary_points", class(dt_out))
+      setattr(dt_out, "covariates", private$all_formula_vars)
+      setattr(dt_out, "scale", private$scale)
+      dt_out
     },
     #' @description Simulate individual trajectories from the model. This is
     #' computationally expensive and may take a while to run if n_draws is large.

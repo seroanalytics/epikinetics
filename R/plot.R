@@ -199,6 +199,46 @@ plot.biokinetics_individual_trajectories <- function(x, ..., data = NULL,
            fill = "none")
 }
 
+plot.biokinetics_population_stationary_points <- function(x, ..., upper_detection_limit = NULL) {
+  covariates <- attr(x, "covariates")
+  plot <- ggplot(data = x,
+                 aes(x = mu_p, y = mu_s, colour = titre_type)) +
+    geom_density_2d(aes(group = eval(parse(text = shape_formula(c("titre_type", covariates)))))) +
+    geom_point(alpha = 0.05, size = 0.2)
+
+  if (length(covariates) > 0) {
+    plot <- plot +
+      geom_point(aes(x = mu_p_me,
+                     y = mu_s_me,
+                     shape = eval(parse(text = shape_formula(covariates)))),
+                 colour = "black") +
+      guides(shape = guide_legend(title = shape_legend_title(covariates),
+                                  override.aes = list(alpha = 1, size = 1)))
+  }
+  else {
+    plot <- plot + geom_point(aes(x = mu_p_me, y = mu_s_me), colour = "black")
+  }
+
+  if (attr(x, "scale") == "natural") {
+    plot <- plot +
+      scale_y_continuous(trans = "log2") +
+      scale_x_continuous(trans = "log2")
+  }
+
+  if (!is.null(upper_detection_limit)) {
+    plot <- plot +
+      geom_vline(xintercept = upper_detection_limit, linetype = "twodash", colour = "gray30") +
+      geom_hline(yintercept = upper_detection_limit, linetype = "twodash", colour = "gray30")
+  }
+
+  plot +
+    geom_path(aes(x = mu_p_me, y = mu_s_me, group = titre_type), colour = "black") +
+    labs(x = expression(paste("Population-level titre value at peak (IC"[50], ")")),
+         y = expression(paste("Population-level titre value at set-point (IC"[50], ")"))) +
+    guides(colour = guide_legend(override.aes = list(alpha = 1, size = 1)))
+
+}
+
 facet_formula <- function(covariates) {
   paste("~", paste(c("titre_type", covariates), collapse = "+"))
 }
@@ -227,4 +267,16 @@ add_limits <- function(plot, upper_censoring_limit, lower_censoring_limit) {
                size = 3)
   }
   plot
+}
+
+shape_formula <- function(covariates) {
+  paste0("interaction(", paste(covariates, collapse = ","), ")")
+}
+
+shape_legend_title <- function(covariates) {
+  if (length(covariates) == 1) {
+    return(covariates[[1]])
+  } else {
+    return(shape_formula(covariates))
+  }
 }

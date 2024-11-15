@@ -65,6 +65,10 @@ mock_model <- function(name, package) {
   list(sample = function(x, ...)  readRDS(test_path("testdata", "testdraws.rds")))
 }
 
+mock_model_no_covariates <- function(name, package) {
+  list(sample = function(x, ...)  readRDS(test_path("testdata", "testdraws_nocovariates.rds")))
+}
+
 mock_model_multiple_covariates <- function(name, package) {
   list(sample = function(x, ...)  readRDS(test_path("testdata", "testdraws_multiplecovariates.rds")))
 }
@@ -149,4 +153,43 @@ test_that("Can plot summarised individual trajectories", {
   # create these articially
   trajectories[, hi := me + 100]
   vdiffr::expect_doppelganger("individualtrajectories", plot(trajectories))
+})
+
+test_that("Can plot stationary points", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),
+                         covariate_formula = ~0 + infection_history)
+  mod$fit()
+  res <- mod$population_stationary_points()
+  vdiffr::expect_doppelganger("stationarypoints", plot(res))
+})
+
+test_that("Can plot stationary points with no covariates", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model_no_covariates, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),)
+  mod$fit()
+  res <- mod$population_stationary_points()
+  vdiffr::expect_doppelganger("stationarypointsnocovariates", plot(res))
+})
+
+
+test_that("Can plot stationary points with upper limit", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model_no_covariates, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),)
+  mod$fit()
+  res <- mod$population_stationary_points()
+  vdiffr::expect_doppelganger("stationarypointswithlimit",
+                              plot(res, upper_detection_limit = 2560))
 })
