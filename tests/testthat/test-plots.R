@@ -17,7 +17,7 @@ test_that("Can plot prior prediction with data points", {
 test_that("Can plot prior predictions from model", {
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
   priors <- biokinetics_priors(4.1, 11, 65, 0.2, -0.01, 0.01,
-                              2.0, 2.0, 3.0, 0.01, 0.01, 0.001)
+                               2.0, 2.0, 3.0, 0.01, 0.01, 0.001)
 
   mod <- biokinetics$new(priors = priors,
                          data = data)
@@ -151,9 +151,9 @@ test_that("Can plot summarised individual trajectories", {
                                                        summarise = TRUE)
   # because these fits are so bad there are some v high upper values, so just
   # create these articially
-  trajectories[, hi:= ifelse(hi > 2000, me + 100, hi)]
+  trajectories[, hi := ifelse(hi > 2000, me + 100, hi)]
   vdiffr::expect_doppelganger("individualtrajectories", plot(trajectories,
-                                                             max_date = lubridate::ymd("2022/01/01")))
+                                                             max_day = lubridate::ymd("2022/01/01")))
 })
 
 test_that("Can plot un-summarised individual trajectories", {
@@ -168,9 +168,65 @@ test_that("Can plot un-summarised individual trajectories", {
                                                        summarise = FALSE)
   # because these fits are so bad there are some v high upper values, so just
   # truncate these
-  trajectories[, mu:= ifelse(mu > 2000, 2000, mu)]
+  trajectories[, mu := ifelse(mu > 2000, 2000, mu)]
   vdiffr::expect_doppelganger("individualtrajectories-unsum", plot(trajectories,
-                                                                   max_date = lubridate::ymd("2022/01/01")))
+                                                                   max_day = lubridate::ymd("2022/01/01")))
+})
+
+test_that("Can plot individual trajectories for specific pids", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),)
+  mod$fit()
+  trajectories <- mod$simulate_individual_trajectories(n_draws = 250,
+                                                       summarise = FALSE)
+  # because these fits are so bad there are some v high upper values, so just
+  # truncate these
+  trajectories[, mu := ifelse(mu > 2000, 2000, mu)]
+  vdiffr::expect_doppelganger("individualtrajectories-pids", plot(trajectories,
+                                                                  pids = c("1", "2"),
+                                                                  max_day = lubridate::ymd("2022/01/01")))
+})
+
+test_that("Can plot individual trajectories for specific pids with data", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),)
+  mod$fit()
+  trajectories <- mod$simulate_individual_trajectories(n_draws = 250,
+                                                       summarise = FALSE)
+  # because these fits are so bad there are some v high upper values, so just
+  # truncate these
+  trajectories[, mu := ifelse(mu > 2000, 2000, mu)]
+  vdiffr::expect_doppelganger("individualtrajectories-pids-data", plot(trajectories,
+                                                                       pids = "1",
+                                                                       data = data.table::fread(system.file("delta_full.rds", package = "epikinetics")),
+                                                                       max_day = lubridate::ymd("2022/01/01")))
+})
+
+test_that("Can plot individual trajectories for specific pids with data and titre type", {
+  # note that this is using a pre-fitted model with very few iterations, so the
+  # fits won't look very good
+  local_mocked_bindings(
+    stan_package_model = mock_model, .package = "instantiate"
+  )
+  mod <- biokinetics$new(file_path = system.file("delta_full.rds", package = "epikinetics"),)
+  mod$fit()
+  trajectories <- mod$simulate_individual_trajectories(n_draws = 250,
+                                                       summarise = FALSE)
+  # because these fits are so bad there are some v high upper values, so just
+  # truncate these
+  trajectories[, mu := ifelse(mu > 2000, 2000, mu)]
+  vdiffr::expect_doppelganger("individualtrajectories-pids-data-alpha", plot(trajectories,
+                                                                       pids = "1",
+                                                                       data = data.table::fread(system.file("delta_full.rds", package = "epikinetics")),
+                                                                       titre_types = "Alpha"))
 })
 
 test_that("Can plot stationary points", {
