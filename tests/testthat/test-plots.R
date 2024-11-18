@@ -151,8 +151,9 @@ test_that("Can plot summarised individual trajectories", {
                                                        summarise = TRUE)
   # because these fits are so bad there are some v high upper values, so just
   # create these articially
-  trajectories[, hi := me + 100]
-  vdiffr::expect_doppelganger("individualtrajectories", plot(trajectories))
+  trajectories[, hi:= ifelse(hi > 2000, me + 100, hi)]
+  vdiffr::expect_doppelganger("individualtrajectories", plot(trajectories,
+                                                             max_date = lubridate::ymd("2022/01/01")))
 })
 
 test_that("Can plot un-summarised individual trajectories", {
@@ -166,9 +167,10 @@ test_that("Can plot un-summarised individual trajectories", {
   trajectories <- mod$simulate_individual_trajectories(n_draws = 250,
                                                        summarise = FALSE)
   # because these fits are so bad there are some v high upper values, so just
-  # trunbcate these
+  # truncate these
   trajectories[, mu:= ifelse(mu > 2000, 2000, mu)]
-  vdiffr::expect_doppelganger("individualtrajectories-unsum", plot(trajectories))
+  vdiffr::expect_doppelganger("individualtrajectories-unsum", plot(trajectories,
+                                                                   max_date = lubridate::ymd("2022/01/01")))
 })
 
 test_that("Can plot stationary points", {

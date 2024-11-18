@@ -179,22 +179,30 @@ plot.biokinetics_individual_trajectories <- function(x, ..., data = NULL,
       geom_ribbon(aes(x = calendar_day,
                       ymin = lo,
                       ymax = hi,
-                      group = titre_type), alpha = 0.5) +
-      geom_smooth(
-        aes(x = calendar_day,
-            y = me,
-            fill = titre_type,
-            colour = titre_type,
-            group = titre_type),
-        alpha = 0.5, span = 0.2)
+                      group = titre_type), alpha = 0.5)
   } else {
     x <- x[
       !is.nan(mu), .(ind_mu_sum = mean(mu)),
       by = c("calendar_day", "pid", "titre_type")]
+    count <- x[, .(count = data.table::uniqueN(pid)), by = .(calendar_day)]
     plot <- ggplot(x) +
       geom_line(aes(x = calendar_day, y = ind_mu_sum,
                     colour = titre_type, group = interaction(titre_type, pid)),
-                alpha = 0.5, linewidth = 0.1)
+                alpha = 0.5, linewidth = 0.1) +
+      geom_smooth(
+        aes(x = calendar_day,
+            y = ind_mu_sum,
+            fill = titre_type,
+            colour = titre_type,
+            group = titre_type),
+        alpha = 0.5, span = 0.2) +
+      scale_y_continuous(sec.axis = sec_axis(~., name = "Number of data points")) +
+      geom_bar(data = count, aes(x = calendar_day, y = count),
+               stat = "identity", alpha = 0.6) +
+      theme(axis.ticks.y.right = element_line(alpha = 0.6),
+            axis.text.y.right = element_text(alpha = 0.6),
+            axis.title.y.right = element_text(alpha = 0.6)
+      )
   }
   if (!is.null(data)) {
     validate_required_cols(data, c("day", "value"))
