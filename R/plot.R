@@ -9,11 +9,15 @@
 #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
 #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
 #' @param data Optional data.frame with columns time_since_last_exp and value. The raw data to compare to.
+#' @param upper_censoring_limit Optional upper detection limit.
+#' @param lower_censoring_limit Optional lower detection limit.
 plot.biokinetics_priors <- function(x,
                                     ...,
                                     tmax = 150,
                                     n_draws = 2000,
-                                    data = NULL) {
+                                    data = NULL,
+                                    upper_censoring_limit = NULL,
+                                    lower_censoring_limit = NULL) {
 
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
@@ -47,29 +51,46 @@ plot.biokinetics_priors <- function(x,
     geom_ribbon(aes(x = t, ymin = lo, ymax = hi), alpha = 0.5)
 
   if (!is.null(data)) {
-    add_censored_indicator(data)
     dat <- data[time_since_last_exp <= tmax,]
     plot <- plot +
       geom_point(data = dat, size = 0.5,
                  aes(x = time_since_last_exp,
-                     y = value,
-                     shape = censored)) +
-      guides(shape = guide_legend(title = "Censored"))
+                     y = value))
+
+    plot <- add_limits(plot, upper_censoring_limit, lower_censoring_limit)
   }
   plot
 }
 
-plot_sero_data <- function(data, covariates = character(0)) {
+#' @title Plot serological data
+#' @export
+#' @description Plot serological data in the format provided to the biokinetics
+#' model, with a smoothing function fitted.
+#' @return A ggplot2 object.
+#' @param data A data.table with required columns time_since_last_exp, value and titre_type.
+#' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
+#' @param covariates Optional vector of covariate names to facet by (these must correspond to columns in the data.table)
+#' @param upper_censoring_limit Optional upper detection limit.
+#' @param lower_censoring_limit Optional lower detection limit.
+plot_sero_data <- function(data,
+                           tmax = 150,
+                           covariates = character(0),
+                           upper_censoring_limit = NULL,
+                           lower_censoring_limit = NULL) {
   validate_required_cols(data, c("time_since_last_exp", "value", "titre_type"))
+  data <- data[time_since_last_exp <= tmax,]
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   time_since_last_exp <- value <- titre_type <- NULL
 
-  ggplot(data) +
-    geom_point(aes(x = time_since_last_exp, y = value, colour = titre_type)) +
+  plot <- ggplot(data) +
+    geom_point(aes(x = time_since_last_exp, y = value, colour = titre_type),
+               size = 0.5, alpha = 0.5) +
     geom_smooth(aes(x = time_since_last_exp, y = value, colour = titre_type)) +
     facet_wrap(eval(parse(text = facet_formula(covariates)))) +
     guides(colour = guide_legend(title = "Titre type"))
+
+  add_limits(plot, upper_censoring_limit, lower_censoring_limit)
 }
 
 #' Plot method for "biokinetics_population_trajectories" class
@@ -80,13 +101,16 @@ plot_sero_data <- function(data, covariates = character(0)) {
 #' @param \dots Further arguments passed to the method.
 #' @param data Optional data.table containing raw data as provided to the biokinetics model.
 #' @export
-plot.biokinetics_population_trajectories <- function(x, ..., data = NULL) {
+plot.biokinetics_population_trajectories <- function(x, ...,
+                                                     data = NULL) {
   covariates <- attr(x, "covariates")
+  upper_censoring_limit <- attr(x, "upper_censoring_limit")
+  lower_censoring_limit <- attr(x, "lower_censoring_limit")
 
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
   time_since_last_exp <- value <- me <- titre_type <- lo <- hi <- NULL
-  day <- last_exp_day <- NULL
+  day <- last_exp_day <- mu <- .draw <- NULL
 
   if (attr(x, "summarised")) {
     plot <- ggplot(x) +
@@ -102,32 +126,50 @@ plot.biokinetics_population_trajectories <- function(x, ..., data = NULL) {
   }
   if (!is.null(data)) {
     validate_required_cols(data)
-    add_censored_indicator(data)
     plot <- plot +
       geom_point(data = data,
                  aes(x = as.integer(day - last_exp_day, units = "days"),
-                     y = value, shape = censored), size = 0.5, alpha = 0.5)
+                     y = value), size = 0.5, alpha = 0.5)
   }
   if (attr(x, "scale") == "natural") {
     plot <- plot + scale_y_continuous(trans = "log2")
   }
-  plot +
+  plot <- plot +
     facet_wrap(eval(parse(text = facet_formula(covariates)))) +
     guides(fill = guide_legend(title = "Titre type"),
-           colour = "none",
-           shape = guide_legend(title = "Censored"))
+           colour = "none")
+  if (!is.null(data)) {
+    plot <- add_limits(plot, upper_censoring_limit, lower_censoring_limit)
+  }
+  plot
 }
 
 facet_formula <- function(covariates) {
   paste("~", paste(c("titre_type", covariates), collapse = "+"))
 }
 
-add_censored_indicator <- function(data) {
-  if (!("censored" %in% colnames(data))) {
-    # censored is an optional column in input data
-    # if not present, treat all points as uncensored
-    data[, censored:= FALSE]
-  } else {
-    data[, censored:= censored != 0]
+add_limits <- function(plot, upper_censoring_limit, lower_censoring_limit) {
+  if (!is.null(lower_censoring_limit)) {
+    plot <- plot +
+      geom_hline(yintercept = lower_censoring_limit,
+                 linetype = 'dotted') +
+      annotate("text", x = 1,
+               y = lower_censoring_limit,
+               label = "Lower detection limit",
+               vjust = -0.5,
+               hjust = 0,
+               size = 3)
   }
+  if (!is.null(upper_censoring_limit)) {
+    plot <- plot +
+      geom_hline(yintercept = upper_censoring_limit,
+                 linetype = 'dotted') +
+      annotate("text", x = 1,
+               y = upper_censoring_limit,
+               label = "Upper detection limit",
+               vjust = -0.5,
+               hjust = 0,
+               size = 3)
+  }
+  plot
 }

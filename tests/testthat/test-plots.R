@@ -24,7 +24,7 @@ test_that("Can plot prior predictions from model", {
   set.seed(1)
   plot <- mod$plot_prior_predictive(tmax = 400, n_draws = 500)
   expect_equal(nrow(plot$data), 400)
-  expect_equal(length(plot$layers), 3)
+  expect_equal(length(plot$layers), 7) # includes detection limits
 })
 
 test_that("Prior predictions from model are the same", {
@@ -41,13 +41,24 @@ test_that("Prior predictions from model are the same", {
 
 test_that("Can plot input data", {
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-  mod <- biokinetics$new(data = data)
-  plot <- mod$plot_model_inputs()
+  mod <- biokinetics$new(data = data,
+                         lower_censoring_limit = 40,
+                         strict_lower_limit = FALSE)
+  suppressWarnings({plot <- mod$plot_model_inputs()})
   vdiffr::expect_doppelganger("inputdata", plot)
 
-  mod <- biokinetics$new(data = data, covariate_formula = ~0 + infection_history)
-  plot <- mod$plot_model_inputs()
+  mod <- biokinetics$new(data = data,
+                         lower_censoring_limit = 40,
+                         covariate_formula = ~0 + infection_history,
+                         strict_lower_limit = FALSE)
+  suppressWarnings({plot <- mod$plot_model_inputs()})
   vdiffr::expect_doppelganger("inputdata_covariates", plot)
+})
+
+test_that("Can plot input data without detection limits", {
+  data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+  data[, time_since_last_exp := as.integer(day - last_exp_day, units = "days")]
+  vdiffr::expect_doppelganger("inputdatanolimits", plot_sero_data(data))
 })
 
 mock_model <- function(name, package) {
@@ -97,7 +108,8 @@ test_that("Can plot population trajectories with data", {
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-  mod <- biokinetics$new(data = data, covariate_formula = ~0 + infection_history)
+  mod <- biokinetics$new(data = data,
+                         covariate_formula = ~0 + infection_history)
   fit <- mod$fit()
   trajectories <- mod$simulate_population_trajectories()
   plot <- plot(trajectories, data = data)
@@ -112,7 +124,7 @@ test_that("Can plot population trajectories with log scale input data", {
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good
   data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-  data <- convert_log2_scale(data)
+  data <- convert_log2_scale(data, smallest_value = min(data$value))
   mod <- biokinetics$new(data = data,
                          covariate_formula = ~0 + infection_history,
                          scale = "log")

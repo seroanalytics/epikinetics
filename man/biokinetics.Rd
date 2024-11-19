@@ -35,7 +35,11 @@ Initialise the kinetics model.
   file_path = NULL,
   covariate_formula = ~0,
   preds_sd = 0.25,
-  scale = "natural"
+  scale = "natural",
+  upper_censoring_limit = NULL,
+  lower_censoring_limit = NULL,
+  strict_upper_limit = TRUE,
+  strict_lower_limit = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -56,6 +60,18 @@ will be treated as categorical variables. Default ~0.}
 
 \item{\code{scale}}{One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
 will be converted to a log scale for model fitting.}
+
+\item{\code{upper_censoring_limit}}{Optional value at which to upper censor data points. This is needed to construct a likelihood for upper censored
+values, so only needs to be provided if you have such values in the dataset. If not provided, no censoring will be done.}
+
+\item{\code{lower_censoring_limit}}{Optional value at which to lower censor data points. This is needed to construct a likelihood for lower censored
+values, so only needs to be provided if you have such values in the dataset. If not provided, no censoring will be done.}
+
+\item{\code{strict_upper_limit}}{Logical. Whether values greater than the upper censoring limit should be censored.
+If FALSE, only values exactly equal to the upper censoring limit will be censored. Default TRUE.}
+
+\item{\code{strict_lower_limit}}{Logical. Whether values smaller than the lower censoring limit should be censored.
+If FALSE, only values exactly equal to the lower censoring limit will be censored. Default TRUE.}
 }
 \if{html}{\out{</div>}}
 }
@@ -92,12 +108,19 @@ A ggplot2 object.
 \if{latex}{\out{\hypertarget{method-biokinetics-plot_model_inputs}{}}}
 \subsection{Method \code{plot_model_inputs()}}{
 Plot model input data with a smoothing function. Note that
-this plot is on a log scale, regardless of whether data was provided on a
-log or a natural scale.
+this plot is of the data as provided to the Stan model so is on a log scale,
+regardless of whether data was provided on a log or a natural scale.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_model_inputs()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_model_inputs(tmax = 150)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tmax}}{Integer. Maximum time since last exposure to include. Default 150.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 A ggplot2 object.
 }

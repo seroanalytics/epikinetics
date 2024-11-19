@@ -11,6 +11,9 @@ biokinetics <- R6::R6Class(
     scale = NULL,
     priors = NULL,
     preds_sd = NULL,
+    upper_censoring_limit = NULL,
+    lower_censoring_limit = NULL,
+    smallest_value = NULL,
     data = NULL,
     covariate_formula = NULL,
     fitted = NULL,
@@ -24,6 +27,20 @@ biokinetics <- R6::R6Class(
     check_fitted = function() {
       if (is.null(private$fitted)) {
         stop("Model has not been fitted yet. Call 'fit' before calling this function.")
+      }
+    },
+    get_upper_censoring_limit = function(upper_censoring_limit) {
+      if (is.null(upper_censoring_limit)) {
+        private$upper_censoring_limit <- max(private$data$value)
+      } else {
+        private$upper_censoring_limit <- upper_censoring_limit
+      }
+    },
+    get_lower_censoring_limit = function(lower_censoring_limit) {
+      if (is.null(lower_censoring_limit)) {
+        private$lower_censoring_limit <- min(private$data$value)
+      } else {
+        private$lower_censoring_limit <- lower_censoring_limit
       }
     },
     model_matrix_with_dummy = function(data) {
@@ -84,7 +101,7 @@ biokinetics <- R6::R6Class(
       if ("p" %in% colnames(dt)) {
         dt_out <- dt_out[private$covariate_lookup_table, on = "p", nomatch = NULL][, `:=`(p = NULL)]
       }
-      data.table::setnames(dt_out, "t", "time_since_last_exp", skip_absent=TRUE)
+      data.table::setnames(dt_out, "t", "time_since_last_exp", skip_absent = TRUE)
       dt_out
     },
     summarise_pop_fit = function(time_range,
@@ -151,32 +168,38 @@ biokinetics <- R6::R6Class(
       data.table::setcolorder(dt_out, c("t", "p", "k"))
 
       if (!has_covariates) {
-        dt_out[, p:= NULL]
+        dt_out[, p := NULL]
       }
       dt_out
     },
     prepare_stan_data = function() {
-      pid <- value <- censored <- titre_type <- obs_id <- time_since_last_exp <- NULL
+      pid <- value <- censored_lo <- censored_hi <- titre_type <- obs_id <- time_since_last_exp <- NULL
       stan_data <- list(
         N = private$data[, .N],
         N_events = private$data[, data.table::uniqueN(pid)],
         id = private$data[, private$pid_lookup[pid]],
         value = private$data[, value],
-        censored = private$data[, censored],
         titre_type = private$data[, private$titre_type_lookup[titre_type]],
         preds_sd = private$preds_sd,
         K = private$data[, data.table::uniqueN(titre_type)],
-        N_uncens = private$data[censored == 0, .N],
-        N_lo = private$data[censored == -1, .N],
-        N_hi = private$data[censored == 1, .N],
-        uncens_idx = private$data[censored == 0, obs_id],
-        cens_lo_idx = private$data[censored == -1, obs_id],
-        cens_hi_idx = private$data[censored == 1, obs_id])
+        N_uncens = private$data[!censored_lo & !censored_hi, .N],
+        N_lo = private$data[censored_lo == TRUE, .N],
+        N_hi = private$data[censored_hi == TRUE, .N],
+        uncens_idx = private$data[censored_lo == FALSE & censored_hi == FALSE, obs_id],
+        cens_lo_idx = private$data[censored_lo == TRUE, obs_id],
+        cens_hi_idx = private$data[censored_hi == TRUE, obs_id])
 
       stan_data$t <- private$data[, time_since_last_exp]
       stan_data$X <- private$design_matrix
       stan_data$P <- ncol(private$design_matrix)
-
+      if (private$scale == "natural") {
+        # do the same transformation as used on the data
+        stan_data$upper_censoring_limit <- log2(private$upper_censoring_limit / private$smallest_value)
+        stan_data$lower_censoring_limit <- log2(private$lower_censoring_limit / private$smallest_value)
+      } else {
+        stan_data$upper_censoring_limit <- private$upper_censoring_limit
+        stan_data$lower_censoring_limit <- private$lower_censoring_limit
+      }
       private$stan_input_data <- c(stan_data, private$priors)
     },
     adjust_parameters = function(dt) {
@@ -215,12 +238,24 @@ biokinetics <- R6::R6Class(
     #' @param preds_sd Standard deviation of predictor coefficients. Default 0.25.
     #' @param scale One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
     #' will be converted to a log scale for model fitting.
+    #' @param upper_censoring_limit Optional value at which to upper censor data points. This is needed to construct a likelihood for upper censored
+    #' values, so only needs to be provided if you have such values in the dataset. If not provided, no censoring will be done.
+    #' @param lower_censoring_limit Optional value at which to lower censor data points. This is needed to construct a likelihood for lower censored
+    #' values, so only needs to be provided if you have such values in the dataset. If not provided, no censoring will be done.
+    #' @param strict_upper_limit Logical. Whether values greater than the upper censoring limit should be censored.
+    #' If FALSE, only values exactly equal to the upper censoring limit will be censored. Default TRUE.
+    #' @param strict_lower_limit Logical. Whether values smaller than the lower censoring limit should be censored.
+    #' If FALSE, only values exactly equal to the lower censoring limit will be censored. Default TRUE.
     initialize = function(priors = biokinetics_priors(),
                           data = NULL,
                           file_path = NULL,
                           covariate_formula = ~0,
                           preds_sd = 0.25,
-                          scale = "natural") {
+                          scale = "natural",
+                          upper_censoring_limit = NULL,
+                          lower_censoring_limit = NULL,
+                          strict_upper_limit = TRUE,
+                          strict_lower_limit = TRUE) {
       validate_priors(priors)
       private$priors <- priors
       validate_numeric(preds_sd)
@@ -246,18 +281,46 @@ biokinetics <- R6::R6Class(
       validate_required_cols(private$data)
       validate_formula_vars(private$all_formula_vars, private$data)
       logger::log_info("Preparing data for stan")
-      if (scale == "natural") {
-        private$data <- convert_log2_scale(private$data, "value")
+      private$get_upper_censoring_limit(upper_censoring_limit)
+      private$get_lower_censoring_limit(lower_censoring_limit)
+      max_value <- max(private$data$value)
+      min_value <- min(private$data$value)
+      values_above <- max_value > private$upper_censoring_limit
+      values_below <- min_value < private$lower_censoring_limit
+      if (strict_upper_limit) {
+        if (values_above) {
+          warning(sprintf("Data contains values above the upper censoring limit %s and these will be censored. To turn off this behaviour set strict_upper_limit to FALSE.",
+                          private$upper_censoring_limit))
+        }
+        private$data[, value := ifelse(value > private$upper_censoring_limit, private$upper_censoring_limit, value)]
+      } else if (values_above) {
+        warning(sprintf("Data contains values above the upper censoring limit %s. To treat these as censored set strict_upper_limit to TRUE.",
+                        private$upper_censoring_limit))
+      }
+      if (strict_lower_limit) {
+        if (values_below) {
+          warning(sprintf("Data contains values below the lower censoring limit %s and these will be censored. To turn off this behaviour set strict_lower_limit to FALSE.",
+                          private$lower_censoring_limit))
+        }
+        private$data[, value := ifelse(value < private$lower_censoring_limit, private$lower_censoring_limit, value)]
+      } else if (values_below) {
+        warning(sprintf("Data contains values below the lower censoring limit %s. To treat these as censored set strict_lower_limit to TRUE.",
+                        private$lower_censoring_limit))
       }
       private$data[, `:=`(obs_id = seq_len(.N),
-                          time_since_last_exp = as.integer(day - last_exp_day, units = "days"))]
-      if (!("censored" %in% colnames(private$data))) {
-        private$data$censored <- 0
-      }
+                          time_since_last_exp = as.integer(day - last_exp_day, units = "days"),
+                          censored_lo = value == private$lower_censoring_limit,
+                          censored_hi = value == private$upper_censoring_limit)]
       private$construct_design_matrix()
       private$build_covariate_lookup_table()
       private$build_pid_lookup()
       private$build_titre_type_lookup()
+      if (scale == "natural") {
+        private$smallest_value <- min(private$data$value)
+        private$data <- convert_log2_scale(private$data,
+                                           smallest_value = private$smallest_value,
+                                           vars_to_transform = "value")
+      }
       private$prepare_stan_data()
       logger::log_info("Retrieving compiled model")
       private$model <- instantiate::stan_package_model(
@@ -276,38 +339,45 @@ biokinetics <- R6::R6Class(
       plot(private$priors,
            tmax = tmax,
            n_draws = n_draws,
-           data = private$data)
+           data = private$data,
+           upper_censoring_limit = private$stan_input_data$upper_censoring_limit,
+           lower_censoring_limit = private$stan_input_data$lower_censoring_limit)
     },
     #' @description Plot model input data with a smoothing function. Note that
-    #' this plot is on a log scale, regardless of whether data was provided on a
-    #' log or a natural scale.
+    #' this plot is of the data as provided to the Stan model so is on a log scale,
+    #' regardless of whether data was provided on a log or a natural scale.
+    #' @param tmax Integer. Maximum time since last exposure to include. Default 150.
     #' @return A ggplot2 object.
-    plot_model_inputs = function() {
-      plot_sero_data(private$data, private$all_formula_vars)
+    plot_model_inputs = function(tmax = 150) {
+      plot_sero_data(private$data,
+                     tmax = tmax,
+                     covariates = private$all_formula_vars,
+                     upper_censoring_limit = private$stan_input_data$upper_censoring_limit,
+                     lower_censoring_limit = private$stan_input_data$lower_censoring_limit)
     },
-    #' @description View the data that is passed to the stan model, for debugging purposes.
-    #' @return A list of arguments that will be passed to the stan model.
+        #' @description View the data that is passed to the stan model, for debugging purposes.
+        #' @return A list of arguments that will be passed to the stan model.
     get_stan_data = function() {
       private$stan_input_data
     },
-    #' @description View the mapping of human readable covariate names to the model variable p.
-    #' @return A data.table mapping the model variable p to human readable covariates.
+        #' @description View the mapping of human readable covariate names to the model variable p.
+        #' @return A data.table mapping the model variable p to human readable covariates.
     get_covariate_lookup_table = function() {
       private$covariate_lookup_table
     },
-    #' @description Fit the model and return CmdStanMCMC fitted model object.
-    #' @return A CmdStanMCMC fitted model object: <https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html>
-    #' @param ... Named arguments to the `sample()` method of CmdStan model.
-    #'   objects: <https://mc-stan.org/cmdstanr/reference/model-method-sample.html>
+        #' @description Fit the model and return CmdStanMCMC fitted model object.
+        #' @return A CmdStanMCMC fitted model object: <https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html>
+        #' @param ... Named arguments to the `sample()` method of CmdStan model.
+        #'   objects: <https://mc-stan.org/cmdstanr/reference/model-method-sample.html>
     fit = function(...) {
       logger::log_info("Fitting model")
       private$fitted <- private$model$sample(private$stan_input_data, ...)
       private$fitted
     },
-    #' @description Extract fitted population parameters
-    #' @return A data.table
-    #' @param n_draws Integer. Default 2000.
-    #' @param human_readable_covariates Logical. Default TRUE.
+        #' @description Extract fitted population parameters
+        #' @return A data.table
+        #' @param n_draws Integer. Default 2000.
+        #' @param human_readable_covariates Logical. Default TRUE.
     extract_population_parameters = function(n_draws = 2000,
                                              human_readable_covariates = TRUE) {
       private$check_fitted()
@@ -322,7 +392,7 @@ biokinetics <- R6::R6Class(
       logger::log_info("Extracting parameters")
       dt_out <- private$extract_parameters(params, n_draws)
 
-      if (has_covariates){
+      if (has_covariates) {
         data.table::setcolorder(dt_out, c("p", "k", ".draw"))
       } else {
         data.table::setcolorder(dt_out, c("k", ".draw"))
@@ -412,10 +482,14 @@ biokinetics <- R6::R6Class(
       if (private$scale == "natural") {
         if (summarise) {
           dt_out <- convert_log2_scale_inverse(
-            dt_out, vars_to_transform = c("me", "lo", "hi"))
+            dt_out,
+            vars_to_transform = c("me", "lo", "hi"),
+            smallest_value = private$smallest_value)
         } else {
           dt_out <- convert_log2_scale_inverse(
-            dt_out, vars_to_transform = "mu")
+            dt_out,
+            vars_to_transform = "mu",
+            smallest_value = private$smallest_value)
         }
       }
 
@@ -423,6 +497,9 @@ biokinetics <- R6::R6Class(
       attr(dt_out, "summarised") <- summarise
       attr(dt_out, "scale") <- private$scale
       attr(dt_out, "covariates") <- private$all_formula_vars
+      attr(dt_out, "upper_censoring_limit") <- private$upper_censoring_limit
+      attr(dt_out, "lower_censoring_limit") <- private$lower_censoring_limit
+
       dt_out
     },
     #' @description Process the stan model results into a data.table.
@@ -458,7 +535,9 @@ biokinetics <- R6::R6Class(
 
       if (private$scale == "natural") {
         dt_peak_switch <- convert_log2_scale_inverse(
-          dt_peak_switch, vars_to_transform = c("mu_0", "mu_p", "mu_s"))
+          dt_peak_switch,
+          vars_to_transform = c("mu_0", "mu_p", "mu_s"),
+          smallest_value = private$smallest_value)
       }
 
       logger::log_info("Calculating medians")
@@ -522,7 +601,9 @@ biokinetics <- R6::R6Class(
 
       if (private$scale == "natural") {
         dt_params_ind_traj <- data.table::setDT(convert_log2_scale_inverse_cpp(
-          dt_params_ind_traj, vars_to_transform = "mu"))
+          dt_params_ind_traj,
+          vars_to_transform = "mu",
+          smallest_value = private$smallest_value))
       }
 
       # convert numeric pid to original pid

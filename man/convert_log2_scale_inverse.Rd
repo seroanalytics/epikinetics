@@ -4,12 +4,14 @@
 \alias{convert_log2_scale_inverse}
 \title{Invert base 2 log scale conversion}
 \usage{
-convert_log2_scale_inverse(dt_in, vars_to_transform)
+convert_log2_scale_inverse(dt_in, vars_to_transform, smallest_value)
 }
 \arguments{
 \item{dt_in}{data.table containing data to be transformed from base 2 log to natural scale.}
 
 \item{vars_to_transform}{Names of columns to apply the transformation to.}
+
+\item{smallest_value}{The lowest value in the original dataset.}
 }
 \value{
 A data.table, identical to the input data but with specified columns transformed.
