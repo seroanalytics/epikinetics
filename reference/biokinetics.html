@@ -89,7 +89,11 @@ fit it to a dataset.</p>
 <span>  file_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  covariate_formula <span class="op">=</span> <span class="op">~</span><span class="fl">0</span>,</span>
 <span>  preds_sd <span class="op">=</span> <span class="fl">0.25</span>,</span>
-<span>  scale <span class="op">=</span> <span class="st">"natural"</span></span>
+<span>  scale <span class="op">=</span> <span class="st">"natural"</span>,</span>
+<span>  upper_censoring_limit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  lower_censoring_limit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  strict_upper_limit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  strict_lower_limit <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -120,6 +124,26 @@ will be treated as categorical variables. Default ~0.</p></dd>
 <dt><code>scale</code></dt>
 <dd><p>One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
 will be converted to a log scale for model fitting.</p></dd>
+
+
+<dt><code>upper_censoring_limit</code></dt>
+<dd><p>Optional value at which to upper censor data points. This is needed to construct a likelihood for upper censored
+values, so only needs to be provided if you have such values in the dataset. If not provided, no censoring will be done.</p></dd>
+
+
+<dt><code>lower_censoring_limit</code></dt>
+<dd><p>Optional value at which to lower censor data points. This is needed to construct a likelihood for lower censored
+values, so only needs to be provided if you have such values in the dataset. If not provided, no censoring will be done.</p></dd>
+
+
+<dt><code>strict_upper_limit</code></dt>
+<dd><p>Logical. Whether values greater than the upper censoring limit should be censored.
+If FALSE, only values exactly equal to the upper censoring limit will be censored. Default TRUE.</p></dd>
+
+
+<dt><code>strict_lower_limit</code></dt>
+<dd><p>Logical. Whether values smaller than the lower censoring limit should be censored.
+If FALSE, only values exactly equal to the lower censoring limit will be censored. Default TRUE.</p></dd>
 
 
 </dl><p></p></div>
@@ -158,12 +182,20 @@ on a log or a natural scale.</p><div class="section">
 </div><p></p><hr><a id="method-biokinetics-plot_model_inputs"></a><div class="section">
 <h3 id="method-plot-model-inputs-">Method <code>plot_model_inputs()</code><a class="anchor" aria-label="anchor" href="#method-plot-model-inputs-"></a></h3>
 <p>Plot model input data with a smoothing function. Note that
-this plot is on a log scale, regardless of whether data was provided on a
-log or a natural scale.</p><div class="section">
+this plot is of the data as provided to the Stan model so is on a log scale,
+regardless of whether data was provided on a log or a natural scale.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">plot_model_inputs</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">biokinetics</span><span class="op">$</span><span class="fu">plot_model_inputs</span><span class="op">(</span>tmax <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>tmax</code></dt>
+<dd><p>Integer. Maximum time since last exposure to include. Default 150.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 <div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>A ggplot2 object.</p>
@@ -201,7 +233,7 @@ log or a natural scale.</p><div class="section">
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Named arguments to the <code><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample()</a></code> method of CmdStan model.
 objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.html" class="external-link">https://mc-stan.org/cmdstanr/reference/model-method-sample.html</a></p></dd>
@@ -225,7 +257,7 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
 <dd><p>Integer. Default 2000.</p></dd>
 
@@ -253,7 +285,7 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
 <dd><p>Integer. Default 2000.</p></dd>
 
@@ -285,7 +317,7 @@ objects: <a href="https://mc-stan.org/cmdstanr/reference/model-method-sample.htm
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>t_max</code></dt>
 <dd><p>Integer. Maximum number of time points to include.</p></dd>
 
@@ -319,7 +351,7 @@ titre_type and a column for each covariate in the hierarchical model. See the da
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n_draws</code></dt>
 <dd><p>Integer. Maximum number of samples to include. Default 2000.</p></dd>
 
@@ -346,7 +378,7 @@ computationally expensive and may take a while to run if n_draws is large.</p><d
 </div>
 
 <div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>summarise</code></dt>
 <dd><p>Boolean. If TRUE, average the individual trajectories to get lo, me and
 hi values for the population, disaggregated by titre type. If FALSE return the indidivudal trajectories.

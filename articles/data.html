@@ -95,55 +95,41 @@ containing the following columns:</p>
 <table class="table">
 <colgroup>
 <col width="10%">
-<col width="16%">
-<col width="67%">
-<col width="5%">
+<col width="17%">
+<col width="71%">
 </colgroup>
 <thead><tr class="header">
 <th>name</th>
 <th>type</th>
 <th>description</th>
-<th>required</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>pid</td>
 <td>numeric or character</td>
 <td>Unique identifier to identify a person across observations</td>
-<td>T</td>
 </tr>
 <tr class="even">
 <td>day</td>
 <td>integer or date</td>
 <td>The day of the observation. Can be a date or an integer representing
 a relative day of study</td>
-<td>T</td>
 </tr>
 <tr class="odd">
 <td>last_exp_day</td>
 <td>integer or date</td>
 <td>The most recent day on which the person was exposed. Must be of the
 same type as the ‘day’ column</td>
-<td>T</td>
 </tr>
 <tr class="even">
 <td>titre_type</td>
 <td>character</td>
 <td>Name of the titre or biomarker</td>
-<td>T</td>
 </tr>
 <tr class="odd">
 <td>value</td>
 <td>numeric</td>
 <td>Titre value</td>
-<td>T</td>
-</tr>
-<tr class="even">
-<td>censored</td>
-<td>-1, 0 or 1</td>
-<td>Optional column. Whether this observation should be treated as
-censored: -1 for lower, 1 for upper, 0 for none.</td>
-<td>F</td>
 </tr>
 </tbody>
 </table>
@@ -166,14 +152,14 @@ See <a href="../reference/biokinetics.html">biokinetics</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"delta_full.rds"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      pid        day last_exp_day titre_type    value censored infection_history</span></span>
-<span><span class="co">#&gt;    &lt;int&gt;     &lt;IDat&gt;       &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;    &lt;int&gt;            &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:     1 2021-03-10   2021-03-08  Ancestral 175.9350        0   Infection naive</span></span>
-<span><span class="co">#&gt; 2:     1 2021-04-15   2021-03-08  Ancestral 607.5750        0   Infection naive</span></span>
-<span><span class="co">#&gt; 3:     1 2021-07-08   2021-03-08  Ancestral 179.0463        0   Infection naive</span></span>
-<span><span class="co">#&gt; 4:     1 2021-03-10   2021-03-08      Alpha   5.0000       -1   Infection naive</span></span>
-<span><span class="co">#&gt; 5:     1 2021-04-15   2021-03-08      Alpha 416.7905        0   Infection naive</span></span>
-<span><span class="co">#&gt; 6:     1 2021-07-08   2021-03-08      Alpha 103.5274        0   Infection naive</span></span>
+<span><span class="co">#&gt;      pid        day last_exp_day titre_type    value infection_history</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;     &lt;IDat&gt;       &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;            &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:     1 2021-03-10   2021-03-08  Ancestral 175.9350   Infection naive</span></span>
+<span><span class="co">#&gt; 2:     1 2021-04-15   2021-03-08  Ancestral 607.5750   Infection naive</span></span>
+<span><span class="co">#&gt; 3:     1 2021-07-08   2021-03-08  Ancestral 179.0463   Infection naive</span></span>
+<span><span class="co">#&gt; 4:     1 2021-03-10   2021-03-08      Alpha   5.0000   Infection naive</span></span>
+<span><span class="co">#&gt; 5:     1 2021-04-15   2021-03-08      Alpha 416.7905   Infection naive</span></span>
+<span><span class="co">#&gt; 6:     1 2021-07-08   2021-03-08      Alpha 103.5274   Infection naive</span></span>
 <span><span class="co">#&gt;    last_vax_type exp_num</span></span>
 <span><span class="co">#&gt;           &lt;char&gt;   &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:      BNT162b2       2</span></span>
@@ -185,7 +171,7 @@ See <a href="../reference/biokinetics.html">biokinetics</a>.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="ouput-data">Ouput data<a class="anchor" aria-label="anchor" href="#ouput-data"></a>
+<h2 id="output-data">Output data<a class="anchor" aria-label="anchor" href="#output-data"></a>
 </h2>
 <p>After fitting a model, a <a href="https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html" class="external-link">CmdStanMCMC</a>
 object is returned. This means that users who are already familiar with

@@ -10,10 +10,12 @@
 <url><loc>/reference/add_exposure_data.html</loc></url>
 <url><loc>/reference/biokinetics.html</loc></url>
 <url><loc>/reference/biokinetics_priors.html</loc></url>
+<url><loc>/reference/convert_log2_scale.html</loc></url>
 <url><loc>/reference/convert_log2_scale_inverse.html</loc></url>
 <url><loc>/reference/epikinetics-package.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/plot.biokinetics_population_trajectories.html</loc></url>
 <url><loc>/reference/plot.biokinetics_priors.html</loc></url>
+<url><loc>/reference/plot_sero_data.html</loc></url>
 </urlset>
 

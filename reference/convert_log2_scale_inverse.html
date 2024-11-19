@@ -64,7 +64,7 @@ This function does not modify the provided data.table in-place, but returns a tr
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">convert_log2_scale_inverse</span><span class="op">(</span><span class="va">dt_in</span>, <span class="va">vars_to_transform</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">convert_log2_scale_inverse</span><span class="op">(</span><span class="va">dt_in</span>, <span class="va">vars_to_transform</span>, <span class="va">smallest_value</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -77,6 +77,10 @@ This function does not modify the provided data.table in-place, but returns a tr
 
 <dt id="arg-vars-to-transform">vars_to_transform<a class="anchor" aria-label="anchor" href="#arg-vars-to-transform"></a></dt>
 <dd><p>Names of columns to apply the transformation to.</p></dd>
+
+
+<dt id="arg-smallest-value">smallest_value<a class="anchor" aria-label="anchor" href="#arg-smallest-value"></a></dt>
+<dd><p>The lowest value in the original dataset.</p></dd>
 
 </dl></div>
     <div id="value">

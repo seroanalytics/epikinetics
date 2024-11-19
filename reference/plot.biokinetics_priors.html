@@ -63,7 +63,15 @@ priors for each parameter in the biokinetics model.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'biokinetics_priors'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, tmax <span class="op">=</span> <span class="fl">150</span>, n_draws <span class="op">=</span> <span class="fl">2000</span>, data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  tmax <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>  n_draws <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  upper_censoring_limit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  lower_censoring_limit <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -88,6 +96,14 @@ priors for each parameter in the biokinetics model.</p>
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>Optional data.frame with columns time_since_last_exp and value. The raw data to compare to.</p></dd>
+
+
+<dt id="arg-upper-censoring-limit">upper_censoring_limit<a class="anchor" aria-label="anchor" href="#arg-upper-censoring-limit"></a></dt>
+<dd><p>Optional upper detection limit.</p></dd>
+
+
+<dt id="arg-lower-censoring-limit">lower_censoring_limit<a class="anchor" aria-label="anchor" href="#arg-lower-censoring-limit"></a></dt>
+<dd><p>Optional lower detection limit.</p></dd>
 
 </dl></div>
     <div id="value">
