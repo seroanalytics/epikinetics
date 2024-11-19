@@ -8,8 +8,8 @@ plot_sero_data(
   data,
   tmax = 150,
   covariates = character(0),
-  upper_detection_limit = NULL,
-  lower_detection_limit = NULL
+  upper_censoring_limit = NULL,
+  lower_censoring_limit = NULL
 )
 }
 \arguments{
@@ -19,9 +19,9 @@ plot_sero_data(
 
 \item{covariates}{Optional vector of covariate names to facet by (these must correspond to columns in the data.table)}
 
-\item{upper_detection_limit}{Optional upper detection limit.}
+\item{upper_censoring_limit}{Optional upper detection limit.}
 
-\item{lower_detection_limit}{Optional lower detection limit.}
+\item{lower_censoring_limit}{Optional lower detection limit.}
 }
 \value{
 A ggplot2 object.

@@ -28,7 +28,7 @@ The `fit` method then has the same function signature as the underlying [cmdstan
 ```{r, warning=FALSE, message=FALSE, results="hide"}
 dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
 mod <- epikinetics::biokinetics$new(data = dat,
-                                    lower_detection_limit = 40,
+                                    lower_censoring_limit = 40,
                                     covariate_formula = ~0 + infection_history)
 delta <- mod$fit(parallel_chains = 4,
                  iter_warmup = 50,

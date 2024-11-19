@@ -11,8 +11,8 @@ and optionally compare to a dataset.}
   tmax = 150,
   n_draws = 2000,
   data = NULL,
-  upper_detection_limit = NULL,
-  lower_detection_limit = NULL
+  upper_censoring_limit = NULL,
+  lower_censoring_limit = NULL
 )
 }
 \arguments{
@@ -26,9 +26,9 @@ and optionally compare to a dataset.}
 
 \item{data}{Optional data.frame with columns time_since_last_exp and value. The raw data to compare to.}
 
-\item{upper_detection_limit}{Optional upper detection limit.}
+\item{upper_censoring_limit}{Optional upper detection limit.}
 
-\item{lower_detection_limit}{Optional lower detection limit.}
+\item{lower_censoring_limit}{Optional lower detection limit.}
 }
 \value{
 A ggplot2 object.

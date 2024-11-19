@@ -9,15 +9,15 @@
 #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
 #' @param n_draws Integer. The number of trajectories to simulate. Default 2000.
 #' @param data Optional data.frame with columns time_since_last_exp and value. The raw data to compare to.
-#' @param upper_detection_limit Optional upper detection limit.
-#' @param lower_detection_limit Optional lower detection limit.
+#' @param upper_censoring_limit Optional upper detection limit.
+#' @param lower_censoring_limit Optional lower detection limit.
 plot.biokinetics_priors <- function(x,
                                     ...,
                                     tmax = 150,
                                     n_draws = 2000,
                                     data = NULL,
-                                    upper_detection_limit = NULL,
-                                    lower_detection_limit = NULL) {
+                                    upper_censoring_limit = NULL,
+                                    lower_censoring_limit = NULL) {
 
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
@@ -57,7 +57,7 @@ plot.biokinetics_priors <- function(x,
                  aes(x = time_since_last_exp,
                      y = value))
 
-    plot <- add_limits(plot, upper_detection_limit, lower_detection_limit)
+    plot <- add_limits(plot, upper_censoring_limit, lower_censoring_limit)
   }
   plot
 }
@@ -70,13 +70,13 @@ plot.biokinetics_priors <- function(x,
 #' @param data A data.table with required columns time_since_last_exp, value and titre_type.
 #' @param tmax Integer. The number of time points in each simulated trajectory. Default 150.
 #' @param covariates Optional vector of covariate names to facet by (these must correspond to columns in the data.table)
-#' @param upper_detection_limit Optional upper detection limit.
-#' @param lower_detection_limit Optional lower detection limit.
+#' @param upper_censoring_limit Optional upper detection limit.
+#' @param lower_censoring_limit Optional lower detection limit.
 plot_sero_data <- function(data,
                            tmax = 150,
                            covariates = character(0),
-                           upper_detection_limit = NULL,
-                           lower_detection_limit = NULL) {
+                           upper_censoring_limit = NULL,
+                           lower_censoring_limit = NULL) {
   validate_required_cols(data, c("time_since_last_exp", "value", "titre_type"))
   data <- data[time_since_last_exp <= tmax,]
   # Declare variables to suppress notes when compiling package
@@ -90,7 +90,7 @@ plot_sero_data <- function(data,
     facet_wrap(eval(parse(text = facet_formula(covariates)))) +
     guides(colour = guide_legend(title = "Titre type"))
 
-  add_limits(plot, upper_detection_limit, lower_detection_limit)
+  add_limits(plot, upper_censoring_limit, lower_censoring_limit)
 }
 
 #' Plot method for "biokinetics_population_trajectories" class
@@ -104,8 +104,8 @@ plot_sero_data <- function(data,
 plot.biokinetics_population_trajectories <- function(x, ...,
                                                      data = NULL) {
   covariates <- attr(x, "covariates")
-  upper_detection_limit <- attr(x, "upper_detection_limit")
-  lower_detection_limit <- attr(x, "lower_detection_limit")
+  upper_censoring_limit <- attr(x, "upper_censoring_limit")
+  lower_censoring_limit <- attr(x, "lower_censoring_limit")
 
   # Declare variables to suppress notes when compiling package
   # https://github.com/Rdatatable/data.table/issues/850#issuecomment-259466153
@@ -139,7 +139,7 @@ plot.biokinetics_population_trajectories <- function(x, ...,
     guides(fill = guide_legend(title = "Titre type"),
            colour = "none")
   if (!is.null(data)) {
-    plot <- add_limits(plot, upper_detection_limit, lower_detection_limit)
+    plot <- add_limits(plot, upper_censoring_limit, lower_censoring_limit)
   }
   plot
 }
@@ -148,24 +148,24 @@ facet_formula <- function(covariates) {
   paste("~", paste(c("titre_type", covariates), collapse = "+"))
 }
 
-add_limits <- function(plot, upper_detection_limit, lower_detection_limit) {
-  if (!is.null(lower_detection_limit)) {
+add_limits <- function(plot, upper_censoring_limit, lower_censoring_limit) {
+  if (!is.null(lower_censoring_limit)) {
     plot <- plot +
-      geom_hline(yintercept = lower_detection_limit,
+      geom_hline(yintercept = lower_censoring_limit,
                  linetype = 'dotted') +
       annotate("text", x = 1,
-               y = lower_detection_limit,
+               y = lower_censoring_limit,
                label = "Lower detection limit",
                vjust = -0.5,
                hjust = 0,
                size = 3)
   }
-  if (!is.null(upper_detection_limit)) {
+  if (!is.null(upper_censoring_limit)) {
     plot <- plot +
-      geom_hline(yintercept = upper_detection_limit,
+      geom_hline(yintercept = upper_censoring_limit,
                  linetype = 'dotted') +
       annotate("text", x = 1,
-               y = upper_detection_limit,
+               y = upper_censoring_limit,
                label = "Upper detection limit",
                vjust = -0.5,
                hjust = 0,

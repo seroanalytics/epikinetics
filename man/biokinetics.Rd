@@ -36,10 +36,10 @@ Initialise the kinetics model.
   covariate_formula = ~0,
   preds_sd = 0.25,
   scale = "natural",
-  upper_detection_limit = NULL,
-  lower_detection_limit = NULL,
-  truncate_upper = TRUE,
-  truncate_lower = TRUE
+  upper_censoring_limit = NULL,
+  lower_censoring_limit = NULL,
+  strict_upper_limit = TRUE,
+  strict_lower_limit = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -61,17 +61,17 @@ will be treated as categorical variables. Default ~0.}
 \item{\code{scale}}{One of "log" or "natural". Default "natural". Is provided data on a log or a natural scale? If on a natural scale it
 will be converted to a log scale for model fitting.}
 
-\item{\code{upper_detection_limit}}{Optional upper detection limit of the titre used. This is needed to construct a likelihood for upper censored
-values, so only needs to be provided if you have such values in the dataset. If not provided, the model will default
-to using the largest value in the dataset as the upper detection limit.}
+\item{\code{upper_censoring_limit}}{Optional value at which to upper censor data points. This is needed to construct a likelihood for upper censored
+values, so only needs to be provided if you have such values in the dataset. If not provided, no censoring will be done.}
 
-\item{\code{lower_detection_limit}}{Optional lower detection limit of the titre used. This is needed to construct a likelihood for lower censored
-values, so only needs to be provided if you have such values in the dataset. If not provided, the model will default
-to using the smallest value in the dataset as the lower detection limit.}
+\item{\code{lower_censoring_limit}}{Optional value at which to lower censor data points. This is needed to construct a likelihood for lower censored
+values, so only needs to be provided if you have such values in the dataset. If not provided, no censoring will be done.}
 
-\item{\code{truncate_upper}}{Logical. Whether values greater than the upper detection limit should be truncated, i.e. set to the same value as the limit. Default TRUE.}
+\item{\code{strict_upper_limit}}{Logical. Whether values greater than the upper censoring limit should be censored.
+If FALSE, only values exactly equal to the upper censoring limit will be censored. Default TRUE.}
 
-\item{\code{truncate_lower}}{Logical. Whether values smaller than the lower detection limit should be truncated, i.e. set to the same value as the limit. Default TRUE.}
+\item{\code{strict_lower_limit}}{Logical. Whether values smaller than the lower censoring limit should be censored.
+If FALSE, only values exactly equal to the lower censoring limit will be censored. Default TRUE.}
 }
 \if{html}{\out{</div>}}
 }
