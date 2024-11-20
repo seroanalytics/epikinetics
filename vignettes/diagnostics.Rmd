@@ -31,7 +31,7 @@ You can optionally pass a dataset to compare against the predicted kinetics. Req
 ```{r}
 data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
 data[, time_since_last_exp := as.integer(day - last_exp_day, units = "days")]
-data <- epikinetics::convert_log2_scale(data)
+data <- epikinetics::convert_log2_scale(data, min(data$value))
 priors <- epikinetics::biokinetics_priors()
 plot(priors, data = data)
 ```
