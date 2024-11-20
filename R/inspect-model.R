@@ -97,8 +97,9 @@ inspect_model <- function(mod, private) {
     })
     output$prior_predicted <- plotly::renderPlotly({
       plotly::style(plotly::ggplotly(plot(prior(),
-                            upper_censoring_limit = private$stan_input_data$upper_censoring_limit,
-                            lower_censoring_limit = private$stan_input_data$lower_censoring_limit)), textposition = "right")
+                                          data = private$data,
+                                          upper_censoring_limit = private$stan_input_data$upper_censoring_limit,
+                                          lower_censoring_limit = private$stan_input_data$lower_censoring_limit)), textposition = "right")
     })
 
     # model inputs
@@ -147,7 +148,7 @@ inspect_model <- function(mod, private) {
 
     output$data <- plotly::renderPlotly({
       if (nrow(data()) > 0) {
-        gp <- plotly::style(plotly::ggplotly(plot_inputs()), textposition="right")
+        gp <- plotly::style(plotly::ggplotly(plot_inputs()), textposition = "right")
         if (selected_covariate() != "None") {
           return(facet_strip_bigger(gp, 30))
         } else {
