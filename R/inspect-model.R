@@ -96,7 +96,9 @@ inspect_model <- function(mod, private) {
       prior_code(input)
     })
     output$prior_predicted <- plotly::renderPlotly({
-      plotly::ggplotly(plot(prior()))
+      plotly::style(plotly::ggplotly(plot(prior(),
+                            upper_censoring_limit = private$stan_input_data$upper_censoring_limit,
+                            lower_censoring_limit = private$stan_input_data$lower_censoring_limit)), textposition = "right")
     })
 
     # model inputs
@@ -135,13 +137,17 @@ inspect_model <- function(mod, private) {
       if (is.null(selected) || selected == "None") {
         selected <- character(0)
       }
-      plot_sero_data(data(), ncol = cols(), covariates = selected) +
+      plot_sero_data(data(),
+                     ncol = cols(),
+                     covariates = selected,
+                     upper_censoring_limit = private$stan_input_data$upper_censoring_limit,
+                     lower_censoring_limit = private$stan_input_data$lower_censoring_limit) +
         theme(plot.margin = unit(c(1, 0, 0, 0), "cm"))
     })
 
     output$data <- plotly::renderPlotly({
       if (nrow(data()) > 0) {
-        gp <- plotly::ggplotly(plot_inputs())
+        gp <- plotly::style(plotly::ggplotly(plot_inputs()), textposition="right")
         if (selected_covariate() != "None") {
           return(facet_strip_bigger(gp, 30))
         } else {

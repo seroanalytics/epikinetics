@@ -56,10 +56,8 @@ plot.biokinetics_priors <- function(x,
       geom_point(data = dat, size = 0.5,
                  aes(x = time_since_last_exp,
                      y = value))
-
-    plot <- add_limits(plot, upper_censoring_limit, lower_censoring_limit)
   }
-  plot
+  add_limits(plot, upper_censoring_limit, lower_censoring_limit)
 }
 
 #' @title Plot serological data
@@ -157,7 +155,7 @@ add_limits <- function(plot, upper_censoring_limit, lower_censoring_limit) {
                  linetype = 'dotted') +
       annotate("text", x = 1,
                y = lower_censoring_limit,
-               label = "Lower detection limit",
+               label = "Lower censoring limit",
                vjust = -0.5,
                hjust = 0,
                size = 3)
@@ -168,7 +166,7 @@ add_limits <- function(plot, upper_censoring_limit, lower_censoring_limit) {
                  linetype = 'dotted') +
       annotate("text", x = 1,
                y = upper_censoring_limit,
-               label = "Upper detection limit",
+               label = "Upper censoring limit",
                vjust = -0.5,
                hjust = 0,
                size = 3)
