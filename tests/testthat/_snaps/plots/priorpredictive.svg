@@ -2282,9 +2282,9 @@
 <circle cx='118.01' cy='521.37' r='0.89' style='stroke-width: 0.71; fill: #000000;' />
 <circle cx='149.00' cy='521.37' r='0.89' style='stroke-width: 0.71; fill: #000000;' />
 <line x1='32.79' y1='521.37' x2='714.52' y2='521.37' style='stroke-width: 1.07; stroke-dasharray: 1.42,4.27; stroke-linecap: butt;' />
-<text x='65.33' y='518.43' style='font-size: 8.54px; font-family: sans;' textLength='77.81px' lengthAdjust='spacingAndGlyphs'>Lower detection limit</text>
+<text x='65.33' y='518.43' style='font-size: 8.54px; font-family: sans;' textLength='80.18px' lengthAdjust='spacingAndGlyphs'>Lower censoring limit</text>
 <line x1='32.79' y1='205.65' x2='714.52' y2='205.65' style='stroke-width: 1.07; stroke-dasharray: 1.42,4.27; stroke-linecap: butt;' />
-<text x='65.33' y='202.71' style='font-size: 8.54px; font-family: sans;' textLength='77.81px' lengthAdjust='spacingAndGlyphs'>Upper detection limit</text>
+<text x='65.33' y='202.71' style='font-size: 8.54px; font-family: sans;' textLength='80.18px' lengthAdjust='spacingAndGlyphs'>Upper censoring limit</text>
 <rect x='32.79' y='22.78' width='681.73' height='522.33' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>

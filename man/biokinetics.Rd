@@ -13,6 +13,7 @@ fit it to a dataset.
 \item \href{#method-biokinetics-new}{\code{biokinetics$new()}}
 \item \href{#method-biokinetics-plot_prior_predictive}{\code{biokinetics$plot_prior_predictive()}}
 \item \href{#method-biokinetics-plot_model_inputs}{\code{biokinetics$plot_model_inputs()}}
+\item \href{#method-biokinetics-inspect}{\code{biokinetics$inspect()}}
 \item \href{#method-biokinetics-get_stan_data}{\code{biokinetics$get_stan_data()}}
 \item \href{#method-biokinetics-get_covariate_lookup_table}{\code{biokinetics$get_covariate_lookup_table()}}
 \item \href{#method-biokinetics-fit}{\code{biokinetics$fit()}}
@@ -111,19 +112,31 @@ Plot model input data with a smoothing function. Note that
 this plot is of the data as provided to the Stan model so is on a log scale,
 regardless of whether data was provided on a log or a natural scale.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_model_inputs(tmax = 150)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$plot_model_inputs(tmax = 150, ncol = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{tmax}}{Integer. Maximum time since last exposure to include. Default 150.}
+
+\item{\code{ncol}}{Optional number of cols to display facets in.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A ggplot2 object.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-biokinetics-inspect"></a>}}
+\if{latex}{\out{\hypertarget{method-biokinetics-inspect}{}}}
+\subsection{Method \code{inspect()}}{
+Opens an RShiny app to help with model diagnostics.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{biokinetics$inspect()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-biokinetics-get_stan_data"></a>}}

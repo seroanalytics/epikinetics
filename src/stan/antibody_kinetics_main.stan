@@ -144,7 +144,7 @@ model {
   mu = boost_wane_ind(
     t, t0_ind, tp_ind, ts_ind, m1_ind, m2_ind, m3_ind, titre_type, id);
   
-  // Likelihood for uncensored observations
+  // Likelihood for uncensored observations (lower < value < upper)
   value[uncens_idx] ~ normal(mu[uncens_idx], sigma);
 
   // Likelihood for observations at lower limit

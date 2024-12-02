@@ -2,7 +2,6 @@ test_that("Can convert to and from log scale in R", {
   inputs <- data.table::fread(test_path("testdata", "testdata.csv"))
   log_inputs <- convert_log2_scale(inputs, "me", smallest_value = 2)
   unlog_inputs <- convert_log2_scale_inverse(log_inputs, "me", smallest_value = 2)
-
   expect_equal(inputs, unlog_inputs)
 })
 

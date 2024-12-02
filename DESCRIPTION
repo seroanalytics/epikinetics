@@ -18,7 +18,9 @@ Imports:
     logger,
     mosaic,
     pkgload,
+    plotly,
     R6,
+    shiny,
     stats,
     stringr,
     tidybayes

@@ -1,0 +1,64 @@
+---
+title: "Model diagnostics and plotting"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{Model diagnostics and plotting}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Plotting model inputs
+
+### Priors
+Calling `plot` on an object of type [biokinetics_priors](../reference/biokinetics_priors.html) will generate
+a plot of the kinetics predicted by the given priors.
+
+```{r}
+priors <- epikinetics::biokinetics_priors()
+plot(priors)
+```
+
+You can optionally pass a dataset to compare against the predicted kinetics. Required columns are
+`time_since_last_exp` and `value` and values should be on the scale required by the model.
+
+```{r}
+data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+data[, time_since_last_exp := as.integer(day - last_exp_day, units = "days")]
+data <- epikinetics::convert_log2_scale(data, min(data$value))
+priors <- epikinetics::biokinetics_priors()
+plot(priors, data = data)
+```
+
+If you have an instance of the [biokinetics](../reference/biokinetics.html) class, the method `plot_prior_predictive`
+generates this plot for the priors and data given to the model.
+
+```{r}
+data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
+priors <- epikinetics::biokinetics_priors()
+mod <- epikinetics::biokinetics$new(priors = priors, data = data)
+mod$plot_prior_predictive()
+```
+
+### Data
+
+If you have an instance of the [biokinetics](../reference/biokinetics.html) class, the method `plot_model_inputs`
+plots the input data used to fit the model, disaggregated by the covariates in the covariate formula.
+
+```{r}
+mod <- epikinetics::biokinetics$new(priors = priors, data = data, covariate_formula = ~0 + infection_history)
+mod$plot_model_inputs()
+```
+
+## Interactive data exploration
+
+To play around with different priors and visualise input data filtered and disaggregated in different ways,
+the function [biokinetics$inspect](reference/biokinetics.html#method-biokinetics-inspect) runs a local RShiny app with interactive plots.
+
+![RShiny demonstration](./shiny.webm)
