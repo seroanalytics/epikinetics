@@ -7,6 +7,7 @@
 plot_sero_data(
   data,
   tmax = 150,
+  ncol = NULL,
   covariates = character(0),
   upper_censoring_limit = NULL,
   lower_censoring_limit = NULL
@@ -16,6 +17,8 @@ plot_sero_data(
 \item{data}{A data.table with required columns time_since_last_exp, value and titre_type.}
 
 \item{tmax}{Integer. The number of time points in each simulated trajectory. Default 150.}
+
+\item{ncol}{Integer. Optional number of columns to display facets in.}
 
 \item{covariates}{Optional vector of covariate names to facet by (these must correspond to columns in the data.table)}
 

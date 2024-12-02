@@ -1,5 +1,5 @@
-test_that("Can construct cab prior parameters", {
-  priors <- biokinetics_priors(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+test_that("Can construct biokinetics priors", {
+  priors <- biokinetics_priors(1, 2, 3, 4, 5, 6 , 7, 8, 9, 10, 11, 12)
   expect_s3_class(priors, "biokinetics_priors")
   expect_true(is.list(priors))
   expect_equal(unclass(priors), list("mu_t0" = 1, "mu_tp" = 2, "mu_ts" = 3,
