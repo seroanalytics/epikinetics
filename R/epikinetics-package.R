@@ -11,7 +11,7 @@
 #' @importFrom data.table .NGRP
 #' @importFrom data.table .SD
 #' @importFrom data.table data.table
-#' @importFrom ggplot2 aes annotate facet_wrap geom_point geom_ribbon geom_line geom_smooth
+#' @importFrom ggplot2 aes annotate facet_wrap geom_point geom_ribbon geom_line geom_smooth geom_bar geom_density_2d
 #' geom_vline geom_hline geom_path labs ggplot guides guide_legend scale_y_continuous
 #' scale_x_continuous scale_x_date sec_axis
 #' @useDynLib epikinetics, .registration = TRUE
