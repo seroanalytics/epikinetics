@@ -39,6 +39,9 @@ model, with a smoothing function fitted."><!-- mathjax --><script src="https://c
       <a href="../articles/data.html">A guide to biokinetics input and output data</a>
     </li>
     <li>
+      <a href="../articles/diagnostics.html">Model diagnostics and plotting</a>
+    </li>
+    <li>
       <a href="../articles/model.html">Summary of the Stan Model</a>
     </li>
   </ul></li>
@@ -65,6 +68,7 @@ model, with a smoothing function fitted.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_sero_data</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  tmax <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>  ncol <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  covariates <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  upper_censoring_limit <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lower_censoring_limit <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -81,6 +85,10 @@ model, with a smoothing function fitted.</p>
 
 <dt id="arg-tmax">tmax<a class="anchor" aria-label="anchor" href="#arg-tmax"></a></dt>
 <dd><p>Integer. The number of time points in each simulated trajectory. Default 150.</p></dd>
+
+
+<dt id="arg-ncol">ncol<a class="anchor" aria-label="anchor" href="#arg-ncol"></a></dt>
+<dd><p>Integer. Optional number of columns to display facets in.</p></dd>
 
 
 <dt id="arg-covariates">covariates<a class="anchor" aria-label="anchor" href="#arg-covariates"></a></dt>

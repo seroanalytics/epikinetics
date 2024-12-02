@@ -56,6 +56,9 @@
       <a href="articles/data.html">A guide to biokinetics input and output data</a>
     </li>
     <li>
+      <a href="articles/diagnostics.html">Model diagnostics and plotting</a>
+    </li>
+    <li>
       <a href="articles/model.html">Summary of the Stan Model</a>
     </li>
   </ul>
@@ -118,6 +121,8 @@ docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main
 </h2>
 <p>To run all tests locally:</p>
 <p><code>{r} devtools::test()</code></p>
+<p>To run tests in a single file:</p>
+<p><code>{r} devtools::test(filter="filename")</code></p>
 <p>Some tests are skipped on CI to avoid exorbitantly long build times, but this means it is important to run all tests locally at least once before merging a pull request.</p>
 <p>For snapshot testing of stan model outputs, we need the outputs to be exactly reproducible. As well as setting a seed, this requires the machine environment to be exactly the same, so on CI we run these inside a Docker container, via a bash script:</p>
 <p><code>{shell} ./tests/snapshots/test-snapshots</code></p>
