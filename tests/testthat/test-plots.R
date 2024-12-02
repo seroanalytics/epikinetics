@@ -230,7 +230,7 @@ test_that("Can plot individual trajectories for specific pids with data and titr
 })
 
 test_that("Can plot stationary points", {
-  skip_if(getRversion() < "4.1")
+  skip_on_os("mac") # diff fails on CI for macOS
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good
   local_mocked_bindings(
@@ -244,7 +244,7 @@ test_that("Can plot stationary points", {
 })
 
 test_that("Can plot stationary points with no covariates", {
-  skip_if(getRversion() < "4.1")
+  skip_on_os("mac") # diff fails on CI for macOS
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good
   local_mocked_bindings(
@@ -258,7 +258,7 @@ test_that("Can plot stationary points with no covariates", {
 
 
 test_that("Can plot stationary points with upper limit", {
-  skip_if(getRversion() < "4.1")
+  skip_on_os("mac") # diff fails on CI for macOS
   # note that this is using a pre-fitted model with very few iterations, so the
   # fits won't look very good
   local_mocked_bindings(
