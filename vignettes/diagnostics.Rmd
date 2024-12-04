@@ -59,6 +59,9 @@ mod$plot_model_inputs()
 ## Interactive data exploration
 
 To play around with different priors and visualise input data filtered and disaggregated in different ways,
-the function [biokinetics$inspect](reference/biokinetics.html#method-biokinetics-inspect) runs a local RShiny app with interactive plots.
+the function [biokinetics$inspect](../reference/biokinetics.html#method-biokinetics-inspect) runs a local RShiny app with interactive plots.
 
-![RShiny demonstration](./shiny.webm)
+<video width="500" controls>
+<source src="shiny.webm" type="video/webm">
+Your browser does not support the video tag.
+</video>

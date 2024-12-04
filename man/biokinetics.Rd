@@ -322,7 +322,7 @@ Default TRUE.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
+A data.table. If summarise = TRUE columns are calendar_day, titre_type, me, lo, hi, time_shift.
 If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
 and a column for each covariate in the regression model. See the data vignette for details:
 \code{vignette("data", package = "epikinetics")}.
