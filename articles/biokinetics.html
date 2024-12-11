@@ -125,9 +125,9 @@ facets for the Delta wave. Once the model has been fitted, simulate
 population trajectories using the fitted population parameters.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">simulate_population_trajectories</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:42:55] Summarising fits</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:42:58] Adjusting by regression coefficients</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:01] Summarising into quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:17] Summarising fits</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:21] Adjusting by regression coefficients</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:23] Summarising into quantiles</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    time_since_last_exp       me       lo       hi titre_type infection_history</span></span>
 <span><span class="co">#&gt;                  &lt;int&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;     &lt;char&gt;            &lt;char&gt;</span></span>
@@ -196,11 +196,11 @@ values at peak and set points, for different titre types. We first
 simulate estimates for these from the fitted model:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">population_stationary_points</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:02] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:02] Adjusting by covariates</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:02] Calculating peak and switch titre values</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:02] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:02] Calculating medians</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:24] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:25] Adjusting by covariates</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:25] Calculating peak and switch titre values</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:25] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:25] Calculating medians</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    infection_history titre_type     mu_p     mu_s rel_drop_me  mu_p_me mu_s_me</span></span>
 <span><span class="co">#&gt;               &lt;char&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;       &lt;num&gt;    &lt;num&gt;   &lt;num&gt;</span></span>
@@ -266,15 +266,15 @@ population level titre values. This can take a while so here we set the
 maximum number of draws to just 250 for speed.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">mod</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:03] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:07] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:11] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:11] Calculating exposure days. Adjusting exposures by 0 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:15] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:26] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:30] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:34] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:34] Calculating exposure days. Adjusting exposures by 0 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:37] Resampling</span></span>
 <span><span class="co">#&gt; Registered S3 method overwritten by 'mosaic':</span></span>
 <span><span class="co">#&gt;   method                           from   </span></span>
 <span><span class="co">#&gt;   fortify.SpatialPolygonsDataFrame ggplot2</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:25] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:47] Summarising into population quantiles</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    calendar_day titre_type       me       lo       hi time_shift</span></span>
 <span><span class="co">#&gt;          &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;    &lt;num&gt;    &lt;num&gt;      &lt;num&gt;</span></span>
@@ -353,72 +353,72 @@ draws to just 50 for speed.</p>
 <span>  <span class="va">shift</span> <span class="op">&lt;-</span> <span class="va">time_shift_values</span><span class="op">[</span><span class="va">index</span><span class="op">]</span></span>
 <span>  <span class="va">mod</span><span class="op">$</span><span class="fu">simulate_individual_trajectories</span><span class="op">(</span>n_draws <span class="op">=</span> <span class="fl">50</span>, time_shift <span class="op">=</span> <span class="va">shift</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:26] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:29] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:30] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:30] Calculating exposure days. Adjusting exposures by -75 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:31] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:33] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:33] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:36] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:37] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:37] Calculating exposure days. Adjusting exposures by -60 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:38] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:39] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:40] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:43] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:44] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:44] Calculating exposure days. Adjusting exposures by -45 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:44] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:46] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:47] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:50] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:51] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:51] Calculating exposure days. Adjusting exposures by -30 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:51] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:53] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:54] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:57] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:58] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:58] Calculating exposure days. Adjusting exposures by -15 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:43:58] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:00] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:00] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:04] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:04] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:04] Calculating exposure days. Adjusting exposures by 0 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:05] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:06] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:07] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:10] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:11] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:11] Calculating exposure days. Adjusting exposures by 15 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:11] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:13] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:14] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:17] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:18] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:18] Calculating exposure days. Adjusting exposures by 30 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:18] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:20] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:21] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:24] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:25] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:25] Calculating exposure days. Adjusting exposures by 45 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:25] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:27] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:27] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:31] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:31] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:31] Calculating exposure days. Adjusting exposures by 60 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:32] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:34] Summarising into population quantiles</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:34] Extracting parameters</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:37] Simulating individual trajectories</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:38] Recovering covariate names</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:38] Calculating exposure days. Adjusting exposures by 75 days</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:38] Resampling</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:40] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:48] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:52] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:53] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:53] Calculating exposure days. Adjusting exposures by -75 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:53] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:55] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:56] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:41:59] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:00] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:00] Calculating exposure days. Adjusting exposures by -60 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:00] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:02] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:03] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:06] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:06] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:06] Calculating exposure days. Adjusting exposures by -45 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:07] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:09] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:09] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:13] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:13] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:13] Calculating exposure days. Adjusting exposures by -30 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:14] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:16] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:16] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:20] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:20] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:20] Calculating exposure days. Adjusting exposures by -15 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:21] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:23] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:23] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:26] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:27] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:27] Calculating exposure days. Adjusting exposures by 0 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:27] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:29] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:30] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:33] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:34] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:34] Calculating exposure days. Adjusting exposures by 15 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:34] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:36] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:37] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:40] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:41] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:41] Calculating exposure days. Adjusting exposures by 30 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:41] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:43] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:44] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:47] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:48] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:48] Calculating exposure days. Adjusting exposures by 45 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:48] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:50] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:51] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:54] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:54] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:54] Calculating exposure days. Adjusting exposures by 60 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:55] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:57] Summarising into population quantiles</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:42:57] Extracting parameters</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:00] Simulating individual trajectories</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:01] Recovering covariate names</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:01] Calculating exposure days. Adjusting exposures by 75 days</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:02] Resampling</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:04] Summarising into population quantiles</span></span>
 <span></span>
 <span><span class="va">combined_data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/rbindlist.html" class="external-link">rbindlist</a></span><span class="op">(</span><span class="va">results_list</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Plotting the median values:</p>

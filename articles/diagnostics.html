@@ -116,9 +116,9 @@ and data given to the model.</p>
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"delta_full.rds"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu">epikinetics</span><span class="fu">::</span><span class="fu"><a href="../reference/biokinetics_priors.html">biokinetics_priors</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">epikinetics</span><span class="fu">::</span><span class="va"><a href="../reference/biokinetics.html">biokinetics</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>priors <span class="op">=</span> <span class="va">priors</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:51] Preparing data for stan</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:51] Retrieving compiled model</span></span>
-<span><span class="co">#&gt; CmdStan path set to: /home/runner/.cmdstan/cmdstan-2.35.0</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:14] Preparing data for stan</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:14] Retrieving compiled model</span></span>
+<span><span class="co">#&gt; CmdStan path set to: /home/runner/.cmdstan/cmdstan-2.36.0</span></span>
 <span><span class="va">mod</span><span class="op">$</span><span class="fu">plot_prior_predictive</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="diagnostics_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
@@ -130,8 +130,8 @@ and data given to the model.</p>
 model, disaggregated by the covariates in the covariate formula.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu">epikinetics</span><span class="fu">::</span><span class="va"><a href="../reference/biokinetics.html">biokinetics</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>priors <span class="op">=</span> <span class="va">priors</span>, data <span class="op">=</span> <span class="va">data</span>, covariate_formula <span class="op">=</span> <span class="op">~</span><span class="fl">0</span> <span class="op">+</span> <span class="va">infection_history</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:53] Preparing data for stan</span></span>
-<span><span class="co">#&gt; INFO [2024-12-02 14:44:53] Retrieving compiled model</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:15] Preparing data for stan</span></span>
+<span><span class="co">#&gt; INFO [2024-12-11 16:43:15] Retrieving compiled model</span></span>
 <span><span class="va">mod</span><span class="op">$</span><span class="fu">plot_model_inputs</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula = 'y ~ x'</span></span></code></pre></div>
 <p><img src="diagnostics_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
@@ -141,12 +141,9 @@ model, disaggregated by the covariates in the covariate formula.</p>
 <h2 id="interactive-data-exploration">Interactive data exploration<a class="anchor" aria-label="anchor" href="#interactive-data-exploration"></a>
 </h2>
 <p>To play around with different priors and visualise input data
-filtered and disaggregated in different ways, the function <a href="reference/biokinetics.html#method-biokinetics-inspect">biokinetics$inspect</a>
+filtered and disaggregated in different ways, the function <a href="../reference/biokinetics.html#method-biokinetics-inspect">biokinetics$inspect</a>
 runs a local RShiny app with interactive plots.</p>
-<div class="float">
-<video src="./shiny.webm" controls=""><a href="./shiny.webm">RShiny
-demonstration</a></video><div class="figcaption">RShiny demonstration</div>
-</div>
+<video width="500" controls><source src="shiny.webm" type="video/webm" srcset="NA"><p>Your browser does not support the video tag. </p></source></video>
 </div>
   </div>
 
