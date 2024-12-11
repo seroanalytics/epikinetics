@@ -451,6 +451,7 @@ biokinetics <- R6::R6Class(
         logger::log_info("Recovering covariate names")
         dt_out <- private$recover_covariate_names(dt_out)
       }
+
       dt_out
     },
     #' @description Process the model results into a data table of titre values over time.
@@ -537,17 +538,17 @@ biokinetics <- R6::R6Class(
                        by = by]
 
       logger::log_info("Recovering covariate names")
-      dt_peak_switch <- private$recover_covariate_names(dt_peak_switch)
+      dt_out <- private$recover_covariate_names(dt_peak_switch)
 
       if (private$scale == "natural") {
-        dt_peak_switch <- convert_log2_scale_inverse(
-          dt_peak_switch,
+        dt_out <- convert_log2_scale_inverse(
+          dt_out,
           vars_to_transform = c("mu_0", "mu_p", "mu_s"),
           smallest_value = private$smallest_value)
       }
 
       logger::log_info("Calculating medians")
-      dt_peak_switch[
+      dt_out <- dt_out[
         , rel_drop := mu_s / mu_p,
           by = c(private$all_formula_vars, "titre_type")][
         , .(
@@ -557,10 +558,14 @@ biokinetics <- R6::R6Class(
         mu_p_me = quantile(mu_p, 0.5),
         mu_s_me = quantile(mu_s, 0.5)),
           by = c(private$all_formula_vars, "titre_type")]
+      class(dt_out) <- append("biokinetics_population_stationary_points", class(dt_out))
+      attr(dt_out, "covariates") <- private$all_formula_vars
+      attr(dt_out, "scale") <- private$scale
+      dt_out
     },
     #' @description Simulate individual trajectories from the model. This is
     #' computationally expensive and may take a while to run if n_draws is large.
-    #' @return A data.table. If summarise = TRUE columns are calendar_date, titre_type, me, lo, hi, time_shift.
+    #' @return A data.table. If summarise = TRUE columns are calendar_day, titre_type, me, lo, hi, time_shift.
     #' If summarise = FALSE, columns are pid, draw, time_since_last_exp, mu, titre_type, exposure_day, calendar_day, time_shift
     #' and a column for each covariate in the regression model. See the data vignette for details:
     #' \code{vignette("data", package = "epikinetics")}.
