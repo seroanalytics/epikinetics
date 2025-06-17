@@ -29,7 +29,7 @@ install.packages('cmdstanr', repos = c('https://stan-dev.r-universe.dev', getOpt
 You can then install `epikinetics` from GitHub:
 
 ```
-remotes::install_github("seroanalytics/epikinetics")
+remotes::install_github("seroanalytics/epikinetics", INSTALL_opts = "--no-multiarch --no-test-load")
 ```
 
 ## Troubleshooting installation
