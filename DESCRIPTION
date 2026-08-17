@@ -28,6 +28,7 @@ Additional_repositories:
 SystemRequirements: CmdStan (>= 2.26), C++17
 Suggests:
     knitr,
+    ragg,
     rmarkdown,
     testthat
 VignetteBuilder: knitr

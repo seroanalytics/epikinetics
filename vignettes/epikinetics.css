@@ -210,7 +210,7 @@ body:not(.template-article) .math.display {
 
 /* Figure rules apply to standalone vignettes and pkgdown articles. Chunk-level
    out.width controls the deliberate desktop size; these rules prevent overflow
-   and preserve the SVG aspect ratio. */
+   and preserve each image's intrinsic aspect ratio. */
 div.figure {
   margin: 1.6rem auto 1.9rem;
   text-align: center;
