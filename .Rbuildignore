@@ -3,3 +3,12 @@
 ^\.github$
 ^Dockerfile$
 ^\.idea$
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.DS_Store$
+^\.Rhistory$
+^tests/\.DS_Store$
+^\.dockerignore$
+^CONTRIBUTING\.md$
+^docs$
+^_pkgdown\.yml$

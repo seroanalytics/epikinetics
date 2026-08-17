@@ -1,40 +1,40 @@
 Package: epikinetics
 Title: Biomarker Kinetics Modelling
-Version: 0.0.0.9000
+Version: 0.1.0.9000
 Authors@R: c(person("Timothy", "Russell", email = "timothy.russell@lshtm.ac.uk", role = c("aut")),
     person("Alex", "Hill", email = "alex.hill@gmail.com", role = c("aut", "cre")))
-Description: Fit kinetic curves to biomarker data, using a Bayesian hierarchical model.
+Author: Timothy Russell [aut], Alex Hill [aut, cre]
+Maintainer: Alex Hill <alex.hill@gmail.com>
+Description: Fit Bayesian hierarchical models of longitudinal biomarker
+    kinetics after a focal exposure. A functional R interface prepares data,
+    runs a threaded 'Stan' model through 'CmdStanR', and provides labelled
+    posterior parameters, diagnostics, predictions, and plots.
 License: GPL (>= 3)
 Encoding: UTF-8
+Depends:
+    R (>= 4.1.0)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Imports:
     cmdstanr,
-    data.table,
-    forcats,
-    fs,
     ggplot2,
-    instantiate,
-    logger,
-    mosaic,
-    pkgload,
-    plotly,
-    R6,
-    shiny,
+    grid,
+    matrixStats,
+    posterior,
     stats,
-    stringr,
-    tidybayes
+    tools,
+    utils
 Additional_repositories:
-    https://mc-stan.org/r-packages/
-SystemRequirements: CmdStan (https://mc-stan.org/users/interfaces/cmdstan)
+    https://stan-dev.r-universe.dev
+SystemRequirements: CmdStan (>= 2.26), C++17
 Suggests:
-    dplyr,
     knitr,
-    lubridate,
     rmarkdown,
-    testthat,
-    vdiffr
+    testthat
 VignetteBuilder: knitr
-LinkingTo: 
-    cpp11
 Config/testthat/edition: 3
+Config/Needs/website:
+    pkgdown
+URL: https://seroanalytics.org/epikinetics/,
+    https://github.com/seroanalytics/epikinetics
+BugReports: https://github.com/seroanalytics/epikinetics/issues
+Config/roxygen2/version: 8.1.0

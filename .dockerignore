@@ -1,0 +1,15 @@
+.git
+.github
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user
+.Renviron
+.env
+.DS_Store
+*.Rproj
+*.Rcheck
+*.tar.gz
+bin
+docs
+inst/doc

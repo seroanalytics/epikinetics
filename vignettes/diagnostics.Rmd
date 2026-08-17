@@ -1,67 +1,217 @@
 ---
-title: "Model diagnostics and plotting"
+title: "Diagnostics and posterior prediction"
 output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{Model diagnostics and plotting}
-    %\VignetteEngine{knitr::rmarkdown}
-    %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Diagnostics and posterior prediction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+```{r, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+## Before fitting
+
+Input and prior plots are intentionally independent of the sampler. They return
+ordinary `ggplot` objects and can be customised with ggplot2.
+
+```{r}
+library(epikinetics)
+dat <- read.csv(
+  system.file("extdata", "delta.csv", package = "epikinetics")
+)
+prepared <- prepare_epikinetics_data(
+  dat,
+  formula = ~ infection_history,
+  lower_limit = 5,
+  upper_limit = 2560
+)
+
+summary(prepared)
+model.matrix(prepared)[1:5, , drop = FALSE]
+prepared$mappings$participant[1:5, ]
+table(prepared$observations$censoring)
+names(stan_data(prepared))
+
+plot(prepared)
+plot(epikinetics_priors(), scale = "response", reference_value = 1)
+```
+
+Prior trajectory plots are a quick scale check, not a substitute for a full
+prior predictive workflow. In particular, they draw population trajectories
+without participant or observation variation.
+
+## Sampling diagnostics
+
+The following examples assume a fit created as in the getting-started
+vignette. They are not evaluated when the vignette is built.
+
+```{r, eval=FALSE}
+diagnostics <- diagnose_epikinetics(fit)
+diagnostics$overview
+diagnostics$sampler
+diagnostics$chains
+diagnostics$parameters
+```
+
+The overview reports:
+
+* divergent transitions;
+* transitions hitting maximum tree depth;
+* chains with non-finite E-BFMI, separately from chains below 0.3;
+* maximum R-hat among principal population parameters; and
+* minimum bulk and tail effective sample sizes for those parameters.
+
+These are screening summaries. Inspect parameter-level diagnostics and trace
+plots whenever the screening result is poor. The full CmdStanR object is
+available without copying draws:
+
+```{r, eval=FALSE}
+stan_fit <- cmdstan_fit(fit)
+stan_fit$diagnostic_summary()
+stan_fit$cmdstan_diagnose()
+posterior::as_draws_df(stan_fit$draws())
+```
+
+`diagnostics$chains` also reports the number and variance of retained energy
+values. For example, `E-BFMI = NaN` together with one unique energy value means
+the chain was frozen: both the numerator and denominator of the E-BFMI ratio
+are zero. It is not a benign missing diagnostic. Predictions keep all retained
+chains, so they warn when E-BFMI is non-finite instead of silently selecting the
+apparently better chains.
+
+If all or some chains fail, `fit_epikinetics()` preserves the CmdStanR object
+and marks the returned object as failed or partial whenever CmdStanR supplies a
+run object. The original chain output remains the primary debugging record:
+
+```{r, eval=FALSE}
+fit$computation$sampling_state
+cmdstan_fit(fit)$return_codes()
+cmdstan_fit(fit)$output()
+```
+
+This complements inspection of `stan_data(prepared)`; it does not wrap or
+replace CmdStanR's diagnostic interface.
+
+The previous package's Shiny inspector explored inputs and priors but was not a
+posterior diagnostic application. It has been removed from the core interface:
+the lighter plotting functions cover its maintainable role, and CmdStanR plus
+the posterior ecosystem provide more complete sampler diagnostics.
+
+## Latent trajectories versus observations
+
+By default, `predict()` returns the latent expected biomarker curve, excluding
+residual measurement noise. Set `include_observation_noise = TRUE` when the
+target is a future observed measurement rather than its latent mean.
+
+```{r, eval=FALSE}
+latent <- predict(
+  fit,
+  times = 0:150,
+  type = "population",
+  summary = FALSE,
+  ndraws = 500
+)
+
+observed <- predict(
+  fit,
+  times = 0:150,
+  type = "population",
+  include_observation_noise = TRUE,
+  summary = FALSE,
+  ndraws = 500,
+  seed = 10
 )
 ```
 
-## Plotting model inputs
+Keeping `summary = FALSE` preserves the `.draw` identifier, which should be
+retained when combining trajectory quantities across times or biomarkers.
+With `summary = TRUE`, `lower` and `upper` are calculated across these raw
+draw-specific trajectories at each biomarker/time/profile combination. The
+plot ribbon uses those columns directly.
 
-### Priors
-Calling `plot` on an object of type [biokinetics_priors](../reference/biokinetics_priors.html) will generate
-a plot of the kinetics predicted by the given priors.
+## Prediction targets
 
-```{r}
-priors <- epikinetics::biokinetics_priors()
-plot(priors)
+Population predictions omit participant random effects. When `newdata` is
+`NULL`, `prediction_grid()` supplies the combinations of categorical values
+observed among fitted participants and fixes continuous predictors at their
+participant-level medians. This avoids silent extrapolation to impossible
+factor combinations. It is a conditional estimand, not marginalisation over
+the sample's covariate distribution.
+
+```{r, eval=FALSE}
+prediction_grid(fit)
+population <- predict(fit, type = "population")
+plot(population)
+
+# Explicit newdata selects or overrides the conditional profiles.
+profiles <- data.frame(
+  infection_history = c(
+    "Infection naive",
+    "Previously infected (Pre-Omicron)"
+  )
+)
+population <- predict(fit, newdata = profiles, type = "population")
+plot(population)
 ```
 
-You can optionally pass a dataset to compare against the predicted kinetics. Required columns are
-`time_since_last_exp` and `value` and values should be on the scale required by the model.
+For multiple categorical predictors the default includes only observed
+combinations. `prediction_grid(fit, categorical = "cartesian")` deliberately
+requests every fitted-level combination. The stored R terms object and
+contrasts evaluate main effects, interactions, and transformed terms for both
+automatic and explicit grids. Unknown factor levels fail before posterior
+prediction with an error naming the variable, supplied level, and fitted
+levels.
 
-```{r}
-data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-data[, time_since_last_exp := as.integer(day - last_exp_day, units = "days")]
-data <- epikinetics::convert_log2_scale(data, min(data$value))
-priors <- epikinetics::biokinetics_priors()
-plot(priors, data = data)
+Existing-participant predictions combine population, covariate, and fitted
+random effects:
+
+```{r, eval=FALSE}
+individual <- predict(
+  fit,
+  type = "individual",
+  participants = c("1", "2"),
+  times = 0:180
+)
+plot(individual)
 ```
 
-If you have an instance of the [biokinetics](../reference/biokinetics.html) class, the method `plot_prior_predictive`
-generates this plot for the priors and data given to the model.
+New-participant predictions draw one new standardised random effect per
+*selected* participant-level kinetic quantity and posterior draw. Inactive
+quantities remain at their conditional population/profile values. Each active
+effect is used across biomarkers, in accordance with the fitted hierarchy:
 
-```{r}
-data <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-priors <- epikinetics::biokinetics_priors()
-mod <- epikinetics::biokinetics$new(priors = priors, data = data)
-mod$plot_prior_predictive()
+```{r, eval=FALSE}
+new_individuals <- predict(
+  fit,
+  newdata = profiles,
+  type = "new",
+  times = 0:180,
+  seed = 34
+)
+plot(new_individuals)
 ```
 
-### Data
+These new-participant results represent one hypothetical participant per
+profile per draw. They are not an average over a newly simulated cohort.
 
-If you have an instance of the [biokinetics](../reference/biokinetics.html) class, the method `plot_model_inputs`
-plots the input data used to fit the model, disaggregated by the covariates in the covariate formula.
+## Scales and plots
 
-```{r}
-mod <- epikinetics::biokinetics$new(priors = priors, data = data, covariate_formula = ~0 + infection_history)
-mod$plot_model_inputs()
+Response-scale output is the default and applies the reference stored during
+data preparation. Use `scale = "model"` for log2 output. `plot(fit)` produces
+formula-aware conditional population trajectories with observations overlaid,
+while
+`plot(fit, type = "data")` shows prepared inputs only.
+
+```{r, eval=FALSE}
+plot(fit)
+plot(fit, type = "data")
+
+p <- plot(predict(fit, type = "population", times = 0:180))
+p + ggplot2::theme_minimal()
 ```
 
-## Interactive data exploration
-
-To play around with different priors and visualise input data filtered and disaggregated in different ways,
-the function [biokinetics$inspect](../reference/biokinetics.html#method-biokinetics-inspect) runs a local RShiny app with interactive plots.
-
-<video width="500" controls>
-<source src="shiny.webm" type="video/webm">
-Your browser does not support the video tag.
-</video>
+Plot methods do no scientific aggregation beyond the documented posterior
+summary. For custom analyses, work with the returned prediction data frame or
+raw draws directly.

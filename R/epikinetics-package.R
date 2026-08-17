@@ -1,20 +1,14 @@
+#' epikinetics: Bayesian hierarchical biomarker kinetics
+#'
+#' `epikinetics` provides a functional R interface to a threaded CmdStan model
+#' for longitudinal biomarker measurements following one focal exposure. The
+#' main workflow is [prepare_epikinetics_data()], [fit_epikinetics()],
+#' [diagnose_epikinetics()], [posterior_parameters()], and
+#' [predict.epikinetics_fit()]. [prediction_grid()] carries formula metadata
+#' into conditional population trajectories; [plot_individual()] and
+#' [save_individual_plots()] support fitted-participant inspection. Prepared
+#' data and the exact Stan list are inspectable before sampling. The returned
+#' S3 fit retains direct access to its CmdStanR fit through [cmdstan_fit()].
+#'
 #' @keywords internal
 "_PACKAGE"
-
-## usethis namespace: start
-#' @importFrom data.table :=
-#' @importFrom data.table .BY
-#' @importFrom data.table .EACHI
-#' @importFrom data.table .GRP
-#' @importFrom data.table .I
-#' @importFrom data.table .N
-#' @importFrom data.table .NGRP
-#' @importFrom data.table .SD
-#' @importFrom data.table data.table
-#' @importFrom ggplot2 aes annotate facet_wrap geom_point geom_ribbon geom_line geom_smooth geom_bar
-#' geom_vline geom_hline geom_path labs ggplot guides guide_legend scale_y_continuous theme unit
-#' geom_density_2d scale_x_continuous scale_x_date sec_axis
-#' @useDynLib epikinetics, .registration = TRUE
-## usethis namespace: end
-
-NULL

@@ -1,139 +1,228 @@
 ---
-title: "A guide to biokinetics input and output data"
+title: "Data, covariates, scales, and censoring"
 output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{A guide to biokinetics input and output data}
-    %\VignetteEngine{knitr::rmarkdown}
-    %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Data, covariates, scales, and censoring}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+```{r, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+## Required observation data
+
+`prepare_epikinetics_data()` accepts ordinary data frames, including
+`data.table` and tibble subclasses. `fit_epikinetics()` then accepts the
+prepared object, keeping validation and transformation separate from
+compilation and sampling. Defaults expect:
+
+| Column | Meaning |
+|---|---|
+| `pid` | Participant identifier; numeric or character values are accepted. |
+| `day` | Observation time. |
+| `last_exp_day` | Time of the focal exposure. |
+| `titre_type` | Biomarker or assay label. |
+| `value` | Finite positive biomarker value on the natural scale. |
+
+Use `id`, `time`, `exposure`, `biomarker`, and `value` arguments for other
+names. Observation and exposure times may both be numeric, `Date`, `POSIXt`, or
+parseable ISO date strings. The difference defines time since exposure. Times
+before exposure are rejected.
+
+```{r}
+library(epikinetics)
+dat <- read.csv(
+  system.file("extdata", "delta.csv", package = "epikinetics")
+)
+dat[1:6, c("pid", "day", "last_exp_day", "titre_type", "value")]
+```
+
+The model currently represents one known focal exposure per participant, so
+`last_exp_day` must be constant within participant. Missing required values and
+missing covariates are rejected early.
+
+## Scale
+
+The Gaussian observation model operates on a base-2 logarithmic scale. With
+the default `scale = "natural"`, data are transformed as
+
+\[
+y = \log_2(\text{value}/\text{reference value}).
+\]
+
+The default reference value is 1, making the inverse transformation simply
+`2^y`. A scientifically meaningful assay reference can instead be supplied
+with `reference_value`. This fixed reference is stored with the fit and used by
+posterior summaries and response-scale predictions. It does not depend on the
+minimum observed value.
+
+For values already on this scale, use `scale = "log2"`; censoring limits must
+then also be on the log2 scale. The prepared observation table retains both
+`value` and `value_model`.
+
+```{r}
+prepared <- prepare_epikinetics_data(
+  dat,
+  formula = ~ infection_history,
+  covariate_parameters = "all",
+  lower_limit = 5,
+  upper_limit = 2560
+)
+epikinetics_data(prepared)[1:6, ]
+```
+
+## Covariates
+
+Covariates are specified with a one-sided R formula such as
+`~ age + sex + infection_history`. They must be participant-level: a covariate
+may not change across a participant's observations. Numeric variables remain
+numeric; factors use R's active contrast options and their first level is the
+default reference under treatment contrasts. Character variables are converted
+to factors.
+
+Continuous variables enter the design matrix on the scale supplied, so their
+coefficients are effects per one input unit and the default coefficient priors
+must be interpreted on that scale. For variables such as age, create an
+explicit centred or rescaled participant-level column before preparation when
+a one-unit effect is not scientifically useful. This keeps the transformation
+visible in the prepared data and makes `newdata` unambiguous.
+
+Use conventional formulas with an intercept. `epikinetics` removes the design
+intercept because every biomarker already has a population parameter. Formulas
+such as `~ 0 + infection_history` are rejected: estimating all factor levels in
+addition to the biomarker population parameters would be redundant.
+
+The fitted coefficients are shared across biomarkers, as in the original
+model. A baseline coefficient is additive on the log2 outcome scale, so
+`2^beta` is a response ratio. Coefficients for positive time and rate
+parameters are additive on the parameter's log scale, so `exp(beta)` is a
+ratio. `posterior_parameters(level = "regression")` returns both forms along
+with the original term, numeric design-column name, represented factor level,
+and treatment reference where those labels are well defined.
+
+The original participant model frame, terms, term assignment, factor levels,
+actual contrast matrices, and a design-column-to-term table are retained.
+Consequently prediction never requires a user to recreate Stan dummy values.
+For example, `prediction_grid(prepared)` returns the observed factor profiles
+with continuous predictors fixed at their participant-level medians.
+
+## Participant hierarchy
+
+`participant_parameters` controls which kinetic quantities receive
+participant-level random effects. The default is
+`c("baseline", "boost_rate", "early_waning_rate", "late_waning_rate")`.
+Peak time and the duration to the early/late waning switch are shared across
+participants. This stable structure is the package default for the motivating
+application, but remains an explicit and overridable modelling assumption. Use
+a scientifically supported subset for another study, or
+`participant_parameters = "all"` when richer within-participant sampling and
+diagnostics justify the full hierarchy. The selection is inspectable in
+`prepared$mappings$participant_parameters` and as the six-entry
+`participant_effect_active` vector in `stan_data(prepared)`.
+
+## Biomarker order
+
+`biomarker_order` supplies one complete user-facing ordering and stores it in
+the prepared object. If it is omitted, existing factor levels are retained;
+otherwise first appearance in the input data is used. This same order controls
+Stan biomarker indices, posterior tables, predictions, legends, population
+plots, and individual plots. The package does not attach pathogen-specific
+meaning to labels. For the bundled example, chronological variant order can be
+made explicit:
+
+```{r, eval=FALSE}
+prepare_epikinetics_data(
+  dat,
+  biomarker_order = c("Ancestral", "Alpha", "Delta")
 )
 ```
 
-# Input data
+## Censoring
 
-The model requires time series data about individual titre readings, along with last exposure times. Times can be relative (e.g. day of study) or absolute (i.e. precise calendar dates).
-This is provided via the `data` argument when initialising an object of class [biokinetics](../reference/biokinetics.html), which must be a [data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html) containing the following columns:
+The likelihood distinguishes:
 
-| name         | type                 | description                                                                                |
-|--------------|----------------------|--------------------------------------------------------------------------------------------|
-| pid          | numeric or character | Unique identifier to identify a person across observations                                 |
-| day          | integer or date      | The day of the observation. Can be a date or an integer representing a relative day of study |
-| last_exp_day | integer or date      | The most recent day on which the person was exposed. Must be of the same type as the 'day' column |
-| titre_type   | character            | Name of the titre or biomarker                                                             |
-| value        | numeric              | Titre value                                                                                |
+* uncensored values, using a Normal log density;
+* left-censored values, using the Normal log CDF at their lower limit; and
+* right-censored values, using the Normal upper-tail probability at their
+  upper limit.
 
-It can also contain further columns for any covariates to be included in the model. The data files installed with this package have additional columns infection_history, last_vax_type, and exp_num.
+`lower_limit` and `upper_limit` independently accept:
 
-The model also accepts a covariate formula to define the regression model. The variables in the formula must correspond to column names in the dataset. Note that all variables will be treated as **categorical variables**; that is, converted to factors regardless of their input type.
+* one scalar for all observations;
+* a numeric vector with one value per observation;
+* a named numeric vector with one limit per biomarker; or
+* the name of a row-level numeric data column.
 
-Note also that the `value` column is assumed to be on a natural scale by default, and will be converted to a log scale for model fitting. If your data
-is already on a log scale, you must pass the `log=TRUE` argument when initialising the biokinetics class. See [biokinetics](../reference/biokinetics.html).
+`NA` means no applicable limit for that observation. Without an explicit
+`censoring` argument, a value at or below its lower limit is left-censored and
+a value at or above its upper limit is right-censored. Without limits, all
+values are uncensored. This means ordinary data are never implicitly censored
+at their observed minimum or maximum.
 
-## Example
+If the source data record censoring status, pass a vector or column name with
+labels `none`, `left`, or `right` (numeric `0`, `-1`, `1` is also accepted).
+Every explicitly censored row must have the relevant limit. An observation
+inconsistent with its status and applicable limit is rejected during
+preparation. For example, an uncensored observation at or beyond an upper
+limit, or a right-censored recorded value below that limit, produces a
+row-specific error before Stan is called.
+
+Limits can vary by biomarker:
 
 ```{r}
-dat <- data.table::fread(system.file("delta_full.rds", package = "epikinetics"))
-head(dat)
+biomarkers <- unique(dat$titre_type)
+lower <- setNames(rep(5, length(biomarkers)), biomarkers)
+upper <- setNames(rep(2560, length(biomarkers)), biomarkers)
+
+prepared <- prepare_epikinetics_data(
+  dat,
+  lower_limit = lower,
+  upper_limit = upper
+)
+table(epikinetics_data(prepared)$censoring)
 ```
 
-# Output data
+## Inspect the prepared model data
 
-After fitting a model, a [CmdStanMCMC](https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html) object is returned. This means
-that users who are already familiar with `cmdstanr` are free to do what they want with the fitted model.
+An `epikinetics_data` object keeps the validated input copy, a canonical
+labelled observation table, a participant table, the R model frame, the named
+participant design matrix, priors, term/design-column mappings, factor
+levels/contrasts, conditional-prediction defaults, scale information, and the
+exact Stan data list. Input observations are sorted contiguously by
+participant for threaded likelihood evaluation without modifying the user's
+data frame.
 
-**Important!**
-**If you provide data on a natural scale, it will be converted to a base2 log scale before inference is performed. This means that if working
-directly with the fitted `CmdStanMCMC` all values will be on this scale. The package provides a helper function for converting
-back to the original scale: [convert_log2_scale_inverse](../reference/convert_log2_scale_inverse.html).**
+```{r}
+prepared
+summary(prepared)
 
-Three further functions provide model outputs that we think are particularly useful in [data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html) format.
-[biokinetics](../reference/biokinetics.html) contains documentation on each of these functions so please read that first; this vignette provides
-guidance on the correct interpretation of each column in the returned tables (in these functions data is returned on the original scale).
+# Validated input and model-ready observations.
+prepared$input_data[1:3, ]
+prepared$observations[1:3, ]
 
-## simulate_population_trajectories
+# Participant indices/covariates and biomarker indices.
+prepared$participants[1:3, ]
+prepared$model_frame[1:3, , drop = FALSE]
+prepared$mappings$biomarker
+prepared$mappings$reference_levels
+prepared$mappings$design_columns
 
-See the documentation for this function [here](../reference/biokinetics.html#method-simulate-population-trajectories).
-There are 2 different output formats depending on whether the provided `summarise` argument is `TRUE` or `FALSE`.
+# The formula encoding and the exact list supplied to Stan.
+model.matrix(prepared)[1:3, , drop = FALSE]
+prediction_grid(prepared)
+names(stan_data(prepared))
+```
 
-### summarise = TRUE
+`epikinetics_data(prepared)` is a compact accessor for the observation table,
+whereas `stan_data(prepared)` returns the exact sampling list. The direct
+`prepared$stan_data` component is also
+available for interactive debugging. Integer indices need not be supplied by
+the user, but they are intentionally visible. The fit updates only the
+computational `grainsize` for the requested thread count; after sampling,
+`stan_data(fit)` is the literal list used for that run.
 
-Returned columns are
-
-| name                | type       | description                                                                                   |
-|---------------------|------------|-----------------------------------------------------------------------------------------------|
-| time_since_last_exp | integer    | Number of days since last exposure                                                            |
-| me                  | numeric    | Median titre value                                                                            |
-| lo                  | numeric    | Titre value at the 0.025 quantile                                                             |
-| hi                  | numeric    | Titre value at the 0.975 quantile                                                             |
-| titre_type          | character  | Name of the titre or biomarker                                                                |
-
-There will also be a column for each covariate in the regression model.
-
-### summarise = FALSE
-
-Returned columns are
-
-| name                | type    | description                        |
-|---------------------|---------|------------------------------------|
-| time_since_last_exp | integer | Number of days since last exposure |
-| t0_pop              | numeric | Titre value at time 0              |
-| tp_pop              | numeric | Time at peak titre                 |
-| ts_pop              | numeric | Time at start of waning            |
-| m1_pop              | numeric | Boosting rate                      |
-| m2_pop              | numeric | Plateau rate                       |
-| m3_pop              | numeric | Waning rate                        |
-| beta_t0             | numeric | Coefficient to adjust t0 by        |
-| beta_tp             | numeric | Coefficient to adjust tp by        |
-| beta_ts             | numeric | Coefficient to adjust ts by        |
-| beta_m1             | numeric | Coefficient to adjust m1 by        |
-| beta_m2             | numeric | Coefficient to adjust m2 by        |
-| beta_m3             | numeric | Coefficient to adjust m3 by        |
-| mu                  | numeric | Titre value                        |
-| .draw               | integer | Draw number                        |
-| titre_type          | numeric | Name of the titre or biomarker     |
-
-There will also be column for each covariate in the hierarchical model.
-
-See the [model vignette](../article/model.html) for more detail about the model
-parameters.
-
-## simulate_individual_trajectories
-
-See the documentation for this function [here](../reference/biokinetics.html#method-simulate-individual-trajectories).
-There are 2 different output formats depending on whether the provided `summarise` argument is `TRUE` or `FALSE`.
-
-### summarise = FALSE
-
-Returned columns are
-
-| name                | type                 | description                                                                                 |
-|---------------------|----------------------|---------------------------------------------------------------------------------------------|
-| pid                 | character or numeric | Unique person identifier as provided in input data                                          |
-| draw                | integer              | Which draw from the fits this is                                                            |
-| time_since_last_exp | integer              | Number of days since last exposure                                                          |
-| mu                  | numeric              | Titre value                                                                                 |
-| titre_type          | character            | Name of the titre or biomarker                                                              |
-| exposure_day        | integer              | Day of this person's last exposure                                                          |
-| calendar_day        | integer              | Day of this titre value                                                                     |
-| time_shift          | integer              | The number of days these exposures have been adjusted by, as provided in function arguments |
-
-There will also be a column for each covariate in the regression model.
-
-### summarise = TRUE
-
-Returned columns are
-
-| name         | type      | description                                                                          |
-|--------------|-----------|--------------------------------------------------------------------------------------|
-| me           | numeric   | Median titre value                                                                   |
-| lo           | numeric   | Titre value at the 0.025 quantile                                                    |
-| hi           | numeric   | Titre value at the 0.075 quantile                                                    |
-| titre_type   | character | Name of the titre or biomarker                                                       |
-| calendar_day | integer   | Day of this titre value                                                              |
-| time_shift   | integer   | The number of days the exposures were adjusted by, as provided in function arguments |
-
+The package bundles `delta.csv`, `ba2.csv`, and `xbb.csv` under `extdata` for
+examples and tests. They are observational examples from the motivating study,
+not implicit defaults for modelling or priors.
