@@ -90,3 +90,12 @@ package.
   first fit and cached per user.
 * Moved the three bundled public datasets to conventional CSV files under
   `inst/extdata`.
+
+## Documentation
+
+* Restored the applied Delta-wave case study using the functional API,
+  including conditional population curves, peak/switch summaries,
+  calendar-time cohort trajectories, and exposure-timing counterfactuals.
+* Added shared responsive vignette styling, deliberately proportioned SVG
+  figures, accessible captions, compact tables of contents, and overflow-safe
+  code, tables, and mathematical displays.

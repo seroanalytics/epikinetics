@@ -64,6 +64,14 @@ Use `devtools::build()` to exercise the real source-package build, including
 vignettes. `devtools::build_vignettes()` is deprecated in devtools 2.5.0 and
 later.
 
+The applied case study contains an intentionally opt-in full MCMC run. To
+render its fitted figures from a source checkout:
+
+```r
+Sys.setenv(EPIKINETICS_RUN_CASE_STUDY = "true")
+rmarkdown::render("vignettes/case-study.Rmd")
+```
+
 The lightweight Stan integration test is deliberately opt-in:
 
 ```r

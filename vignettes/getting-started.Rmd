@@ -1,6 +1,11 @@
 ---
 title: "Getting started with epikinetics"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    css: epikinetics.css
+    toc: true
+    toc_depth: 2
+lang: en
 vignette: >
   %\VignetteIndexEntry{Getting started with epikinetics}
   %\VignetteEngine{knitr::rmarkdown}
@@ -8,7 +13,7 @@ vignette: >
 ---
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+source("vignette-setup.R")
 ```
 
 `epikinetics` fits a Bayesian hierarchical kinetics model to repeated biomarker
@@ -50,7 +55,7 @@ Validation and transformation can be run separately. This is fast, does not
 need CmdStan, and makes scale, censoring, indices, and the model matrix
 inspectable before sampling.
 
-```{r}
+```{r prepare-data, fig.cap="Prepared observations on the response scale. Biomarkers retain the order supplied during data preparation, and point shapes distinguish censoring status."}
 prepared <- prepare_epikinetics_data(
   dat,
   formula = ~ infection_history,
@@ -267,4 +272,6 @@ predictive interval for a future measurement. All plotting methods return
 ordinary `ggplot` objects.
 
 The data, model, and diagnostics vignettes provide the full contracts and
-statistical assumptions behind this workflow.
+statistical assumptions behind this workflow. The applied case-study vignette
+uses the bundled Delta-wave data to reconstruct the population, peak/switch,
+calendar-time cohort, and exposure-timing analyses from the original package.

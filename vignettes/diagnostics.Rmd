@@ -1,6 +1,11 @@
 ---
 title: "Diagnostics and posterior prediction"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    css: epikinetics.css
+    toc: true
+    toc_depth: 2
+lang: en
 vignette: >
   %\VignetteIndexEntry{Diagnostics and posterior prediction}
   %\VignetteEngine{knitr::rmarkdown}
@@ -8,7 +13,7 @@ vignette: >
 ---
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+source("vignette-setup.R")
 ```
 
 ## Before fitting
@@ -16,7 +21,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 Input and prior plots are intentionally independent of the sampler. They return
 ordinary `ggplot` objects and can be customised with ggplot2.
 
-```{r}
+```{r before-fitting, fig.cap=c("Prepared observations on the response scale. Point shapes distinguish uncensored and censored measurements; dashed lines mark assay limits.", "Default prior population trajectories on the response scale. These curves are a scale check and exclude participant and observation variation.")}
 library(epikinetics)
 dat <- read.csv(
   system.file("extdata", "delta.csv", package = "epikinetics")

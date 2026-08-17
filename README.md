@@ -254,7 +254,12 @@ Preparation rejects observations that are inconsistent with their assigned
 censoring status and limits, with a row-specific R error before Stan is called.
 
 See the package vignettes for the complete data contract, statistical model,
-priors, diagnostics, and prediction semantics.
+priors, diagnostics, prediction semantics, and an updated reproduction of the
+original Delta-wave case study.
+
+Open it with `vignette("case-study", package = "epikinetics")`. Its full MCMC
+chunks are disabled during ordinary package builds and can be enabled
+explicitly from a source checkout with `EPIKINETICS_RUN_CASE_STUDY=true`.
 
 ## Development and integration testing
 

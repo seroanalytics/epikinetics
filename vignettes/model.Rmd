@@ -1,6 +1,11 @@
 ---
 title: "Statistical model and priors"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_vignette:
+    css: epikinetics.css
+    toc: true
+    toc_depth: 2
+lang: en
 vignette: >
   %\VignetteIndexEntry{Statistical model and priors}
   %\VignetteEngine{knitr::rmarkdown}
@@ -8,7 +13,7 @@ vignette: >
 ---
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+source("vignette-setup.R")
 ```
 
 ## Scope
@@ -19,6 +24,13 @@ linear trajectory on the log2 scale, biomarker-specific population kinetics,
 participant variation, participant covariates, Gaussian observation error, and
 left/right censoring. It does not model repeated exposures or infer exposure
 times.
+
+The original formulation was developed for Russell et al., "Real-time
+estimation of immunological responses against emerging SARS-CoV-2 variants in
+the UK: a mathematical modelling study" ([Lancet Infectious Diseases,
+2024](https://doi.org/10.1016/S1473-3099(24)00484-5)). The applied case-study
+vignette reconstructs its Delta-wave analyses using the current parameter names
+and interface.
 
 The implementation uses explicit names in R and Stan. The correspondence to
 the original mathematical notation is:
@@ -160,7 +172,7 @@ without branching into separate models.
 
 ## Priors
 
-```{r}
+```{r prior-trajectories, fig.cap="Population trajectories implied by draws from the default kinetic-parameter priors. Participant variation and residual observation noise are not included."}
 library(epikinetics)
 priors <- epikinetics_priors()
 priors

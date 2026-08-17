@@ -1,0 +1,279 @@
+:root {
+  --epi-text: #252a31;
+  --epi-muted: #606a75;
+  --epi-border: #dfe3e8;
+  --epi-soft-border: #edf0f2;
+  --epi-code-bg: #f6f8fa;
+  --epi-inline-bg: #f1f3f5;
+  --epi-link: #005a9c;
+}
+
+/* Standalone installed-package vignettes. Pkgdown supplies its own page
+   shell, so the width and body typography are deliberately scoped away from
+   .template-article pages. */
+body:not(.template-article) {
+  box-sizing: border-box;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2.25rem 1.75rem 4rem;
+  color: var(--epi-text);
+  background: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.62;
+  text-rendering: optimizeLegibility;
+}
+
+body:not(.template-article) *,
+body:not(.template-article) *::before,
+body:not(.template-article) *::after {
+  box-sizing: border-box;
+}
+
+body:not(.template-article) p {
+  margin: 0.7rem 0;
+}
+
+body:not(.template-article) h1,
+body:not(.template-article) h2,
+body:not(.template-article) h3,
+body:not(.template-article) h4 {
+  color: #1d232a;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+body:not(.template-article) h1 {
+  margin: 0 0 1.35rem;
+  font-size: 2.15rem;
+  line-height: 1.18;
+}
+
+body:not(.template-article) h2 {
+  margin: 2.5rem 0 0.85rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--epi-border);
+  font-size: 1.48rem;
+  line-height: 1.28;
+}
+
+body:not(.template-article) h3 {
+  margin: 1.9rem 0 0.65rem;
+  font-size: 1.18rem;
+  line-height: 1.35;
+}
+
+body:not(.template-article) h4 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+}
+
+body:not(.template-article) a {
+  color: var(--epi-link);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.14em;
+}
+
+body:not(.template-article) a:hover,
+body:not(.template-article) a:focus-visible {
+  color: #003f73;
+  text-decoration: underline;
+}
+
+body:not(.template-article) #TOC {
+  width: auto;
+  max-width: 34rem;
+  margin: 1.4rem 0 2.2rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--epi-border);
+  border-left: 3px solid #7e9bb3;
+  border-radius: 4px;
+  background: #f8fafb;
+  font-size: 0.91rem;
+  line-height: 1.45;
+}
+
+body:not(.template-article) #TOC .toctitle {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 650;
+}
+
+body:not(.template-article) #TOC ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+body:not(.template-article) #TOC li {
+  margin: 0.18rem 0;
+}
+
+body:not(.template-article) pre,
+body:not(.template-article) code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+}
+
+body:not(.template-article) code {
+  padding: 0.12em 0.32em;
+  border-radius: 3px;
+  background: var(--epi-inline-bg);
+  color: #27313b;
+  font-size: 0.88em;
+}
+
+body:not(.template-article) pre,
+body:not(.template-article) pre.sourceCode {
+  max-width: 100%;
+  margin: 1rem 0 1.25rem;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--epi-border);
+  border-radius: 5px;
+  background: var(--epi-code-bg);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+body:not(.template-article) pre code,
+body:not(.template-article) pre code.sourceCode {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: inherit;
+  white-space: inherit;
+}
+
+body:not(.template-article) div.sourceCode {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+body:not(.template-article) blockquote {
+  margin: 1.2rem 0;
+  padding: 0.55rem 1rem;
+  border-left: 3px solid #a8b7c4;
+  background: #f8fafb;
+  color: #46515c;
+}
+
+body:not(.template-article) ul,
+body:not(.template-article) ol {
+  padding-left: 1.55rem;
+}
+
+body:not(.template-article) li + li {
+  margin-top: 0.25rem;
+}
+
+body:not(.template-article) table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 1.25rem auto 1.6rem;
+  overflow-x: auto;
+  border: 0;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+body:not(.template-article) th,
+body:not(.template-article) td {
+  padding: 0.52rem 0.7rem;
+  border: 0;
+  border-bottom: 1px solid var(--epi-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+body:not(.template-article) th {
+  border-bottom-width: 2px;
+  background: #f7f8fa;
+  font-weight: 650;
+}
+
+body:not(.template-article) tr:nth-child(even) td {
+  background: #fbfcfd;
+}
+
+body:not(.template-article) .math.display {
+  display: block;
+  max-width: 100%;
+  margin: 1.25rem 0;
+  padding: 0.25rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Figure rules apply to standalone vignettes and pkgdown articles. Chunk-level
+   out.width controls the deliberate desktop size; these rules prevent overflow
+   and preserve the SVG aspect ratio. */
+div.figure {
+  margin: 1.6rem auto 1.9rem;
+  text-align: center;
+}
+
+img.r-plt,
+div.figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+p.caption,
+div.figure p.caption,
+figcaption {
+  max-width: 42rem;
+  margin: 0.55rem auto 0;
+  color: var(--epi-muted);
+  font-size: 0.87rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+@media (max-width: 680px) {
+  body:not(.template-article) {
+    padding: 1.25rem 1rem 3rem;
+    font-size: 15.5px;
+  }
+
+  body:not(.template-article) h1 {
+    font-size: 1.8rem;
+  }
+
+  body:not(.template-article) h2 {
+    margin-top: 2.1rem;
+    font-size: 1.35rem;
+  }
+
+  body:not(.template-article) #TOC {
+    max-width: none;
+  }
+
+  img.r-plt,
+  div.figure img {
+    width: 100% !important;
+  }
+}
+
+@media print {
+  body:not(.template-article) {
+    max-width: none;
+    padding: 0;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  body:not(.template-article) pre,
+  body:not(.template-article) table,
+  body:not(.template-article) .math.display {
+    overflow: visible;
+  }
+}
