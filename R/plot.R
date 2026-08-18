@@ -85,6 +85,10 @@ add_censoring_limits <- function(plot, limits) {
   repeated <- stats::ave(seq_len(nrow(limits)), key, FUN = length) > 1L
   shared <- limits[repeated, , drop = FALSE]
   shared <- shared[!duplicated(key[repeated]), , drop = FALSE]
+  # A genuinely shared limit should be repeated by ggplot in every biomarker
+  # facet. Retaining the arbitrary biomarker from its first row would confine
+  # it to that panel.
+  shared$biomarker <- NULL
   specific <- limits[!repeated, , drop = FALSE]
   if (nrow(shared)) {
     plot <- plot + ggplot2::geom_hline(
@@ -250,7 +254,8 @@ conditional_prediction_label <- function(x, data) {
 #' Uses the labelled output of [predict.epikinetics_fit()] directly. Biomarkers
 #' are overlaid using colour and fill; categorical covariate profiles determine
 #' facets. Multiple categorical variables are combined into readable labels.
-#' Individual predictions use one panel per participant.
+#' Individual predictions use one panel per participant and biomarker, retaining
+#' biomarker colour for consistency with population plots.
 #'
 #' @param x An `epikinetics_prediction` data frame.
 #' @param central Plot the posterior `"median"` (default) or `"mean"` as the
@@ -275,10 +280,7 @@ plot.epikinetics_prediction <- function(
   }
   data$biomarker <- factor(as.character(data$biomarker), biomarker_levels)
   data$.profile_line <- prediction_profile_label(data, formula_variables)
-  if (identical(type, "individual")) {
-    panel <- as.character(data$participant)
-    data$.prediction_panel <- factor(panel, levels = unique(panel))
-  } else if (length(categorical_covariates)) {
+  if (!identical(type, "individual") && length(categorical_covariates)) {
     panel <- prediction_panel_label(data, categorical_covariates)
     data$.prediction_panel <- factor(panel, levels = unique(panel))
   }
@@ -287,7 +289,8 @@ plot.epikinetics_prediction <- function(
     data$.profile_line,
     drop = TRUE
   )
-  time <- estimate <- lower <- upper <- biomarker <- .profile_line <- NULL
+  time <- estimate <- lower <- upper <- biomarker <- participant <- NULL
+  .profile_line <- NULL
   .prediction_panel <- .trajectory_group <- .central_value <- NULL
 
   summarised <- isTRUE(attr(x, "summarised"))
@@ -372,7 +375,27 @@ plot.epikinetics_prediction <- function(
   subtitle <- paste(subtitle[nzchar(subtitle)], collapse = "\n")
   if (!nzchar(subtitle)) subtitle <- NULL
 
-  if (".prediction_panel" %in% names(data)) {
+  if (identical(type, "individual")) {
+    participant_levels <- unique(as.character(data$participant))
+    n_panels <- length(unique(interaction(
+      data$participant,
+      data$biomarker,
+      drop = TRUE
+    )))
+    if (n_panels > 24L) {
+      warning(
+        "The automatic individual plot contains ", n_panels,
+        " participant-by-biomarker panels. Subset participants or biomarkers ",
+        "for a more readable plot.",
+        call. = FALSE
+      )
+    }
+    plot <- plot + if (length(participant_levels) == 1L) {
+      ggplot2::facet_wrap(ggplot2::vars(biomarker))
+    } else {
+      ggplot2::facet_wrap(ggplot2::vars(participant, biomarker))
+    }
+  } else if (".prediction_panel" %in% names(data)) {
     n_panels <- length(unique(data$.prediction_panel))
     if (n_panels > 12L) {
       warning(
@@ -390,12 +413,6 @@ plot.epikinetics_prediction <- function(
   plot <- add_censoring_limits(plot, attr(x, "censoring_limits"))
   observations <- attr(x, "observations")
   if (isTRUE(show_observations) && !is.null(observations)) {
-    if (identical(type, "individual")) {
-      observations$.prediction_panel <- factor(
-        as.character(observations$participant),
-        levels = levels(data$.prediction_panel)
-      )
-    }
     plot <- add_epikinetics_observations(plot, observations)
   }
   labels <- list(
@@ -531,7 +548,8 @@ plot_individual <- function(
     stop("'x' must be an epikinetics_fit or individual prediction object.",
          call. = FALSE)
   }
-  plot(prediction, central = central, show_observations = TRUE)
+  plot(prediction, central = central, show_observations = TRUE) +
+    ggplot2::labs(title = paste("Participant", participant))
 }
 
 subset_individual_prediction <- function(x, participant) {

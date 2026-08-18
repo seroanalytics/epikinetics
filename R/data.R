@@ -31,6 +31,9 @@
 #'   Supply any parameter subset, or `"all"`, for another justified hierarchy.
 #' @param id,time,exposure,biomarker,value Column names identifying participant,
 #'   observation time, focal exposure time, biomarker type, and measurement.
+#'   Set `exposure = NULL` when `time` is already numeric time since exposure,
+#'   with the exposure at zero (for example after
+#'   [align_time_to_reference()]).
 #' @param biomarker_order Optional complete ordering of observed biomarker
 #'   labels. If omitted, existing factor levels are preserved; otherwise the
 #'   order of first appearance in `data` is used. The order is stored in the
@@ -83,8 +86,15 @@ prepare_epikinetics_data <- function(
     stop("'data' must contain at least one observation.", call. = FALSE)
   }
 
-  columns <- c(id = id, time = time, exposure = exposure,
-               biomarker = biomarker, value = value)
+  if (!is.null(exposure) &&
+      (!is.character(exposure) || length(exposure) != 1L ||
+       is.na(exposure) || !nzchar(exposure))) {
+    stop("'exposure' must be NULL or one non-empty column name.",
+         call. = FALSE)
+  }
+  columns <- c(id = id, time = time)
+  if (!is.null(exposure)) columns <- c(columns, exposure = exposure)
+  columns <- c(columns, biomarker = biomarker, value = value)
   if (any(lengths(columns) != 1L) || any(!nzchar(columns))) {
     stop("Column selectors must each be one non-empty column name.",
          call. = FALSE)
@@ -95,7 +105,8 @@ prepare_epikinetics_data <- function(
          call. = FALSE)
   }
   if (anyDuplicated(unname(columns))) {
-    stop("The id, time, exposure, biomarker, and value columns must be distinct.",
+    stop("The id, time, exposure (when supplied), biomarker, and value ",
+         "columns must be distinct.",
          call. = FALSE)
   }
 
@@ -132,10 +143,26 @@ prepare_epikinetics_data <- function(
          call. = FALSE)
   }
 
-  time_since_exposure <- difference_in_days(data[[time]], data[[exposure]])
+  if (is.null(exposure)) {
+    if (!is.numeric(data[[time]])) {
+      stop("When 'exposure = NULL', the 'time' column must contain numeric ",
+           "time since exposure.", call. = FALSE)
+    }
+    time_since_exposure <- as.numeric(data[[time]])
+    exposure_value <- rep(0, nrow(data))
+  } else {
+    time_since_exposure <- difference_in_days(data[[time]], data[[exposure]])
+    exposure_value <- data[[exposure]]
+  }
   if (any(!is.finite(time_since_exposure))) {
-    stop("Observation and exposure times must have a finite numeric difference.",
-         call. = FALSE)
+    stop(
+      if (is.null(exposure)) {
+        "Aligned observation times must be finite."
+      } else {
+        "Observation and exposure times must have a finite numeric difference."
+      },
+      call. = FALSE
+    )
   }
   if (any(time_since_exposure < 0)) {
     stop("All observations must occur on or after the focal exposure.",
@@ -153,8 +180,10 @@ prepare_epikinetics_data <- function(
   }
   biomarker_index <- match(as.character(data[[biomarker]]), biomarker_levels)
 
-  validate_participant_constant(data[[exposure]], participant_index,
-                                exposure, id_levels)
+  if (!is.null(exposure)) {
+    validate_participant_constant(data[[exposure]], participant_index,
+                                  exposure, id_levels)
+  }
 
   design <- build_epikinetics_design(data, formula, participant_index,
                                      id_levels)
@@ -234,7 +263,7 @@ prepare_epikinetics_data <- function(
     participant = data[[id]][order_index],
     participant_index = participant_index,
     observation_time = data[[time]][order_index],
-    exposure_time = data[[exposure]][order_index],
+    exposure_time = exposure_value[order_index],
     time_since_exposure = time_since_exposure[order_index],
     biomarker = factor(
       as.character(data[[biomarker]][order_index]),
@@ -292,7 +321,7 @@ prepare_epikinetics_data <- function(
   participants <- data.frame(
     participant_index = seq_along(id_levels),
     participant = id_levels,
-    exposure_time = data[[exposure]][first_rows],
+    exposure_time = exposure_value[first_rows],
     observation_count = participant_counts,
     stringsAsFactors = FALSE,
     check.names = FALSE
@@ -370,6 +399,7 @@ prepare_epikinetics_data <- function(
         continuous_variables = design$continuous_variables,
         prediction_defaults = design$prediction_defaults,
         columns = as.list(columns),
+        time_already_aligned = is.null(exposure),
         scale = scale,
         reference_value = reference_value,
         transformation = if (scale == "natural") {
@@ -1000,7 +1030,16 @@ print.epikinetics_data <- function(x, ...) {
   cat("  Model scale:  ", x$specification$transformation, "; range ",
       paste(format(range(x$observations$value_model)), collapse = " to "),
       "\n", sep = "")
-  cat("  Exposure:     one fixed focal exposure per participant\n")
+  cat(
+    "  Exposure:     ",
+    if (isTRUE(x$specification$time_already_aligned)) {
+      "time supplied relative to exposure at zero"
+    } else {
+      "one fixed focal exposure per participant"
+    },
+    "\n",
+    sep = ""
+  )
   invisible(x)
 }
 

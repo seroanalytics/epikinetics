@@ -14,6 +14,9 @@ package.
   and the exact Stan list through `stan_data()`.
 * Added concise `print()` and detailed `summary()` methods for prepared data,
   plus strict pre-Stan structural and censoring validation.
+* Added `align_time_to_reference()` for converting participant-specific or
+  shared calendar reference dates into inspectable numeric day columns.
+  Already aligned time can be supplied with `exposure = NULL`.
 * Added standard `print()`, `summary()`, `plot()`, and `predict()` methods,
   labelled posterior extraction, sampling diagnostics, and direct CmdStanR
   access.
@@ -97,9 +100,18 @@ package.
 * Restored the applied Delta-wave case study using the functional API,
   including conditional population curves, peak/switch summaries,
   calendar-time cohort trajectories, and exposure-timing counterfactuals.
-* Added a dedicated priors vignette and an explicit workflow-oriented article
-  order. Prior trajectory plots now use the same log2-spaced response axis as
-  posterior plots and state which sources of variation they exclude.
+* Reorganised the site into ten short workflow-oriented articles, with
+  dedicated pages for data, covariates, censoring, fitting, population
+  kinetics, individual kinetics, and diagnostics. Prior guidance and its
+  latent-population trajectory check now live with the technical model
+  description.
+* Added reproducible raw-data, population, individual, diagnostic, censoring,
+  hierarchy, threading, and kinetic-phase figures. Fit-derived documentation
+  images come from a completed four-chain package fit and are precomputed so
+  routine site builds do not run MCMC.
 * Added shared responsive vignette styling, deliberately proportioned SVG
   figures, accessible captions, compact tables of contents, and overflow-safe
   code, tables, and mathematical displays.
+* Refined the visual guide around calendar-date inputs, biomarker-faceted
+  individual fits, a kinetic upper-censoring example, trace-plus-density
+  diagnostics, and an article menu that exposes every guide directly.
