@@ -1,5 +1,8 @@
 ---
 title: "Diagnostics and posterior prediction"
+description: >
+  Check sampler behaviour and distinguish latent, individual, and posterior
+  predictive trajectories.
 output:
   rmarkdown::html_vignette:
     css: epikinetics.css
@@ -16,12 +19,13 @@ vignette: >
 source("vignette-setup.R")
 ```
 
-## Before fitting
+## Inspect inputs before fitting
 
-Input and prior plots are intentionally independent of the sampler. They return
-ordinary `ggplot` objects and can be customised with ggplot2.
+Prepared-data plots are independent of the sampler. They return ordinary
+`ggplot` objects and can be customised with ggplot2. Prior specification and
+prior trajectory checks are covered in the [Priors](priors.html) vignette.
 
-```{r before-fitting, fig.cap=c("Prepared observations on the response scale. Point shapes distinguish uncensored and censored measurements; dashed lines mark assay limits.", "Default prior population trajectories on the response scale. These curves are a scale check and exclude participant and observation variation.")}
+```{r before-fitting, fig.cap="Prepared observations on the response scale. Point shapes distinguish uncensored and censored measurements; dashed lines mark assay limits."}
 library(epikinetics)
 dat <- read.csv(
   system.file("extdata", "delta.csv", package = "epikinetics")
@@ -40,12 +44,7 @@ table(prepared$observations$censoring)
 names(stan_data(prepared))
 
 plot(prepared)
-plot(epikinetics_priors(), scale = "response", reference_value = 1)
 ```
-
-Prior trajectory plots are a quick scale check, not a substitute for a full
-prior predictive workflow. In particular, they draw population trajectories
-without participant or observation variation.
 
 ## Sampling diagnostics
 

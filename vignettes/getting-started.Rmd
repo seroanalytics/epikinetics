@@ -1,5 +1,8 @@
 ---
 title: "Getting started with epikinetics"
+description: >
+  Prepare and inspect longitudinal biomarker data, fit the model, check
+  diagnostics, and obtain population and individual trajectories.
 output:
   rmarkdown::html_vignette:
     css: epikinetics.css
@@ -271,7 +274,9 @@ The default interval describes uncertainty in the latent mean trajectory. Use
 predictive interval for a future measurement. All plotting methods return
 ordinary `ggplot` objects.
 
-The data, model, and diagnostics vignettes provide the full contracts and
-statistical assumptions behind this workflow. The applied case-study vignette
-uses the bundled Delta-wave data to reconstruct the population, peak/switch,
-calendar-time cohort, and exposure-timing analyses from the original package.
+Continue with [Priors](priors.html) before adapting the defaults, and use the
+[data](data.html), [diagnostics](diagnostics.html), and [kinetics model and
+statistical structure](model.html) vignettes for the full contracts behind this
+workflow. The [applied case study](case-study.html) uses the bundled Delta-wave
+data to reconstruct the population, peak/switch, calendar-time cohort, and
+exposure-timing analyses from the original package.

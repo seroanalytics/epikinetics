@@ -93,9 +93,13 @@ package.
 
 ## Documentation
 
+* Added the package logo to the README and pkgdown site metadata.
 * Restored the applied Delta-wave case study using the functional API,
   including conditional population curves, peak/switch summaries,
   calendar-time cohort trajectories, and exposure-timing counterfactuals.
+* Added a dedicated priors vignette and an explicit workflow-oriented article
+  order. Prior trajectory plots now use the same log2-spaced response axis as
+  posterior plots and state which sources of variation they exclude.
 * Added shared responsive vignette styling, deliberately proportioned SVG
   figures, accessible captions, compact tables of contents, and overflow-safe
   code, tables, and mathematical displays.

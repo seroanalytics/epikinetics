@@ -4,6 +4,8 @@ bin
 .idea
 *.Rproj
 *.png
+!man/figures/logo.png
+!pkgdown/favicon/*.png
 .Rproj.user
 .Rhistory
 .RData

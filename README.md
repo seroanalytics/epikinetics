@@ -1,4 +1,4 @@
-# epikinetics
+# epikinetics <img src="man/figures/logo.png" align="right" height="160" alt="epikinetics logo showing biomarker response curves after an exposure" />
 
 [![R-CMD-check](https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml)
 [![codecov](https://codecov.io/gh/seroanalytics/epikinetics/graph/badge.svg?token=5MZYYDUZYH)](https://codecov.io/gh/seroanalytics/epikinetics)
@@ -41,6 +41,17 @@ Installing or loading `epikinetics` never installs CmdStan or compiles a Stan
 model. The first fit compiles the threaded model and caches the executable in
 the user's R cache directory. If CmdStan is missing, the package reports the
 setup commands above.
+
+## Documentation
+
+The articles follow the usual analysis workflow:
+
+1. [Getting started](https://seroanalytics.org/epikinetics/articles/getting-started.html) — prepare, fit, diagnose, and predict.
+2. [Priors](https://seroanalytics.org/epikinetics/articles/priors.html) — inspect and adapt parameter priors and their implied population trajectories.
+3. [Data, covariates, scales, and censoring](https://seroanalytics.org/epikinetics/articles/data.html) — the complete input and transformation contract.
+4. [Diagnostics and posterior prediction](https://seroanalytics.org/epikinetics/articles/diagnostics.html) — assess sampling and choose the appropriate prediction target.
+5. [Applied case study](https://seroanalytics.org/epikinetics/articles/case-study.html) — reproduce the motivating Delta-wave analyses.
+6. [Kinetics model and statistical structure](https://seroanalytics.org/epikinetics/articles/model.html) — the curve, hierarchy, likelihood, and computational implementation.
 
 ## A short workflow
 
@@ -253,9 +264,13 @@ be supplied when recorded censoring status should take precedence.
 Preparation rejects observations that are inconsistent with their assigned
 censoring status and limits, with a row-specific R error before Stan is called.
 
-See the package vignettes for the complete data contract, statistical model,
-priors, diagnostics, prediction semantics, and an updated reproduction of the
-original Delta-wave case study.
+The [data article](https://seroanalytics.org/epikinetics/articles/data.html)
+describes every validation and transformation, while the
+[priors article](https://seroanalytics.org/epikinetics/articles/priors.html)
+shows how to inspect the implied latent population curves before fitting. The
+[diagnostics article](https://seroanalytics.org/epikinetics/articles/diagnostics.html)
+and [case study](https://seroanalytics.org/epikinetics/articles/case-study.html)
+continue from the fitted object.
 
 Open it with `vignette("case-study", package = "epikinetics")`. Its full MCMC
 chunks are disabled during ordinary package builds and can be enabled

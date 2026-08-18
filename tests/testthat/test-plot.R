@@ -9,6 +9,36 @@ test_that("data, prior, prediction, and fit plots are ordinary ggplots", {
   expect_s3_class(plot(fit, times = 0:5, ndraws = 5), "ggplot")
 })
 
+test_that("response-scale prior trajectories use the package log2 axis", {
+  set.seed(10)
+  response <- plot(
+    epikinetics_priors(),
+    times = 0:20,
+    ndraws = 100,
+    probs = c(0.05, 0.95),
+    scale = "response"
+  )
+  model <- plot(
+    epikinetics_priors(),
+    times = 0:20,
+    ndraws = 100,
+    scale = "model"
+  )
+
+  expect_identical(response$scales$get_scales("y")$trans$name, "log-2")
+  expect_identical(model$scales$get_scales("y")$trans$name, "identity")
+  expect_match(response$labels$subtitle, "90% pointwise prior interval")
+  expect_match(response$labels$subtitle, "observation error are excluded")
+  expect_error(
+    plot(epikinetics_priors(), probs = c(0.95, 0.05)),
+    "ordered probabilities"
+  )
+  expect_error(
+    plot(epikinetics_priors(), reference_value = 0),
+    "finite positive"
+  )
+})
+
 test_that("unsummarised posterior trajectories can be plotted", {
   prediction <- predict(
     fake_epikinetics_fit(),

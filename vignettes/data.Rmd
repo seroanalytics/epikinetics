@@ -1,5 +1,8 @@
 ---
 title: "Data, covariates, scales, and censoring"
+description: >
+  The input-data contract, transformations, formula encoding, biomarker
+  ordering, censoring rules, and inspectable Stan data.
 output:
   rmarkdown::html_vignette:
     css: epikinetics.css

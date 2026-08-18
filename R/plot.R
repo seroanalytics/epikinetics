@@ -716,6 +716,7 @@ rpositive_normal <- function(n, mean, sd) {
 #' @param ... Reserved for compatibility with the [plot()] generic.
 #' @param times Non-negative prediction times.
 #' @param ndraws Number of prior trajectories to simulate.
+#' @param probs Lower and upper probabilities for the pointwise prior interval.
 #' @param reference_value Positive reference value used to convert model-scale
 #'   values to the response scale when `scale = "response"`.
 #' @param scale Output scale: `"model"` for log2-relative values or
@@ -729,10 +730,16 @@ plot.epikinetics_priors <- function(
     ...,
     times = 0:150,
     ndraws = 1000,
+    probs = c(0.025, 0.975),
     reference_value = 1,
     scale = c("model", "response")) {
   scale <- match.arg(scale)
   ndraws <- validate_count(ndraws, "ndraws")
+  probs <- validate_prediction_probs(probs)
+  if (!is.numeric(reference_value) || length(reference_value) != 1L ||
+      !is.finite(reference_value) || reference_value <= 0) {
+    stop("'reference_value' must be one finite positive number.", call. = FALSE)
+  }
   if (!is.numeric(times) || !length(times) || any(!is.finite(times)) ||
       any(times < 0)) {
     stop("'times' must be finite and non-negative.", call. = FALSE)
@@ -785,13 +792,25 @@ plot.epikinetics_priors <- function(
   )
   if (scale == "response") estimate <- reference_value * 2^estimate
   draws <- data.frame(.draw = rows, time = time, estimate = estimate)
-  prediction <- summarise_prediction_draws(draws, c(0.025, 0.975))
+  prediction <- summarise_prediction_draws(draws, probs)
+  interval <- paste0(round(100 * diff(probs)), "% pointwise prior interval")
   time <- estimate <- lower <- upper <- NULL
   ggplot2::ggplot(prediction, ggplot2::aes(x = time, y = estimate)) +
-    ggplot2::geom_ribbon(ggplot2::aes(ymin = lower, ymax = upper), alpha = 0.2) +
-    ggplot2::geom_line() +
+    ggplot2::geom_ribbon(
+      ggplot2::aes(ymin = lower, ymax = upper),
+      fill = "#0072B2",
+      alpha = 0.18
+    ) +
+    ggplot2::geom_line(colour = "#0072B2", linewidth = 0.85) +
     ggplot2::labs(
+      title = "Prior population trajectories",
+      subtitle = paste0(
+        interval,
+        "; participant effects and observation error are excluded"
+      ),
       x = "Time since exposure",
       y = if (scale == "response") "Biomarker value" else "Biomarker value (model scale)"
-    )
+    ) +
+    epikinetics_axis_scales(scale) +
+    theme_epikinetics()
 }

@@ -1,5 +1,8 @@
 ---
 title: "Applied case study: Delta-wave neutralising antibodies"
+description: >
+  Reproduce the motivating Delta-wave population, participant, calendar-time,
+  and exposure-timing analyses with the modern interface.
 output:
   rmarkdown::html_vignette:
     css: epikinetics.css

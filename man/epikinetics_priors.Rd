@@ -10,6 +10,7 @@
   ...,
   times = 0:150,
   ndraws = 1000,
+  probs = c(0.025, 0.975),
   reference_value = 1,
   scale = c("model", "response")
 )
@@ -36,6 +37,8 @@ epikinetics_priors(
 \item{times}{Non-negative prediction times.}
 
 \item{ndraws}{Number of prior trajectories to simulate.}
+
+\item{probs}{Lower and upper probabilities for the pointwise prior interval.}
 
 \item{reference_value}{Positive reference value used to convert model-scale
 values to the response scale when \code{scale = "response"}.}

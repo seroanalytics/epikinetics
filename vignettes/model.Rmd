@@ -1,5 +1,8 @@
 ---
-title: "Statistical model and priors"
+title: "Kinetics model and statistical structure"
+description: >
+  The piecewise kinetic curve, hierarchical effects, censoring likelihood,
+  constraints, and threaded Stan implementation.
 output:
   rmarkdown::html_vignette:
     css: epikinetics.css
@@ -7,7 +10,7 @@ output:
     toc_depth: 2
 lang: en
 vignette: >
-  %\VignetteIndexEntry{Statistical model and priors}
+  %\VignetteIndexEntry{Kinetics model and statistical structure}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -170,68 +173,8 @@ Limits are row-level Stan vectors, so datasets may have no censoring,
 one-sided censoring, both sides, or biomarker/observation-specific limits
 without branching into separate models.
 
-## Priors
-
-```{r prior-trajectories, fig.cap="Population trajectories implied by draws from the default kinetic-parameter priors. Participant variation and residual observation noise are not included."}
-library(epikinetics)
-priors <- epikinetics_priors()
-priors
-plot(priors)
-```
-
-Population priors are Normal distributions specified by `c(mean, sd)`.
-Positive quantities have support above zero, so these Normals are truncated at
-zero. Participant SDs and the observation SD have half-Normal priors;
-regression coefficients have zero-centred Normal priors.
-
-Stan samples unconstrained standard-Normal raw variables and maps them through
-the inverse CDF of these truncated- or half-Normal priors. The implementation
-uses complementary probabilities in the upper tail and a value-and-gradient
-matched continuation outside the range carrying material Normal probability.
-This prevents floating-point rounding from turning leapfrog proposals into
-exact zero or infinity. Within the represented prior mass this is the exact
-CDF transport and does not alter the scientific model. It makes default
-initial values land on the scale of each prior, which matters when a duration
-of tens of days and a late-waning rate of thousandths per day coexist in one
-model.
-
-This construction separates three ideas that are easy to conflate. Positivity
-is the support of the reported quantity; the inverse-CDF map supplies its
-truncated-Normal or half-Normal prior; and participant random effects are
-non-centred separately through their `z` variables. The standard-Normal raw
-variable is the actual Stan parameter and the positive quantity is its
-deterministic pushforward, so no additional Jacobian term is required. A
-declaration such as `real<lower=0> sigma; sigma ~ normal(0, scale);` has the
-same half-Normal distribution (up to its fixed normalising constant), but Stan
-then uses its standard exponential lower-bound transform. It does not have the
-same unconstrained geometry or scale-aware default initialisation. The exact
-transport is retained because that distinction caused the previously observed
-frozen-chain behaviour.
-
-Units are explicit:
-
-* baseline is in log2 outcome units;
-* time parameters use the input time unit, normally days;
-* rates are log2 outcome units per input time unit;
-* participant and covariate scales for positive parameters act on log
-  parameter ratios.
-
-Override only the scientifically informed quantities while retaining the
-complete inspectable object:
-
-```{r}
-priors <- epikinetics_priors(
-  time_to_peak = c(mean = 12, sd = 4),
-  early_waning_rate = c(mean = 0.025, sd = 0.01),
-  late_waning_rate = c(mean = 0.003, sd = 0.003),
-  observation_sd = 0.75
-)
-```
-
-For a log2-linear waning rate (r), the response halves after (1/r) time
-units. `posterior_parameters()` reports this derived half-life. It is undefined
-at exactly zero, but fitted rates are strictly positive; very small rates
-appropriately produce very long half-lives.
+Prior support, default values, interpretation, and trajectory checks are
+documented separately in the [Priors](priors.html) vignette.
 
 ## Computational implementation
 
