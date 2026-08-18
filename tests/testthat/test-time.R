@@ -69,6 +69,14 @@ test_that("date columns, selectors, and output names are validated", {
   )
 
   expect_error(
+    align_time_to_reference(NULL, "sample_date", as.Date("2024-01-01")),
+    "must be a data.frame"
+  )
+  expect_error(
+    align_time_to_reference(dates, character(), "exposure_date"),
+    "'measurement_date' must be one non-empty"
+  )
+  expect_error(
     align_time_to_reference(dates, "missing", "exposure_date"),
     "Measurement-date column 'missing'"
   )
@@ -79,6 +87,18 @@ test_that("date columns, selectors, and output names are validated", {
   expect_error(
     align_time_to_reference(dates, "sample_date", "exposure_date", id = "x"),
     "Participant-id column 'x'"
+  )
+  expect_error(
+    align_time_to_reference(
+      dates, "sample_date", "exposure_date", id = ""
+    ),
+    "'id' must be NULL or one non-empty"
+  )
+  expect_error(
+    align_time_to_reference(
+      dates, "sample_date", "exposure_date", time = NA_character_
+    ),
+    "'time' must be one non-empty"
   )
   expect_error(
     align_time_to_reference(
@@ -99,6 +119,21 @@ test_that("date columns, selectors, and output names are validated", {
   expect_error(
     align_time_to_reference(datetimes, "sample_date", "exposure_date"),
     "not POSIXct.*as.Date"
+  )
+
+  missing_id <- dates
+  missing_id$participant <- NA_character_
+  expect_error(
+    align_time_to_reference(
+      missing_id, "sample_date", "exposure_date", id = "participant"
+    ),
+    "Participant IDs must not be missing"
+  )
+  expect_error(
+    align_time_to_reference(
+      dates, "sample_date", as.POSIXct("2024-01-01", tz = "UTC")
+    ),
+    "'reference' must be one Date"
   )
 })
 
