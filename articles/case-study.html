@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Applied case study: Delta-wave neutralising antibodies • epikinetics</title>
+<title>Case study: SARS-CoV-2 Delta-wave neutralising antibodies • epikinetics</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -15,7 +15,8 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Applied case study: Delta-wave neutralising antibodies">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="Case study: SARS-CoV-2 Delta-wave neutralising antibodies">
 <meta name="description" content="Reproduce the motivating Delta-wave population, participant, calendar-time, and exposure-timing analyses with the modern interface.
 ">
 <meta property="og:description" content="Reproduce the motivating Delta-wave population, participant, calendar-time, and exposure-timing analyses with the modern interface.
@@ -44,11 +45,15 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/getting-started.html">Getting started with epikinetics</a></li>
-    <li><a class="dropdown-item" href="../articles/priors.html">Priors</a></li>
-    <li><a class="dropdown-item" href="../articles/data.html">Data, covariates, scales, and censoring</a></li>
-    <li><a class="dropdown-item" href="../articles/diagnostics.html">Diagnostics and posterior prediction</a></li>
-    <li><a class="dropdown-item" href="../articles/case-study.html">Applied case study: Delta-wave neutralising antibodies</a></li>
+<li><a class="dropdown-item" href="../articles/getting-started.html">Getting started</a></li>
+    <li><a class="dropdown-item" href="../articles/data.html">Data</a></li>
+    <li><a class="dropdown-item" href="../articles/covariates.html">Covariates</a></li>
+    <li><a class="dropdown-item" href="../articles/censoring.html">Censoring</a></li>
+    <li><a class="dropdown-item" href="../articles/fitting.html">Fitting the model</a></li>
+    <li><a class="dropdown-item" href="../articles/population-kinetics.html">Population-level kinetics</a></li>
+    <li><a class="dropdown-item" href="../articles/individual-kinetics.html">Individual-level kinetics</a></li>
+    <li><a class="dropdown-item" href="../articles/diagnostics.html">Diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/case-study.html">Case study</a></li>
     <li><a class="dropdown-item" href="../articles/model.html">Kinetics model and statistical structure</a></li>
   </ul>
 </li>
@@ -71,7 +76,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Applied case study: Delta-wave neutralising antibodies</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Case study: SARS-CoV-2 Delta-wave neutralising antibodies</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/seroanalytics/epikinetics/blob/main/vignettes/case-study.Rmd" class="external-link"><code>vignettes/case-study.Rmd</code></a></small>
@@ -85,7 +90,10 @@
 SARS-CoV-2 variants in the UK: a mathematical modelling study” (<a href="https://doi.org/10.1016/S1473-3099(24)00484-5" class="external-link">Lancet Infectious
 Diseases, 2024</a>). This vignette reconstructs the Delta-wave analyses
 from the former <code>epikinetics</code> case study using the current
-package interface.</p>
+package interface. The shorter <a href="data.html">Data</a>, <a href="covariates.html">Covariates</a>, <a href="censoring.html">Censoring</a>, <a href="fitting.html">Fitting</a>,
+and <a href="diagnostics.html">Diagnostics</a> articles introduce the
+individual concepts; this page shows how they combine in a real
+analysis.</p>
 <p>The aim is to reproduce the analysis rather than the exact appearance
 of the published multi-wave figures. The package includes the
 corresponding <code>ba2.csv</code> and <code>xbb.csv</code> data, so the
@@ -139,8 +147,8 @@ dates and participant infection history.</p>
 <span>  upper_limit <span class="op">=</span> <span class="fl">2560</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">delta_prepared</span></span>
-<span><span class="co">#&gt; Prepared epikinetics model data</span></span>
+<span><span class="va">delta_prepared</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Prepared epikinetics model data</span></span>
 <span><span class="co">#&gt;   Observations: 2255</span></span>
 <span><span class="co">#&gt;   Participants: 335</span></span>
 <span><span class="co">#&gt;   Biomarkers:   3 (Ancestral, Alpha, Delta; explicit order)</span></span>
@@ -150,9 +158,10 @@ dates and participant infection history.</p>
 <span><span class="co">#&gt;   Censoring:    none=2003, left=126, right=126</span></span>
 <span><span class="co">#&gt;   Time range:     0 to 578 since exposure</span></span>
 <span><span class="co">#&gt;   Model scale:  log2(value / 1); range  2.321928 to 11.321928</span></span>
-<span><span class="co">#&gt;   Exposure:     one fixed focal exposure per participant</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">delta_prepared</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Prepared epikinetics model-data summary</span></span>
+<span><span class="co">#&gt;   Exposure:     one fixed focal exposure per participant</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">delta_prepared</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Prepared epikinetics model-data summary</span></span>
 <span><span class="co">#&gt; observations participants   biomarkers   covariates </span></span>
 <span><span class="co">#&gt;         2255          335            3            1 </span></span>
 <span><span class="co">#&gt; </span></span>
@@ -186,22 +195,24 @@ dates and participant infection history.</p>
 <span><span class="co">#&gt;          variables                             level reference_level</span></span>
 <span><span class="co">#&gt;  infection_history Previously infected (Pre-Omicron) Infection naive</span></span>
 <span><span class="co">#&gt;                                                                     label</span></span>
-<span><span class="co">#&gt;  infection_history=Previously infected (Pre-Omicron) (vs Infection naive)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/epikinetics_data.html">epikinetics_data</a></span><span class="op">(</span><span class="va">delta_prepared</span><span class="op">)</span><span class="op">$</span><span class="va">censoring</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  infection_history=Previously infected (Pre-Omicron) (vs Infection naive)</span></span></code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/epikinetics_data.html">epikinetics_data</a></span><span class="op">(</span><span class="va">delta_prepared</span><span class="op">)</span><span class="op">$</span><span class="va">censoring</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  left  none right </span></span>
-<span><span class="co">#&gt;   126  2003   126</span></span>
-<span><span class="fu"><a href="../reference/prediction_grid.html">prediction_grid</a></span><span class="op">(</span><span class="va">delta_prepared</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   .profile                 infection_history</span></span>
+<span><span class="co">#&gt;   126  2003   126</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prediction_grid.html">prediction_grid</a></span><span class="op">(</span><span class="va">delta_prepared</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;   .profile                 infection_history</span></span>
 <span><span class="co">#&gt; 1        1                   Infection naive</span></span>
-<span><span class="co">#&gt; 2        2 Previously infected (Pre-Omicron)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2        2 Previously infected (Pre-Omicron)</span></span></code></pre>
 <p>The assay bounds here match the case-study analysis. Values at or
 below 40 are treated as left-censored and values at or above 2560 as
 right-censored. The formula uses ordinary treatment contrasts: the
 population parameters describe the reference infection-history category
 and the regression coefficients describe shifts from it. This replaces
 the redundant no-intercept encoding in the old vignette.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">delta_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_epikinetics.html">fit_epikinetics</a></span><span class="op">(</span></span>
 <span>  <span class="va">delta_prepared</span>,</span>
 <span>  chains <span class="op">=</span> <span class="fl">4</span>,</span>
@@ -224,7 +235,7 @@ completed and the sampler diagnostics are acceptable.</p>
 biomarker and infection-history category. These are conditional
 population curves: they include the fitted infection-history effects but
 no participant random effect.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">delta_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span></span>
 <span>  <span class="va">delta_fit</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"population"</span>,</span>
@@ -264,7 +275,7 @@ zero.</p>
 <p><code>posterior_parameters(level = "profile", summary = FALSE)</code>
 already returns the derived response-scale values at the peak and at
 this waning-rate switch.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">profile_draws</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/posterior_parameters.html">posterior_parameters</a></span><span class="op">(</span></span>
 <span>  <span class="va">delta_fit</span>,</span>
 <span>  level <span class="op">=</span> <span class="st">"profile"</span>,</span>
@@ -326,7 +337,7 @@ infection-history profiles; black points mark posterior medians.
 </div>
 <p>The draw-level table can also be used to calculate the proportional
 change between the two points:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">profile_draws</span><span class="op">$</span><span class="va">relative_change</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span></span>
 <span>  <span class="va">profile_draws</span>,</span>
 <span>  <span class="va">waning_change_response</span> <span class="op">/</span> <span class="va">peak_response</span></span>
@@ -353,7 +364,7 @@ across all dates and biomarkers. This keeps each bootstrapped
 participant’s complete trajectory together. The former implementation
 resampled independently within every date/biomarker/draw group, which
 added discontinuous Monte Carlo variation to the curve.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_study_participants</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">fit</span>, <span class="va">minimum_followup</span> <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">observations</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/epikinetics_data.html">epikinetics_data</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span>  <span class="va">exposure</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">observations</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant"</span>, <span class="st">"exposure_time"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
@@ -617,7 +628,7 @@ added discontinuous Monte Carlo variation to the curve.</p>
 <span>  <span class="va">out</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>The Delta-wave calendar-time curve is then:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">calendar_draws</span> <span class="op">&lt;-</span> <span class="fu">calendar_cohort_draws</span><span class="op">(</span></span>
 <span>  <span class="va">delta_fit</span>,</span>
 <span>  ndraws <span class="op">=</span> <span class="fl">250</span>,</span>
@@ -682,7 +693,7 @@ evaluates the fitted cohort at the date on which Delta emerged. It
 changes timing only; the fitted kinetic parameters, participant effects,
 and covariate values are held fixed. Positive shifts move exposure
 earlier, increasing the elapsed time at the target date.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time_shifts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">75</span>, <span class="fl">75</span>, by <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="va">delta_emergence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2021-05-07"</span><span class="op">)</span></span>
 <span></span>
@@ -744,6 +755,9 @@ applied to each fit, after supplying an appropriate biomarker order and
 assay limits. Combining wave-specific summaries should happen only after
 confirming that their response scales and scientific estimands are
 comparable.</p>
+<p>The <a href="model.html">Kinetics model and statistical structure</a>
+article gives the mathematical definition of the model used throughout
+this case study.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

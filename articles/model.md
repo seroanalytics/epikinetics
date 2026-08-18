@@ -31,6 +31,15 @@ to the original mathematical notation is:
 `waning_change_time = time_to_peak + waning_duration` corresponds to
 `ts`.
 
+![The kinetic parameterisation on the fitted log2 scale. Positive
+duration parameters enforce peak-before-switch ordering; a late waning
+rate near zero represents a long-term
+plateau.](figures/documentation-kinetic-phases.svg)
+
+The kinetic parameterisation on the fitted log2 scale. Positive duration
+parameters enforce peak-before-switch ordering; a late waning rate near
+zero represents a long-term plateau.
+
 ## Kinetic curve
 
 For a participant-biomarker pair, let baseline be (b), time to peak
@@ -62,6 +71,15 @@ transformation, log2 values below zero are valid positive response
 values below the reference.
 
 ## Population, covariate, and participant effects
+
+![The default hierarchy from biomarker-specific population parameters to
+covariate-conditional and participant-specific trajectories. Peak timing
+and switch duration are shared across participants by
+default.](figures/documentation-hierarchy.svg)
+
+The default hierarchy from biomarker-specific population parameters to
+covariate-conditional and participant-specific trajectories. Peak timing
+and switch duration are shared across participants by default.
 
 Each biomarker (k) has its own population baseline and five positive
 kinetic parameters. Let (q_k) be a positive population time or rate,
@@ -143,6 +161,59 @@ exponentiating the coefficient gives the multiplicative population shift
 associated with a one-unit design-matrix change. Inactive
 parameter/formula combinations do not create unused Stan coefficients.
 
+## Priors
+
+[`epikinetics_priors()`](https://seroanalytics.org/epikinetics/reference/epikinetics_priors.md)
+defines one inspectable set of priors for population kinetics,
+participant and covariate scales, and observation error. Population
+priors are Normal; the five positive kinetic quantities are truncated at
+zero. Participant standard deviations and observation error have
+half-Normal priors, while regression coefficients have zero-centred
+Normal priors on their corresponding link scales.
+
+``` r
+
+set.seed(2026)
+priors <- epikinetics::epikinetics_priors()
+plot(priors, scale = "response", reference_value = 1)
+```
+
+![Latent population trajectories implied by the default
+kinetic-parameter priors. The median and 95% interval exclude
+participant variation and observation error so the population curve
+remains
+interpretable.](model_files/figure-html/prior-trajectories-1.png)
+
+Latent population trajectories implied by the default kinetic-parameter
+priors. The median and 95% interval exclude participant variation and
+observation error so the population curve remains interpretable.
+
+This is a prior check for the latent population curve, not a full
+predictive distribution for future measurements. Response-scale
+uncertainty is multiplicative, so the plot uses log2 spacing with
+natural response labels. Increasing `ndraws` stabilises estimated
+quantiles but does not narrow the prior.
+
+Override only scientifically motivated quantities; unspecified fields
+retain their defaults:
+
+``` r
+
+priors <- epikinetics_priors(
+  time_to_peak = c(mean = 12, sd = 4),
+  early_waning_rate = c(mean = 0.025, sd = 0.01),
+  observation_sd = 0.75
+)
+
+prepare_epikinetics_data(dat, priors = priors)
+```
+
+Stan transports standard-Normal raw variables through the configured
+truncated- or half-Normal inverse CDFs. This supplies the requested
+support and places default initial values on the scale of each prior;
+participant effects are non-centred separately through their
+standardised effects.
+
 ## Observation and censoring model
 
 For an uncensored measurement on the model scale,
@@ -163,11 +234,6 @@ it does not change the likelihood. Limits are row-level Stan vectors, so
 datasets may have no censoring, one-sided censoring, both sides, or
 biomarker/observation-specific limits without branching into separate
 models.
-
-Prior support, default values, interpretation, and trajectory checks are
-documented separately in the
-[Priors](https://seroanalytics.org/epikinetics/articles/priors.md)
-vignette.
 
 ## Computational implementation
 
@@ -196,3 +262,11 @@ non-centred: it was asking sparse participant series to identify all six
 random kinetic effects. The explicit `participant_parameters` selection
 avoids that overfitting while leaving the full model available when
 study design and diagnostics support it.
+
+For the practical workflow, return to [Getting
+started](https://seroanalytics.org/epikinetics/articles/getting-started.md);
+the
+[Covariates](https://seroanalytics.org/epikinetics/articles/covariates.md)
+and
+[Censoring](https://seroanalytics.org/epikinetics/articles/censoring.md)
+articles give shorter introductions to those parts of the hierarchy.

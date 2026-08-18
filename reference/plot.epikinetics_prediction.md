@@ -5,7 +5,8 @@ Uses the labelled output of
 directly. Biomarkers are overlaid using colour and fill; categorical
 covariate profiles determine facets. Multiple categorical variables are
 combined into readable labels. Individual predictions use one panel per
-participant.
+participant and biomarker, retaining biomarker colour for consistency
+with population plots.
 
 ## Usage
 

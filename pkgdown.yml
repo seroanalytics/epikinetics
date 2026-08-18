@@ -3,12 +3,16 @@ pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   case-study: case-study.html
+  censoring: censoring.html
+  covariates: covariates.html
   data: data.html
   diagnostics: diagnostics.html
+  fitting: fitting.html
   getting-started: getting-started.html
+  individual-kinetics: individual-kinetics.html
   model: model.html
-  priors: priors.html
-last_built: 2026-08-18T07:31Z
+  population-kinetics: population-kinetics.html
+last_built: 2026-08-18T15:11Z
 urls:
   reference: https://seroanalytics.org/epikinetics/reference
   article: https://seroanalytics.org/epikinetics/articles

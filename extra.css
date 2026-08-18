@@ -1,0 +1,11 @@
+/* Keep the complete article menu usable on short and mobile viewports. */
+.navbar .dropdown-menu {
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+}
+
+@media (min-width: 992px) {
+  .navbar .dropdown-menu {
+    min-width: 19rem;
+  }
+}

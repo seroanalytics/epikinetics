@@ -1,36 +1,62 @@
 # Articles
 
-### Using epikinetics
+### Start here
 
 - [Getting started with
   epikinetics](https://seroanalytics.org/epikinetics/articles/getting-started.md):
 
-  Prepare and inspect longitudinal biomarker data, fit the model, check
-  diagnostics, and obtain population and individual trajectories.
+  Prepare longitudinal biomarker data, fit the model, check diagnostics,
+  and plot conditional population kinetics.
 
-- [Priors](https://seroanalytics.org/epikinetics/articles/priors.md):
+### Using the model
 
-  Inspect, interpret, visualise, and override priors for population
-  kinetics, participant variation, covariate effects, and observation
-  error.
+- [Data](https://seroanalytics.org/epikinetics/articles/data.md):
 
-- [Data, covariates, scales, and
-  censoring](https://seroanalytics.org/epikinetics/articles/data.md):
+  Structure, prepare, transform, and inspect longitudinal biomarker
+  data.
 
-  The input-data contract, transformations, formula encoding, biomarker
-  ordering, censoring rules, and inspectable Stan data.
+- [Covariates](https://seroanalytics.org/epikinetics/articles/covariates.md):
 
-- [Diagnostics and posterior
-  prediction](https://seroanalytics.org/epikinetics/articles/diagnostics.md):
+  Specify participant-level predictors and understand how they enter the
+  hierarchical kinetics model.
 
-  Check sampler behaviour and distinguish latent, individual, and
-  posterior predictive trajectories.
+- [Censoring](https://seroanalytics.org/epikinetics/articles/censoring.md):
 
-- [Applied case study: Delta-wave neutralising
+  Supply assay limits and understand lower-, upper-, and uncensored
+  contributions to the likelihood.
+
+- [Fitting the
+  model](https://seroanalytics.org/epikinetics/articles/fitting.md):
+
+  Compile and sample the Stan model with parallel chains and
+  within-chain threading.
+
+- [Population-level
+  kinetics](https://seroanalytics.org/epikinetics/articles/population-kinetics.md):
+
+  Predict conditional population trajectories for biomarkers and
+  covariate profiles.
+
+- [Individual-level
+  kinetics](https://seroanalytics.org/epikinetics/articles/individual-kinetics.md):
+
+  Reconstruct fitted participants, compare latent curves with
+  observations, and export participant plots.
+
+- [Diagnostics](https://seroanalytics.org/epikinetics/articles/diagnostics.md):
+
+  Screen sampling behaviour and inspect the underlying CmdStanR fit
+  before interpreting posterior results.
+
+### Examples
+
+- [Case study: SARS-CoV-2 Delta-wave neutralising
   antibodies](https://seroanalytics.org/epikinetics/articles/case-study.md):
 
   Reproduce the motivating Delta-wave population, participant,
   calendar-time, and exposure-timing analyses with the modern interface.
+
+### Statistical details
 
 - [Kinetics model and statistical
   structure](https://seroanalytics.org/epikinetics/articles/model.md):

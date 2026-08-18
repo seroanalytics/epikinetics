@@ -66,7 +66,10 @@ prepare_epikinetics_data(
 - id, time, exposure, biomarker, value:
 
   Column names identifying participant, observation time, focal exposure
-  time, biomarker type, and measurement.
+  time, biomarker type, and measurement. Set `exposure = NULL` when
+  `time` is already numeric time since exposure, with the exposure at
+  zero (for example after
+  [`align_time_to_reference()`](https://seroanalytics.org/epikinetics/reference/align_time_to_reference.md)).
 
 - biomarker_order:
 

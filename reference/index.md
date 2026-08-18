@@ -2,6 +2,8 @@
 
 ## All functions
 
+- [`align_time_to_reference()`](https://seroanalytics.org/epikinetics/reference/align_time_to_reference.md)
+  : Align longitudinal measurements to a reference date
 - [`cmdstan_fit()`](https://seroanalytics.org/epikinetics/reference/cmdstan_fit.md)
   : Access the underlying CmdStanR fit
 - [`compile_epikinetics_model()`](https://seroanalytics.org/epikinetics/reference/compile_epikinetics_model.md)

@@ -1,4 +1,4 @@
-# Applied case study: Delta-wave neutralising antibodies
+# Case study: SARS-CoV-2 Delta-wave neutralising antibodies
 
 The kinetics model was developed for the analysis in Russell et al.,
 “Real-time estimation of immunological responses against emerging
@@ -6,7 +6,15 @@ SARS-CoV-2 variants in the UK: a mathematical modelling study” ([Lancet
 Infectious Diseases,
 2024](https://doi.org/10.1016/S1473-3099(24)00484-5)). This vignette
 reconstructs the Delta-wave analyses from the former `epikinetics` case
-study using the current package interface.
+study using the current package interface. The shorter
+[Data](https://seroanalytics.org/epikinetics/articles/data.md),
+[Covariates](https://seroanalytics.org/epikinetics/articles/covariates.md),
+[Censoring](https://seroanalytics.org/epikinetics/articles/censoring.md),
+[Fitting](https://seroanalytics.org/epikinetics/articles/fitting.md),
+and
+[Diagnostics](https://seroanalytics.org/epikinetics/articles/diagnostics.md)
+articles introduce the individual concepts; this page shows how they
+combine in a real analysis.
 
 The aim is to reproduce the analysis rather than the exact appearance of
 the published multi-wave figures. The package includes the corresponding
@@ -68,62 +76,78 @@ delta_prepared <- prepare_epikinetics_data(
 )
 
 delta_prepared
-#> Prepared epikinetics model data
-#>   Observations: 2255
-#>   Participants: 335
-#>   Biomarkers:   3 (Ancestral, Alpha, Delta; explicit order)
-#>   Covariates:   infection_history
-#>   Effects on:  baseline, time_to_peak, waning_duration, boost_rate, early_waning_rate, late_waning_rate
-#>   Random effects: baseline, boost_rate, early_waning_rate, late_waning_rate
-#>   Censoring:    none=2003, left=126, right=126
-#>   Time range:     0 to 578 since exposure
-#>   Model scale:  log2(value / 1); range  2.321928 to 11.321928
-#>   Exposure:     one fixed focal exposure per participant
-summary(delta_prepared)
-#> Prepared epikinetics model-data summary
-#> observations participants   biomarkers   covariates 
-#>         2255          335            3            1 
-#> 
-#> Ranges
-#>             quantity  minimum    maximum
-#>  time_since_exposure 0.000000  578.00000
-#>             response 5.000000 2560.00000
-#>       model_response 2.321928   11.32193
-#> 
-#> Censoring
-#>  censoring observations
-#>       none         2003
-#>       left          126
-#>      right          126
-#> 
-#> Participant observation counts
-#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>   3.000   5.000   6.000   6.731   9.000  14.000 
-#> 
-#> Formula: ~infection_history
-#> Transformation: log2(value / 1)
-#> Model-matrix columns: infection_historyPreviously infected (Pre-Omicron)
-#> Formula affects: baseline, time_to_peak, waning_duration, boost_rate, early_waning_rate, late_waning_rate
-#> Participant random effects: baseline, boost_rate, early_waning_rate, late_waning_rate
-#> Biomarker order (explicit): Ancestral, Alpha, Delta
-#> Factor reference levels: infection_history=Infection naive
-#> 
-#> Design-column mapping
-#>                                       design_column              term
-#>  infection_historyPreviously infected (Pre-Omicron) infection_history
-#>          variables                             level reference_level
-#>  infection_history Previously infected (Pre-Omicron) Infection naive
-#>                                                                     label
-#>  infection_history=Previously infected (Pre-Omicron) (vs Infection naive)
-table(epikinetics_data(delta_prepared)$censoring)
-#> 
-#>  left  none right 
-#>   126  2003   126
-prediction_grid(delta_prepared)
-#>   .profile                 infection_history
-#> 1        1                   Infection naive
-#> 2        2 Previously infected (Pre-Omicron)
 ```
+
+    #> Prepared epikinetics model data
+    #>   Observations: 2255
+    #>   Participants: 335
+    #>   Biomarkers:   3 (Ancestral, Alpha, Delta; explicit order)
+    #>   Covariates:   infection_history
+    #>   Effects on:  baseline, time_to_peak, waning_duration, boost_rate, early_waning_rate, late_waning_rate
+    #>   Random effects: baseline, boost_rate, early_waning_rate, late_waning_rate
+    #>   Censoring:    none=2003, left=126, right=126
+    #>   Time range:     0 to 578 since exposure
+    #>   Model scale:  log2(value / 1); range  2.321928 to 11.321928
+    #>   Exposure:     one fixed focal exposure per participant
+
+``` r
+
+summary(delta_prepared)
+```
+
+    #> Prepared epikinetics model-data summary
+    #> observations participants   biomarkers   covariates 
+    #>         2255          335            3            1 
+    #> 
+    #> Ranges
+    #>             quantity  minimum    maximum
+    #>  time_since_exposure 0.000000  578.00000
+    #>             response 5.000000 2560.00000
+    #>       model_response 2.321928   11.32193
+    #> 
+    #> Censoring
+    #>  censoring observations
+    #>       none         2003
+    #>       left          126
+    #>      right          126
+    #> 
+    #> Participant observation counts
+    #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    #>   3.000   5.000   6.000   6.731   9.000  14.000 
+    #> 
+    #> Formula: ~infection_history
+    #> Transformation: log2(value / 1)
+    #> Model-matrix columns: infection_historyPreviously infected (Pre-Omicron)
+    #> Formula affects: baseline, time_to_peak, waning_duration, boost_rate, early_waning_rate, late_waning_rate
+    #> Participant random effects: baseline, boost_rate, early_waning_rate, late_waning_rate
+    #> Biomarker order (explicit): Ancestral, Alpha, Delta
+    #> Factor reference levels: infection_history=Infection naive
+    #> 
+    #> Design-column mapping
+    #>                                       design_column              term
+    #>  infection_historyPreviously infected (Pre-Omicron) infection_history
+    #>          variables                             level reference_level
+    #>  infection_history Previously infected (Pre-Omicron) Infection naive
+    #>                                                                     label
+    #>  infection_history=Previously infected (Pre-Omicron) (vs Infection naive)
+
+``` r
+
+table(epikinetics_data(delta_prepared)$censoring)
+```
+
+    #> 
+    #>  left  none right 
+    #>   126  2003   126
+
+``` r
+
+prediction_grid(delta_prepared)
+```
+
+    #>   .profile                 infection_history
+    #> 1        1                   Infection naive
+    #> 2        2 Previously infected (Pre-Omicron)
 
 The assay bounds here match the case-study analysis. Values at or below
 40 are treated as left-censored and values at or above 2560 as
@@ -703,3 +727,8 @@ and plotting code can then be applied to each fit, after supplying an
 appropriate biomarker order and assay limits. Combining wave-specific
 summaries should happen only after confirming that their response scales
 and scientific estimands are comparable.
+
+The [Kinetics model and statistical
+structure](https://seroanalytics.org/epikinetics/articles/model.md)
+article gives the mathematical definition of the model used throughout
+this case study.

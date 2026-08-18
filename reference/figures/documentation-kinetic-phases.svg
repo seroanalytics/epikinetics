@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" role="img" aria-labelledby="title desc">
+  <title id="title">The epikinetics piecewise kinetic curve</title>
+  <desc id="desc">A stylised log2 biomarker trajectory begins at baseline, rises at the boost rate to a shared peak time, declines at the early waning rate until a shared switch time, and then declines at the late waning rate.</desc>
+  <defs>
+    <style>
+      .title { font: 700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; fill: #20262d; }
+      .heading { font: 700 16px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; fill: #20262d; }
+      .text { font: 14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; fill: #4e5964; }
+      .axis { stroke: #697580; stroke-width: 1.4; }
+      .guide { stroke: #9aa5ae; stroke-width: 1.3; stroke-dasharray: 6 6; }
+    </style>
+  </defs>
+  <text x="500" y="34" text-anchor="middle" class="title">A continuous curve with two waning phases</text>
+  <line x1="90" y1="390" x2="930" y2="390" class="axis"/>
+  <line x1="90" y1="390" x2="90" y2="70" class="axis"/>
+  <text x="510" y="438" text-anchor="middle" class="text">Time since focal exposure</text>
+  <text x="30" y="230" text-anchor="middle" class="text" transform="rotate(-90 30 230)">Latent biomarker value (log2 scale)</text>
+
+  <polyline points="90,340 360,115 620,245 920,305" fill="none" stroke="#0072B2" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  <line x1="360" y1="115" x2="360" y2="390" class="guide"/>
+  <line x1="620" y1="245" x2="620" y2="390" class="guide"/>
+  <circle cx="90" cy="340" r="6" fill="#20262d"/>
+  <circle cx="360" cy="115" r="7" fill="#D55E00"/>
+  <circle cx="620" cy="245" r="7" fill="#009E73"/>
+
+  <text x="102" y="324" class="heading">baseline</text>
+  <text x="225" y="198" text-anchor="middle" class="heading">boosting</text>
+  <text x="225" y="219" text-anchor="middle" class="text">boost rate</text>
+  <text x="360" y="88" text-anchor="middle" class="heading">peak</text>
+  <text x="360" y="410" text-anchor="middle" class="text">time to peak</text>
+  <text x="490" y="164" text-anchor="middle" class="heading">early waning</text>
+  <text x="490" y="185" text-anchor="middle" class="text">early waning rate</text>
+  <text x="620" y="218" text-anchor="middle" class="heading">switch</text>
+  <text x="620" y="410" text-anchor="middle" class="text">peak time + waning duration</text>
+  <text x="770" y="254" text-anchor="middle" class="heading">late waning</text>
+  <text x="770" y="275" text-anchor="middle" class="text">late waning rate; near zero ≈ plateau</text>
+</svg>
