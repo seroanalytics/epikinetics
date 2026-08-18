@@ -1,183 +1,204 @@
 ---
-title: "Summary of the Stan Model"
-output: rmarkdown::html_vignette
+title: "Kinetics model and statistical structure"
+description: >
+  The piecewise kinetic curve, hierarchical effects, censoring likelihood,
+  constraints, and threaded Stan implementation.
+output:
+  rmarkdown::html_vignette:
+    css: epikinetics.css
+    toc: true
+    toc_depth: 2
+lang: en
 vignette: >
-  %\VignetteIndexEntry{Summary of the Stan model}
+  %\VignetteIndexEntry{Kinetics model and statistical structure}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r, include=FALSE}
+source("vignette-setup.R")
 ```
 
-# Introduction
+## Scope
 
-This document provides a summary of a hierarchical statistical model of antibody kinetics, implemented in Stan. The model is designed to analyse longitudinal titre data, accounting for boosting and waning effects over time. It incorporates individual-level random effects and covariate influences on key model parameters. A full description of the model can be found in the supplementary material in the published paper using the methods described here:
-[Russell TW et al. Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study. Lancet Infect Dis. 2024 Sep 11:S1473-3099(24)00484-5](https://doi.org/10.1016/s1473-3099(24)00484-5).
+The model describes repeated measurements after one focal exposure. It keeps
+the scientific structure of the original `epikinetics` model: a piecewise
+linear trajectory on the log2 scale, biomarker-specific population kinetics,
+participant variation, participant covariates, Gaussian observation error, and
+left/right censoring. It does not model repeated exposures or infer exposure
+times.
 
-# Usage Notes
+The original formulation was developed for Russell et al., "Real-time
+estimation of immunological responses against emerging SARS-CoV-2 variants in
+the UK: a mathematical modelling study" ([Lancet Infectious Diseases,
+2024](https://doi.org/10.1016/S1473-3099(24)00484-5)). The applied case-study
+vignette reconstructs its Delta-wave analyses using the current parameter names
+and interface.
 
-This model is suitable for analysing longitudinal titre data with either lower, upper, both (or no) censoring and incorporates both individual-level variability and arbitrary regression structure to adjust for covariates. Users can adapt the model by specifying appropriate covariates via a R style linear model formula, priors, and data inputs relevant to their study.
+The implementation uses explicit names in R and Stan. The correspondence to
+the original mathematical notation is:
 
-# Model Specification
+| Public name | Original name | Interpretation |
+|---|---:|---|
+| `baseline` | `t0` | Expected log2 value at exposure time. |
+| `time_to_peak` | `tp` | Positive time from exposure to the peak. |
+| `waning_duration` | `ts - tp` | Positive duration of early waning. |
+| `boost_rate` | `m1` | Positive pre-peak slope. |
+| `early_waning_rate` | `-m2` | Positive magnitude of the first post-peak decline. |
+| `late_waning_rate` | `-m3` | Positive magnitude after the waning-rate transition. |
 
-## Overview
+`waning_change_time = time_to_peak + waning_duration` corresponds to `ts`.
 
-The model describes the expected log-transformed titre value $\mu_{n}$ for individual $n$ at time $t_n$ and titre type $k$, using a piecewise linear function to capture boosting and waning phases:
+## Kinetic curve
 
-- **Boosting Phase**: For $t_n < t_{p,n}$, the titre increases at rate $m_{1,n}$.
-- **Plateau Phase**: For $t_{p,n} \leq t_n \leq t_{s,n}$, the titre remains elevated.
-- **Waning Phase**: For $t_n > t_{s,n}$, the titre decreases at rate $m_{3,n}$.
-
-## Mathematical Formulation
-
-### Expected Titre Value
-
-The expected log-transformed titre value $\mu_{n}$ is given by:
+For a participant-biomarker pair, let baseline be (b), time to peak (t_p),
+waning-rate change time (t_s > t_p), boost rate (r_b > 0), early waning
+rate (r_e > 0), and late waning rate (r_l > 0). The latent log2 mean is
 
 \[
-\mu_{n} = t_{0,n} + \begin{cases}
-m_{1,n} \cdot t_n, & \text{if } t_n < t_{p,n} \\
-m_{1,n} \cdot t_{p,n} + m_{2,n} \cdot (t_n - t_{p,n}), & \text{if } t_{p,n} \leq t_n \leq t_{s,n} \\
-m_{1,n} \cdot t_{p,n} + m_{2,n} \cdot (t_{s,n} - t_{p,n}) + m_{3,n} \cdot (t_n - t_{s,n}), & \text{if } t_n > t_{s,n}
+\mu(t) =
+\begin{cases}
+b + r_b t, & t \le t_p, \\
+b + r_b t_p - r_e(t-t_p), & t_p < t \le t_s, \\
+b + r_b t_p - r_e(t_s-t_p) - r_l(t-t_s), & t > t_s.
 \end{cases}
 \]
 
-where:
+The curve is continuous. The second post-peak rate is not structurally zero:
+it describes long-term waning, and a posterior near zero represents a plateau.
+This is the behaviour of the original Stan implementation and its defaults,
+despite older documentation calling the interval from `tp` to `ts` a plateau
+and saying `m2` was fixed at zero. The clearer interpretation is boost, early
+waning, then late waning or plateau.
 
-- $t_{0,n}$: Baseline titre level for individual $n$ and titre type $k$.
-- $t_{p,n}$: Time to peak titre for individual $n$ and titre type $k$.
-- $t_{s,n}$: Time to start of waning for individual $n$ and titre type $k$.
-- $m_{1,n}$: Boosting rate for individual $n$ and titre type $k$.
-- $m_{2,n}$: Plateau rate (assumed to be zero in this model).
-- $m_{3,n}$: Waning rate for individual $n$ and titre type $k$.
-- $t_n$: Observation time for individual $n$.
-- $\mu_{n} \geq 0$: Ensured by taking the maximum with zero.
+There is no artificial floor at zero on the model scale. The former
+`max(mu, 0)` caused a non-differentiable flat region and made the implied floor
+depend on a data-derived reference. With a fixed response transformation,
+log2 values below zero are valid positive response values below the reference.
 
-### Observation Model
+## Population, covariate, and participant effects
 
-The observed log-transformed titre values $y_n$ are modeled as:
-
-\[
-y_n \sim \text{Normal}(\mu_{n}, \sigma)
-\]
-
-where $\sigma$ is the measurement error standard deviation.
-
-### Censoring
-
-The model accounts for left-censoring and right-censoring:
-
-- **Left-Censoring**: For observations below detection limit $L$, the likelihood contribution is:
-
-  \[
-  P(y_n \leq L) = \Phi\left(\dfrac{L - \mu_{n}}{\sigma}\right)
-  \]
-
-- **Right-Censoring**: For observations above detection limit $U$, the likelihood contribution is:
-
-  \[
-  P(y_n \geq U) = 1 - \Phi\left(\dfrac{U - \mu_{n}}{\sigma}\right)
-  \]
-
-where $\Phi(\cdot)$ is the cumulative distribution function of the standard normal distribution.
-
-## Hierarchical Structure
-
-### Individual-Level Parameters
-
-For each individual $n$ and titre type $k$, the parameters are modeled as:
+Each biomarker (k) has its own population baseline and five positive kinetic
+parameters. Let (q_k) be a positive population time or rate, (x_i) the
+participant design row, and (z_{q,i}\sim\mathrm{Normal}(0,1)). Participant
+parameters are
 
 \[
-\begin{aligned}
-t_{0,n} &= t_{0,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{t_0} + \sigma_{t_0,k} \cdot z_{t_0,n} \\
-t_{p,n} &= t_{p,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{t_p} + \sigma_{t_p,k} \cdot z_{t_p,n} \\
-t_{s,n} &= t_{p,n} + \Delta t_{s,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{t_s} + \sigma_{t_s,k} \cdot z_{t_s,n} \\
-m_{1,n} &= m_{1,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{m_1} + \sigma_{m_1,k} \cdot z_{m_1,n} \\
-m_{2,n} &= m_{2,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{m_2} + \sigma_{m_2,k} \cdot z_{m_2,n} \\
-m_{3,n} &= m_{3,k} + \mathbf{x}_n^\top \boldsymbol{\beta}_{m_3} + \sigma_{m_3,k} \cdot z_{m_3,n}
-\end{aligned}
+b_{ik} = b_k + x_i^T\beta_b + \sigma_{b,k}z_{b,i}
 \]
 
-where:
-
-- $\mathbf{x}_n$: Covariate vector for individual $n$.
-- $\boldsymbol{\beta}_{\cdot}$: Regression coefficients for the corresponding parameter.
-- $\sigma_{\cdot,k}$: Standard deviation of individual-level random effects for titre type $k$.
-- $z_{\cdot,n} \sim \text{Normal}(0, 1)$: Standard normal random variables.
-
-### Population-Level Parameters
-
-The population-level parameters for each titre type $k$ have the following priors:
+and
 
 \[
-\begin{aligned}
-T_0^{p,k} &\sim \text{Normal}(\mu_{t_0}, \sigma_{t_0}) \\
-t_p^{p,k} &\sim \text{Normal}(\mu_{t_p}, \sigma_{t_p}) \\
-\Delta t_{p,k} &\sim \text{Normal}(\mu_{t_s} - \mu_{t_p}, \sigma_{t_s}) \\
-m_1^{p,k} &\sim \text{Normal}(\mu_{m_1}, \sigma_{m_1}) \\
-m_2^{p,k} &\sim \text{Normal}(\mu_{m_2}, \sigma_{m_2}) \\
-m_3^{p,k} &\sim \text{Normal}(\mu_{m_3}, \sigma_{m_3})
-\end{aligned}
+q_{ik} = q_k\exp(x_i^T\beta_q + \sigma_{q,k}z_{q,i}).
 \]
 
-The standard deviations of the individual-level random effects have priors:
+Thus baseline effects are additive in log2 units, whereas positive time and
+rate effects are multiplicative. This guarantees positive rates, positive
+times, and (t_s > t_p) for every participant and covariate profile. The old
+additive construction could reverse rate signs or produce an individual
+change time before their peak.
+
+Active random effects use a non-centred parameterisation. The standardised effect
+(z_{q,i}) is shared across biomarkers and scaled by a biomarker-specific
+standard deviation. This preserves an original scientific assumption: a
+participant high on a kinetic quantity for one biomarker tends to be high on
+that quantity for all biomarkers. A future model could estimate a richer
+cross-biomarker correlation structure, but this pass does not add it.
+
+The default participant hierarchy includes `baseline`, `boost_rate`,
+`early_waning_rate`, and `late_waning_rate`. Participants may therefore differ
+in their baseline response, induction slope, and both waning components. Peak
+timing and `waning_duration` (the positive duration from peak to the switch in
+waning rate) have no residual participant random effect by default after
+conditioning on selected covariates. This is a modelling assumption supported
+by the motivating data and its posterior geometry, not a claim that transition
+timing can never vary biologically. Another dataset can
+opt into a different selected hierarchy or all six effects:
+
+```{r, eval=FALSE}
+prepare_epikinetics_data(
+  dat,
+  participant_parameters = c(
+    "baseline", "boost_rate", "early_waning_rate", "late_waning_rate"
+  )
+)
+
+prepare_epikinetics_data(dat, participant_parameters = "all")
+```
+
+Inactive effects create neither latent standard-Normal parameters nor
+hierarchical SD parameters in Stan. Their reported participant SD is zero, and
+participant/new-participant predictions vary only over the fitted hierarchy.
+
+Covariate coefficient vectors are also shared across biomarkers, preserving the
+original hierarchy. R constructs a conventional participant-level design
+matrix and records its contrasts so new profiles are encoded consistently.
+The default applies that matrix to every kinetic parameter, as the legacy model
+did, but the choice is no longer implicit. `covariate_parameters` can name a
+scientifically motivated subset:
+
+```{r, eval=FALSE}
+prepare_epikinetics_data(
+  dat,
+  formula = ~ infection_history,
+  covariate_parameters = c("baseline", "boost_rate", "late_waning_rate")
+)
+```
+
+An active coefficient for baseline is an additive change in expected log2
+level. For every positive time or rate it is a log ratio: exponentiating the
+coefficient gives the multiplicative population shift associated with a
+one-unit design-matrix change. Inactive parameter/formula combinations do not
+create unused Stan coefficients.
+
+## Observation and censoring model
+
+For an uncensored measurement on the model scale,
 
 \[
-\sigma_{k} \sim \text{Normal}(0, \sigma_{p})
+y_n \sim \mathrm{Normal}(\mu_n,\sigma_{obs}).
 \]
 
-### Regression Coefficients
+The observation SD is common to biomarkers, as in the original model. A
+left-censored observation contributes
+`normal_lcdf(lower_limit | mu, observation_sd)` and a right-censored
+observation contributes
+`normal_lcdf(mu | upper_limit, observation_sd)`. The latter is the exact Normal
+identity
+\(\log P(Y \ge U)=\log \Phi((\mu-U)/\sigma)\), expressed in a numerically
+stable lower-tail form. It avoids a finite extreme upper-tail probability being
+rounded to `log(0)` during initialisation; it does not change the likelihood.
+Limits are row-level Stan vectors, so datasets may have no censoring,
+one-sided censoring, both sides, or biomarker/observation-specific limits
+without branching into separate models.
 
-The regression coefficients have the following priors:
+Prior support, default values, interpretation, and trajectory checks are
+documented separately in the [Priors](priors.html) vignette.
 
-\[
-\boldsymbol{\beta}_{\cdot} \sim \text{Normal}(\mathbf{0}, \sigma_{\beta_{\cdot}})
-\]
+## Computational implementation
 
-with appropriate constraints for parameters that must be positive or negative.
+Observations are sorted into contiguous participant ranges. Stan constructs
+participant-biomarker kinetics as local model-block values, rather than saving
+large transformed-parameter matrices in every posterior draw. `reduce_sum`
+partitions the likelihood by participant, preserving locality and amortising
+the participant-level parameter construction over each participant's
+observations. The model is always compiled with `STAN_THREADS`; users control
+parallel chains with `parallel_chains` and within-chain workers with
+`threads_per_chain`.
 
-# Data and Parameters
+Only the population waning change time is retained as a transformed parameter.
+Participant quantities and derived response-scale summaries are reconstructed
+from compact posterior draws in R.
 
-## Data Inputs
+The source is installed at `stan/epikinetics.stan` and is deliberately direct:
+one curve function, one participant-partitioned likelihood function, and the
+hierarchical model.
 
-- $N$: Total number of observations.
-- $K$: Number of titre types.
-- $t_n$: Observation times.
-- $y_n$: Observed log-transformed titre values.
-- $\mathbf{x}_n$: Covariate vector for each individual.
-- Censoring indicators for left and right censoring.
-
-## Parameters to Estimate
-
-- Population-level parameters: $t_{0,k}$, $t_{p,k}$, $\Delta t_{s,k}$, $m_{1,k}$, $m_{2,k}$, $m_{3,k}$.
-- Individual-level random effects: $z_{\cdot,n}$.
-- Regression coefficients: $\boldsymbol{\beta}_{\cdot}$.
-- Measurement error standard deviation: $\sigma$.
-
-# Priors
-
-The prior distributions are specified based on previous studies and domain knowledge:
-
-- **Population Means**: Specified using normal distributions with means $\mu_{\cdot}$ and standard deviations $\sigma_{\cdot}$.
-- **Random Effect Standard Deviations**: Weakly informative normal priors centered at zero.
-- **Regression Coefficients**: Weakly informative normal priors centered at zero.
-- **Measurement Error**: $\sigma \sim \text{Normal}(0, 2)$, constrained to be positive.
-
-# Likelihood
-
-The likelihood function combines the observation model with the censoring mechanisms:
-
-\[
-\begin{aligned}
-&\text{For uncensored observations:} \quad y_n \sim \text{Normal}(\mu_{n}, \sigma) \\
-&\text{For left-censored observations:} \quad P(y_n \leq L) = \Phi\left(\dfrac{L - \mu_{n}}{\sigma}\right) \\
-&\text{For right-censored observations:} \quad P(y_n \geq U) = 1 - \Phi\left(\dfrac{U - \mu_{n}}{\sigma}\right)
-\end{aligned}
-\]
-
-
+Every selected participant hierarchy is non-centred. The bundled example has
+a median of six observations per participant (some have only three), so a
+centred parameterisation would reintroduce the usual group-scale funnel. The
+more consequential geometry problem was not centred versus non-centred: it was
+asking sparse participant series to identify all six random kinetic effects.
+The explicit `participant_parameters` selection avoids that overfitting while
+leaving the full model available when study design and diagnostics support it.

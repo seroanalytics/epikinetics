@@ -1,8 +1,11 @@
-FROM rocker/r-ver:4
-ARG CACHEBUST=1
+FROM rocker/r-ver:4.5.1
 
-RUN Rscript -e "install.packages('remotes')"
-RUN Rscript -e "install.packages('cmdstanr', repos = c('https://stan-dev.r-universe.dev', getOption('repos')))"
+RUN Rscript -e "install.packages(c('ggplot2', 'posterior', 'cmdstanr'), repos = c(stan = 'https://stan-dev.r-universe.dev', CRAN = 'https://cloud.r-project.org'))"
+RUN Rscript -e "cmdstanr::check_cmdstan_toolchain(fix = TRUE); cmdstanr::install_cmdstan(cores = 2)"
 
-RUN echo "$CAHEBUST"
-RUN Rscript -e "remotes::install_github('seroanalytics/epikinetics')"
+WORKDIR /src/epikinetics
+COPY . .
+RUN R CMD INSTALL .
+
+WORKDIR /workdir
+CMD ["R"]

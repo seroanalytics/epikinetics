@@ -4,15 +4,33 @@
 \name{epikinetics-package}
 \alias{epikinetics}
 \alias{epikinetics-package}
-\title{epikinetics: Biomarker Kinetics Modelling}
+\title{epikinetics: Bayesian hierarchical biomarker kinetics}
 \description{
-Fit kinetic curves to biomarker data, using a Bayesian hierarchical model.
+\code{epikinetics} provides a functional R interface to a threaded CmdStan model
+for longitudinal biomarker measurements following one focal exposure. The
+main workflow is \code{\link[=prepare_epikinetics_data]{prepare_epikinetics_data()}}, \code{\link[=fit_epikinetics]{fit_epikinetics()}},
+\code{\link[=diagnose_epikinetics]{diagnose_epikinetics()}}, \code{\link[=posterior_parameters]{posterior_parameters()}}, and
+\code{\link[=predict.epikinetics_fit]{predict.epikinetics_fit()}}. \code{\link[=prediction_grid]{prediction_grid()}} carries formula metadata
+into conditional population trajectories; \code{\link[=plot_individual]{plot_individual()}} and
+\code{\link[=save_individual_plots]{save_individual_plots()}} support fitted-participant inspection. Prepared
+data and the exact Stan list are inspectable before sampling. The returned
+S3 fit retains direct access to its CmdStanR fit through \code{\link[=cmdstan_fit]{cmdstan_fit()}}.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://seroanalytics.org/epikinetics/}
+  \item \url{https://github.com/seroanalytics/epikinetics}
+  \item Report bugs at \url{https://github.com/seroanalytics/epikinetics/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Alex Hill \email{alex.hill@gmail.com}
 
 Authors:
 \itemize{
+  \item Alex Hill \email{alex.hill@gmail.com}
   \item Timothy Russell \email{timothy.russell@lshtm.ac.uk}
 }
 

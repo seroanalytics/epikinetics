@@ -1,0 +1,19 @@
+url: https://seroanalytics.org/epikinetics/
+
+template:
+  bootstrap: 5
+  opengraph:
+    image:
+      src: man/figures/logo.png
+      alt: "epikinetics logo showing biomarker response curves after an exposure"
+
+articles:
+- title: "Using epikinetics"
+  navbar: ~
+  contents:
+  - getting-started
+  - priors
+  - data
+  - diagnostics
+  - case-study
+  - model
