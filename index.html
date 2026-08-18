@@ -4,147 +4,293 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Biomarker Kinetics Modelling • epikinetics</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Biomarker Kinetics Modelling">
-<meta property="og:description" content="Fit kinetic curves to biomarker data, using a Bayesian hierarchical model.">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
+<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Biomarker Kinetics Modelling">
+<meta name="description" content="Fit Bayesian hierarchical models of longitudinal biomarker kinetics after a focal exposure. A functional R interface prepares data, runs a threaded Stan model through CmdStanR, and provides labelled posterior parameters, diagnostics, predictions, and plots.">
+<meta property="og:description" content="Fit Bayesian hierarchical models of longitudinal biomarker kinetics after a focal exposure. A functional R interface prepares data, runs a threaded Stan model through CmdStanR, and provides labelled posterior parameters, diagnostics, predictions, and plots.">
+<meta property="og:image" content="https://seroanalytics.org/epikinetics/reference/figures/logo.png">
+<meta property="og:image:alt" content="epikinetics logo showing biomarker response curves after an exposure">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">epikinetics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <a class="navbar-brand me-2" href="index.html">epikinetics</a>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="articles/biokinetics.html">biokinetics case study</a>
-    </li>
-    <li>
-      <a href="articles/data.html">A guide to biokinetics input and output data</a>
-    </li>
-    <li>
-      <a href="articles/diagnostics.html">Model diagnostics and plotting</a>
-    </li>
-    <li>
-      <a href="articles/model.html">Summary of the Stan Model</a>
-    </li>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/getting-started.html">Getting started with epikinetics</a></li>
+    <li><a class="dropdown-item" href="articles/priors.html">Priors</a></li>
+    <li><a class="dropdown-item" href="articles/data.html">Data, covariates, scales, and censoring</a></li>
+    <li><a class="dropdown-item" href="articles/diagnostics.html">Diagnostics and posterior prediction</a></li>
+    <li><a class="dropdown-item" href="articles/case-study.html">Applied case study: Delta-wave neutralising antibodies</a></li>
+    <li><a class="dropdown-item" href="articles/model.html">Kinetics model and statistical structure</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/seroanalytics/epikinetics/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+      </ul>
 </div>
-<!--/.nav-collapse -->
-  </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
 
-
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-
-<div class="section level1">
-<div class="page-header"><h1 id="epikinetics">epikinetics<a class="anchor" aria-label="anchor" href="#epikinetics"></a>
-</h1></div>
-<p><a href="https://www.repostatus.org/#wip" class="external-link"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public."></a> <a href="https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://codecov.io/gh/seroanalytics/epikinetics" class="external-link"><img src="https://codecov.io/gh/seroanalytics/epikinetics/graph/badge.svg?token=5MZYYDUZYH" alt="codecov"></a></p>
-<p><code>epikinetics</code> is an R package for Bayesian hierarchical modelling of antibody kinetics.</p>
-<p>The underlying model is taken from <a href="#References">Russell TW et al., Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study.</a> See the <a href="https://seroanalytics.org/epikinetics/articles/biokinetics.html" class="external-link">case study vignette</a> for a replication of some key figures from the paper using <code>epikinetics</code>.</p>
-<p>Three publicly available datasets from the above paper are also installed with the package and can be used as test input data:</p>
-<p><code>{r} delta &lt;- data.table::fread(system.file("delta_full.rds", package = "epikinetics")) ba2 &lt;- data.table::fread(system.file("ba2_full.rds", package = "epikinetics")) xbb &lt;- data.table::fread(system.file("xbb_full.rds", package = "epikinetics"))</code></p>
-<p>If running the model with your own data, see the <a href="https://seroanalytics.org/epikinetics/articles/data.html" class="external-link">data vignette</a> for an explanation of the input format.</p>
-</div>
-<div class="section level1">
-<h1 id="installing">Installing<a class="anchor" aria-label="anchor" href="#installing"></a>
-</h1>
-<p>To interface with <a href="https://mc-stan.org/users/interfaces/cmdstan" class="external-link">cmdstan</a>, this package uses <code>cmdstanr</code>, which isn’t available on cran, so you will first have to install it as follows:</p>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'cmdstanr'</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'https://stan-dev.r-universe.dev'</span>, <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">'repos'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre>
-<p>You can then install <code>epikinetics</code> from GitHub:</p>
-<pre><code><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"seroanalytics/epikinetics"</span>, INSTALL_opts <span class="op">=</span> <span class="st">"--no-multiarch --no-test-load"</span><span class="op">)</span></span></code></pre>
-<div class="section level2">
-<h2 id="troubleshooting-installation">Troubleshooting installation<a class="anchor" aria-label="anchor" href="#troubleshooting-installation"></a>
-</h2>
-<p>If you don’t already have <a href="https://mc-stan.org/users/interfaces/cmdstan" class="external-link">cmdstan</a> installed, the <code>epikinetics</code> installer will attempt to install it, which can take a few minutes. If you see errors as part of installation, it is probably a good idea to try and install <code>cmdstan</code> first, for easier debugging. You can do this using the <code>cmdstanr</code> package as follows:</p>
-<p><code>{r} cmdstanr::install_cmdstan()</code></p>
-<p>Verify the installation is working with</p>
-<p><code>{r} cmdstanr::cmdstan_version()</code></p>
-</div>
-</div>
-<div class="section level1">
-<h1 id="running-in-docker">Running in Docker<a class="anchor" aria-label="anchor" href="#running-in-docker"></a>
-</h1>
-<p>Alternatively, you can run <code>epikinetics</code> via a Docker image, mounting a working directory which contains your input data files:</p>
-<pre><code>docker pull seroanalytics/epikinetics:main
-docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main</code></pre>
-</div>
-<div class="section level1">
-<h1 id="developing">Developing<a class="anchor" aria-label="anchor" href="#developing"></a>
-</h1>
-<p>This package relies on the <a href="https://wlandau.github.io/instantiate/" class="external-link">instantiate</a> package to ship pre-compiled stan models. See the <code>src/install.libs.R</code> file for the logic for compiling and installing the stan models during package installation.</p>
-<p>When running via <code>devtools</code> (e.g. <code>test</code> or <code>load_all</code>) the <code>install.libs.R</code> logic is not run, so for this we use an <code>onLoad</code> hook which checks whether the package is being loaded via <code>devtools</code> and if so, copies compiled models into a local <code>bin</code> directory where the <code>system.file</code> shim can access them.</p>
-<p>Note that if you are running <code>devtools::load_all</code> or <code>devtool::test</code> and you don’t yet have <code>cmdstan</code> installed, this will trigger an installation of <code>cmdstan</code> which can take a few minutes.</p>
-<div class="section level2">
-<h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a>
-</h2>
-<p>To run all tests locally:</p>
-<p><code>{r} devtools::test()</code></p>
-<p>To run tests in a single file:</p>
-<p><code>{r} devtools::test(filter="filename")</code></p>
-<p>Some tests are skipped on CI to avoid exorbitantly long build times, but this means it is important to run all tests locally at least once before merging a pull request.</p>
-<p>For snapshot testing of stan model outputs, we need the outputs to be exactly reproducible. As well as setting a seed, this requires the machine environment to be exactly the same, so on CI we run these inside a Docker container, via a bash script:</p>
-<p><code>{shell} ./tests/snapshots/test-snapshots</code></p>
-<p>This involves recompiling the model, so takes a while to run.</p>
-<p>Note that</p>
-</div>
-<div class="section level2">
-<h2 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
-</h2>
-<p>To build a Docker image, run <code>docker/build</code>. To push a new image to Dockerhub, <code>docker/push</code>. An image is built and pushed during CI on merge to main.</p>
-</div>
-</div>
-<div class="section level1">
-<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h1>
-<p>Russell TW, Townsley H, Hellewell J, Gahir J, Shawe-Taylor M, Greenwood D, Hodgson D, Hobbs A, Dowgier G, Penn R, Sanderson T, Stevenson-Leggett P, Bazire J, Harvey R, Fowler AS, Miah M, Smith C, Miranda M, Bawumia P, Mears HV, Adams L, Hatipoglu E, O’Reilly N, Warchal S, Ambrose K, Strange A, Kelly G, Kjar S, Papineni P, Corrah T, Gilson R, Libri V, Kassiotis G, Gamblin S, Lewis NS, Williams B, Swanton C, Gandhi S, Beale R, Wu MY, Bauer DLV, Carr EJ, Wall EC, Kucharski AJ. Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study. Lancet Infect Dis. 2024 Sep 11:S1473-3099(24)00484-5. doi: <a href="https://doi.org/10.1016/s1473-3099(24)00484-5" class="external-link">10.1016/S1473-3099(24)00484-5</a>.</p>
-</div>
 
   </div>
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="epikinetics-">epikinetics <a class="anchor" aria-label="anchor" href="#epikinetics-"></a>
+</h1>
+</div>
+<p><a href="https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://codecov.io/gh/seroanalytics/epikinetics" class="external-link"><img src="https://codecov.io/gh/seroanalytics/epikinetics/graph/badge.svg?token=5MZYYDUZYH" alt="codecov"></a></p>
+<p><code>epikinetics</code> fits Bayesian hierarchical models to longitudinal antibody, titre, or other positive biomarker measurements following one focal exposure. The model supports multiple biomarkers, participant-level variation, participant-level covariates, and left and right censoring.</p>
+<p>The current model describes a rise to peak, early waning, and a transition to a late waning rate. A late rate near zero represents a long-term plateau. It is a single-exposure model: repeated or uncertain exposure histories are outside its current scope.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Install CmdStanR and the development version of <code>epikinetics</code>. Configuring the repositories as a session option is useful because package-development tools such as pak use the active repository list when resolving dependencies:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  stan <span class="op">=</span> <span class="st">"https://stan-dev.r-universe.dev"</span>,</span>
+<span>  CRAN <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cmdstanr"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"seroanalytics/epikinetics"</span><span class="op">)</span></span></code></pre></div>
+<p>CmdStan itself is an explicit, one-time setup step:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">cmdstanr</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/install_cmdstan.html" class="external-link">check_cmdstan_toolchain</a></span><span class="op">(</span>fix <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">cmdstanr</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/install_cmdstan.html" class="external-link">install_cmdstan</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">cmdstanr</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/cmdstanr/reference/set_cmdstan_path.html" class="external-link">cmdstan_version</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Installing or loading <code>epikinetics</code> never installs CmdStan or compiles a Stan model. The first fit compiles the threaded model and caches the executable in the user’s R cache directory. If CmdStan is missing, the package reports the setup commands above.</p>
+</div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<p>The articles follow the usual analysis workflow:</p>
+<ol style="list-style-type: decimal">
+<li>
+<a href="https://seroanalytics.org/epikinetics/articles/getting-started.html">Getting started</a> — prepare, fit, diagnose, and predict.</li>
+<li>
+<a href="https://seroanalytics.org/epikinetics/articles/priors.html">Priors</a> — inspect and adapt parameter priors and their implied population trajectories.</li>
+<li>
+<a href="https://seroanalytics.org/epikinetics/articles/data.html">Data, covariates, scales, and censoring</a> — the complete input and transformation contract.</li>
+<li>
+<a href="https://seroanalytics.org/epikinetics/articles/diagnostics.html">Diagnostics and posterior prediction</a> — assess sampling and choose the appropriate prediction target.</li>
+<li>
+<a href="https://seroanalytics.org/epikinetics/articles/case-study.html">Applied case study</a> — reproduce the motivating Delta-wave analyses.</li>
+<li>
+<a href="https://seroanalytics.org/epikinetics/articles/model.html">Kinetics model and statistical structure</a> — the curve, hierarchy, likelihood, and computational implementation.</li>
+</ol>
+</div>
+<div class="section level2">
+<h2 id="a-short-workflow">A short workflow<a class="anchor" aria-label="anchor" href="#a-short-workflow"></a>
+</h2>
+<p>Input may be an ordinary <code>data.frame</code>. The required default columns are <code>pid</code>, <code>day</code>, <code>last_exp_day</code>, <code>titre_type</code>, and <code>value</code>; column names can be changed through data-preparation arguments. Preparation is a separate public step so that scientifically important transformations can be checked before an expensive sampling run.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://seroanalytics.org/epikinetics/">epikinetics</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"delta.csv"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prepared</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prepare_epikinetics_data.html">prepare_epikinetics_data</a></span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  formula <span class="op">=</span> <span class="op">~</span> <span class="va">infection_history</span>,</span>
+<span>  covariate_parameters <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  biomarker_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ancestral"</span>, <span class="st">"Alpha"</span>, <span class="st">"Delta"</span><span class="op">)</span>,</span>
+<span>  lower_limit <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  upper_limit <span class="op">=</span> <span class="fl">2560</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Concise overview and a data plot.</span></span>
+<span><span class="va">prepared</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Inspect exactly how the model will see the data.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">$</span><span class="va">observations</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">$</span><span class="va">participants</span><span class="op">)</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">mappings</span><span class="op">$</span><span class="va">biomarker</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">mappings</span><span class="op">$</span><span class="va">reference_levels</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">mappings</span><span class="op">$</span><span class="va">design_columns</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">mappings</span><span class="op">$</span><span class="va">covariate_parameters</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="reference/stan_data.html">stan_data</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span>, max.level <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_epikinetics.html">fit_epikinetics</a></span><span class="op">(</span></span>
+<span>  <span class="va">prepared</span>,</span>
+<span>  chains <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  parallel_chains <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  threads_per_chain <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">123</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fit</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/diagnose_epikinetics.html">diagnose_epikinetics</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/posterior_parameters.html">posterior_parameters</a></span><span class="op">(</span><span class="va">fit</span>, level <span class="op">=</span> <span class="st">"population"</span><span class="op">)</span></span>
+<span><span class="va">participants</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/posterior_parameters.html">posterior_parameters</a></span><span class="op">(</span></span>
+<span>  <span class="va">fit</span>, level <span class="op">=</span> <span class="st">"participant"</span>, participants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">effects</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/posterior_parameters.html">posterior_parameters</a></span><span class="op">(</span><span class="va">fit</span>, level <span class="op">=</span> <span class="st">"regression"</span><span class="op">)</span></span>
+<span><span class="va">profile_parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/posterior_parameters.html">posterior_parameters</a></span><span class="op">(</span><span class="va">fit</span>, level <span class="op">=</span> <span class="st">"profile"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Formula-aware conditional profiles and trajectories.</span></span>
+<span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prediction_grid.html">prediction_grid</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="va">grid</span></span>
+<span><span class="va">trajectories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span>, times <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">150</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trajectories</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Equivalent convenience method, with observations overlaid.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Fitted individual latent trajectories at arbitrary post-fit times.</span></span>
+<span><span class="va">individual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span></span>
+<span>  <span class="va">fit</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"individual"</span>,</span>
+<span>  participants <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"2"</span><span class="op">)</span>,</span>
+<span>  times <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">150</span>,</span>
+<span>  ndraws <span class="op">=</span> <span class="fl">500</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/plot_individual.html">plot_individual</a></span><span class="op">(</span><span class="va">individual</span>, participant <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or construct and plot one participant directly from the fit.</span></span>
+<span><span class="fu"><a href="reference/plot_individual.html">plot_individual</a></span><span class="op">(</span><span class="va">fit</span>, participant <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Explicit newdata overrides the default grid.</span></span>
+<span><span class="va">profiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  infection_history <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Infection naive"</span>,</span>
+<span>    <span class="st">"Previously infected (Pre-Omicron)"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">trajectories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span></span>
+<span>  <span class="va">fit</span>,</span>
+<span>  newdata <span class="op">=</span> <span class="va">profiles</span>,</span>
+<span>  times <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">150</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"population"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">trajectories</span><span class="op">)</span></span></code></pre></div>
+<p><code>predict(fit)</code> uses the observed combinations of categorical predictors and fixes continuous predictors at their participant-level medians. These are conditional population trajectories, not averages over the fitted covariate distribution. <code>prediction_grid(fit)</code> makes the defaults explicit. Request <code>prediction_grid(fit, categorical = "cartesian")</code> only when unobserved factor combinations are scientifically meaningful. Interactions, transformed terms, factor levels, and contrasts are evaluated through the model metadata saved at preparation; explicit <code>newdata</code> remains available for arbitrary supported profiles.</p>
+<p><code><a href="reference/fit_epikinetics.html">fit_epikinetics()</a></code> deliberately accepts a prepared object rather than a raw data frame. There is one canonical preparation pathway: validation, response and limit transformation, censor classification, participant/biomarker indexing, and formula encoding all happen in <code><a href="reference/prepare_epikinetics_data.html">prepare_epikinetics_data()</a></code>. The exact list passed to Stan is available as <code>prepared$stan_data</code> or <code>stan_data(prepared)</code>. Fitting changes only its computational <code>grainsize</code> when an automatic or explicit value is requested; <code>stan_data(fit)</code> records the literal list used for that run.</p>
+<p>By default, a non-trivial formula modifies all six kinetic parameters, matching the original scientific model. This is now explicit in the prepared object and can be restricted when the scientific hypothesis is narrower:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prepared</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prepare_epikinetics_data.html">prepare_epikinetics_data</a></span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  formula <span class="op">=</span> <span class="op">~</span> <span class="va">infection_history</span>,</span>
+<span>  covariate_parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"baseline"</span>, <span class="st">"late_waning_rate"</span><span class="op">)</span>,</span>
+<span>  lower_limit <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  upper_limit <span class="op">=</span> <span class="fl">2560</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Baseline coefficients are additive log2 shifts (and therefore response-scale fold changes after exponentiation). Coefficients for positive times and rates are log ratios, so <code>exp(coefficient)</code> is their multiplicative effect.</p>
+<p>Participant-level heterogeneity is also explicit. The default fits random effects for baseline, boost rate, early waning rate, and late waning rate. Peak timing and the duration from peak to the early/late waning switch are shared across participants by default after conditioning on selected covariate effects: they have no residual participant random effect. This is the scientifically motivated, empirically stable assumption for the motivating data, not a universal immunological rule. Another justified subset—or <code>participant_parameters = "all"</code>—can be requested for a different study. The selected set is printed with the prepared object and stored in <code>prepared$mappings$participant_parameters</code>/<code>stan_data(prepared)$participant_effect_active</code>.</p>
+<p>Use <code>summary = FALSE</code> in <code><a href="reference/posterior_parameters.html">posterior_parameters()</a></code> or <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> to retain posterior draws. Prediction summaries contain both <code>mean</code> and <code>median</code>; plots use the median unless <code>central = "mean"</code> is requested. <code>predict(type = "individual")</code> reconstructs fitted participants, while <code>predict(type = "new")</code> draws new participant effects for new covariate profiles. Individual summaries are calculated in bounded chunks in R, permitting arbitrary post-fit time grids without storing trajectory arrays in CmdStan output. Subset participants, biomarkers, or draws for graphical work when a cohort is large.</p>
+<p>Values are returned on the response scale by default. Response-scale plots use log2-spaced axes while retaining natural measurement labels, so extreme assay bounds do not compress the fitted curves. Biomarkers are overlaid by colour, formula-defined categorical profiles determine facets, and censoring bounds are shown as subordinate dashed lines. Censored observations use directional triangle symbols. Biomarker order is taken from <code>biomarker_order</code>, existing factor levels, or first appearance in the raw data, in that order of priority.</p>
+<p>The default interval is a credible interval for the latent expected trajectory. Set <code>include_observation_noise = TRUE</code> for a posterior predictive interval for a future measurement; plots label this distinction explicitly.</p>
+<p>For a large cohort, compute/reuse one individual prediction object or use the restrained batch helper:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">individual</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span>, type <span class="op">=</span> <span class="st">"individual"</span>, ndraws <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/save_individual_plots.html">save_individual_plots</a></span><span class="op">(</span></span>
+<span>  <span class="va">individual</span>,</span>
+<span>  path <span class="op">=</span> <span class="st">"individual-plots"</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">"pdf"</span>,</span>
+<span>  multipage <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Advanced users have direct access to the standard CmdStanR and posterior interfaces:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stan_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cmdstan_fit.html">cmdstan_fit</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="va">draws</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/posterior_draws.html">posterior_draws</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
+<span><span class="va">stan_fit</span><span class="op">$</span><span class="fu">diagnostic_summary</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="reference/diagnose_epikinetics.html">diagnose_epikinetics()</a></code> reports each chain separately. A non-finite E-BFMI is not counted as merely “low”: the report inspects retained energies and can identify a chain with constant energy, which means it did not explore the posterior. Prediction warns rather than silently dropping such a chain.</p>
+<p>If sampling fails, the returned fit still retains the CmdStanR run whenever CmdStanR produced one. Inspect <code>cmdstan_fit(fit)$return_codes()</code> and <code>cmdstan_fit(fit)$output()</code> for the original per-chain output.</p>
+</div>
+<div class="section level2">
+<h2 id="data-and-censoring">Data and censoring<a class="anchor" aria-label="anchor" href="#data-and-censoring"></a>
+</h2>
+<p>Observation and exposure times may be numeric, <code>Date</code>, <code>POSIXt</code>, or ISO date strings. Exposure time and model covariates must be constant within participant. Natural-scale measurements are transformed as <code>log2(value / reference_value)</code>, with <code>reference_value = 1</code> by default.</p>
+<p>Censoring limits may be scalars, row-level vectors, named vectors by biomarker, or column names. With supplied limits and no explicit censoring column, values at or beyond the limits are classified automatically. With no supplied limits, all observations are uncensored. Explicit labels (<code>none</code>, <code>left</code>, <code>right</code>) can be supplied when recorded censoring status should take precedence. Preparation rejects observations that are inconsistent with their assigned censoring status and limits, with a row-specific R error before Stan is called.</p>
+<p>The <a href="https://seroanalytics.org/epikinetics/articles/data.html">data article</a> describes every validation and transformation, while the <a href="https://seroanalytics.org/epikinetics/articles/priors.html">priors article</a> shows how to inspect the implied latent population curves before fitting. The <a href="https://seroanalytics.org/epikinetics/articles/diagnostics.html">diagnostics article</a> and <a href="https://seroanalytics.org/epikinetics/articles/case-study.html">case study</a> continue from the fitted object.</p>
+<p>Open it with <code><a href="articles/case-study.html">vignette("case-study", package = "epikinetics")</a></code>. Its full MCMC chunks are disabled during ordinary package builds and can be enabled explicitly from a source checkout with <code>EPIKINETICS_RUN_CASE_STUDY=true</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="development-and-integration-testing">Development and integration testing<a class="anchor" aria-label="anchor" href="#development-and-integration-testing"></a>
+</h2>
+<p>The complete contributor setup is in <a href="CONTRIBUTING.html">CONTRIBUTING.md</a>.</p>
+<p>For a fresh source checkout, configure the CmdStanR repository before asking pak or devtools to resolve the package dependencies:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/repo_add.html" class="external-link">repo_add</a></span><span class="op">(</span>stan <span class="op">=</span> <span class="st">"https://stan-dev.r-universe.dev"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/local_install_dev_deps.html" class="external-link">local_install_dev_deps</a></span><span class="op">(</span></span>
+<span>  <span class="st">"."</span>,</span>
+<span>  dependencies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hard"</span>, <span class="st">"soft"</span>, <span class="st">"Config/Needs/website"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><code>Additional_repositories</code> in <code>DESCRIPTION</code> records where the non-CRAN dependency is published, but it does not change <code>getOption("repos")</code> in every package-development tool. The explicit <code>repo_add()</code> call ensures that the pak solver used by current devtools versions can find CmdStanR. It affects only the current R session; contributors who prefer persistent configuration can put the corresponding <code>options(repos = ...)</code> setting in their user or project <code>.Rprofile</code>.</p>
+<p>Fast tests do not require CmdStan:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span>args <span class="op">=</span> <span class="st">"--no-manual"</span><span class="op">)</span></span></code></pre></div>
+<p>For a quick local preview of the vignettes, use pkgdown. To test the actual source-package build, use <code>devtools::build()</code>, which builds the vignettes by default:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_articles.html" class="external-link">build_article</a></span><span class="op">(</span><span class="st">"getting-started"</span><span class="op">)</span> <span class="co"># one article</span></span>
+<span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_articles.html" class="external-link">build_articles</a></span><span class="op">(</span><span class="op">)</span>                 <span class="co"># all articles</span></span>
+<span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">build</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Vignette rendering also requires Pandoc. RStudio and Quarto normally provide it; <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/pandoc_available.html" class="external-link">rmarkdown::pandoc_available()</a></code> checks whether the current R session can find it.</p>
+<p><code>devtools::build_vignettes()</code> is deprecated and should not be used for the normal development workflow.</p>
+<p>The small threaded Stan smoke test is opt-in because it compiles and samples:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>EPIKINETICS_RUN_STAN_TESTS <span class="op">=</span> <span class="st">"true"</span><span class="op">)</span></span>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span><span class="st">"."</span>, filter <span class="op">=</span> <span class="st">"stan"</span>, load_package <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
+<p>An optional, slower simulation-recovery check is available for deliberate statistical validation:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>EPIKINETICS_RUN_RECOVERY_TESTS <span class="op">=</span> <span class="st">"true"</span><span class="op">)</span></span>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span><span class="st">"."</span>, filter <span class="op">=</span> <span class="st">"recovery"</span>, load_package <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
+<p>The repository Dockerfile installs CmdStan explicitly and then installs the local package. <code>Docker/build</code> builds the image.</p>
+</div>
+<div class="section level2">
+<h2 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
+</h2>
+<p>Russell TW, Townsley H, Hellewell J, et al. Real-time estimation of immunological responses against emerging SARS-CoV-2 variants in the UK: a mathematical modelling study. <em>Lancet Infectious Diseases</em> (2024). <a href="https://doi.org/10.1016/S1473-3099(24)00484-5" class="external-link">doi:10.1016/S1473-3099(24)00484-5</a>.</p>
+</div>
+</div>
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/seroanalytics/epikinetics/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/seroanalytics/epikinetics/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -152,6 +298,12 @@ docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
@@ -170,23 +322,20 @@ docker run -v /path/to/local/workdir:/workdir -it seroanalytics/epikinetics:main
 
 
 
-  </div>
+  </aside>
 </div>
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Timothy Russell, Alex Hill.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Timothy Russell, Alex Hill.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
-
 
 
 

@@ -1,0 +1,398 @@
+# epikinetics
+
+[![R-CMD-check](https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/seroanalytics/epikinetics/actions/workflows/check-standard.yaml)
+[![codecov](https://codecov.io/gh/seroanalytics/epikinetics/graph/badge.svg?token=5MZYYDUZYH)](https://codecov.io/gh/seroanalytics/epikinetics)
+
+`epikinetics` fits Bayesian hierarchical models to longitudinal
+antibody, titre, or other positive biomarker measurements following one
+focal exposure. The model supports multiple biomarkers,
+participant-level variation, participant-level covariates, and left and
+right censoring.
+
+The current model describes a rise to peak, early waning, and a
+transition to a late waning rate. A late rate near zero represents a
+long-term plateau. It is a single-exposure model: repeated or uncertain
+exposure histories are outside its current scope.
+
+## Installation
+
+Install CmdStanR and the development version of `epikinetics`.
+Configuring the repositories as a session option is useful because
+package-development tools such as pak use the active repository list
+when resolving dependencies:
+
+``` r
+
+options(repos = c(
+  stan = "https://stan-dev.r-universe.dev",
+  CRAN = "https://cloud.r-project.org"
+))
+install.packages("cmdstanr")
+install.packages("remotes")
+remotes::install_github("seroanalytics/epikinetics")
+```
+
+CmdStan itself is an explicit, one-time setup step:
+
+``` r
+
+cmdstanr::check_cmdstan_toolchain(fix = TRUE)
+cmdstanr::install_cmdstan()
+cmdstanr::cmdstan_version()
+```
+
+Installing or loading `epikinetics` never installs CmdStan or compiles a
+Stan model. The first fit compiles the threaded model and caches the
+executable in the user’s R cache directory. If CmdStan is missing, the
+package reports the setup commands above.
+
+## Documentation
+
+The articles follow the usual analysis workflow:
+
+1.  [Getting
+    started](https://seroanalytics.org/epikinetics/articles/getting-started.html)
+    — prepare, fit, diagnose, and predict.
+2.  [Priors](https://seroanalytics.org/epikinetics/articles/priors.html)
+    — inspect and adapt parameter priors and their implied population
+    trajectories.
+3.  [Data, covariates, scales, and
+    censoring](https://seroanalytics.org/epikinetics/articles/data.html)
+    — the complete input and transformation contract.
+4.  [Diagnostics and posterior
+    prediction](https://seroanalytics.org/epikinetics/articles/diagnostics.html)
+    — assess sampling and choose the appropriate prediction target.
+5.  [Applied case
+    study](https://seroanalytics.org/epikinetics/articles/case-study.html)
+    — reproduce the motivating Delta-wave analyses.
+6.  [Kinetics model and statistical
+    structure](https://seroanalytics.org/epikinetics/articles/model.html)
+    — the curve, hierarchy, likelihood, and computational
+    implementation.
+
+## A short workflow
+
+Input may be an ordinary `data.frame`. The required default columns are
+`pid`, `day`, `last_exp_day`, `titre_type`, and `value`; column names
+can be changed through data-preparation arguments. Preparation is a
+separate public step so that scientifically important transformations
+can be checked before an expensive sampling run.
+
+``` r
+
+library(epikinetics)
+
+dat <- read.csv(
+  system.file("extdata", "delta.csv", package = "epikinetics")
+)
+
+prepared <- prepare_epikinetics_data(
+  dat,
+  formula = ~ infection_history,
+  covariate_parameters = "all",
+  biomarker_order = c("Ancestral", "Alpha", "Delta"),
+  lower_limit = 5,
+  upper_limit = 2560
+)
+
+# Concise overview and a data plot.
+prepared
+summary(prepared)
+plot(prepared)
+
+# Inspect exactly how the model will see the data.
+head(prepared$observations)
+head(prepared$participants)
+prepared$mappings$biomarker
+prepared$mappings$reference_levels
+prepared$mappings$design_columns
+prepared$mappings$covariate_parameters
+model.matrix(prepared)
+str(stan_data(prepared), max.level = 1)
+
+fit <- fit_epikinetics(
+  prepared,
+  chains = 4,
+  parallel_chains = 4,
+  threads_per_chain = 2,
+  seed = 123
+)
+
+fit
+summary(fit)
+diagnose_epikinetics(fit)
+
+population <- posterior_parameters(fit, level = "population")
+participants <- posterior_parameters(
+  fit, level = "participant", participants = c("1", "2")
+)
+effects <- posterior_parameters(fit, level = "regression")
+profile_parameters <- posterior_parameters(fit, level = "profile")
+
+# Formula-aware conditional profiles and trajectories.
+grid <- prediction_grid(fit)
+grid
+trajectories <- predict(fit, times = 0:150)
+plot(trajectories)
+
+# Equivalent convenience method, with observations overlaid.
+plot(fit)
+
+# Fitted individual latent trajectories at arbitrary post-fit times.
+individual <- predict(
+  fit,
+  type = "individual",
+  participants = c("1", "2"),
+  times = 0:150,
+  ndraws = 500
+)
+plot_individual(individual, participant = "1")
+
+# Or construct and plot one participant directly from the fit.
+plot_individual(fit, participant = "1")
+
+# Explicit newdata overrides the default grid.
+profiles <- data.frame(
+  infection_history = c(
+    "Infection naive",
+    "Previously infected (Pre-Omicron)"
+  )
+)
+trajectories <- predict(
+  fit,
+  newdata = profiles,
+  times = 0:150,
+  type = "population"
+)
+plot(trajectories)
+```
+
+`predict(fit)` uses the observed combinations of categorical predictors
+and fixes continuous predictors at their participant-level medians.
+These are conditional population trajectories, not averages over the
+fitted covariate distribution. `prediction_grid(fit)` makes the defaults
+explicit. Request `prediction_grid(fit, categorical = "cartesian")` only
+when unobserved factor combinations are scientifically meaningful.
+Interactions, transformed terms, factor levels, and contrasts are
+evaluated through the model metadata saved at preparation; explicit
+`newdata` remains available for arbitrary supported profiles.
+
+[`fit_epikinetics()`](https://seroanalytics.org/epikinetics/reference/fit_epikinetics.md)
+deliberately accepts a prepared object rather than a raw data frame.
+There is one canonical preparation pathway: validation, response and
+limit transformation, censor classification, participant/biomarker
+indexing, and formula encoding all happen in
+[`prepare_epikinetics_data()`](https://seroanalytics.org/epikinetics/reference/prepare_epikinetics_data.md).
+The exact list passed to Stan is available as `prepared$stan_data` or
+`stan_data(prepared)`. Fitting changes only its computational
+`grainsize` when an automatic or explicit value is requested;
+`stan_data(fit)` records the literal list used for that run.
+
+By default, a non-trivial formula modifies all six kinetic parameters,
+matching the original scientific model. This is now explicit in the
+prepared object and can be restricted when the scientific hypothesis is
+narrower:
+
+``` r
+
+prepared <- prepare_epikinetics_data(
+  dat,
+  formula = ~ infection_history,
+  covariate_parameters = c("baseline", "late_waning_rate"),
+  lower_limit = 5,
+  upper_limit = 2560
+)
+```
+
+Baseline coefficients are additive log2 shifts (and therefore
+response-scale fold changes after exponentiation). Coefficients for
+positive times and rates are log ratios, so `exp(coefficient)` is their
+multiplicative effect.
+
+Participant-level heterogeneity is also explicit. The default fits
+random effects for baseline, boost rate, early waning rate, and late
+waning rate. Peak timing and the duration from peak to the early/late
+waning switch are shared across participants by default after
+conditioning on selected covariate effects: they have no residual
+participant random effect. This is the scientifically motivated,
+empirically stable assumption for the motivating data, not a universal
+immunological rule. Another justified subset—or
+`participant_parameters = "all"`—can be requested for a different study.
+The selected set is printed with the prepared object and stored in
+`prepared$mappings$participant_parameters`/`stan_data(prepared)$participant_effect_active`.
+
+Use `summary = FALSE` in
+[`posterior_parameters()`](https://seroanalytics.org/epikinetics/reference/posterior_parameters.md)
+or [`predict()`](https://rdrr.io/r/stats/predict.html) to retain
+posterior draws. Prediction summaries contain both `mean` and `median`;
+plots use the median unless `central = "mean"` is requested.
+`predict(type = "individual")` reconstructs fitted participants, while
+`predict(type = "new")` draws new participant effects for new covariate
+profiles. Individual summaries are calculated in bounded chunks in R,
+permitting arbitrary post-fit time grids without storing trajectory
+arrays in CmdStan output. Subset participants, biomarkers, or draws for
+graphical work when a cohort is large.
+
+Values are returned on the response scale by default. Response-scale
+plots use log2-spaced axes while retaining natural measurement labels,
+so extreme assay bounds do not compress the fitted curves. Biomarkers
+are overlaid by colour, formula-defined categorical profiles determine
+facets, and censoring bounds are shown as subordinate dashed lines.
+Censored observations use directional triangle symbols. Biomarker order
+is taken from `biomarker_order`, existing factor levels, or first
+appearance in the raw data, in that order of priority.
+
+The default interval is a credible interval for the latent expected
+trajectory. Set `include_observation_noise = TRUE` for a posterior
+predictive interval for a future measurement; plots label this
+distinction explicitly.
+
+For a large cohort, compute/reuse one individual prediction object or
+use the restrained batch helper:
+
+``` r
+
+individual <- predict(fit, type = "individual", ndraws = 500)
+save_individual_plots(
+  individual,
+  path = "individual-plots",
+  format = "pdf",
+  multipage = TRUE
+)
+```
+
+Advanced users have direct access to the standard CmdStanR and posterior
+interfaces:
+
+``` r
+
+stan_fit <- cmdstan_fit(fit)
+draws <- posterior_draws(fit)
+stan_fit$diagnostic_summary()
+```
+
+[`diagnose_epikinetics()`](https://seroanalytics.org/epikinetics/reference/diagnose_epikinetics.md)
+reports each chain separately. A non-finite E-BFMI is not counted as
+merely “low”: the report inspects retained energies and can identify a
+chain with constant energy, which means it did not explore the
+posterior. Prediction warns rather than silently dropping such a chain.
+
+If sampling fails, the returned fit still retains the CmdStanR run
+whenever CmdStanR produced one. Inspect
+`cmdstan_fit(fit)$return_codes()` and `cmdstan_fit(fit)$output()` for
+the original per-chain output.
+
+## Data and censoring
+
+Observation and exposure times may be numeric, `Date`, `POSIXt`, or ISO
+date strings. Exposure time and model covariates must be constant within
+participant. Natural-scale measurements are transformed as
+`log2(value / reference_value)`, with `reference_value = 1` by default.
+
+Censoring limits may be scalars, row-level vectors, named vectors by
+biomarker, or column names. With supplied limits and no explicit
+censoring column, values at or beyond the limits are classified
+automatically. With no supplied limits, all observations are uncensored.
+Explicit labels (`none`, `left`, `right`) can be supplied when recorded
+censoring status should take precedence. Preparation rejects
+observations that are inconsistent with their assigned censoring status
+and limits, with a row-specific R error before Stan is called.
+
+The [data
+article](https://seroanalytics.org/epikinetics/articles/data.html)
+describes every validation and transformation, while the [priors
+article](https://seroanalytics.org/epikinetics/articles/priors.html)
+shows how to inspect the implied latent population curves before
+fitting. The [diagnostics
+article](https://seroanalytics.org/epikinetics/articles/diagnostics.html)
+and [case
+study](https://seroanalytics.org/epikinetics/articles/case-study.html)
+continue from the fitted object.
+
+Open it with
+[`vignette("case-study", package = "epikinetics")`](https://seroanalytics.org/epikinetics/articles/case-study.md).
+Its full MCMC chunks are disabled during ordinary package builds and can
+be enabled explicitly from a source checkout with
+`EPIKINETICS_RUN_CASE_STUDY=true`.
+
+## Development and integration testing
+
+The complete contributor setup is in
+[CONTRIBUTING.md](https://seroanalytics.org/epikinetics/CONTRIBUTING.md).
+
+For a fresh source checkout, configure the CmdStanR repository before
+asking pak or devtools to resolve the package dependencies:
+
+``` r
+
+install.packages("pak")
+pak::repo_add(stan = "https://stan-dev.r-universe.dev")
+pak::local_install_dev_deps(
+  ".",
+  dependencies = c("hard", "soft", "Config/Needs/website")
+)
+```
+
+`Additional_repositories` in `DESCRIPTION` records where the non-CRAN
+dependency is published, but it does not change `getOption("repos")` in
+every package-development tool. The explicit `repo_add()` call ensures
+that the pak solver used by current devtools versions can find CmdStanR.
+It affects only the current R session; contributors who prefer
+persistent configuration can put the corresponding
+`options(repos = ...)` setting in their user or project `.Rprofile`.
+
+Fast tests do not require CmdStan:
+
+``` r
+
+devtools::test()
+devtools::check(args = "--no-manual")
+```
+
+For a quick local preview of the vignettes, use pkgdown. To test the
+actual source-package build, use `devtools::build()`, which builds the
+vignettes by default:
+
+``` r
+
+pkgdown::build_article("getting-started") # one article
+pkgdown::build_articles()                 # all articles
+
+devtools::build()
+```
+
+Vignette rendering also requires Pandoc. RStudio and Quarto normally
+provide it;
+[`rmarkdown::pandoc_available()`](https://pkgs.rstudio.com/rmarkdown/reference/pandoc_available.html)
+checks whether the current R session can find it.
+
+`devtools::build_vignettes()` is deprecated and should not be used for
+the normal development workflow.
+
+The small threaded Stan smoke test is opt-in because it compiles and
+samples:
+
+``` r
+
+Sys.setenv(EPIKINETICS_RUN_STAN_TESTS = "true")
+testthat::test_local(".", filter = "stan", load_package = "source")
+```
+
+An optional, slower simulation-recovery check is available for
+deliberate statistical validation:
+
+``` r
+
+Sys.setenv(EPIKINETICS_RUN_RECOVERY_TESTS = "true")
+testthat::test_local(".", filter = "recovery", load_package = "source")
+```
+
+The repository Dockerfile installs CmdStan explicitly and then installs
+the local package. `Docker/build` builds the image.
+
+## Reference
+
+Russell TW, Townsley H, Hellewell J, et al. Real-time estimation of
+immunological responses against emerging SARS-CoV-2 variants in the UK:
+a mathematical modelling study. *Lancet Infectious Diseases* (2024).
+[doi:10.1016/S1473-3099(24)00484-5](https://doi.org/10.1016/S1473-3099(24)00484-5).

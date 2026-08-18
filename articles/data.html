@@ -4,490 +4,661 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A guide to biokinetics input and output data • epikinetics</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="A guide to biokinetics input and output data">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Data, covariates, scales, and censoring • epikinetics</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Data, covariates, scales, and censoring">
+<meta name="description" content="The input-data contract, transformations, formula encoding, biomarker ordering, censoring rules, and inspectable Stan data.
+">
+<meta property="og:description" content="The input-data contract, transformations, formula encoding, biomarker ordering, censoring rules, and inspectable Stan data.
+">
+<meta property="og:image" content="https://seroanalytics.org/epikinetics/reference/figures/logo.png">
+<meta property="og:image:alt" content="epikinetics logo showing biomarker response curves after an exposure">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">epikinetics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <a class="navbar-brand me-2" href="../index.html">epikinetics</a>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/biokinetics.html">biokinetics case study</a>
-    </li>
-    <li>
-      <a href="../articles/data.html">A guide to biokinetics input and output data</a>
-    </li>
-    <li>
-      <a href="../articles/diagnostics.html">Model diagnostics and plotting</a>
-    </li>
-    <li>
-      <a href="../articles/model.html">Summary of the Stan Model</a>
-    </li>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/getting-started.html">Getting started with epikinetics</a></li>
+    <li><a class="dropdown-item" href="../articles/priors.html">Priors</a></li>
+    <li><a class="dropdown-item" href="../articles/data.html">Data, covariates, scales, and censoring</a></li>
+    <li><a class="dropdown-item" href="../articles/diagnostics.html">Diagnostics and posterior prediction</a></li>
+    <li><a class="dropdown-item" href="../articles/case-study.html">Applied case study: Delta-wave neutralising antibodies</a></li>
+    <li><a class="dropdown-item" href="../articles/model.html">Kinetics model and statistical structure</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/seroanalytics/epikinetics/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+      </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>A guide to biokinetics input and output
-data</h1>
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>Data, covariates, scales, and censoring</h1>
             
       
-
-      <div class="hidden name"><code>data.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/seroanalytics/epikinetics/blob/main/vignettes/data.Rmd" class="external-link"><code>vignettes/data.Rmd</code></a></small>
+      <div class="d-none name"><code>data.Rmd</code></div>
     </div>
 
     
     
 <div class="section level2">
-<h2 id="input-data">Input data<a class="anchor" aria-label="anchor" href="#input-data"></a>
+<h2 id="required-observation-data">Required observation data<a class="anchor" aria-label="anchor" href="#required-observation-data"></a>
 </h2>
-<p>The model requires time series data about individual titre readings,
-along with last exposure times. Times can be relative (e.g. day of
-study) or absolute (i.e. precise calendar dates). This is provided via
-the <code>data</code> argument when initialising an object of class <a href="../reference/biokinetics.html">biokinetics</a>, which must be a <a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a>
-containing the following columns:</p>
+<p><code><a href="../reference/prepare_epikinetics_data.html">prepare_epikinetics_data()</a></code> accepts ordinary data frames,
+including <code>data.table</code> and tibble subclasses.
+<code><a href="../reference/fit_epikinetics.html">fit_epikinetics()</a></code> then accepts the prepared object, keeping
+validation and transformation separate from compilation and sampling.
+Defaults expect:</p>
 <table class="table">
 <colgroup>
-<col width="10%">
-<col width="17%">
-<col width="71%">
+<col width="50%">
+<col width="50%">
 </colgroup>
 <thead><tr class="header">
-<th>name</th>
-<th>type</th>
-<th>description</th>
+<th>Column</th>
+<th>Meaning</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>pid</td>
-<td>numeric or character</td>
-<td>Unique identifier to identify a person across observations</td>
+<td><code>pid</code></td>
+<td>Participant identifier; numeric or character values are
+accepted.</td>
 </tr>
 <tr class="even">
-<td>day</td>
-<td>integer or date</td>
-<td>The day of the observation. Can be a date or an integer representing
-a relative day of study</td>
+<td><code>day</code></td>
+<td>Observation time.</td>
 </tr>
 <tr class="odd">
-<td>last_exp_day</td>
-<td>integer or date</td>
-<td>The most recent day on which the person was exposed. Must be of the
-same type as the ‘day’ column</td>
+<td><code>last_exp_day</code></td>
+<td>Time of the focal exposure.</td>
 </tr>
 <tr class="even">
-<td>titre_type</td>
-<td>character</td>
-<td>Name of the titre or biomarker</td>
+<td><code>titre_type</code></td>
+<td>Biomarker or assay label.</td>
 </tr>
 <tr class="odd">
-<td>value</td>
-<td>numeric</td>
-<td>Titre value</td>
+<td><code>value</code></td>
+<td>Finite positive biomarker value on the natural scale.</td>
 </tr>
 </tbody>
 </table>
-<p>It can also contain further columns for any covariates to be included
-in the model. The data files installed with this package have additional
-columns infection_history, last_vax_type, and exp_num.</p>
-<p>The model also accepts a covariate formula to define the regression
-model. The variables in the formula must correspond to column names in
-the dataset. Note that all variables will be treated as
-<strong>categorical variables</strong>; that is, converted to factors
-regardless of their input type.</p>
-<p>Note also that the <code>value</code> column is assumed to be on a
-natural scale by default, and will be converted to a log scale for model
-fitting. If your data is already on a log scale, you must pass the
-<code>log=TRUE</code> argument when initialising the biokinetics class.
-See <a href="../reference/biokinetics.html">biokinetics</a>.</p>
-<div class="section level3">
-<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h3>
+<p>Use <code>id</code>, <code>time</code>, <code>exposure</code>,
+<code>biomarker</code>, and <code>value</code> arguments for other
+names. Observation and exposure times may both be numeric,
+<code>Date</code>, <code>POSIXt</code>, or parseable ISO date strings.
+The difference defines time since exposure. Times before exposure are
+rejected.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"delta_full.rds"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      pid        day last_exp_day titre_type    value infection_history</span></span>
-<span><span class="co">#&gt;    &lt;int&gt;     &lt;IDat&gt;       &lt;IDat&gt;     &lt;char&gt;    &lt;num&gt;            &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:     1 2021-03-10   2021-03-08  Ancestral 175.9350   Infection naive</span></span>
-<span><span class="co">#&gt; 2:     1 2021-04-15   2021-03-08  Ancestral 607.5750   Infection naive</span></span>
-<span><span class="co">#&gt; 3:     1 2021-07-08   2021-03-08  Ancestral 179.0463   Infection naive</span></span>
-<span><span class="co">#&gt; 4:     1 2021-03-10   2021-03-08      Alpha   5.0000   Infection naive</span></span>
-<span><span class="co">#&gt; 5:     1 2021-04-15   2021-03-08      Alpha 416.7905   Infection naive</span></span>
-<span><span class="co">#&gt; 6:     1 2021-07-08   2021-03-08      Alpha 103.5274   Infection naive</span></span>
-<span><span class="co">#&gt;    last_vax_type exp_num</span></span>
-<span><span class="co">#&gt;           &lt;char&gt;   &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1:      BNT162b2       2</span></span>
-<span><span class="co">#&gt; 2:      BNT162b2       2</span></span>
-<span><span class="co">#&gt; 3:      BNT162b2       2</span></span>
-<span><span class="co">#&gt; 4:      BNT162b2       2</span></span>
-<span><span class="co">#&gt; 5:      BNT162b2       2</span></span>
-<span><span class="co">#&gt; 6:      BNT162b2       2</span></span></code></pre></div>
-</div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://seroanalytics.org/epikinetics/">epikinetics</a></span><span class="op">)</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"delta.csv"</span>, package <span class="op">=</span> <span class="st">"epikinetics"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pid"</span>, <span class="st">"day"</span>, <span class="st">"last_exp_day"</span>, <span class="st">"titre_type"</span>, <span class="st">"value"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;   pid        day last_exp_day titre_type    value</span></span>
+<span><span class="co">#&gt; 1   1 2021-03-10   2021-03-08  Ancestral 175.9350</span></span>
+<span><span class="co">#&gt; 2   1 2021-04-15   2021-03-08  Ancestral 607.5750</span></span>
+<span><span class="co">#&gt; 3   1 2021-07-08   2021-03-08  Ancestral 179.0463</span></span>
+<span><span class="co">#&gt; 4   1 2021-03-10   2021-03-08      Alpha   5.0000</span></span>
+<span><span class="co">#&gt; 5   1 2021-04-15   2021-03-08      Alpha 416.7905</span></span>
+<span><span class="co">#&gt; 6   1 2021-07-08   2021-03-08      Alpha 103.5274</span></span></code></pre></div>
+<p>The model currently represents one known focal exposure per
+participant, so <code>last_exp_day</code> must be constant within
+participant. Missing required values and missing covariates are rejected
+early.</p>
 </div>
 <div class="section level2">
-<h2 id="output-data">Output data<a class="anchor" aria-label="anchor" href="#output-data"></a>
+<h2 id="scale">Scale<a class="anchor" aria-label="anchor" href="#scale"></a>
 </h2>
-<p>After fitting a model, a <a href="https://mc-stan.org/cmdstanr/reference/CmdStanMCMC.html" class="external-link">CmdStanMCMC</a>
-object is returned. This means that users who are already familiar with
-<code>cmdstanr</code> are free to do what they want with the fitted
-model.</p>
-<p><strong>Important!</strong> <strong>If you provide data on a natural
-scale, it will be converted to a base2 log scale before inference is
-performed. This means that if working directly with the fitted
-<code>CmdStanMCMC</code> all values will be on this scale. The package
-provides a helper function for converting back to the original scale: <a href="../reference/convert_log2_scale_inverse.html">convert_log2_scale_inverse</a>.</strong></p>
-<p>Three further functions provide model outputs that we think are
-particularly useful in <a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a>
-format. <a href="../reference/biokinetics.html">biokinetics</a> contains
-documentation on each of these functions so please read that first; this
-vignette provides guidance on the correct interpretation of each column
-in the returned tables (in these functions data is returned on the
-original scale).</p>
-<div class="section level3">
-<h3 id="simulate_population_trajectories">simulate_population_trajectories<a class="anchor" aria-label="anchor" href="#simulate_population_trajectories"></a>
-</h3>
-<p>See the documentation for this function <a href="../reference/biokinetics.html#method-simulate-population-trajectories">here</a>.
-There are 2 different output formats depending on whether the provided
-<code>summarise</code> argument is <code>TRUE</code> or
-<code>FALSE</code>.</p>
-<div class="section level4">
-<h4 id="summarise-true">summarise = TRUE<a class="anchor" aria-label="anchor" href="#summarise-true"></a>
-</h4>
-<p>Returned columns are</p>
+<p>The Gaussian observation model operates on a base-2 logarithmic
+scale. With the default <code>scale = "natural"</code>, data are
+transformed as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><msub><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">value</mtext><mi>/</mi><mtext mathvariant="normal">reference value</mtext><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+y = \log_2(\text{value}/\text{reference value}).
+</annotation></semantics></math></p>
+<p>The default reference value is 1, making the inverse transformation
+simply <code>2^y</code>. A scientifically meaningful assay reference can
+instead be supplied with <code>reference_value</code>. This fixed
+reference is stored with the fit and used by posterior summaries and
+response-scale predictions. It does not depend on the minimum observed
+value.</p>
+<p>For values already on this scale, use <code>scale = "log2"</code>;
+censoring limits must then also be on the log2 scale. The prepared
+observation table retains both <code>value</code> and
+<code>value_model</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prepared</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_epikinetics_data.html">prepare_epikinetics_data</a></span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  formula <span class="op">=</span> <span class="op">~</span> <span class="va">infection_history</span>,</span>
+<span>  covariate_parameters <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  lower_limit <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  upper_limit <span class="op">=</span> <span class="fl">2560</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/epikinetics_data.html">epikinetics_data</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;   source_row participant participant_index observation_time exposure_time</span></span>
+<span><span class="co">#&gt; 1          1           1                 1       2021-03-10    2021-03-08</span></span>
+<span><span class="co">#&gt; 2          4           1                 1       2021-03-10    2021-03-08</span></span>
+<span><span class="co">#&gt; 3          7           1                 1       2021-03-10    2021-03-08</span></span>
+<span><span class="co">#&gt; 4          2           1                 1       2021-04-15    2021-03-08</span></span>
+<span><span class="co">#&gt; 5          5           1                 1       2021-04-15    2021-03-08</span></span>
+<span><span class="co">#&gt; 6          8           1                 1       2021-04-15    2021-03-08</span></span>
+<span><span class="co">#&gt;   time_since_exposure biomarker biomarker_index    value value_model</span></span>
+<span><span class="co">#&gt; 1                   2 Ancestral               1 175.9350    7.458899</span></span>
+<span><span class="co">#&gt; 2                   2     Alpha               2   5.0000    2.321928</span></span>
+<span><span class="co">#&gt; 3                   2     Delta               3   5.0000    2.321928</span></span>
+<span><span class="co">#&gt; 4                  38 Ancestral               1 607.5750    9.246919</span></span>
+<span><span class="co">#&gt; 5                  38     Alpha               2 416.7905    8.703178</span></span>
+<span><span class="co">#&gt; 6                  38     Delta               3 288.1785    8.170819</span></span>
+<span><span class="co">#&gt;   lower_limit lower_limit_model upper_limit upper_limit_model censoring</span></span>
+<span><span class="co">#&gt; 1           5          2.321928        2560          11.32193      none</span></span>
+<span><span class="co">#&gt; 2           5          2.321928        2560          11.32193      left</span></span>
+<span><span class="co">#&gt; 3           5          2.321928        2560          11.32193      left</span></span>
+<span><span class="co">#&gt; 4           5          2.321928        2560          11.32193      none</span></span>
+<span><span class="co">#&gt; 5           5          2.321928        2560          11.32193      none</span></span>
+<span><span class="co">#&gt; 6           5          2.321928        2560          11.32193      none</span></span>
+<span><span class="co">#&gt;   censoring_code infection_history</span></span>
+<span><span class="co">#&gt; 1              0   Infection naive</span></span>
+<span><span class="co">#&gt; 2             -1   Infection naive</span></span>
+<span><span class="co">#&gt; 3             -1   Infection naive</span></span>
+<span><span class="co">#&gt; 4              0   Infection naive</span></span>
+<span><span class="co">#&gt; 5              0   Infection naive</span></span>
+<span><span class="co">#&gt; 6              0   Infection naive</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="covariates">Covariates<a class="anchor" aria-label="anchor" href="#covariates"></a>
+</h2>
+<p>Covariates are specified with a one-sided R formula such as
+<code>~ age + sex + infection_history</code>. They must be
+participant-level: a covariate may not change across a participant’s
+observations. Numeric variables remain numeric; factors use R’s active
+contrast options and their first level is the default reference under
+treatment contrasts. Character variables are converted to factors.</p>
+<p>Continuous variables enter the design matrix on the scale supplied,
+so their coefficients are effects per one input unit and the default
+coefficient priors must be interpreted on that scale. For variables such
+as age, create an explicit centred or rescaled participant-level column
+before preparation when a one-unit effect is not scientifically useful.
+This keeps the transformation visible in the prepared data and makes
+<code>newdata</code> unambiguous.</p>
+<p>Use conventional formulas with an intercept. <code>epikinetics</code>
+removes the design intercept because every biomarker already has a
+population parameter. Formulas such as
+<code>~ 0 + infection_history</code> are rejected: estimating all factor
+levels in addition to the biomarker population parameters would be
+redundant.</p>
+<p>The fitted coefficients are shared across biomarkers, as in the
+original model. A baseline coefficient is additive on the log2 outcome
+scale, so <code>2^beta</code> is a response ratio. Coefficients for
+positive time and rate parameters are additive on the parameter’s log
+scale, so <code>exp(beta)</code> is a ratio.
+<code>posterior_parameters(level = "regression")</code> returns both
+forms along with the original term, numeric design-column name,
+represented factor level, and treatment reference where those labels are
+well defined.</p>
+<p>The original participant model frame, terms, term assignment, factor
+levels, actual contrast matrices, and a design-column-to-term table are
+retained. Consequently prediction never requires a user to recreate Stan
+dummy values. For example, <code>prediction_grid(prepared)</code>
+returns the observed factor profiles with continuous predictors fixed at
+their participant-level medians.</p>
+</div>
+<div class="section level2">
+<h2 id="participant-hierarchy">Participant hierarchy<a class="anchor" aria-label="anchor" href="#participant-hierarchy"></a>
+</h2>
+<p><code>participant_parameters</code> controls which kinetic quantities
+receive participant-level random effects. The default is
+<code>c("baseline", "boost_rate", "early_waning_rate", "late_waning_rate")</code>.
+Peak time and the duration to the early/late waning switch are shared
+across participants. This stable structure is the package default for
+the motivating application, but remains an explicit and overridable
+modelling assumption. Use a scientifically supported subset for another
+study, or <code>participant_parameters = "all"</code> when richer
+within-participant sampling and diagnostics justify the full hierarchy.
+The selection is inspectable in
+<code>prepared$mappings$participant_parameters</code> and as the
+six-entry <code>participant_effect_active</code> vector in
+<code>stan_data(prepared)</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="biomarker-order">Biomarker order<a class="anchor" aria-label="anchor" href="#biomarker-order"></a>
+</h2>
+<p><code>biomarker_order</code> supplies one complete user-facing
+ordering and stores it in the prepared object. If it is omitted,
+existing factor levels are retained; otherwise first appearance in the
+input data is used. This same order controls Stan biomarker indices,
+posterior tables, predictions, legends, population plots, and individual
+plots. The package does not attach pathogen-specific meaning to labels.
+For the bundled example, chronological variant order can be made
+explicit:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prepare_epikinetics_data.html">prepare_epikinetics_data</a></span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  biomarker_order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ancestral"</span>, <span class="st">"Alpha"</span>, <span class="st">"Delta"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="censoring">Censoring<a class="anchor" aria-label="anchor" href="#censoring"></a>
+</h2>
+<p>The likelihood distinguishes:</p>
+<ul>
+<li>uncensored values, using a Normal log density;</li>
+<li>left-censored values, using the Normal log CDF at their lower limit;
+and</li>
+<li>right-censored values, using the Normal upper-tail probability at
+their upper limit.</li>
+</ul>
+<p><code>lower_limit</code> and <code>upper_limit</code> independently
+accept:</p>
+<ul>
+<li>one scalar for all observations;</li>
+<li>a numeric vector with one value per observation;</li>
+<li>a named numeric vector with one limit per biomarker; or</li>
+<li>the name of a row-level numeric data column.</li>
+</ul>
+<p><code>NA</code> means no applicable limit for that observation.
+Without an explicit <code>censoring</code> argument, a value at or below
+its lower limit is left-censored and a value at or above its upper limit
+is right-censored. Without limits, all values are uncensored. This means
+ordinary data are never implicitly censored at their observed minimum or
+maximum.</p>
+<p>If the source data record censoring status, pass a vector or column
+name with labels <code>none</code>, <code>left</code>, or
+<code>right</code> (numeric <code>0</code>, <code>-1</code>,
+<code>1</code> is also accepted). Every explicitly censored row must
+have the relevant limit. An observation inconsistent with its status and
+applicable limit is rejected during preparation. For example, an
+uncensored observation at or beyond an upper limit, or a right-censored
+recorded value below that limit, produces a row-specific error before
+Stan is called.</p>
+<p>Limits can vary by biomarker:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">biomarkers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">titre_type</span><span class="op">)</span></span>
+<span><span class="va">lower</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">biomarkers</span><span class="op">)</span><span class="op">)</span>, <span class="va">biomarkers</span><span class="op">)</span></span>
+<span><span class="va">upper</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2560</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">biomarkers</span><span class="op">)</span><span class="op">)</span>, <span class="va">biomarkers</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prepared</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_epikinetics_data.html">prepare_epikinetics_data</a></span><span class="op">(</span></span>
+<span>  <span class="va">dat</span>,</span>
+<span>  lower_limit <span class="op">=</span> <span class="va">lower</span>,</span>
+<span>  upper_limit <span class="op">=</span> <span class="va">upper</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="../reference/epikinetics_data.html">epikinetics_data</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span><span class="op">$</span><span class="va">censoring</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  left  none right </span></span>
+<span><span class="co">#&gt;   126  2003   126</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="inspect-the-prepared-model-data">Inspect the prepared model data<a class="anchor" aria-label="anchor" href="#inspect-the-prepared-model-data"></a>
+</h2>
+<p>An <code>epikinetics_data</code> object keeps the validated input
+copy, a canonical labelled observation table, a participant table, the R
+model frame, the named participant design matrix, priors,
+term/design-column mappings, factor levels/contrasts,
+conditional-prediction defaults, scale information, and the exact Stan
+data list. Input observations are sorted contiguously by participant for
+threaded likelihood evaluation without modifying the user’s data
+frame.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prepared</span></span>
+<span><span class="co">#&gt; Prepared epikinetics model data</span></span>
+<span><span class="co">#&gt;   Observations: 2255</span></span>
+<span><span class="co">#&gt;   Participants: 335</span></span>
+<span><span class="co">#&gt;   Biomarkers:   3 (Ancestral, Alpha, Delta; first appearance order)</span></span>
+<span><span class="co">#&gt;   Covariates:   none</span></span>
+<span><span class="co">#&gt;   Random effects: baseline, boost_rate, early_waning_rate, late_waning_rate</span></span>
+<span><span class="co">#&gt;   Censoring:    none=2003, left=126, right=126</span></span>
+<span><span class="co">#&gt;   Time range:     0 to 578 since exposure</span></span>
+<span><span class="co">#&gt;   Model scale:  log2(value / 1); range  2.321928 to 11.321928</span></span>
+<span><span class="co">#&gt;   Exposure:     one fixed focal exposure per participant</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Prepared epikinetics model-data summary</span></span>
+<span><span class="co">#&gt; observations participants   biomarkers   covariates </span></span>
+<span><span class="co">#&gt;         2255          335            3            0 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Ranges</span></span>
+<span><span class="co">#&gt;             quantity  minimum    maximum</span></span>
+<span><span class="co">#&gt;  time_since_exposure 0.000000  578.00000</span></span>
+<span><span class="co">#&gt;             response 5.000000 2560.00000</span></span>
+<span><span class="co">#&gt;       model_response 2.321928   11.32193</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Censoring</span></span>
+<span><span class="co">#&gt;  censoring observations</span></span>
+<span><span class="co">#&gt;       none         2003</span></span>
+<span><span class="co">#&gt;       left          126</span></span>
+<span><span class="co">#&gt;      right          126</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Participant observation counts</span></span>
+<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">#&gt;   3.000   5.000   6.000   6.731   9.000  14.000 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Formula: ~1</span></span>
+<span><span class="co">#&gt; Transformation: log2(value / 1)</span></span>
+<span><span class="co">#&gt; Model-matrix columns: none</span></span>
+<span><span class="co">#&gt; Participant random effects: baseline, boost_rate, early_waning_rate, late_waning_rate</span></span>
+<span><span class="co">#&gt; Biomarker order (first appearance): Ancestral, Alpha, Delta</span></span>
+<span></span>
+<span><span class="co"># Validated input and model-ready observations.</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">input_data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;   pid        day last_exp_day titre_type    value infection_history</span></span>
+<span><span class="co">#&gt; 1   1 2021-03-10   2021-03-08  Ancestral 175.9350   Infection naive</span></span>
+<span><span class="co">#&gt; 2   1 2021-04-15   2021-03-08  Ancestral 607.5750   Infection naive</span></span>
+<span><span class="co">#&gt; 3   1 2021-07-08   2021-03-08  Ancestral 179.0463   Infection naive</span></span>
+<span><span class="co">#&gt;   last_vax_type exp_num</span></span>
+<span><span class="co">#&gt; 1      BNT162b2       2</span></span>
+<span><span class="co">#&gt; 2      BNT162b2       2</span></span>
+<span><span class="co">#&gt; 3      BNT162b2       2</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">observations</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;   source_row participant participant_index observation_time exposure_time</span></span>
+<span><span class="co">#&gt; 1          1           1                 1       2021-03-10    2021-03-08</span></span>
+<span><span class="co">#&gt; 2          4           1                 1       2021-03-10    2021-03-08</span></span>
+<span><span class="co">#&gt; 3          7           1                 1       2021-03-10    2021-03-08</span></span>
+<span><span class="co">#&gt;   time_since_exposure biomarker biomarker_index   value value_model lower_limit</span></span>
+<span><span class="co">#&gt; 1                   2 Ancestral               1 175.935    7.458899           5</span></span>
+<span><span class="co">#&gt; 2                   2     Alpha               2   5.000    2.321928           5</span></span>
+<span><span class="co">#&gt; 3                   2     Delta               3   5.000    2.321928           5</span></span>
+<span><span class="co">#&gt;   lower_limit_model upper_limit upper_limit_model censoring censoring_code</span></span>
+<span><span class="co">#&gt; 1          2.321928        2560          11.32193      none              0</span></span>
+<span><span class="co">#&gt; 2          2.321928        2560          11.32193      left             -1</span></span>
+<span><span class="co">#&gt; 3          2.321928        2560          11.32193      left             -1</span></span>
+<span></span>
+<span><span class="co"># Participant indices/covariates and biomarker indices.</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">participants</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt;   participant_index participant exposure_time observation_count</span></span>
+<span><span class="co">#&gt; 1                 1           1    2021-03-08                 9</span></span>
+<span><span class="co">#&gt; 2                 2           2    2021-01-11                12</span></span>
+<span><span class="co">#&gt; 3                 3           3    2021-03-23                 6</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">model_frame</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span><span class="co">#&gt; data frame with 0 columns and 3 rows</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">mappings</span><span class="op">$</span><span class="va">biomarker</span></span>
+<span><span class="co">#&gt;   biomarker_index biomarker observation_count</span></span>
+<span><span class="co">#&gt; 1               1 Ancestral               734</span></span>
+<span><span class="co">#&gt; 2               2     Alpha               754</span></span>
+<span><span class="co">#&gt; 3               3     Delta               767</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">mappings</span><span class="op">$</span><span class="va">reference_levels</span></span>
+<span><span class="co">#&gt; named character(0)</span></span>
+<span><span class="va">prepared</span><span class="op">$</span><span class="va">mappings</span><span class="op">$</span><span class="va">design_columns</span></span>
+<span><span class="co">#&gt; [1] design_column   term            variables       level          </span></span>
+<span><span class="co">#&gt; [5] reference_level label          </span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
+<span></span>
+<span><span class="co"># The formula encoding and the exact list supplied to Stan.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  </span></span>
+<span><span class="co">#&gt; 1</span></span>
+<span><span class="co">#&gt; 2</span></span>
+<span><span class="co">#&gt; 3</span></span>
+<span><span class="fu"><a href="../reference/prediction_grid.html">prediction_grid</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   .profile</span></span>
+<span><span class="co">#&gt; 1        1</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/stan_data.html">stan_data</a></span><span class="op">(</span><span class="va">prepared</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "N_observations"             "N_participants"            </span></span>
+<span><span class="co">#&gt;  [3] "N_biomarkers"               "N_covariates"              </span></span>
+<span><span class="co">#&gt;  [5] "biomarker"                  "time"                      </span></span>
+<span><span class="co">#&gt;  [7] "value"                      "censoring"                 </span></span>
+<span><span class="co">#&gt;  [9] "lower_limit"                "upper_limit"               </span></span>
+<span><span class="co">#&gt; [11] "observation_start"          "observation_end"           </span></span>
+<span><span class="co">#&gt; [13] "participant_sequence"       "X"                         </span></span>
+<span><span class="co">#&gt; [15] "covariate_active"           "participant_effect_active" </span></span>
+<span><span class="co">#&gt; [17] "grainsize"                  "population_prior_mean"     </span></span>
+<span><span class="co">#&gt; [19] "population_prior_sd"        "participant_sd_prior_scale"</span></span>
+<span><span class="co">#&gt; [21] "covariate_prior_scale"      "observation_sd_prior_scale"</span></span></code></pre></div>
+<p><code>epikinetics_data(prepared)</code> is a compact accessor for the
+observation table, whereas <code>stan_data(prepared)</code> returns the
+exact sampling list. The direct <code>prepared$stan_data</code>
+component is also available for interactive debugging. Integer indices
+need not be supplied by the user, but they are intentionally visible.
+The fit updates only the computational <code>grainsize</code> for the
+requested thread count; after sampling, <code>stan_data(fit)</code> is
+the literal list used for that run.</p>
+</div>
+<div class="section level2">
+<h2 id="fit-and-posterior-output">Fit and posterior output<a class="anchor" aria-label="anchor" href="#fit-and-posterior-output"></a>
+</h2>
+<p><code><a href="../reference/fit_epikinetics.html">fit_epikinetics()</a></code> returns one
+<code>epikinetics_fit</code> object containing the CmdStanR fit and all
+preparation metadata needed for later interpretation. The underlying
+<code>CmdStanMCMC</code> object remains available through
+<code>cmdstan_fit(fit)</code>; raw Stan draws are available through
+<code>posterior_draws(fit)</code>.</p>
+<p><code><a href="../reference/posterior_parameters.html">posterior_parameters()</a></code> provides labelled kinetic
+quantities at four levels:</p>
 <table class="table">
 <colgroup>
-<col width="16%">
-<col width="9%">
-<col width="74%">
+<col width="33%">
+<col width="33%">
+<col width="33%">
 </colgroup>
 <thead><tr class="header">
-<th>name</th>
-<th>type</th>
-<th>description</th>
+<th><code>level</code></th>
+<th>Interpretation</th>
+<th>Main identifiers</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>time_since_last_exp</td>
-<td>integer</td>
-<td>Number of days since last exposure</td>
+<td><code>"population"</code></td>
+<td>Biomarker-specific population intercept parameters before covariate
+effects.</td>
+<td><code>biomarker</code></td>
 </tr>
 <tr class="even">
-<td>me</td>
-<td>numeric</td>
-<td>Median titre value</td>
+<td><code>"profile"</code></td>
+<td>Population parameters after applying a conditional covariate
+profile, without participant effects.</td>
+<td>
+<code>.profile</code>, <code>biomarker</code>, and formula
+variables</td>
 </tr>
 <tr class="odd">
-<td>lo</td>
-<td>numeric</td>
-<td>Titre value at the 0.025 quantile</td>
+<td><code>"participant"</code></td>
+<td>Conditional parameters for fitted participants, including their
+estimated random effects.</td>
+<td>
+<code>participant</code>, <code>biomarker</code>, and participant
+covariates</td>
 </tr>
 <tr class="even">
-<td>hi</td>
-<td>numeric</td>
-<td>Titre value at the 0.975 quantile</td>
-</tr>
-<tr class="odd">
-<td>titre_type</td>
-<td>character</td>
-<td>Name of the titre or biomarker</td>
+<td><code>"regression"</code></td>
+<td>Formula coefficients and their interpretable multiplicative
+forms.</td>
+<td>formula term, design column, level/reference, and kinetic
+parameter</td>
 </tr>
 </tbody>
 </table>
-<p>There will also be a column for each covariate in the regression
-model.</p>
-</div>
-<div class="section level4">
-<h4 id="summarise-false">summarise = FALSE<a class="anchor" aria-label="anchor" href="#summarise-false"></a>
-</h4>
-<p>Returned columns are</p>
-<table class="table">
-<thead><tr class="header">
-<th>name</th>
-<th>type</th>
-<th>description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>time_since_last_exp</td>
-<td>integer</td>
-<td>Number of days since last exposure</td>
-</tr>
-<tr class="even">
-<td>t0_pop</td>
-<td>numeric</td>
-<td>Titre value at time 0</td>
-</tr>
-<tr class="odd">
-<td>tp_pop</td>
-<td>numeric</td>
-<td>Time at peak titre</td>
-</tr>
-<tr class="even">
-<td>ts_pop</td>
-<td>numeric</td>
-<td>Time at start of waning</td>
-</tr>
-<tr class="odd">
-<td>m1_pop</td>
-<td>numeric</td>
-<td>Boosting rate</td>
-</tr>
-<tr class="even">
-<td>m2_pop</td>
-<td>numeric</td>
-<td>Plateau rate</td>
-</tr>
-<tr class="odd">
-<td>m3_pop</td>
-<td>numeric</td>
-<td>Waning rate</td>
-</tr>
-<tr class="even">
-<td>beta_t0</td>
-<td>numeric</td>
-<td>Coefficient to adjust t0 by</td>
-</tr>
-<tr class="odd">
-<td>beta_tp</td>
-<td>numeric</td>
-<td>Coefficient to adjust tp by</td>
-</tr>
-<tr class="even">
-<td>beta_ts</td>
-<td>numeric</td>
-<td>Coefficient to adjust ts by</td>
-</tr>
-<tr class="odd">
-<td>beta_m1</td>
-<td>numeric</td>
-<td>Coefficient to adjust m1 by</td>
-</tr>
-<tr class="even">
-<td>beta_m2</td>
-<td>numeric</td>
-<td>Coefficient to adjust m2 by</td>
-</tr>
-<tr class="odd">
-<td>beta_m3</td>
-<td>numeric</td>
-<td>Coefficient to adjust m3 by</td>
-</tr>
-<tr class="even">
-<td>mu</td>
-<td>numeric</td>
-<td>Titre value</td>
-</tr>
-<tr class="odd">
-<td>.draw</td>
-<td>integer</td>
-<td>Draw number</td>
-</tr>
-<tr class="even">
-<td>titre_type</td>
-<td>numeric</td>
-<td>Name of the titre or biomarker</td>
-</tr>
-</tbody>
-</table>
-<p>There will also be column for each covariate in the hierarchical
-model.</p>
-<p>See the <a href="../article/model.html">model vignette</a> for more
-detail about the model parameters.</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="simulate_individual_trajectories">simulate_individual_trajectories<a class="anchor" aria-label="anchor" href="#simulate_individual_trajectories"></a>
-</h3>
-<p>See the documentation for this function <a href="../reference/biokinetics.html#method-simulate-individual-trajectories">here</a>.
-There are 2 different output formats depending on whether the provided
-<code>summarise</code> argument is <code>TRUE</code> or
-<code>FALSE</code>.</p>
-<div class="section level4">
-<h4 id="summarise-false-1">summarise = FALSE<a class="anchor" aria-label="anchor" href="#summarise-false-1"></a>
-</h4>
-<p>Returned columns are</p>
+<p>With <code>summary = TRUE</code>, parameter output is long:
+<code>parameter</code> (or <code>quantity</code> for regression output)
+names the quantity and <code>mean</code>, <code>median</code>,
+<code>sd</code>, <code>lower</code>, and <code>upper</code> give its
+posterior summary. With <code>summary = FALSE</code>, one row is
+returned per posterior draw and the kinetic quantities occupy separate
+columns. Derived output includes:</p>
 <table class="table">
 <colgroup>
-<col width="15%">
-<col width="16%">
-<col width="68%">
+<col width="50%">
+<col width="50%">
 </colgroup>
 <thead><tr class="header">
-<th>name</th>
-<th>type</th>
-<th>description</th>
+<th>Column</th>
+<th>Meaning</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>pid</td>
-<td>character or numeric</td>
-<td>Unique person identifier as provided in input data</td>
+<td><code>waning_change_time</code></td>
+<td>Time of the transition from early to late waning.</td>
 </tr>
 <tr class="even">
-<td>draw</td>
-<td>integer</td>
-<td>Which draw from the fits this is</td>
+<td><code>baseline_response</code></td>
+<td>Baseline on the natural response scale.</td>
 </tr>
 <tr class="odd">
-<td>time_since_last_exp</td>
-<td>integer</td>
-<td>Number of days since last exposure</td>
+<td><code>peak_response</code></td>
+<td>Value at the fitted peak on the response scale.</td>
 </tr>
 <tr class="even">
-<td>mu</td>
-<td>numeric</td>
-<td>Titre value</td>
+<td><code>waning_change_response</code></td>
+<td>Value at the early/late waning switch.</td>
 </tr>
 <tr class="odd">
-<td>titre_type</td>
-<td>character</td>
-<td>Name of the titre or biomarker</td>
+<td><code>early_waning_half_life</code></td>
+<td>Time for a two-fold decline under the early rate.</td>
 </tr>
 <tr class="even">
-<td>exposure_day</td>
-<td>integer</td>
-<td>Day of this person’s last exposure</td>
-</tr>
-<tr class="odd">
-<td>calendar_day</td>
-<td>integer</td>
-<td>Day of this titre value</td>
-</tr>
-<tr class="even">
-<td>time_shift</td>
-<td>integer</td>
-<td>The number of days these exposures have been adjusted by, as
-provided in function arguments</td>
+<td><code>late_waning_half_life</code></td>
+<td>Time for a two-fold decline under the late rate.</td>
 </tr>
 </tbody>
 </table>
-<p>There will also be a column for each covariate in the regression
-model.</p>
+<p>The old package referred to <code>waning_change_response</code> as a
+set point. It is not necessarily stationary: the late waning rate is
+estimated and may be positive.</p>
 </div>
-<div class="section level4">
-<h4 id="summarise-true-1">summarise = TRUE<a class="anchor" aria-label="anchor" href="#summarise-true-1"></a>
-</h4>
-<p>Returned columns are</p>
+<div class="section level2">
+<h2 id="trajectory-prediction-output">Trajectory-prediction output<a class="anchor" aria-label="anchor" href="#trajectory-prediction-output"></a>
+</h2>
+<p><code>predict(fit)</code> returns an
+<code>epikinetics_prediction</code>, which is an ordinary data frame
+with plotting metadata attached. Every summarised prediction
+contains:</p>
+<table class="table">
+<thead><tr class="header">
+<th>Column</th>
+<th>Meaning</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>time</code></td>
+<td>Time since the focal exposure, in the input time unit.</td>
+</tr>
+<tr class="even">
+<td><code>biomarker</code></td>
+<td>User-facing biomarker label in the stored order.</td>
+</tr>
+<tr class="odd">
+<td><code>estimate</code></td>
+<td>Alias for the posterior median.</td>
+</tr>
+<tr class="even">
+<td><code>mean</code></td>
+<td>Posterior mean trajectory value.</td>
+</tr>
+<tr class="odd">
+<td><code>median</code></td>
+<td>Posterior median trajectory value.</td>
+</tr>
+<tr class="even">
+<td>
+<code>lower</code>, <code>upper</code>
+</td>
+<td>Requested pointwise posterior interval.</td>
+</tr>
+</tbody>
+</table>
+<p>Population and new-participant predictions also retain
+<code>.profile</code> and the original covariate-profile columns.
+Individual predictions retain <code>participant</code> and the fitted
+participant’s covariate columns. All outputs are on the response scale
+by default; <code>scale = "model"</code> requests the fitted log2
+scale.</p>
+<p>With <code>summary = FALSE</code>, the output instead contains
+<code>.draw</code>, <code>time</code>, and <code>estimate</code>
+together with the same type-specific identifiers. Keeping
+<code>.draw</code> is essential when calculating quantities involving
+more than one time point, biomarker, or participant: summaries must be
+formed across complete draw-specific calculations rather than by
+combining marginal medians.</p>
+<p>The prediction <code>type</code> determines the estimand:</p>
 <table class="table">
 <colgroup>
-<col width="12%">
-<col width="9%">
-<col width="77%">
+<col width="50%">
+<col width="50%">
 </colgroup>
 <thead><tr class="header">
-<th>name</th>
-<th>type</th>
-<th>description</th>
+<th><code>type</code></th>
+<th>Random effects included</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>me</td>
-<td>numeric</td>
-<td>Median titre value</td>
+<td><code>"population"</code></td>
+<td>None; conditional on the supplied or default covariate
+profiles.</td>
 </tr>
 <tr class="even">
-<td>lo</td>
-<td>numeric</td>
-<td>Titre value at the 0.025 quantile</td>
+<td><code>"individual"</code></td>
+<td>Posterior effects for fitted participants.</td>
 </tr>
 <tr class="odd">
-<td>hi</td>
-<td>numeric</td>
-<td>Titre value at the 0.075 quantile</td>
-</tr>
-<tr class="even">
-<td>titre_type</td>
-<td>character</td>
-<td>Name of the titre or biomarker</td>
-</tr>
-<tr class="odd">
-<td>calendar_day</td>
-<td>integer</td>
-<td>Day of this titre value</td>
-</tr>
-<tr class="even">
-<td>time_shift</td>
-<td>integer</td>
-<td>The number of days the exposures were adjusted by, as provided in
-function arguments</td>
+<td><code>"new"</code></td>
+<td>Newly drawn effects from the fitted participant hierarchy.</td>
 </tr>
 </tbody>
 </table>
+<p>Intervals describe uncertainty in the latent expected trajectory
+unless <code>include_observation_noise = TRUE</code>, in which case they
+are posterior predictive intervals for a future observed measurement.
+Attributes record the interval probabilities, scale, uncertainty target,
+censoring limits, biomarker order, formula, prediction grid, and stored
+observations used by the plot methods.</p>
+<p>The applied case-study vignette shows how draw-level individual
+predictions can be placed on calendar time and aggregated without losing
+draw identity.</p>
+<p>The package bundles <code>delta.csv</code>, <code>ba2.csv</code>, and
+<code>xbb.csv</code> under <code>extdata</code> for examples and tests.
+They are observational examples from the motivating study, not implicit
+defaults for modelling or priors.</p>
 </div>
-</div>
-</div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
-</div>
-
-
-
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Timothy Russell, Alex Hill.</p>
-</div>
-
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
-      </footer>
+
+
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Timothy Russell, Alex Hill.</p>
 </div>
 
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
+</div>
+
+    </footer>
+</div>
 
 
 
