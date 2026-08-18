@@ -47,7 +47,10 @@ to the package's motivating data, not a universal biological constraint.
 Supply any parameter subset, or \code{"all"}, for another justified hierarchy.}
 
 \item{id, time, exposure, biomarker, value}{Column names identifying participant,
-observation time, focal exposure time, biomarker type, and measurement.}
+observation time, focal exposure time, biomarker type, and measurement.
+Set \code{exposure = NULL} when \code{time} is already numeric time since exposure,
+with the exposure at zero (for example after
+\code{\link[=align_time_to_reference]{align_time_to_reference()}}).}
 
 \item{biomarker_order}{Optional complete ordering of observed biomarker
 labels. If omitted, existing factor levels are preserved; otherwise the

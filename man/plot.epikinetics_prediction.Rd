@@ -23,5 +23,6 @@ An ordinary \code{ggplot} object.
 Uses the labelled output of \code{\link[=predict.epikinetics_fit]{predict.epikinetics_fit()}} directly. Biomarkers
 are overlaid using colour and fill; categorical covariate profiles determine
 facets. Multiple categorical variables are combined into readable labels.
-Individual predictions use one panel per participant.
+Individual predictions use one panel per participant and biomarker, retaining
+biomarker colour for consistency with population plots.
 }

@@ -18,6 +18,33 @@ test_that("ordinary data frames are prepared without mutation", {
   ) %in% names(prepared$observations)))
 })
 
+test_that("already aligned numeric time can be prepared without an exposure column", {
+  data <- example_epikinetics_data()
+  data$time_since_exposure <- as.numeric(data$day - data$last_exp_day)
+  data$last_exp_day <- NULL
+
+  prepared <- prepare_epikinetics_data(
+    data,
+    time = "time_since_exposure",
+    exposure = NULL
+  )
+
+  expect_equal(prepared$observations$time_since_exposure,
+               prepared$observations$observation_time)
+  expect_true(all(prepared$observations$exposure_time == 0))
+  expect_true(all(prepared$participants$exposure_time == 0))
+  expect_true(prepared$specification$time_already_aligned)
+  expect_null(prepared$specification$columns$exposure)
+
+  data$time_since_exposure <- as.Date("2024-01-01")
+  expect_error(
+    prepare_epikinetics_data(
+      data, time = "time_since_exposure", exposure = NULL
+    ),
+    "must contain numeric time since exposure"
+  )
+})
+
 test_that("prepared data expose every important Stan input and mapping", {
   data <- example_epikinetics_data()
   prepared <- prepare_epikinetics_data(data, formula = ~ group + age)

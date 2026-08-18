@@ -5,11 +5,15 @@ bin
 *.Rproj
 *.png
 !man/figures/logo.png
+!man/figures/documentation-*.png
+!man/figures/documentation-*.svg
+!vignettes/figures/documentation-*.png
 !pkgdown/favicon/*.png
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+Rplots.pdf
 .Renviron
 .env
 .DS_Store

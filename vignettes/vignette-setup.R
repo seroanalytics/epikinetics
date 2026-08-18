@@ -15,3 +15,5 @@ knitr::opts_chunk$set(
   fig.align = "center",
   out.width = "88%"
 )
+
+source("doc-helpers.R")

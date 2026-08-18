@@ -1,8 +1,7 @@
 ---
-title: "Data, covariates, scales, and censoring"
+title: "Data"
 description: >
-  The input-data contract, transformations, formula encoding, biomarker
-  ordering, censoring rules, and inspectable Stan data.
+  Structure, prepare, transform, and inspect longitudinal biomarker data.
 output:
   rmarkdown::html_vignette:
     css: epikinetics.css
@@ -10,7 +9,7 @@ output:
     toc_depth: 2
 lang: en
 vignette: >
-  %\VignetteIndexEntry{Data, covariates, scales, and censoring}
+  %\VignetteIndexEntry{Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,296 +18,140 @@ vignette: >
 source("vignette-setup.R")
 ```
 
-## Required observation data
+`epikinetics` accepts an ordinary data frame in long format: one row per
+participant, measurement date or time, and biomarker. Studies commonly record
+calendar dates first and align them to an exposure-centred kinetic timescale
+during preparation.
 
-`prepare_epikinetics_data()` accepts ordinary data frames, including
-`data.table` and tibble subclasses. `fit_epikinetics()` then accepts the
-prepared object, keeping validation and transformation separate from
-compilation and sampling. Defaults expect:
-
-| Column | Meaning |
-|---|---|
-| `pid` | Participant identifier; numeric or character values are accepted. |
-| `day` | Observation time. |
-| `last_exp_day` | Time of the focal exposure. |
-| `titre_type` | Biomarker or assay label. |
-| `value` | Finite positive biomarker value on the natural scale. |
-
-Use `id`, `time`, `exposure`, `biomarker`, and `value` arguments for other
-names. Observation and exposure times may both be numeric, `Date`, `POSIXt`, or
-parseable ISO date strings. The difference defines time since exposure. Times
-before exposure are rejected.
-
-```{r}
-library(epikinetics)
-dat <- read.csv(
-  system.file("extdata", "delta.csv", package = "epikinetics")
-)
-dat[1:6, c("pid", "day", "last_exp_day", "titre_type", "value")]
+```{r raw-data, echo=FALSE, out.width="100%", fig.cap="A deterministic, history-stratified subset of nine participants from the bundled Delta-wave data. Selection spans quantiles of visit count and follow-up duration; it does not use fitted values. Colour identifies biomarker, dates show sample collection, and each dashed line marks that participant's focal exposure."}
+doc_figure("documentation-longitudinal-data.png")
 ```
 
-The model currently represents one known focal exposure per participant, so
-`last_exp_day` must be constant within participant. Missing required values and
-missing covariates are rejected early.
+Some people contribute one visit and others several; visits occur at different
+calendar dates, and each visit may include multiple biomarker targets. That
+imbalance is part of the data, not something the user must regularise onto a
+common grid.
 
-## Scale
+## Align calendar dates
 
-The Gaussian observation model operates on a base-2 logarithmic scale. With
-the default `scale = "natural"`, data are transformed as
+Kinetic parameters are most naturally expressed relative to an exposure, even
+when the raw study records calendar dates. `align_time_to_reference()` makes
+that transformation explicit and inspectable while preserving the original
+dates.
+
+```{r dated-data, collapse=FALSE}
+library(epikinetics)
+
+dated_data <- doc_delta_data()
+names(dated_data)[names(dated_data) == "day"] <- "measurement_date"
+names(dated_data)[names(dated_data) == "last_exp_day"] <- "exposure_date"
+dated_data$measurement_date <- as.Date(dated_data$measurement_date)
+dated_data$exposure_date <- as.Date(dated_data$exposure_date)
+
+dated_data[1:5, c(
+  "pid", "exposure_date", "measurement_date", "titre_type", "value"
+)]
+```
+
+Here the reference is a participant-specific column. Passing `id` also checks
+that its repeated value is consistent within each participant.
+
+```{r aligned-data, collapse=FALSE}
+aligned_data <- align_time_to_reference(
+  dated_data,
+  measurement_date = "measurement_date",
+  reference = "exposure_date",
+  id = "pid",
+  time = "time_since_exposure"
+)
+
+aligned_data[1:5, c(
+  "pid", "exposure_date", "measurement_date", "time_since_exposure"
+)]
+```
+
+Use one shared date instead with, for example,
+`reference = as.Date("2021-01-01")`. Differences are returned in days and may
+be negative, so pre-exposure records remain visible during checking. The
+current single-exposure model itself uses observations on or after time zero.
+
+The same four participants look different before and after alignment:
+
+```{r alignment-comparison, echo=FALSE, fig.show="hold", fig.width=4.2, fig.height=4.2, out.width="48%", fig.cap="The same observations before and after alignment. Left: participant-specific exposure dates occur at different calendar times. Right: exposure is day zero for every participant."}
+alignment_participants <- doc_representative_participants(doc_delta_data(), 4L)
+doc_raw_data_plot(
+  doc_delta_data(), alignment_participants, aligned = FALSE, ncol = 2
+) + ggplot2::theme(legend.position = "none")
+doc_raw_data_plot(
+  doc_delta_data(), alignment_participants, aligned = TRUE, ncol = 2
+) + ggplot2::theme(legend.position = "none")
+```
+
+## Required columns
+
+| Default column | Meaning |
+|---|---|
+| `pid` | User-facing participant identifier. |
+| `day` | Observation time. |
+| `last_exp_day` | Time of the known focal exposure. |
+| `titre_type` | Biomarker or assay target. |
+| `value` | Finite, positive response on the supplied scale. |
+
+Alternative names are supplied through the `id`, `time`, `exposure`,
+`biomarker`, and `value` arguments. Times may be numeric, `Date`, `POSIXt`, or
+ISO date strings. Set `exposure = NULL` when `time` is already numeric time
+since exposure, as in the aligned data above. The focal exposure and all model
+covariates must be constant within participant.
+
+## Prepare and inspect
+
+```{r prepare-data, collapse=FALSE}
+prepared <- prepare_epikinetics_data(
+  aligned_data,
+  formula = ~ infection_history,
+  time = "time_since_exposure",
+  exposure = NULL,
+  biomarker_order = c("Ancestral", "Alpha", "Delta"),
+  lower_limit = 5,
+  upper_limit = 2560
+)
+
+prepared
+summary(prepared)
+```
+
+The principal model components can then be inspected independently:
+
+```{r inspect-data, collapse=FALSE}
+epikinetics_data(prepared)[1:5, ]
+prepared$participants[1:5, ]
+model.matrix(prepared)[1:5, , drop = FALSE]
+names(stan_data(prepared))
+```
+
+The prepared object retains the validated input, labelled model-ready
+observations, participant table, factor levels and contrasts, biomarker
+mapping, prediction grid, priors, and literal Stan data list. Integer indices
+are created internally but remain visible for debugging.
+
+## Response scale and biomarker order
+
+With the default `scale = "natural"`, values and censoring limits are
+transformed as
 
 \[
 y = \log_2(\text{value}/\text{reference value}).
 \]
 
-The default reference value is 1, making the inverse transformation simply
-`2^y`. A scientifically meaningful assay reference can instead be supplied
-with `reference_value`. This fixed reference is stored with the fit and used by
-posterior summaries and response-scale predictions. It does not depend on the
-minimum observed value.
+The fixed `reference_value` defaults to 1 and is stored for inverse
+transformation. Use `scale = "log2"` only when the supplied values and limits
+are already on that scale.
 
-For values already on this scale, use `scale = "log2"`; censoring limits must
-then also be on the log2 scale. The prepared observation table retains both
-`value` and `value_model`.
+`biomarker_order` supplies a complete display and indexing order. Without it,
+existing factor levels are preserved, then first appearance is used. The order
+propagates through the fit, posterior tables, predictions, legends, and
+individual plots.
 
-```{r}
-prepared <- prepare_epikinetics_data(
-  dat,
-  formula = ~ infection_history,
-  covariate_parameters = "all",
-  lower_limit = 5,
-  upper_limit = 2560
-)
-epikinetics_data(prepared)[1:6, ]
-```
-
-## Covariates
-
-Covariates are specified with a one-sided R formula such as
-`~ age + sex + infection_history`. They must be participant-level: a covariate
-may not change across a participant's observations. Numeric variables remain
-numeric; factors use R's active contrast options and their first level is the
-default reference under treatment contrasts. Character variables are converted
-to factors.
-
-Continuous variables enter the design matrix on the scale supplied, so their
-coefficients are effects per one input unit and the default coefficient priors
-must be interpreted on that scale. For variables such as age, create an
-explicit centred or rescaled participant-level column before preparation when
-a one-unit effect is not scientifically useful. This keeps the transformation
-visible in the prepared data and makes `newdata` unambiguous.
-
-Use conventional formulas with an intercept. `epikinetics` removes the design
-intercept because every biomarker already has a population parameter. Formulas
-such as `~ 0 + infection_history` are rejected: estimating all factor levels in
-addition to the biomarker population parameters would be redundant.
-
-The fitted coefficients are shared across biomarkers, as in the original
-model. A baseline coefficient is additive on the log2 outcome scale, so
-`2^beta` is a response ratio. Coefficients for positive time and rate
-parameters are additive on the parameter's log scale, so `exp(beta)` is a
-ratio. `posterior_parameters(level = "regression")` returns both forms along
-with the original term, numeric design-column name, represented factor level,
-and treatment reference where those labels are well defined.
-
-The original participant model frame, terms, term assignment, factor levels,
-actual contrast matrices, and a design-column-to-term table are retained.
-Consequently prediction never requires a user to recreate Stan dummy values.
-For example, `prediction_grid(prepared)` returns the observed factor profiles
-with continuous predictors fixed at their participant-level medians.
-
-## Participant hierarchy
-
-`participant_parameters` controls which kinetic quantities receive
-participant-level random effects. The default is
-`c("baseline", "boost_rate", "early_waning_rate", "late_waning_rate")`.
-Peak time and the duration to the early/late waning switch are shared across
-participants. This stable structure is the package default for the motivating
-application, but remains an explicit and overridable modelling assumption. Use
-a scientifically supported subset for another study, or
-`participant_parameters = "all"` when richer within-participant sampling and
-diagnostics justify the full hierarchy. The selection is inspectable in
-`prepared$mappings$participant_parameters` and as the six-entry
-`participant_effect_active` vector in `stan_data(prepared)`.
-
-## Biomarker order
-
-`biomarker_order` supplies one complete user-facing ordering and stores it in
-the prepared object. If it is omitted, existing factor levels are retained;
-otherwise first appearance in the input data is used. This same order controls
-Stan biomarker indices, posterior tables, predictions, legends, population
-plots, and individual plots. The package does not attach pathogen-specific
-meaning to labels. For the bundled example, chronological variant order can be
-made explicit:
-
-```{r, eval=FALSE}
-prepare_epikinetics_data(
-  dat,
-  biomarker_order = c("Ancestral", "Alpha", "Delta")
-)
-```
-
-## Censoring
-
-The likelihood distinguishes:
-
-* uncensored values, using a Normal log density;
-* left-censored values, using the Normal log CDF at their lower limit; and
-* right-censored values, using the Normal upper-tail probability at their
-  upper limit.
-
-`lower_limit` and `upper_limit` independently accept:
-
-* one scalar for all observations;
-* a numeric vector with one value per observation;
-* a named numeric vector with one limit per biomarker; or
-* the name of a row-level numeric data column.
-
-`NA` means no applicable limit for that observation. Without an explicit
-`censoring` argument, a value at or below its lower limit is left-censored and
-a value at or above its upper limit is right-censored. Without limits, all
-values are uncensored. This means ordinary data are never implicitly censored
-at their observed minimum or maximum.
-
-If the source data record censoring status, pass a vector or column name with
-labels `none`, `left`, or `right` (numeric `0`, `-1`, `1` is also accepted).
-Every explicitly censored row must have the relevant limit. An observation
-inconsistent with its status and applicable limit is rejected during
-preparation. For example, an uncensored observation at or beyond an upper
-limit, or a right-censored recorded value below that limit, produces a
-row-specific error before Stan is called.
-
-Limits can vary by biomarker:
-
-```{r}
-biomarkers <- unique(dat$titre_type)
-lower <- setNames(rep(5, length(biomarkers)), biomarkers)
-upper <- setNames(rep(2560, length(biomarkers)), biomarkers)
-
-prepared <- prepare_epikinetics_data(
-  dat,
-  lower_limit = lower,
-  upper_limit = upper
-)
-table(epikinetics_data(prepared)$censoring)
-```
-
-## Inspect the prepared model data
-
-An `epikinetics_data` object keeps the validated input copy, a canonical
-labelled observation table, a participant table, the R model frame, the named
-participant design matrix, priors, term/design-column mappings, factor
-levels/contrasts, conditional-prediction defaults, scale information, and the
-exact Stan data list. Input observations are sorted contiguously by
-participant for threaded likelihood evaluation without modifying the user's
-data frame.
-
-```{r}
-prepared
-summary(prepared)
-
-# Validated input and model-ready observations.
-prepared$input_data[1:3, ]
-prepared$observations[1:3, ]
-
-# Participant indices/covariates and biomarker indices.
-prepared$participants[1:3, ]
-prepared$model_frame[1:3, , drop = FALSE]
-prepared$mappings$biomarker
-prepared$mappings$reference_levels
-prepared$mappings$design_columns
-
-# The formula encoding and the exact list supplied to Stan.
-model.matrix(prepared)[1:3, , drop = FALSE]
-prediction_grid(prepared)
-names(stan_data(prepared))
-```
-
-`epikinetics_data(prepared)` is a compact accessor for the observation table,
-whereas `stan_data(prepared)` returns the exact sampling list. The direct
-`prepared$stan_data` component is also
-available for interactive debugging. Integer indices need not be supplied by
-the user, but they are intentionally visible. The fit updates only the
-computational `grainsize` for the requested thread count; after sampling,
-`stan_data(fit)` is the literal list used for that run.
-
-## Fit and posterior output
-
-`fit_epikinetics()` returns one `epikinetics_fit` object containing the
-CmdStanR fit and all preparation metadata needed for later interpretation. The
-underlying `CmdStanMCMC` object remains available through `cmdstan_fit(fit)`;
-raw Stan draws are available through `posterior_draws(fit)`.
-
-`posterior_parameters()` provides labelled kinetic quantities at four levels:
-
-| `level` | Interpretation | Main identifiers |
-|---|---|---|
-| `"population"` | Biomarker-specific population intercept parameters before covariate effects. | `biomarker` |
-| `"profile"` | Population parameters after applying a conditional covariate profile, without participant effects. | `.profile`, `biomarker`, and formula variables |
-| `"participant"` | Conditional parameters for fitted participants, including their estimated random effects. | `participant`, `biomarker`, and participant covariates |
-| `"regression"` | Formula coefficients and their interpretable multiplicative forms. | formula term, design column, level/reference, and kinetic parameter |
-
-With `summary = TRUE`, parameter output is long: `parameter` (or `quantity`
-for regression output) names the quantity and `mean`, `median`, `sd`, `lower`,
-and `upper` give its posterior summary. With `summary = FALSE`, one row is
-returned per posterior draw and the kinetic quantities occupy separate
-columns. Derived output includes:
-
-| Column | Meaning |
-|---|---|
-| `waning_change_time` | Time of the transition from early to late waning. |
-| `baseline_response` | Baseline on the natural response scale. |
-| `peak_response` | Value at the fitted peak on the response scale. |
-| `waning_change_response` | Value at the early/late waning switch. |
-| `early_waning_half_life` | Time for a two-fold decline under the early rate. |
-| `late_waning_half_life` | Time for a two-fold decline under the late rate. |
-
-The old package referred to `waning_change_response` as a set point. It is not
-necessarily stationary: the late waning rate is estimated and may be positive.
-
-## Trajectory-prediction output
-
-`predict(fit)` returns an `epikinetics_prediction`, which is an ordinary data
-frame with plotting metadata attached. Every summarised prediction contains:
-
-| Column | Meaning |
-|---|---|
-| `time` | Time since the focal exposure, in the input time unit. |
-| `biomarker` | User-facing biomarker label in the stored order. |
-| `estimate` | Alias for the posterior median. |
-| `mean` | Posterior mean trajectory value. |
-| `median` | Posterior median trajectory value. |
-| `lower`, `upper` | Requested pointwise posterior interval. |
-
-Population and new-participant predictions also retain `.profile` and the
-original covariate-profile columns. Individual predictions retain
-`participant` and the fitted participant's covariate columns. All outputs are
-on the response scale by default; `scale = "model"` requests the fitted log2
-scale.
-
-With `summary = FALSE`, the output instead contains `.draw`, `time`, and
-`estimate` together with the same type-specific identifiers. Keeping `.draw`
-is essential when calculating quantities involving more than one time point,
-biomarker, or participant: summaries must be formed across complete
-draw-specific calculations rather than by combining marginal medians.
-
-The prediction `type` determines the estimand:
-
-| `type` | Random effects included |
-|---|---|
-| `"population"` | None; conditional on the supplied or default covariate profiles. |
-| `"individual"` | Posterior effects for fitted participants. |
-| `"new"` | Newly drawn effects from the fitted participant hierarchy. |
-
-Intervals describe uncertainty in the latent expected trajectory unless
-`include_observation_noise = TRUE`, in which case they are posterior
-predictive intervals for a future observed measurement. Attributes record the
-interval probabilities, scale, uncertainty target, censoring limits,
-biomarker order, formula, prediction grid, and stored observations used by the
-plot methods.
-
-The applied case-study vignette shows how draw-level individual predictions
-can be placed on calendar time and aggregated without losing draw identity.
-
-The package bundles `delta.csv`, `ba2.csv`, and `xbb.csv` under `extdata` for
-examples and tests. They are observational examples from the motivating study,
-not implicit defaults for modelling or priors.
+Read [Covariates](covariates.html) for formula encoding and
+[Censoring](censoring.html) for assay limits. Once the prepared object is
+correct, continue to [Fitting the model](fitting.html).

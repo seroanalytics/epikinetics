@@ -1,5 +1,5 @@
 ---
-title: "Applied case study: Delta-wave neutralising antibodies"
+title: "Case study: SARS-CoV-2 Delta-wave neutralising antibodies"
 description: >
   Reproduce the motivating Delta-wave population, participant, calendar-time,
   and exposure-timing analyses with the modern interface.
@@ -10,7 +10,7 @@ output:
     toc_depth: 2
 lang: en
 vignette: >
-  %\VignetteIndexEntry{Applied case study: Delta-wave neutralising antibodies}
+  %\VignetteIndexEntry{Case study: SARS-CoV-2 Delta-wave neutralising antibodies}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -29,7 +29,10 @@ The kinetics model was developed for the analysis in Russell et al.,
 variants in the UK: a mathematical modelling study" ([Lancet Infectious
 Diseases, 2024](https://doi.org/10.1016/S1473-3099(24)00484-5)). This vignette
 reconstructs the Delta-wave analyses from the former `epikinetics` case study
-using the current package interface.
+using the current package interface. The shorter [Data](data.html),
+[Covariates](covariates.html), [Censoring](censoring.html),
+[Fitting](fitting.html), and [Diagnostics](diagnostics.html) articles introduce
+the individual concepts; this page shows how they combine in a real analysis.
 
 The aim is to reproduce the analysis rather than the exact appearance of the
 published multi-wave figures. The package includes the corresponding `ba2.csv`
@@ -52,7 +55,7 @@ The bundled data contain neutralisation measurements against Ancestral, Alpha,
 and Delta virus, together with vaccination/exposure dates and participant
 infection history.
 
-```{r}
+```{r, collapse=FALSE}
 library(epikinetics)
 library(ggplot2)
 
@@ -647,3 +650,6 @@ infection-history categories differ. The same extraction and plotting code can
 then be applied to each fit, after supplying an appropriate biomarker order and
 assay limits. Combining wave-specific summaries should happen only after
 confirming that their response scales and scientific estimands are comparable.
+
+The [Kinetics model and statistical structure](model.html) article gives the
+mathematical definition of the model used throughout this case study.

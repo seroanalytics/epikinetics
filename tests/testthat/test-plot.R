@@ -143,15 +143,28 @@ test_that("individual plots reuse predictions and retain participant labels", {
   built <- ggplot2::ggplot_build(figure)
 
   expect_s3_class(figure, "ggplot")
-  expect_equal(
-    unique(as.character(built$layout$layout$.prediction_panel)),
-    "P-02"
+  expect_equal(figure$labels$title, "Participant P-02")
+  expect_setequal(
+    as.character(built$layout$layout$biomarker),
+    c("A", "B")
   )
+  expect_equal(nrow(built$layout$layout), 2L)
   expect_true(any(vapply(
     figure$layers,
     function(layer) inherits(layer$geom, "GeomPoint"),
     logical(1)
   )))
+  horizontal_lines <- which(vapply(
+    figure$layers,
+    function(layer) inherits(layer$geom, "GeomHline"),
+    logical(1)
+  ))
+  expect_true(length(horizontal_lines) >= 1L)
+  line_panels <- unique(unlist(lapply(
+    ggplot2::ggplot_build(figure)$data[horizontal_lines],
+    function(layer) layer$PANEL
+  )))
+  expect_setequal(as.integer(line_panels), c(1L, 2L))
   expect_error(plot_individual(prediction, "missing"), "not present")
 })
 

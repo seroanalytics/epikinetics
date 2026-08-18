@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="650" viewBox="0 0 1000 650" role="img" aria-labelledby="title desc">
+  <title id="title">Default epikinetics statistical hierarchy</title>
+  <desc id="desc">Biomarker-specific population kinetic parameters are modified by participant covariates and selected participant random effects to form individual latent trajectories, which generate observed, left-censored, or right-censored measurements.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#52606d"/>
+    </marker>
+    <style>
+      .title { font: 700 22px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; fill: #20262d; }
+      .heading { font: 700 17px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; fill: #20262d; }
+      .text { font: 15px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; fill: #39434d; }
+      .small { font: 13px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; fill: #5a6570; }
+      .box { stroke: #cbd3da; stroke-width: 1.4; rx: 12; }
+      .arrow { stroke: #52606d; stroke-width: 1.7; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <text x="500" y="35" text-anchor="middle" class="title">From population kinetics to measured responses</text>
+
+  <rect x="55" y="68" width="890" height="118" fill="#eef6fb" class="box"/>
+  <text x="82" y="98" class="heading">Biomarker-specific population kinetics</text>
+  <text x="82" y="128" class="text">baseline · time to peak · duration to switch · boost rate · early waning · late waning</text>
+  <circle cx="780" cy="121" r="13" fill="#0072B2"/><circle cx="820" cy="121" r="13" fill="#D55E00"/><circle cx="860" cy="121" r="13" fill="#009E73"/>
+  <text x="820" y="158" text-anchor="middle" class="small">one curve parameter set per biomarker</text>
+
+  <rect x="55" y="238" width="420" height="132" fill="#fbf5ed" class="box"/>
+  <text x="82" y="270" class="heading">Participant covariates</text>
+  <text x="82" y="300" class="text">R formula and design matrix</text>
+  <text x="82" y="329" class="small">Population-level shifts on selected kinetic quantities;</text>
+  <text x="82" y="350" class="small">effects are shared across biomarkers in the current model.</text>
+
+  <rect x="525" y="218" width="420" height="172" fill="#f1f8f2" class="box"/>
+  <text x="552" y="250" class="heading">Participant random effects</text>
+  <text x="552" y="279" class="text">Default: baseline, boost rate,</text>
+  <text x="552" y="302" class="text">early waning, late waning</text>
+  <text x="552" y="335" class="small">Non-centred effects; biomarker-specific SDs.</text>
+  <text x="552" y="359" class="small">Peak time and switch duration remain shared</text>
+  <text x="552" y="379" class="small">across participants by default.</text>
+
+  <path d="M 330 186 C 330 207, 265 207, 265 238" class="arrow"/>
+  <path d="M 670 186 C 670 202, 735 202, 735 218" class="arrow"/>
+  <path d="M 265 370 C 265 420, 390 414, 432 447" class="arrow"/>
+  <path d="M 735 390 C 735 420, 610 414, 568 447" class="arrow"/>
+
+  <rect x="205" y="448" width="590" height="82" fill="#f5f3fa" class="box"/>
+  <text x="500" y="480" text-anchor="middle" class="heading">Individual latent trajectory</text>
+  <text x="500" y="508" text-anchor="middle" class="text">continuous piecewise kinetics for each participant × biomarker</text>
+
+  <path d="M 500 530 L 500 565" class="arrow"/>
+
+  <rect x="165" y="566" width="670" height="64" fill="#f8f9fa" class="box"/>
+  <text x="500" y="592" text-anchor="middle" class="heading">Measurements</text>
+  <text x="500" y="616" text-anchor="middle" class="text">Gaussian observation error · uncensored density · lower/upper censoring probabilities</text>
+</svg>
