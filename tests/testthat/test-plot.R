@@ -166,6 +166,14 @@ test_that("individual plots reuse predictions and retain participant labels", {
   )))
   expect_setequal(as.integer(line_panels), c(1L, 2L))
   expect_error(plot_individual(prediction, "missing"), "not present")
+
+  combined <- plot(prediction, show_observations = FALSE)
+  combined_layout <- ggplot2::ggplot_build(combined)$layout$layout
+  expect_equal(nrow(combined_layout), 4L)
+  expect_setequal(
+    as.character(combined_layout$participant),
+    c("P-01", "P-02")
+  )
 })
 
 test_that("batch individual plots support PNG and multi-page PDF", {

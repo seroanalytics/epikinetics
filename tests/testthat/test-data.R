@@ -35,6 +35,10 @@ test_that("already aligned numeric time can be prepared without an exposure colu
   expect_true(all(prepared$participants$exposure_time == 0))
   expect_true(prepared$specification$time_already_aligned)
   expect_null(prepared$specification$columns$exposure)
+  expect_output(
+    print(prepared),
+    "time supplied relative to exposure at zero"
+  )
 
   data$time_since_exposure <- as.Date("2024-01-01")
   expect_error(
@@ -42,6 +46,26 @@ test_that("already aligned numeric time can be prepared without an exposure colu
       data, time = "time_since_exposure", exposure = NULL
     ),
     "must contain numeric time since exposure"
+  )
+
+  data$time_since_exposure <- seq_len(nrow(data))
+  expect_error(
+    prepare_epikinetics_data(
+      data, time = "time_since_exposure", exposure = ""
+    ),
+    "'exposure' must be NULL or one non-empty"
+  )
+  expect_error(
+    prepare_epikinetics_data(data, time = "pid", exposure = NULL),
+    "columns must be distinct"
+  )
+
+  data$time_since_exposure[1] <- Inf
+  expect_error(
+    prepare_epikinetics_data(
+      data, time = "time_since_exposure", exposure = NULL
+    ),
+    "Aligned observation times must be finite"
   )
 })
 
