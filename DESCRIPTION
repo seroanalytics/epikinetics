@@ -1,10 +1,10 @@
 Package: epikinetics
 Title: Biomarker Kinetics Modelling
 Version: 0.1.0.9000
-Authors@R: c(person("Timothy", "Russell", email = "timothy.russell@lshtm.ac.uk", role = c("aut")),
+Authors@R: c(person("Tim", "Russell", email = "timothy.russell@lshtm.ac.uk", role = c("aut")),
     person("Alex", "Hill", email = "alex.hill@gmail.com", role = c("aut", "cre")))
-Author: Timothy Russell [aut], Alex Hill [aut, cre]
-Maintainer: Alex Hill <alex.hill@gmail.com>
+Author: Tim Russell [aut], Alex Hill [aut, cre]
+Maintainer: Tim Russell <timothy.russell@lshtm.ac.uk>
 Description: Fit Bayesian hierarchical models of longitudinal biomarker
     kinetics after a focal exposure. A functional R interface prepares data,
     runs a threaded 'Stan' model through 'CmdStanR', and provides labelled
